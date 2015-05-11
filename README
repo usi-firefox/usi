@@ -1,0 +1,31 @@
+0.1.21 (2015-04-02)
+* falls ein eine URL mit .user.js aufgerufen wurde, wird nun zusätzlich gefragt ob das Skript akualisiert werden soll, falls vorhanden
+
+0.1.20 (2015-04-02)
+* "use strict" -> USI läuft nun im Strict Mode
+
+0.1.19 (2015-04-02)
+* kleiner BugFix
+
+0.1.18 (2015-04-02)
+* Du kannst deine Skripte nun aktualisieren lassen, wenn sie eine updateURL enthalten
+
+0.1.17 (2015-04-02)
+* Skripte können jetzt auch direkt bearbeitet werden!
+
+0.1.16 (2015-04-02)
+* Skripte können nun aktualisiert werden! Wenn der Name,Author,Namespace,... nicht verändert wurde
+* Erste Vorbereitungen für Funktionen aus Greasemonkey (GM_setValue, GM_getValue, GM_listValue, GM_deleteValue)
+
+0.1.15 (2015-03-31)
+* CSS Anpassungen in der Konfiguration
+
+0.1.14 (2015-03-29)
+* Userscripts können deaktiviert und wieder aktiviert werden
+* zusätzliche Abfrage wenn ein Skript gelöscht werden soll
+* Userscript Zähler
+* Alles zurücksetzen Button hinzugefügt
+
+0.1.13 (2015-03-25)
+* @run-at akzeptiert nun auch den Wert "ready"|"document-ready" zusätzlich zu "document-start" und "document-end"
+* gelöschte Userscripts werden nun auch direkt von den entsprechenden Seiten "gelöst"
