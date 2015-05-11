@@ -5,7 +5,7 @@
   "description": "nutze UserScripts auf deinem Firefox für Android!",
   "author": "usi-dev",
   "license": "GNU LGPL",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "preferences": [
 	 {
 		"type": "control",

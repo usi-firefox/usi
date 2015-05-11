@@ -235,6 +235,7 @@ self.port.on("delete-script-is-now-deleted", function (script_was_deleted) {
 		reload_scripts();
 	} else { // script konnte nicht gelöscht werden
 
+		window.alert("Userscript konnte nicht erfolgreich gelöscht werden");
 
 	}
 })
@@ -317,8 +318,6 @@ self.port.on("update-for-userscript-available", function (userscript_infos){
 jQuery(document).ready(function (){
 	// lade alle Skripte nach!
 	reload_scripts();
-	// setze das Beispiel ein
-//	jQuery("#load-example-textarea-button").click();
 });
 
 
