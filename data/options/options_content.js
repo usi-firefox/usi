@@ -40,20 +40,25 @@ jQuery("#new-script-textarea-button").click(function () {
 // leere die Textbox
 jQuery("#clear-textarea-button").click(function (){
 	// zunächst den focus entfernen und dann alles leeren
+	focusAndResetTextarea();
+});
+
+function focusAndResetTextarea(){
+	// zunächst den focus entfernen und dann alles leeren
 	jQuery("#new-script-textarea").blur();
 	jQuery("#new-script-textarea").html(" ");
 	jQuery("#new-script-textarea").text(" ");
-});
+	jQuery("#new-script-textarea").val(" ");
+}
 
 // Beispiel für die Textbox laden
 jQuery("#load-example-textarea-button").click(function (){
-	// zunächst den focus entfernen und dann alles leeren -> danach den Beispiel Code einfügen!
-	jQuery("#new-script-textarea").blur();
-	jQuery("#new-script-textarea").html(" ");
-	jQuery("#new-script-textarea").text(
-		// setze dies als Beispiel ein
-		jQuery("#example-textarea").text()
-	);
+	// zunächst den focus entfernen und dann alles leeren
+	focusAndResetTextarea();
+	var example = jQuery("#example-textarea").clone().text();
+	// jetzt den Beispiel Code einfügen!
+	// setze dies als Beispiel ein
+	jQuery("#new-script-textarea").text(example).val(example);
 });
 
 self.port.on("same-userscript-was-found",function (userscript_infos){
@@ -249,6 +254,24 @@ function reload_scripts() {
 /************************************************************************
  ************************* UI Funktionen ********************************
  ************************************************************************/
+
+//verkleinere oder vergrößere die Textarea
+jQuery("#bigger-textarea-button").click(function(){
+	inOrDecreaseTextarea(0.1);
+});
+jQuery("#smaller-textarea-button").click(function(){
+	inOrDecreaseTextarea(-0.1);
+});
+
+function inOrDecreaseTextarea(difference){
+	var font_size = jQuery("textarea").css("font-size");
+	// entferne "px" suffix
+	font_size = parseFloat(font_size.split("px").join());
+	
+	// sinnvoll wäre + oder - 0,1
+	font_size = font_size + difference;
+	jQuery("textarea").css("font-size", font_size + "px");	
+}
 
 // Zeige einen Fehler an! Wenn es das Addon Skript sagt...
 self.port.on("show-error", function (text) {
