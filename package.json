@@ -6,6 +6,7 @@
   "author": "usi-dev",
   "license": "GNU LGPL",
   "version": "0.1.22",
+  "main" : "lib/main.js",
   "preferences": [
 	 {
 		"type": "control",

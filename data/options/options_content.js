@@ -1,3 +1,5 @@
+/* global self, basic_helper */
+
 /************************************************************************
  ************************* neue skripte anlegen *************************
  ************************************************************************/
@@ -180,7 +182,7 @@ function show_script_entry(script) {
 		var edit_button = jQuery("<button>").click(function () {
 			jQuery("#new-script-textarea").html(" ");
 			// füge das Userscript in die Texteingabe
-			jQuery("#new-script-textarea").text(script.userscript)
+			jQuery("#new-script-textarea").text(script.userscript);
 			
 			// scrolle gleich zur Texteingabe! .. und setze den Focus
 			scrollto("#new-script-textarea"); 
@@ -224,7 +226,7 @@ self.port.on("storage-quota", function (quota) {
 	rounded_quota = rounded_quota.replace(".", ",");
 
 	jQuery("#currentMemoryUsage").html("Aktueller Belegter Speicherverbauch : " + rounded_quota + "%");
-})
+});
 
 /************************************************************************
  ************************* bisherige skripte löschen ********************
@@ -243,7 +245,7 @@ self.port.on("delete-script-is-now-deleted", function (script_was_deleted) {
 		window.alert("Userscript konnte nicht erfolgreich gelöscht werden");
 
 	}
-})
+});
 
 
 // zeige alle Skripte an

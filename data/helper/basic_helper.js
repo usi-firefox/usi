@@ -3,6 +3,8 @@
  ************************* Basic Funktionen! *************************
  ************************************************************************/
 
+/* global exports */
+
 var basic_helper = {
 	isset: function (v) {
 		if (typeof v !== "undefined") {

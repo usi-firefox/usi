@@ -1,3 +1,7 @@
+0.1.23 (2015-06-22)
+* Kommentare für JS Lint erweitert
+* Options Möglichkeiten für UserScripte vorbereitet
+
 0.1.22 (2015-06-08)
 * Bug Fix: Editier Fenster lädt kein Beispiel UserScript und lässt sich nicht mehr löschen, nachdem das Beispiel verändert wurde
 * Zoom Buttons für die Editier Box hinzugefügt

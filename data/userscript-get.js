@@ -1,3 +1,5 @@
+/* global self */
+
 // frage ob das Skript heruntergeladen werden soll
 if (window.confirm("Soll dieses UserScript von USI geladen und aktiviert werden?")) {
 	// sende die aktuelle URL an das ADD-ON
