@@ -265,6 +265,14 @@ jQuery("#smaller-textarea-button").click(function(){
 	inOrDecreaseTextarea(-0.1);
 });
 
+(function(){
+    // Damit diese Variable nicht im globalen Namensraum bleibt...
+    var textarea_default_size = jQuery("textarea").css("font-size");
+    jQuery("#default-textarea-button").click(function(){
+            jQuery("textarea").css("font-size", textarea_default_size);
+    });
+})();
+
 function inOrDecreaseTextarea(difference){
 	var font_size = jQuery("textarea").css("font-size");
 	// entferne "px" suffix

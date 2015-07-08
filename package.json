@@ -1,12 +1,16 @@
 {
   "name": "usi",
   "title": "usi (User|Unified Script Injector)",
-  "id": "firefox-addon-usi",
+  "id": "firefox-addon-usi@jetpack",
   "description": "nutze UserScripts auf deinem Firefox für Android!",
   "author": "usi-dev",
-  "license": "GNU LGPL",
-  "version": "0.1.22",
+  "license": "LGPL-2.1",
+  "version": "0.1.24",
   "main" : "lib/main.js",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
   "preferences": [
 	 {
 		"type": "control",

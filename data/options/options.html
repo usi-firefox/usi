@@ -84,8 +84,7 @@
 			</div>
 			<div>
 				<h2>Userscripts (<span id="currentCountUserscripts"></span>) :</h2>
-				<div id="loadedUserscripts">
-				</div>
+				<div id="loadedUserscripts"></div>
 				<div id="loadedUserscripts_template" style="display: none;">
 					<div>usi-id: ###id###<br />
 						Name: ###settings.name###<br />
@@ -112,14 +111,13 @@
 			</div>
 			<div id="option2">
 				<h3>2. Lade ein Userscript direkt aus diesem Textfeld</h3>
-				<button name="new-script-textarea-button" id="new-script-textarea-button" >Userscript speichern</button>
-				<br />
 				<button name="load-example-textarea-button" id="load-example-textarea-button" >Userscript Beispiel laden</button>
 				<button name="clear-textarea-button" id="clear-textarea-button" >Textfeld leeren</button>
 				<br />
 				Textarea Zoom:
 				<button id="bigger-textarea-button" >+</button>
 				<button id="smaller-textarea-button" >-</button>
+				<button id="default-textarea-button" >Standard</button>
 				<textarea id="new-script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
 				<textarea id="example-textarea" rows="30"  cols="64" placeholder="User Script eintragen" style="display: none;">// ==UserScript==
 // @name           {Userscript Name}
@@ -148,6 +146,9 @@
 document.addEventListener("click", function(){
 	alert("Du hast soeben geklickt!");
 });</textarea>
+                                
+<button name="new-script-textarea-button" id="new-script-textarea-button" >Userscript speichern</button>
+
 			</div>
 		</fieldset>
 		<div id="option3">
