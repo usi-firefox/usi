@@ -1,0 +1,7 @@
+.hgignore
+batch
+nbproject
+.hg
+.jpmignore
+*.xpi
+*.zip
