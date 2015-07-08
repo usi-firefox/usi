@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>usi Optionen</title>
+		<title data-l10n-id="usi_options">usi Optionen</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 		<style>
@@ -88,10 +88,10 @@
 				<div id="loadedUserscripts_template" style="display: none;">
 					<div>usi-id: ###id###<br />
 						Name: ###settings.name###<br />
-						Von: ###settings.author###<br />
+						Author: ###settings.author###<br />
 						Version: ###settings.version###<br />
-						Beschreibung: ###settings.description###<br />
-						Deaktiviertes Userscript: ###deactivated###</div>
+						<span data-l10n-id="description" >Beschreibung</span>: ###settings.description###<br />
+						<span data-l10n-id="deactivated_userscript" >Deaktiviertes Userscript</span>: ###deactivated###</div>
 					<div>Includes: <ol>###settings.include###</ol></div>
 					<div style="display: none;" id="userscript-###id###">Userscript Content: 
 						<pre class="border-black" >###userscript###</pre>
@@ -100,19 +100,19 @@
 			</div>
 		</fieldset>
 		<fieldset>
-			<div><h2>Füge ein neues Userscript hinzu!</h2></div>
+			<div><h2 data-l10n-id="add_new_userscript" >Füge ein neues Userscript hinzu!</h2></div>
 			<div id="option1">
-				<h3>1. Lade ein Userscript mithilfe einer URL</h3>
-				<button name="new-script-url-button" id="new-script-url-button" >Userscript nachladen</button>
+				<h3 data-l10n-id="load_userscript_by_url" >1. Lade ein Userscript mithilfe einer URL</h3>
+				<button name="new-script-url-button" id="new-script-url-button" >Userscript <span data-l10n-id="after_load" >nachladen</span></button>
 				<br />
-				<label for="new-script-url">Neues Userscript laden (URL):</label>
+				<label for="new-script-url" data-l10n-id="load_userscript_by_url_label" >Neues Userscript laden (URL):</label>
 				<input type="url" name="new-script-url" placeholder="http://webseite.de/userscript.user.js" id="new-script-url" size="60" />
 				<br />
 			</div>
 			<div id="option2">
-				<h3>2. Lade ein Userscript direkt aus diesem Textfeld</h3>
-				<button name="load-example-textarea-button" id="load-example-textarea-button" >Userscript Beispiel laden</button>
-				<button name="clear-textarea-button" id="clear-textarea-button" >Textfeld leeren</button>
+				<h3 data-l10n-id="load_userscript_by_textarea" >2. Lade ein Userscript direkt aus diesem Textfeld</h3>
+				<button name="load-example-textarea-button" id="load-example-textarea-button" >Userscript <span data-l10n-id="load_example">Beispiel laden</span></button>
+				<button name="clear-textarea-button" id="clear-textarea-button" data-l10n-id="clear_textarea" >Textfeld leeren</button>
 				<br />
 				Textarea Zoom:
 				<button id="bigger-textarea-button" >+</button>
@@ -147,17 +147,17 @@ document.addEventListener("click", function(){
 	alert("Du hast soeben geklickt!");
 });</textarea>
                                 
-<button name="new-script-textarea-button" id="new-script-textarea-button" >Userscript speichern</button>
+		<button name="new-script-textarea-button" id="new-script-textarea-button" data-l10n-id="save_userscript">Userscript speichern</button>
 
 			</div>
 		</fieldset>
 		<div id="option3">
-			<h3>Alle Userscripts entfernen</h3>
-			<button class="delete" id="deleteAll">-alles zurücksetzen-</button>
+			<h3 data-l10n-id="delete_all_userscripts" >Alle Userscripts entfernen</h3>
+			<button class="delete" id="deleteAll" data-l10n-id="revert_all" >-alles zurücksetzen-</button>
 		</div>
 		<div id="option4">
-			<h3>Alle Userscripts auf Updates überprüfen</h3>
-			<button id="checkForUserscriptUpdates">-jetzt prüfen-</button>
+			<h3 data-l10n-id="check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
+			<button id="checkForUserscriptUpdates" data-l10n-id="check_now" >-jetzt prüfen-</button>
 		</div>
 	</body>
 </html>
