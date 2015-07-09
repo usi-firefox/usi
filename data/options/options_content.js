@@ -1,6 +1,14 @@
 /* global self, basic_helper */
 
 /************************************************************************
+ ************************* Übersetzungen holen **************************
+ ************************************************************************/
+var lang = {};
+self.port.on("language",function(translated_object){
+	lang = translated_object;
+});
+
+/************************************************************************
  ************************* neue skripte anlegen *************************
  ************************************************************************/
 
@@ -21,7 +29,8 @@ jQuery("#new-script-url-button").click(function () {
 		reload_scripts();
 	} else {
 		// Fehler zeigen
-		show_error("Du musst eine Url angeben wo dein User Script zu finden ist, ansonsten kannst du nicht weitermachen.",
+//		show_error("Du musst eine Url angeben wo dein User Script zu finden ist, ansonsten kannst du nicht weitermachen.",
+		show_error(lang.empty_userscript_url,
 				"#new-script-url");
 	}
 
@@ -65,8 +74,9 @@ jQuery("#load-example-textarea-button").click(function (){
 
 self.port.on("same-userscript-was-found",function (userscript_infos){
 	
-	if(window.confirm("Ein Userscript mit den gleichen Einstellungen (usi-id: '" + userscript_infos.id + "') \n\
-wurde gefunden, möchtest du es aktualisieren?")){
+//	if(window.confirm("Ein Userscript mit den gleichen Einstellungen (usi-id: '" + userscript_infos.id + "') \n\
+//wurde gefunden, möchtest du es aktualisieren?")){
+	if(window.confirm(lang.same_userscript_was_found_ask_update_it_1 +  userscript_infos.id + lang.same_userscript_was_found_ask_update_it_2)){
 		// Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
 		self.port.emit("override-same-userscript", userscript_infos);
 	}
@@ -116,7 +126,8 @@ function show_script_entry(script) {
 			switch (key) {
 				case "deactivated":
 					// Wenn deactivated auf true steht, ist das Skript natürlich deaktiviert...
-					var value_for_replace = (script[key]) ? "<span style=\"color:red;\">Ja</span>" : "Nein";
+					var value_for_replace = (script[key]) ? "<span style=\"color:red;\">" + lang.yes + "</span>" : lang.no;
+//					var value_for_replace = (script[key]) ? "<span style=\"color:red;\">Ja</span>" : "Nein";
 					break;
 				case "script":
 					// escape auf jeden Fall das Skript!
@@ -162,7 +173,7 @@ function show_script_entry(script) {
 		}
 
 		// nicht gesetzte Platzhalter mit "--nicht gesetzt--" ersetzen
-		script_options_template = script_options_template.replace(/###(.*)###/g, "--nicht gesetzt--");
+		script_options_template = script_options_template.replace(/###(.*)###/g, lang.not_set);
 
 
 		// Löschen Button hinzufügen
@@ -171,12 +182,12 @@ function show_script_entry(script) {
 			// das Skript mit der ID löschen!
 			if (!basic_helper.empty(script.id)) {
 				//zusätzliche Abfrage
-				if(window.confirm("Möchtest du dieses Userscript (usi-id: '"+script.id+"') wirklich löschen?")){
+				if(window.confirm( lang.want_to_delete_this_userscript_1 + script.id + lang.want_to_delete_this_userscript_2)){
 					self.port.emit("delete-script-by-id", script.id);
 				}
 			}
 
-		}).html("löschen (X)").addClass("delete");
+		}).html(lang.delete_x).addClass("delete");
 		
 		// Bearbeiten Button hinzufügen
 		var edit_button = jQuery("<button>").click(function () {
@@ -188,14 +199,14 @@ function show_script_entry(script) {
 			scrollto("#new-script-textarea"); 
 			jQuery("#new-script-textarea").focus();
 			
-		}).html("bearbeiten");
+		}).html(lang.change);
 		
 		// Anzeige Button hinzufügen
 		var toggle_button = jQuery("<button>").click(function () {
 			// zeige das aktuelle Element an, oder verstecke es!
 			jQuery("#userscript-" + script.id).toggle();
 			
-		}).html("zeigen/ausblenden");
+		}).html(lang.show_hide);
 		
 		// De-/aktivieren Button hinzufügen
 		var activate_button = jQuery("<button>").click(function () {
@@ -204,7 +215,7 @@ function show_script_entry(script) {
 			
 			// lade alle Skripte erneut nach!
 			reload_scripts();
-		}).html("aktivieren/deaktivieren");
+		}).html(lang.activate_deactivate);
 		
 		// Elemente hinzufügen!
 		jQuery("#loadedUserscripts")
@@ -225,7 +236,7 @@ self.port.on("storage-quota", function (quota) {
 	// falls ein Komma enthalten sein sollte ...
 	rounded_quota = rounded_quota.replace(".", ",");
 
-	jQuery("#currentMemoryUsage").html("Aktueller Belegter Speicherverbauch : " + rounded_quota + "%");
+	jQuery("#currentMemoryUsage").html(lang.actual_used_quota + " : " + rounded_quota + "%");
 });
 
 /************************************************************************
@@ -236,13 +247,13 @@ self.port.on("storage-quota", function (quota) {
 self.port.on("delete-script-is-now-deleted", function (script_was_deleted) {
 	if (script_was_deleted == true) { // script wurde erfolgreich gelöscht
 		
-		window.alert("Userscript wurde erfolgreich gelöscht");
+		window.alert(lang.userscript_was_successful_deleted);
 		
 		// Schicke alle bisher verfügbaren Skripte! Erneut!!!
 		reload_scripts();
 	} else { // script konnte nicht gelöscht werden
 
-		window.alert("Userscript konnte nicht erfolgreich gelöscht werden");
+		window.alert(lang.userscript_could_not_deleted);
 
 	}
 });
@@ -312,8 +323,8 @@ function show_error(text, jump_to_element) {
 
 // Alles Löschen Button
 jQuery("#deleteAll").click(function (){
-	if(window.confirm("Möchtest du wirklich sämtliche Einstellungen zurücksetzen?")){
-		if(window.confirm("Bist du dir absolut sicher? Es wird keine weitere Sicherheistabfrage geben!")){
+	if(window.confirm(lang.really_reset_all_settings)){
+		if(window.confirm(lang.really_really_reset_all_settings)){
 			// Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
 			self.port.emit("delete-everything");
 			
@@ -335,7 +346,7 @@ jQuery("#checkForUserscriptUpdates").click(function (){
 // Es wurde eine andere Version vom Skript gefunden
 // Frage ob der Benutzer das Skript aktualisieren möchte
 self.port.on("update-for-userscript-available", function (userscript_infos){
-	if(window.confirm("Für das Skript (usi-id: '" + userscript_infos.id + "' ) wurde eine Aktualisierung gefunden\nmöchtest du es aktualisieren?")){
+	if(window.confirm(lang.userscript_update_was_found_1 + userscript_infos.id + lang.userscript_update_was_found_2)){
 		
 		// Nun das Skript aktualisieren!
 		self.port.emit("override-same-userscript", userscript_infos);
