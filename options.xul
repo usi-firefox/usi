@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <setting data-jetpack-id="firefox-addon-usi@jetpack" pref="extensions.firefox-addon-usi@jetpack.loadOptions" pref-name="loadOptions" title="Optionen" type="control">
+    <button data-jetpack-id="firefox-addon-usi@jetpack" label="konfigurieren" oncommand="Services.obs.notifyObservers(null, 'firefox-addon-usi@jetpack-cmdPressed', 'loadOptions');" pref-name="loadOptions"/>
+  </setting>
+  <setting data-jetpack-id="firefox-addon-usi@jetpack" pref="extensions.firefox-addon-usi@jetpack.enableExternalScriptLoadQuestion" pref-name="enableExternalScriptLoadQuestion" title="Importiere externe Skripte" type="bool">Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)</setting>
+</vbox>
