@@ -1,3 +1,8 @@
+0.1.28 (2015-07-13)
+* BUGFIX: Checkbox in den Einstellungen funktioniert nun wieder
+* Warnung des "Strict Mode" behoben (basic_helper.js)
+* update von jQuery auf Version 2.1.4
+
 0.1.27 (2015-07-10)
 * WORKAROUND: Optionen wurden in Fennec (Firefox for Android) nicht angezeigt ...
 

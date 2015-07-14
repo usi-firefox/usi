@@ -5,10 +5,25 @@
   "description": "nutze UserScripts auf deinem Firefox für Android!",
   "author": "usi-dev",
   "license": "LGPL-2.1",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "main" : "lib/main.js",
   "engines": {
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"
-  }
+  },
+  "preferences": [
+	 {
+		"type": "control",
+		"label": "konfigurieren",
+		"name": "loadOptions",
+		"title": "Optionen"
+    },
+	{
+		"type": "bool",
+		"value": true,
+		"name": "enableExternalScriptLoadQuestion",
+		"description": "Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)",
+		"title": "Importiere externe Skripte"
+	}
+	]
 }
