@@ -1,3 +1,7 @@
+0.1.29 (2015-07-21)
+* Für die Übersetzung ist nun kein hardcodiertes Array mehr nötig
+* Übersetzung auch für userscript-get.js hinzugefügt
+
 0.1.28 (2015-07-13)
 * BUGFIX: Checkbox in den Einstellungen funktioniert nun wieder
 * Warnung des "Strict Mode" behoben (basic_helper.js)
