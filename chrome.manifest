@@ -1,0 +1,4 @@
+content   usi ./
+
+# fennec settings
+override resource://firefox-addon-usi-at-jetpack/data/options/options.html resource://firefox-addon-usi-at-jetpack/options_fennec.xul application={a23983c0-fd0e-11dc-95ff-0800200c9a66} application={aa3c5121-dab2-40e2-81ca-7ea25febc110}
