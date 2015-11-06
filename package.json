@@ -18,6 +18,12 @@
 		"name": "loadOptions",
 		"title": "Optionen"
     },
+	 {
+		"type": "control",
+		"label": "export userscripts",
+		"name": "export_userscripts",
+		"title": "Userscripte exportieren"
+    },
 	{
 		"type": "bool",
 		"value": true,
