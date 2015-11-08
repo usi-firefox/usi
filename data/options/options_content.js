@@ -268,6 +268,13 @@ function reload_scripts() {
  ************************* UI Funktionen ********************************
  ************************************************************************/
 
+// damit zu einem Element hingescrollt werden kann ...
+function scrollto(element){ $('html, body').animate({ scrollTop: ($(element).offset().top)}, 'slow'); };
+
+/************************************************************************
+ ************************* Textarea Größe *******************************
+ ************************************************************************/
+
 //verkleinere oder vergrößere die Textarea
 //jQuery("#bigger-textarea-button").click(function(){
 //	inOrDecreaseTextarea(0.1);
@@ -316,11 +323,14 @@ jQuery("#textarea-size").on("change", function(){
 }());
 
 
+/************************************************************************
+ ************************* Fehler Meldungen *****************************
+ ************************************************************************/
+
 // Zeige einen Fehler an! Wenn es das Addon Skript sagt...
 self.port.on("show-error", function (text) {
 	show_error(text);
 });
-
 
 function show_error(text, jump_to_element) {
 	// schnelle Variante zur Fehler Darstellung
@@ -341,7 +351,9 @@ function show_error(text, jump_to_element) {
 	}
 }
 
-
+/************************************************************************
+ ************************* Skripte löschen ******************************
+ ************************************************************************/
 
 // Alles Löschen Button
 jQuery("#deleteAll").click(function (){
@@ -355,15 +367,14 @@ jQuery("#deleteAll").click(function (){
 	}
 });
 
-// damit zu einem Element hingescrollt werden kann ...
-function scrollto(element){ $('html, body').animate({ scrollTop: ($(element).offset().top)}, 'slow'); };
-
-
-
 // Prüfe ob für die Skripte Updates gefunden wurden!
 jQuery("#checkForUserscriptUpdates").click(function (){
 	self.port.emit("check-for-userscript-updates");
 });
+
+/************************************************************************
+ ************** Nach Aktualisierungen suchen ****************************
+ ************************************************************************/
 
 // Es wurde eine andere Version vom Skript gefunden
 // Frage ob der Benutzer das Skript aktualisieren möchte
@@ -375,11 +386,9 @@ self.port.on("update-for-userscript-available", function (userscript_infos){
 	}
 });
 
-
 /************************************************************************
  ************************* Init Bereich *********************************
  ************************************************************************/
-
 
 jQuery(document).ready(function (){
 	// lade alle Skripte nach!
