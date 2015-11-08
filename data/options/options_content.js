@@ -269,30 +269,52 @@ function reload_scripts() {
  ************************************************************************/
 
 //verkleinere oder vergrößere die Textarea
-jQuery("#bigger-textarea-button").click(function(){
-	inOrDecreaseTextarea(0.1);
-});
-jQuery("#smaller-textarea-button").click(function(){
-	inOrDecreaseTextarea(-0.1);
-});
+//jQuery("#bigger-textarea-button").click(function(){
+//	inOrDecreaseTextarea(0.1);
+//});
+//jQuery("#smaller-textarea-button").click(function(){
+//	inOrDecreaseTextarea(-0.1);
+//});
 
 (function(){
     // Damit diese Variable nicht im globalen Namensraum bleibt...
     var textarea_default_size = jQuery("textarea").css("font-size");
     jQuery("#default-textarea-button").click(function(){
             jQuery("textarea").css("font-size", textarea_default_size);
+            jQuery("#textarea-size").val(textarea_default_size.split("px")[0]);
     });
 })();
 
-function inOrDecreaseTextarea(difference){
-	var font_size = jQuery("textarea").css("font-size");
-	// entferne "px" suffix
-	font_size = parseFloat(font_size.split("px").join());
+// Range für die Textgröße
+jQuery("#textarea-size").on("change", function(){
+	// Textarea größe anpassen!
+	jQuery("textarea").css("font-size", jQuery(this).val() + "px");
+});
+
+//function inOrDecreaseTextarea(difference){
+//	var font_size = jQuery("textarea").css("font-size");
+//	// entferne "px" suffix
+//	font_size = parseFloat(font_size.split("px").join());
+//	
+//	// sinnvoll wäre + oder - 0,1
+//	font_size = font_size + difference;
+//	jQuery("textarea").css("font-size", font_size + "px");	
+//}
+
+
+// Setze die Höhe der Textarea auf 80% der Window Gesamt Höhe
+(function(){
+	//init
+	var window_innerHeight	=	parseInt(window.innerHeight),
+	size_by_percent			=	75 / 100;
 	
-	// sinnvoll wäre + oder - 0,1
-	font_size = font_size + difference;
-	jQuery("textarea").css("font-size", font_size + "px");	
-}
+	// Textarea höhe berechnen
+	var textarea_height		=	Math.floor(window_innerHeight * size_by_percent);
+
+	// Größe setzen
+	jQuery("textarea").css("height", textarea_height + "px");
+}());
+
 
 // Zeige einen Fehler an! Wenn es das Addon Skript sagt...
 self.port.on("show-error", function (text) {

@@ -1,0 +1,72 @@
+body {
+	background-color: #EAEAEA;
+	width: auto;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
+}
+.border-black{
+	border: 1px solid black;
+}
+// standardmäßig werden neue Elemente ausgeblendet!
+.loaded-userscript{
+	display: none;
+}
+button{
+	margin: 5px;
+	height: 40px;
+}
+div {
+	padding: 1ex;
+	cursor: pointer;
+}
+
+li {
+	border-bottom: 1px solid grey;
+	width: 90%;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+#loadedUserscripts{
+	background-color: #f6f6f6;
+}
+textarea {
+	display: block;
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #dedede;
+	margin-bottom: 15px;
+	font-size: 18px;
+/*	font-size: 1.1em;*/
+	width: 98%;
+	padding: 11px 5px 0 5px;
+	/*padding-left: 5px;*/
+	height: 180px;
+	color: #777;
+
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+
+	transition: border 0.15s linear 0s, box-shadow 0.15s linear 0s, color 0.15s linear 0s;
+	-webkit-transition: border 0.15s linear 0s, box-shadow 0.15s linear 0s, color 0.15s linear 0s;
+	-moz-transition: border 0.15s linear 0s, box-shadow 0.15s linear 0s, color 0.15s linear 0s;
+	-o-transition: border 0.15s linear 0s, box-shadow 0.15s linear 0s, color 0.15s linear 0s;
+}
+textarea:focus {
+	color: #333;
+	border-color: rgba(41, 92, 161, 0.4);
+
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset, 0 0 8px rgba(40, 90, 160, 0.6);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset, 0 0 8px rgba(40, 90, 160, 0.6);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset, 0 0 8px rgba(40, 90, 160, 0.6);
+	outline: 0 none;
+}
+
+.delete{
+	color: red;
+}
