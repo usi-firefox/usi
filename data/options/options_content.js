@@ -394,9 +394,3 @@ jQuery(document).ready(function (){
 	// lade alle Skripte nach!
 	reload_scripts();
 });
-
-
-
-
-
-
