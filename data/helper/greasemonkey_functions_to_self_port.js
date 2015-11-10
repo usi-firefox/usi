@@ -23,7 +23,16 @@ function set_123141482457923434792(script_localstorage) {
 	window.localStorage.setItem("usi+" + self.options.id, JSON.stringify(script_localstorage));
 }
 
+/**
+ * GREASEMONKEY Funtkionen --- START
+ */
 
+/**
+ * 
+ * @param string name
+ * @param {type} default_value
+ * @returns {Array|Object|GM_getValue.script_localstorage|self.options.storage|Window.options.storage}
+ */
 
 function GM_getValue(name, default_value) {
 	// holt aus dem Localstorage, den Speicher für das USI Skript
@@ -60,6 +69,7 @@ function GM_setValue(name, value) {
 
 function GM_deleteValue(name) {
 	var script_localstorage = get_123141482457923434792();
+	// Variable entfernen
 	delete script_localstorage[name];
 
 	// Localstorage schreiben
@@ -83,26 +93,43 @@ function GM_setClipboard(text) {
 	self.port.emit("GM_setClipboard", text);
 }
 
+function GM_openInTab(url, open_in_background) {
+	self.port.emit("GM_openInTab", {url: url, open_in_background: open_in_background });
+}
+  
+function GM_log(value) {
+	// falls es eine Variable ist, und toString() anbietet, wird es genutzt
+	if(typeof value !== "string" && typeof value.toString === "function"){
+		value =	value.toString();
+	}
+	// Ausgabe in die Konsole
+	console.log(value);
+}
+
+function GM_addStyle(css) {
+	var elem		=	document.createElement("style");
+	elem.innerHTML	=	css;
+	// in den Head schreiben
+	document.getElementsByTagName("head")[0].appendChild(elem);
+} 
 // Bisher nicht implementiert - Nur Platzhalter
 /**
  * START
  */
 function GM_registerMenuCommand() {
 }
-function GM_openInTab() {
-}
 function GM_xmlhttpRequest() {
-}
-function GM_addStyle() {
 }
 function GM_getResourceText() {
 }
 function GM_getResourceURL() {
 }
-function GM_log() {
-}
 
 var GM_info = {};
 /**
  * END
+ */
+
+/**
+ * GREASEMONKEY Funtkionen --- STOP
  */
