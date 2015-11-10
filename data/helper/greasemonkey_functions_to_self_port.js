@@ -1,5 +1,7 @@
 /* global self */
 
+//window.localStorage.clear();
+
 // Initiere den Scriptstorage
 function get_123141482457923434792() {
 
@@ -28,13 +30,16 @@ function GM_getValue(name, default_value) {
 	var script_localstorage = get_123141482457923434792();
 
 	// Prüft ob im Localstorage etwas zu finden ist...
-	if (typeof script_localstorage !== "" && typeof script_localstorage[name] !== "undefined") {
+	if (typeof script_localstorage[name] !== "undefined") {
 		// Daten aus dem Localstorage beziehen...
+//		console.log("--- aus Localstorage ---");
 		return script_localstorage[name];
-	} else if (typeof self.options.storage !== "undefined" && typeof self.options.storage[name] !== "undefined") {
+	} else if (typeof self.options.storage[name] !== "undefined") {
+//		console.log("--- aus übergebenen Optionen ---");
 		// Daten aus den übergebenen ScriptOptions
 		return self.options.storage[name];
-	} else {
+	} else { 
+//		console.log("--- DEFAULT ---");
 		return default_value;
 	}
 }
@@ -45,14 +50,6 @@ function GM_setValue(name, value) {
 
 	// Variable setzen
 	script_localstorage[name] = value;
-
-	console.log("---SET---");
-	console.log("---SET script_localstorage");
-	console.log(script_localstorage);
-	console.log("---SET script_localstorage.name");
-	console.log(script_localstorage[name]);
-
-	console.log("---SET---");
 
 	// Localstorage schreiben
 	set_123141482457923434792(script_localstorage);
@@ -70,7 +67,7 @@ function GM_deleteValue(name) {
 
 	// Variable löschen
 	self.port.emit("GM_deleteValue", {name: name});
-}
+} 
 
 function GM_listValues() {
 	// Alle Variablen namen zurück liefern
@@ -82,14 +79,15 @@ function GM_listValues() {
 	return result;
 }
 
+function GM_setClipboard(text) {
+	self.port.emit("GM_setClipboard", text);
+}
 
 // Bisher nicht implementiert - Nur Platzhalter
 /**
  * START
  */
 function GM_registerMenuCommand() {
-}
-function GM_setClipboard() {
 }
 function GM_openInTab() {
 }
