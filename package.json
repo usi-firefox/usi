@@ -25,21 +25,5 @@
 		"description": "Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)",
 		"title": "Importiere externe Skripte"
 	}
-	,{
-    "name": "language",
-    "type": "radio",
-    "title": "Sprache",
-    "value": "de",
-    "options": [
-        {
-            "value": "de",
-            "label": "Deutsch"
-        },
-        {
-            "value": "en",
-            "label": "English"
-        }
-    ]
-}
 	]
 }
