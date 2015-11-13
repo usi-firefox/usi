@@ -1,3 +1,6 @@
+0.1.33-b (2015-11-13)
+* BUGFIX: Externe User.js Dateien können nun wieder importiert werden 
+
 0.1.33-a (2015-11-12)
 * Greasemonkey Funktionen hinzugefügt (GM_getValue,GM_setValue,GM_deleteValue,GM_listValues,GM_setClipboard,GM_openInTab,GM_log,GM_addStyle)
 * @use-greasemonkey für die Aktivierung der Greasemonkey Funktionen
