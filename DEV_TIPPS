@@ -1,3 +1,7 @@
+* mobile-angular-ui und angularjs hinzugefügt
+* https://github.com/mcasimir/mobile-angular-ui
+
+
 * Strict Mode deaktivieren
 
 SEARCH:		^(\"use strict\";)
