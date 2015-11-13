@@ -2,6 +2,8 @@
 * https://github.com/mcasimir/mobile-angular-ui
 
 
+* C:\Windows\System32\cmd.exe /c {BATCH Datei}
+
 * Strict Mode deaktivieren
 
 SEARCH:		^(\"use strict\";)
