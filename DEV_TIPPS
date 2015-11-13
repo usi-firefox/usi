@@ -1,0 +1,10 @@
+* Strict Mode deaktivieren
+
+SEARCH:		^(\"use strict\";)
+REPLACE:	//$1
+
+
+* Strict Mode aktivieren
+
+SEARCH:		^\/\/(\"use strict\";)
+REPLACE:	$1 
