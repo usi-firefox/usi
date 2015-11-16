@@ -1,0 +1,24 @@
+<div ng-repeat="userscript in all_userscripts">
+	<div>usi-id: {{userscript.id}}<br />
+		Name: {{userscript.settings.name}}<br />
+		Author: {{userscript.settings.author}}<br />
+		Version: {{userscript.settings.version}}<br />
+		<span data-l10n-id="description" >Beschreibung</span>: {{userscript.settings.description}}<br />
+		<span data-l10n-id="deactivated_userscript" >Deaktiviertes Userscript</span>: {{userscript.deactivated}}
+	</div>
+	<div>
+		Includes: <ol ng-bind="userscript.settings.include"></ol>
+	</div>
+	
+	<!--Buttons-->
+	<button class="btn btn-primary" ng-click="delete(userscript)" ng-bind="lang.delete_x"></button>
+	<button class="btn btn-primary" ng-click="edit(userscript)" ng-bind="lang.change"></button>
+	<button class="btn btn-primary" ng-click="showUserscriptContent = !showUserscriptContent" ng-bind="lang.show_hide"></button>
+	<button class="btn btn-primary" ng-click="toggleActivation(userscript)" ng-bind="lang.activate_deactivate"></button>
+	
+	<!--Userscript Inhalt-->
+	<div ng-show="showUserscriptContent">
+		Userscript Content: 
+		<pre class="border-black" >{{userscript.userscript}}</pre>
+	</div>
+</div>
