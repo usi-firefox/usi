@@ -6,12 +6,58 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	</head>
 	<body ng-app="usiOptions">
+		
+		<!-- Sidebars -->
+		<div class="sidebar sidebar-left">
+			<div class="scrollable">
+				<h1 class="scrollable-header app-name">Überblick</h1>  
+				<div class="scrollable-content">
+					<div class="list-group" ui-turn-off='uiSidebarLeft'>
+						<a class="list-group-item" >
+							Alle Userscripts
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+						<a class="list-group-item" >
+							Optionen
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+						<a class="list-group-item" >
+							Userscirpt nachladen
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="app">
+			<!-- Top Navbar -->
+			<div class="navbar navbar-app navbar-absolute-top">
+				<div class="btn sidebar-toggle" ui-toggle='uiSidebarLeft'>
+					<i class="fa fa-bars" ></i>
+					<span>Menu</span>
+				</div>
+				<div class="navbar-brand navbar-brand-center">
+					Alle Userscripte
+				</div>
+			</div>
+			<!-- Top Navbar -->
+
+			<!-- App body -->
+			<div class='app-body'>
+				<div class='app-content'>
+					
+			
+		<div class="scrollable-content">
 		<fieldset>	
 			<div id="currentMemoryUsage">
 			</div>
 			<div ng-controller="ListUserScripts">
-				<div ng-repeat="userscript in all_userscripts">
-					{{all_userscripts[userscript].id}}
+				<div>ANGULAR</div>
+<!--				<div ng-repeat="userscript in all_userscripts">
+					{{userscript}}
+				</div>-->
+				
 				<h2>Userscripts (<span id="currentCountUserscripts"></span>) :</h2>
 				<div id="loadedUserscripts"></div>
 				<div id="loadedUserscripts_template" style="display: none;">
@@ -25,7 +71,6 @@
 					<div style="display: none;" id="userscript-###id###">Userscript Content: 
 						<pre class="border-black" >###userscript###</pre>
 					</div>
-				</div>
 				</div>
 			</div>
 		</fieldset>
@@ -93,5 +138,14 @@ document.addEventListener("click", function(){
 			<h3 data-l10n-id="check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
 			<button id="checkForUserscriptUpdates" class="btn btn-primary" data-l10n-id="check_now" >-jetzt prüfen-</button>
 		</div>
+	</div>
+						</div>
+			</div>
+			<!-- App body -->
+		</div><!-- ~ .app -->
+
+		<!-- Modals and Overlays -->
+		<div ui-yield-to="modals"></div>
+		
 	</body>
 </html>

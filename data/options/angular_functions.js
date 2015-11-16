@@ -20,5 +20,5 @@ usiOptions.controller("ListUserScripts", ["$scope" ,function ListUserScripts($sc
 			console.log($scope.all_userscripts);
 		});
 	
-	
 }]);
+
