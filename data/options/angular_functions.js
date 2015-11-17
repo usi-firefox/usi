@@ -21,6 +21,11 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		self.port.emit("request-for---list-all-scripts", false);
 	};
 	
+	/**
+	 * Userscript aktivieren, bzw deaktivieren
+	 * @param {type} userscript
+	 * @returns void
+	 */
 	$scope.toggleActivation = function (userscript){
 		// aktiviere oder deaktiviere dieses Userscript!
 		self.port.emit("toggle-userscript-state", userscript.id);
