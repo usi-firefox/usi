@@ -1,0 +1,45 @@
+<div ng-controller="EditUserScript">
+	<h2 data-l10n-id="add_new_userscript" >Füge ein neues Userscript hinzu!</h2>
+	<h3 data-l10n-id="load_userscript_by_textarea" >2. Lade ein Userscript direkt aus diesem Textfeld</h3>
+	<button class="btn btn-primary" name="load-example-textarea-button" id="load-example-textarea-button" >Userscript <span data-l10n-id="load_example">Beispiel laden</span></button>
+	<button class="btn btn-primary" name="clear-textarea-button" id="clear-textarea-button" data-l10n-id="clear_textarea" >Textfeld leeren</button>
+	<br />
+	Textarea Zoom:
+	<input type="range" id="textarea-size" min="10" max="26" step="0.5" value="18" />
+	<!--
+	<button id="bigger-textarea-button" >+</button>
+	<button id="smaller-textarea-button" >-</button>
+	-->
+	<button class="btn btn-primary" id="default-textarea-button" >Standard</button>
+	<textarea id="new-script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
+	<textarea id="example-textarea" rows="30"  cols="64" placeholder="User Script eintragen" style="display: none;">// ==UserScript==
+// @name           {Userscript Name}
+// @namespace      {deine Webseite?!}
+// @author         {Dein Name}
+// @description    {Userscript Beschreibung}
+// @include        *
+//		Wenn dein Userscript auf allen Seiten ausgeführt werden soll: *
+//		Bei einem Include, kannst du auch mehrere * als Wildcard nutzen
+//		um es als regulären Ausdruck zu verwenden,
+//		allerdings muss dann der gesamte Ausdruck passen!
+//		zum Beispiel: *.beliebige-webseite.de* 
+//		Ansonsten muss es so aussehen: www.beliebige-webseite.de
+// @info           {weitere Informationen ...}
+// @grant          {erbitte Zugriff auf extra Funktionen}
+// @updateURL      {wenn die Versionsnummer verschieden ist, 
+//		USI dein Userscript aktualisieren}
+// @run-at         (document-end || document-start || document-ready)
+// @include-jquery (true || false)
+// @use-greasemonkey (true || false)
+// @version        1.0.0
+// ==/UserScript==
+
+// ACHTUNG: bitte beachte, dass ein neues Userscript sofort eingefügt wird.
+// Dies ist nur ein Beispiel damit du siehst, dass USI funktioniert
+
+document.addEventListener("click", function(){
+	alert("Du hast soeben geklickt!");
+});</textarea>
+
+	<button name="new-script-textarea-button" class="btn btn-primary" id="new-script-textarea-button" data-l10n-id="save_userscript">Userscript speichern</button>
+</div>

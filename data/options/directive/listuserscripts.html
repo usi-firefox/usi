@@ -1,29 +1,31 @@
-<div ng-repeat="userscript in all_userscripts">
-	<div><label>usi-id: </label>{{userscript.id}}<br />
-		<label>Name: </label>{{userscript.settings.name}}<br />
-		<label>Author: </label>{{userscript.settings.author}}<br />
-		<label>Version: </label>{{userscript.settings.version}}<br />
-		<label data-l10n-id="description" >Beschreibung</label>: {{userscript.settings.description}}<br />
-		
-		<!--Userscript aktivieren oder deaktivieren-->
-		<label data-l10n-id="deactivated_userscript" >
-			<span ng-show="userscript.deactivated">Deaktiviert:</span>
-			<span ng-show="!userscript.deactivated">Aktiviert:</span>
-		</label>
-		<ui-switch ng-model="userscript.deactivated" ng-change="toggleActivation(userscript)"></ui-switch>
-	</div>
-	<div>
-		<label>Includes: </label><ol ng-bind="userscript.settings.include"></ol>
-	</div>
-	
-	<!--Buttons-->
-	<button class="btn btn-primary" ng-click="delete(userscript)" ng-bind="lang.delete_x"></button>
-	<button class="btn btn-primary" ng-click="edit(userscript)" ng-bind="lang.change"></button>
-	<button class="btn btn-primary" ng-click="showUserscriptContent = !showUserscriptContent" ng-bind="lang.show_hide"></button>
-	
-	<!--Userscript Inhalt-->
-	<div ng-show="showUserscriptContent">
-		<label>Userscript Content: </label>
-		<pre class="border-black" >{{userscript.userscript}}</pre>
+<div ng-controller="ListUserScripts">
+	<div ng-repeat="userscript in all_userscripts">
+		<div><label>usi-id: </label>{{userscript.id}}<br />
+			<label>Name: </label>{{userscript.settings.name}}<br />
+			<label>Author: </label>{{userscript.settings.author}}<br />
+			<label>Version: </label>{{userscript.settings.version}}<br />
+			<label data-l10n-id="description" >Beschreibung</label>: {{userscript.settings.description}}<br />
+
+			<!--Userscript aktivieren oder deaktivieren-->
+			<label data-l10n-id="deactivated_userscript" >
+				<span ng-show="userscript.deactivated">Deaktiviert:</span>
+				<span ng-show="!userscript.deactivated">Aktiviert:</span>
+			</label>
+			<ui-switch ng-model="userscript.deactivated" ng-change="toggleActivation(userscript)"></ui-switch>
+		</div>
+		<div>
+			<label>Includes: </label><ol ng-bind="userscript.settings.include"></ol>
+		</div>
+
+		<!--Buttons-->
+		<button class="btn btn-default" ng-click="showUserscriptContent = !showUserscriptContent" ng-bind="lang.show_hide"></button>
+		<button class="btn btn-info" ng-click="edit(userscript)" ng-bind="lang.change"></button>
+		<button class="btn btn-danger" ng-click="delete(userscript)" ng-bind="lang.delete_x"></button>
+
+		<!--Userscript Inhalt-->
+		<div ng-show="showUserscriptContent">
+			<label>Userscript Content: </label>
+			<pre class="border-black" >{{userscript.userscript}}</pre>
+		</div>
 	</div>
 </div>

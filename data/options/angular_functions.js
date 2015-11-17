@@ -9,6 +9,7 @@ var usiOptions = angular.module('usiOptions', ["mobile-angular-ui"]);
  ************************************************************************/
 var lang = self.options.language;
 
+//Auflistung der Userscripte
 usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function ListUserScripts($scope, $rootScope){
 	// Var init...
 	$scope.all_userscripts = {};
@@ -56,5 +57,30 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 }]).directive("listuserscripts", function(){
     return {
 		templateUrl : "directive/listuserscripts.html"
+    };
+});
+
+// Userscript bearbeiten
+usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditUserScript($scope, $rootScope){
+	// Var init...
+//	$scope.all_userscripts = {};
+	$scope.lang = self.options.language;
+	
+}]).directive("edituserscript", function(){
+    return {
+		templateUrl : "directive/edit_userscript.html"
+    };
+});
+
+// Userscript nachladen
+usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope" , function LoadExternalUserScript($scope, $rootScope){
+	// Var init...
+//	$scope.all_userscripts = {};
+	$scope.lang = self.options.language;
+	
+	
+}]).directive("loadexternaluserscript", function(){
+    return {
+		templateUrl : "directive/load_external_userscript.html"
     };
 });
