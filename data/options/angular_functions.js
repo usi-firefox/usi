@@ -75,9 +75,21 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 // Userscript nachladen
 usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope" , function LoadExternalUserScript($scope, $rootScope){
 	// Var init...
-//	$scope.all_userscripts = {};
-	$scope.lang = self.options.language;
+	$scope.url		= "";
+	$scope.lang		= self.options.language;
 	
+	// Userscript nachladen
+	$scope.loadExternal = function(){
+		$scope.error = "";
+		if(typeof $scope.url !== "undefined" && $scope.url.length > 0){
+			// sende die URL an das Backend Skript...
+			self.port.emit("loadexternal-script_url", {script_url: $scope.url});
+			
+		}else{
+			// Fehler Text anzeigen
+			$scope.error = $scope.lang.empty_userscript_url;
+		}
+	};
 	
 }]).directive("loadexternaluserscript", function(){
     return {

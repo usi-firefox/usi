@@ -1,8 +1,22 @@
 <div ng-controller="LoadExternalUserScript">
-	<h3 data-l10n-id="load_userscript_by_url" >1. Lade ein Userscript mithilfe einer URL</h3>
-	<button class="btn btn-primary" name="new-script-url-button" id="new-script-url-button" >Userscript <span data-l10n-id="after_load" >nachladen</span></button>
-	<br />
-	<label for="new-script-url" data-l10n-id="load_userscript_by_url_label" >Neues Userscript laden (URL):</label>
-	<input class="form-control" type="url" name="new-script-url" placeholder="http://webseite.de/userscript.user.js" id="new-script-url" size="60" />
-	<br />
+	<form name="formloadexternalurl">
+		<h3 data-l10n-id="load_userscript_by_url" >
+			1. Lade ein Userscript mithilfe einer URL
+		</h3>
+
+		<div class="has-error" ng-bind="error"></div>
+
+		<br />
+		<label data-l10n-id="load_userscript_by_url_label" >
+			Neues Userscript laden (URL):
+		</label>
+		<input class="form-control" type="url"
+			   name="script_url"
+			   placeholder="http://webseite.de/userscript.user.js"
+			   ng-model="url" size="60" />
+		<br />
+		<button class="btn btn-primary" ng-click="loadExternal()" >
+			Userscript <span data-l10n-id="after_load" >nachladen</span>
+		</button>
+	</form>
 </div>
