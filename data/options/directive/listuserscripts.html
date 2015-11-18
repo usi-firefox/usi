@@ -1,6 +1,8 @@
 <div ng-controller="ListUserScripts">
 	
-	<h2>Userscripts (<span ng-bind="userscript_count"></span>) :</h2>
+	<div ng-bind="currentMemoryUsage"></div>
+	
+	<h3>Userscripts (<span ng-bind="userscript_count"></span>) :</h3>
 	
 	<div ng-repeat="userscript in all_userscripts">
 		<div><label>usi-id: </label>{{userscript.id}}<br />

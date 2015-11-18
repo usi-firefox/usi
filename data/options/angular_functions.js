@@ -49,6 +49,20 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		// Anzahl der Userscripts - zählen mittels Object.keys
 		$scope.userscript_count = Object.keys(data).length;
 	});
+	
+	// Speicherverbrauch anzeigen
+	self.port.on("storage-quota", function (quota) {
+		var rounded_quota = Math.round(quota * 100) / 100 + "";
+
+		// falls ein Komma enthalten sein sollte ...
+		rounded_quota = rounded_quota.replace(".", ",");
+
+
+		$scope.currentMemoryUsage	=	lang.actual_used_quota + " : " + rounded_quota + "%";
+		
+		
+	});
+
 		
 }]).directive("listuserscripts", function(){
     return {
@@ -76,6 +90,31 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 	$scope.checkForUpdates = function(){
 		self.port.emit("check-for-userscript-updates");
 	};
+	
+	// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
+	self.port.on("update-for-userscript-available", function (userscript_infos) {
+		if (window.confirm(lang.userscript_update_was_found_1 + userscript_infos.id + lang.userscript_update_was_found_2)) {
+
+			// Nun das Skript aktualisieren!
+			self.port.emit("override-same-userscript", userscript_infos);
+		}
+	});
+	
+	// Wenn das Skript gelöscht wurde
+	self.port.on("delete-script-is-now-deleted", function (script_was_deleted) {
+		if (script_was_deleted == true) { // script wurde erfolgreich gelöscht
+
+			window.alert(lang.userscript_was_successful_deleted);
+
+			// Schicke alle bisher verfügbaren Skripte! Erneut!!!
+			reload_scripts();
+		} else { // script konnte nicht gelöscht werden
+
+			window.alert(lang.userscript_could_not_deleted);
+
+		}
+	});
+	
 }]);
 
 // Userscript nachladen
@@ -134,6 +173,46 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 		angular.element("#script-textarea").css("font-size", $scope.textarea_default_size + "px");
 	};
 	
+	/**
+	 * Userscript aus der Textarea übermitteln
+	 * @returns {undefined}
+	 */ 
+	$scope.save = function(){
+		// Textarea nicht leer ...
+		if($scope.textarea){
+			// sende den Userscript Text an das Addon Skript...
+			self.port.emit("new-usi-script_content", {script: $scope.textarea});
+		}	
+	};
+
+	/**
+	 * Textarea in einen Vollbild Modus schalten!
+	 * @returns {undefined}
+	 */
+	$scope.textarea_to_fullscreen = function(){
+		var window_innerHeight	=	parseInt(window.innerHeight),
+		size_by_percent			=	75 / 100;
+
+		// Textarea höhe berechnen
+		var textarea_height		=	Math.floor(window_innerHeight * size_by_percent);
+
+		// Größe setzen
+		jQuery("#script-textarea").css("height", textarea_height + "px");
+	};
+
+	/**
+	 * Wenn das Userscript schon existiert und überschrieben werden kann
+	 */
+	self.port.on("same-userscript-was-found",function (userscript_infos){
+	
+		//wurde gefunden, möchtest du es aktualisieren?")){
+		if(window.confirm(lang.same_userscript_was_found_ask_update_it_1 +  userscript_infos.id + lang.same_userscript_was_found_ask_update_it_2)){
+			// Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
+			self.port.emit("override-same-userscript", userscript_infos);
+		}
+	});
+
+
 	// Schalter richtig positionieren lassen ...
 	$scope.defaulltSize();
 	
