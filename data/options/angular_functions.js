@@ -16,12 +16,8 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 	$scope.userscript_count = 0;
 	$scope.lang = self.options.language;
 	
-	
-	$scope.request_for_reload = function(){
-		console.log("request_for_reload: aufgerufen ....");
-		
-		self.port.emit("request-for---list-all-scripts", false);
-	};
+	// Existierende Userscripts anfragen!
+	self.port.emit("request-for---list-all-scripts", false);
 	
 	/**
 	 * Userscript aktivieren, bzw deaktivieren
@@ -45,7 +41,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		}
 	};
 	
-	// Events
+	// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 	self.port.on("list-all-scripts", function(data){
 		// Daten für alle Userscripts setzen
 		$scope.all_userscripts = data;
@@ -53,28 +49,13 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		// Anzahl der Userscripts - zählen mittels Object.keys
 		$scope.userscript_count = Object.keys(data).length;
 	});
-	
-	
-	// Init
-	$scope.request_for_reload();
-	
+		
 }]).directive("listuserscripts", function(){
     return {
 		templateUrl : "directive/listuserscripts.html"
     };
 });
 
-// Userscript bearbeiten
-usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditUserScript($scope, $rootScope){
-	// Var init...
-//	$scope.all_userscripts = {};
-	$scope.lang = self.options.language;
-	
-}]).directive("edituserscript", function(){
-    return {
-		templateUrl : "directive/edit_userscript.html"
-    };
-});
 
 // Extra Optionen
 usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function ExtraOptionsForUSI($scope, $rootScope){
@@ -121,3 +102,43 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope" , functi
 		templateUrl : "directive/load_external_userscript.html"
     };
 });
+
+
+
+// Userscript bearbeiten
+usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditUserScript($scope, $rootScope){
+	// Var init...
+	$scope.lang						= self.options.language;
+	$scope.userscript_example		= angular.element("#userscript-example").html();
+	$scope.textarea_default_size	= angular.element("#script-textarea").css("font-size").split("px")[0];
+	
+	
+	/**
+	 * Textarea Größe anpassen
+	 * @returns {undefined}
+	 */
+	$scope.changeSize = function(){
+		// Setze die Größe der Textarea auf den Wert aus dem Range "Button"
+		angular.element("#script-textarea").css("font-size", $scope.textarea_size + "px");
+	};
+	
+	/**
+	 * Textarea auf Standard Größe zurücksetzen
+	 * @returns {undefined}
+	 */
+	$scope.defaulltSize = function(){
+		// Wert des ZOOM Reglers auf den Standard setzen
+		$scope.textarea_size = $scope.textarea_default_size;
+		
+		// Setze die Größe der Textarea auf den Wert aus dem Range "Button"
+		angular.element("#script-textarea").css("font-size", $scope.textarea_default_size + "px");
+	};
+	
+	// Schalter richtig positionieren lassen ...
+	$scope.defaulltSize();
+	
+}]).directive("edituserscript", function(){
+    return {
+		templateUrl : "directive/edit_userscript.html"
+    };
+}); 

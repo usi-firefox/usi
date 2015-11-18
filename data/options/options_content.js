@@ -60,14 +60,14 @@ function focusAndResetTextarea(){
 }
 
 // Beispiel für die Textbox laden
-jQuery("#load-example-textarea-button").click(function (){
-	// zunächst den focus entfernen und dann alles leeren
-	focusAndResetTextarea();
-	var example = jQuery("#example-textarea").clone().text();
-	// jetzt den Beispiel Code einfügen!
-	// setze dies als Beispiel ein
-	jQuery("#new-script-textarea").text(example).val(example);
-});
+//jQuery("#load-example-textarea-button").click(function (){
+//	// zunächst den focus entfernen und dann alles leeren
+//	focusAndResetTextarea();
+//	var example = jQuery("#example-textarea").clone().text();
+//	// jetzt den Beispiel Code einfügen!
+//	// setze dies als Beispiel ein
+//	jQuery("#new-script-textarea").text(example).val(example);
+//});
 
 self.port.on("same-userscript-was-found",function (userscript_infos){
 	

@@ -1,24 +1,22 @@
 <div ng-controller="EditUserScript">
 	<h2 data-l10n-id="add_new_userscript" >Füge ein neues Userscript hinzu!</h2>
-	<h3 data-l10n-id="load_userscript_by_textarea" >2. Lade ein Userscript direkt aus diesem Textfeld</h3>
-	<button class="btn btn-primary" 
-			name="load-example-textarea-button"
-			id="load-example-textarea-button" >
-		Userscript <span data-l10n-id="load_example">Beispiel laden</span>
-	</button>
-	<button class="btn btn-primary" name="clear-textarea-button"
-			id="clear-textarea-button" 
-			data-l10n-id="clear_textarea" >Textfeld leeren</button>
-	<br />
-	<label>Textarea Zoom:</label>
-	<input type="range" id="textarea-size" min="10" max="26" step="0.5" value="18" />
-	<!--
-	<button id="bigger-textarea-button" >+</button>
-	<button id="smaller-textarea-button" >-</button>
-	-->
-	<button class="btn btn-primary" id="default-textarea-button" >Standard</button>
-	<textarea id="new-script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
-	<textarea id="example-textarea" rows="30"  cols="64" placeholder="User Script eintragen" style="display: none;">// ==UserScript==
+	<h3 data-l10n-id="load_userscript_by_textarea" >Lade ein Userscript direkt aus diesem Textfeld</h3>
+
+
+	<!--Textarea Zoom einstellen-->
+	<div>
+		<label>Zoom:</label>
+		<input type="range" ng-change="changeSize()" 
+			   ng-model="textarea_size" min="10" max="26" step="0.5" value="14" />
+		<button class="btn btn-default" ng-click="defaulltSize()" >Standard Zoom</button>
+	</div>
+	<hr />
+
+	<!--Userscript Eingabe-->
+	<textarea ng-model="textarea" id="script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
+
+	<!--Userscript Beispiel-->
+<div id="userscript-example" style="display: none;">// ==UserScript==
 // @name           {Userscript Name}
 // @namespace      {deine Webseite?!}
 // @author         {Dein Name}
@@ -44,11 +42,21 @@
 // Dies ist nur ein Beispiel damit du siehst, dass USI funktioniert
 
 document.addEventListener("click", function(){
-	alert("Du hast soeben geklickt!");
-});</textarea>
-
-	<button name="new-script-textarea-button"
-			class="btn btn-primary" 
+alert("Du hast soeben geklickt!");
+});</div>
+	<br />
+	<!--Userscript speichern-->
+	<button class="btn btn-primary btn-block" 
 			id="new-script-textarea-button" 
 			data-l10n-id="save_userscript">Userscript speichern</button>
+	<hr />
+	<!--Standard laden oder leeren-->
+	<button class="btn btn-default" 
+			ng-click="textarea = userscript_example" >
+		Userscript <span data-l10n-id="load_example">Beispiel laden</span>
+	</button>
+	<button class="btn btn-warning"
+			ng-click="textarea = null"
+			data-l10n-id="clear_textarea" >Textfeld leeren</button>
+	<hr />
 </div>
