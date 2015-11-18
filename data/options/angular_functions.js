@@ -91,6 +91,10 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 		}
 	};
 	
+	// Prüfe ob für die Skripte Updates gefunden wurden!
+	$scope.checkForUpdates = function(){
+		self.port.emit("check-for-userscript-updates");
+	};
 }]);
 
 // Userscript nachladen

@@ -11,24 +11,24 @@
 		<div class="sidebar sidebar-left">
 			<div class="scrollable">
 				<h1 class="scrollable-header app-name">Überblick</h1>  
-				<div class="scrollable-content" ui-state='activeOption'>
+				<div class="scrollable-content">
 					<div class="list-group" ui-turn-off='uiSidebarLeft'>
-						<a class="list-group-item" ng-click="activeOption = 'allScripts'" >
+						<a class="list-group-item" ng-click="tab = 'allScripts'" >
 							Alle Userscripts
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="activeOption =  'create'" >
+						<a class="list-group-item" ng-click="tab =  'create'" >
 							Neues Userscirpt erstellen
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="activeOption =  'loadExternal'" >
+						<a class="list-group-item" ng-click="tab =  'loadExternal'" >
 							Userscirpt nachladen
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
 						<a class="list-group-item" >
 							<!--Trennzeichen-->
 						</a>
-						<a class="list-group-item" ng-click="activeOption =  'options'" >
+						<a class="list-group-item" ng-click="tab =  'options'" >
 							Optionen
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
@@ -58,7 +58,7 @@
 					<div class="scrollable-content section">
 						
 						<!--Alle Userscripte auflisten-->
-						<div ng-show="activeOption === 'allScripts'">
+						<div ng-show="tab === 'allScripts'">
 
 							<div id="currentMemoryUsage">
 							</div>
@@ -68,29 +68,25 @@
 						</div>
 						
 						<!--Userscript nachladen-->
-						<div id="option1" ng-show="activeOption === 'loadExternal'">
+						<div ng-show="tab === 'loadExternal'">
 							<loadexternaluserscript />
 						</div>
 						
 						<!--Neues Userscript erstellen / bearbeiten-->
-						<div id="option2" ng-show="activeOption === 'create'">
+						<div ng-show="tab === 'create'">
 							<edituserscript />
 						</div>
 
 						<!--Options Block-->
-						<div ng-show="activeOption === 'options'">
+						<div ng-show="tab === 'options'">
 							<div ng-controller="ExtraOptionsForUSI">
-								<div id="option3">
-									<h3 data-l10n-id="delete_all_userscripts" >Alle Userscripts entfernen</h3>
-									<button class="delete btn btn-danger" ng-click="deleteAll()"
-											data-l10n-id="revert_all" >-alles zurücksetzen-</button>
-								</div>
+								<h3 data-l10n-id="delete_all_userscripts" >Alle Userscripts entfernen</h3>
+								<button class="btn btn-danger" ng-click="deleteAll()"
+										data-l10n-id="revert_all" >-alles zurücksetzen-</button>
 								<hr />
-								<div id="option4">
-									<h3 data-l10n-id="check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
-									<button id="checkForUserscriptUpdates" 
-											class="btn btn-primary" data-l10n-id="check_now" >-jetzt prüfen-</button>
-								</div>
+								<h3 data-l10n-id="check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
+								<button ng-click="checkForUpdates()" 
+										class="btn btn-primary" data-l10n-id="check_now" >-jetzt prüfen-</button>
 							</div>
 						</div>
 					</div>
