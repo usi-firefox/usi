@@ -13,6 +13,7 @@ var lang = self.options.language;
 usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function ListUserScripts($scope, $rootScope){
 	// Var init...
 	$scope.all_userscripts = {};
+	$scope.userscript_count = 0;
 	$scope.lang = self.options.language;
 	
 	
@@ -48,6 +49,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 	self.port.on("list-all-scripts", function(data){
 		// Daten für alle Userscripts setzen
 		$scope.all_userscripts = data;
+		
+		// Anzahl der Userscripts - zählen mittels Object.keys
+		$scope.userscript_count = Object.keys(data).length;
 	});
 	
 	
@@ -71,6 +75,23 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 		templateUrl : "directive/edit_userscript.html"
     };
 });
+
+// Extra Optionen
+usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function ExtraOptionsForUSI($scope, $rootScope){
+	// Var init...
+//	$scope.all_userscripts = {};
+	$scope.lang = self.options.language;
+	
+	$scope.deleteAll = function (){
+		// Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
+		if(window.confirm(lang.really_reset_all_settings)){
+			if(window.confirm(lang.really_really_reset_all_settings)){
+				self.port.emit("delete-everything");
+			}
+		}
+	};
+	
+}]);
 
 // Userscript nachladen
 usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope" , function LoadExternalUserScript($scope, $rootScope){
