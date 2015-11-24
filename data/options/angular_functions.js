@@ -33,7 +33,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 			if(window.confirm( lang.want_to_delete_this_userscript_1 + userscript.id + lang.want_to_delete_this_userscript_2)){
 				
 				// @todo erstmal abschalten!!!
-				//self.port.emit("delete-script-by-id", userscript.id);
+				self.port.emit("delete-script-by-id", userscript.id);
+				
+				self.port.emit("request-for---list-all-scripts");
 			}
 		}
 	};
@@ -87,6 +89,7 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 		if(window.confirm(lang.really_reset_all_settings)){
 			if(window.confirm(lang.really_really_reset_all_settings)){
 				self.port.emit("delete-everything");
+				self.port.emit("request-for---list-all-scripts");
 			}
 		}
 	};
@@ -102,6 +105,8 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 
 			// Nun das Skript aktualisieren!
 			self.port.emit("override-same-userscript", userscript_infos);
+			
+			self.port.emit("request-for---list-all-scripts");
 		}
 	});
 	
@@ -129,6 +134,7 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope" , functi
 			// sende die URL an das Backend Skript...
 			self.port.emit("loadexternal-script_url", {script_url: $scope.url});
 			
+			self.port.emit("request-for---list-all-scripts");
 		}else{
 			// Fehler Text anzeigen
 			$scope.error = $scope.lang.empty_userscript_url;
@@ -149,6 +155,19 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 	$scope.lang						= self.options.language;
 	$scope.userscript_example		= angular.element("#userscript-example").html();
 	$scope.textarea_default_size	= angular.element("#script-textarea").css("font-size").split("px")[0];
+	$scope.state					=	0;
+	
+	
+	$scope.setTextareaHeight = function(){
+		var window_innerHeight	=	parseInt(window.innerHeight),
+		size_by_percent			=	65 / 100;
+		
+		// Textarea höhe berechnen
+		var textarea_height		=	Math.floor(window_innerHeight * size_by_percent);
+	
+		// Größe setzen
+		angular.element("#script-textarea").css("height", textarea_height + "px");		
+	};
 	
 	
 	/**
@@ -181,6 +200,8 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 		if($scope.textarea){
 			// sende den Userscript Text an das Addon Skript...
 			self.port.emit("new-usi-script_content", {script: $scope.textarea});
+			
+			self.port.emit("request-for---list-all-scripts");
 		}	
 	};
 
@@ -208,6 +229,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 		if(window.confirm(lang.same_userscript_was_found_ask_update_it_1 +  userscript_infos.id + lang.same_userscript_was_found_ask_update_it_2)){
 			// Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
 			self.port.emit("override-same-userscript", userscript_infos);
+			self.port.emit("request-for---list-all-scripts");
 		}
 	});
 
@@ -217,11 +239,16 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 	$rootScope.$on("EditUserscipt_edit", function(event,userscript){
 		// Nimm das Userscript und schreibe es in die Textarea
 		$scope.textarea = userscript.userscript;
+		$scope.script_id = userscript.id;
+		// Schalte den State um
+		$scope.state = "edit";
 	});
 
 
 	// Schalter richtig positionieren lassen ...
 	$scope.defaulltSize();
+	
+	$scope.setTextareaHeight();
 	
 }]).directive("edituserscript", function(){
     return {

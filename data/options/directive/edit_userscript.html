@@ -1,19 +1,11 @@
 <div ng-controller="EditUserScript">
-	<h2 data-l10n-id="add_new_userscript" >Füge ein neues Userscript hinzu!</h2>
-	<h3 data-l10n-id="load_userscript_by_textarea" >Lade ein Userscript direkt aus diesem Textfeld</h3>
+		
+	<h3 data-l10n-id="add_new_userscript" ng-show="state == 0" >Füge ein neues Userscript hinzu!</h3>
+	<h3 data-l10n-id="edit_userscript" ng-show="state == 'edit'" >Editiere das Userscript mit der ID : {{script_id}}</h3>
 
-
-	<!--Textarea Zoom einstellen-->
-	<div>
-		<label>Zoom:</label>
-		<input type="range" ng-change="changeSize()" 
-			   ng-model="textarea_size" min="10" max="26" step="0.5" value="14" />
-		<button class="btn btn-default" ng-click="defaulltSize()" >Standard Zoom</button>
-	</div>
-	<hr />
 
 	<!--Userscript Eingabe-->
-	<textarea ng-model="textarea" id="script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
+	<textarea ng-model="textarea" style="white-space: pre; height: 80%;" class="col-xs-12" id="script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
 
 	<!--Userscript Beispiel-->
 <div id="userscript-example" style="display: none;">// ==UserScript==
@@ -51,6 +43,7 @@ alert("Du hast soeben geklickt!");
 			data-l10n-id="save_userscript">Userscript speichern</button>
 	<hr />
 	<!--Standard laden oder leeren-->
+	<div class="col-sm-4">
 	<button class="btn btn-default" 
 			ng-click="textarea = userscript_example" >
 		Userscript <span data-l10n-id="load_example">Beispiel laden</span>
@@ -58,5 +51,14 @@ alert("Du hast soeben geklickt!");
 	<button class="btn btn-warning"
 			ng-click="textarea = null"
 			data-l10n-id="clear_textarea" >Textfeld leeren</button>
+	</div>
+	
+	<!--Textarea Zoom einstellen-->
+	<div class="col-sm-6">
+		<label>Zoom:</label>
+		<button class="btn btn-default" ng-click="defaulltSize()" >Standard Zoom</button>
+		<input type="range" ng-change="changeSize()" 
+			   ng-model="textarea_size" style="width: 300px" min="10" max="26" step="0.5" value="14" />
+	</div>
 	<hr />
 </div>
