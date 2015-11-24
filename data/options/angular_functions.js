@@ -2,7 +2,7 @@
 
 /* global angular, self, directive, basic_helper */
  
-var usiOptions = angular.module('usiOptions', ["mobile-angular-ui"]);
+var usiOptions = angular.module('usiOptions', ["mobile-angular-ui","mobile-angular-ui.gestures"]);
 
 /************************************************************************
  ************************* Übersetzungen holen **************************
@@ -12,12 +12,9 @@ var lang = self.options.language;
 //Auflistung der Userscripte
 usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function ListUserScripts($scope, $rootScope){
 	// Var init...
-	$scope.all_userscripts = {};
-	$scope.userscript_count = 0;
-	$scope.lang = self.options.language;
-	
-	// Existierende Userscripts anfragen!
-	self.port.emit("request-for---list-all-scripts", false);
+	$scope.all_userscripts	=	self.options.init_storage_data;
+	$scope.userscript_count	=	Object.keys($scope.all_userscripts).length;
+	$scope.lang				=	self.options.language;
 	
 	/**
 	 * Userscript aktivieren, bzw deaktivieren
@@ -41,6 +38,14 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		}
 	};
 	
+	// Sende es an den Editierungs Controller
+	$scope.edit = function (userscript){
+		$rootScope.$emit("EditUserscipt_edit", userscript);
+		
+		// veranlasse den Tab Wechsel!
+		$rootScope.tab = 'create';
+	};
+	
 	// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 	self.port.on("list-all-scripts", function(data){
 		// Daten für alle Userscripts setzen
@@ -56,14 +61,14 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 
 		// falls ein Komma enthalten sein sollte ...
 		rounded_quota = rounded_quota.replace(".", ",");
-
-
+		
 		$scope.currentMemoryUsage	=	lang.actual_used_quota + " : " + rounded_quota + "%";
-		
-		
 	});
 
-		
+
+	// Init	
+	$rootScope.tab = 'allScripts';
+	
 }]).directive("listuserscripts", function(){
     return {
 		templateUrl : "directive/listuserscripts.html"
@@ -102,16 +107,10 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 	
 	// Wenn das Skript gelöscht wurde
 	self.port.on("delete-script-is-now-deleted", function (script_was_deleted) {
-		if (script_was_deleted == true) { // script wurde erfolgreich gelöscht
-
+		if (script_was_deleted === true) { // script wurde erfolgreich gelöscht
 			window.alert(lang.userscript_was_successful_deleted);
-
-			// Schicke alle bisher verfügbaren Skripte! Erneut!!!
-			reload_scripts();
 		} else { // script konnte nicht gelöscht werden
-
 			window.alert(lang.userscript_could_not_deleted);
-
 		}
 	});
 	
@@ -210,6 +209,14 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 			// Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
 			self.port.emit("override-same-userscript", userscript_infos);
 		}
+	});
+
+	/**
+	 * Events
+	 */
+	$rootScope.$on("EditUserscipt_edit", function(event,userscript){
+		// Nimm das Userscript und schreibe es in die Textarea
+		$scope.textarea = userscript.userscript;
 	});
 
 
