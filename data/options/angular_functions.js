@@ -2,20 +2,31 @@
 
 /* global angular, self, directive, basic_helper */
  
+//var usiOptions = angular.module('usiOptions', []);
 var usiOptions = angular.module('usiOptions', ["mobile-angular-ui","mobile-angular-ui.gestures"]);
 
 /************************************************************************
  ************************* Übersetzungen holen **************************
  ************************************************************************/
-//var lang = self.options.language;
+
+// Overlay Controller
+usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scope, $rootScope){	
+	// Version von USI
+	$scope.version		=	self.options.version;
+	
+	$scope.nav_title	=	"Überblick";
+	
+}]);
 
 //Auflistung der Userscripte
-usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function ListUserScripts($scope, $rootScope){
+usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function ListUserScripts($scope, $rootScope, $q){
 	// Var init...
-//	$scope.all_userscripts	=	{};
-	$scope.all_userscripts	=	self.options.init_storage_data;
-	$scope.userscript_count	=	Object.keys($scope.all_userscripts).length;
+	$scope.all_userscripts	=	{};
+	$scope.userscript_count	=	0;
 	$scope.lang				=	self.options.language;
+	
+	
+		console.log($rootScope.version);
 	
 	/**
 	 * Userscript aktivieren, bzw deaktivieren
@@ -31,7 +42,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		// das Skript mit der ID löschen!
 		if (!basic_helper.empty(userscript.id)) {
 			//zusätzliche Abfrage
-			if(window.confirm( lang.want_to_delete_this_userscript_1 + userscript.id + lang.want_to_delete_this_userscript_2)){
+			if(window.confirm( $scope.lang.want_to_delete_this_userscript_1 + userscript.id + $scope.lang.want_to_delete_this_userscript_2)){
 				
 				// @todo erstmal abschalten!!!
 				self.port.emit("delete-script-by-id", userscript.id);
@@ -49,15 +60,17 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		$rootScope.tab = 'create';
 	};
 	
-	// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
-	self.port.on("list-all-scripts", function(data){
-		// Daten für alle Userscripts setzen
-		$scope.all_userscripts = data;
+		// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
+		self.port.on("list-all-scripts", function (data) {
+			
+			// Daten für alle Userscripts setzen
+			$scope.all_userscripts = data;
+
+			// Anzahl der Userscripts - zählen mittels Object.keys
+			$scope.userscript_count = Object.keys(data).length;
+
+		});
 		
-		// Anzahl der Userscripts - zählen mittels Object.keys
-		$scope.userscript_count = Object.keys(data).length;
-	});
-	
 	// Speicherverbrauch anzeigen
 	self.port.on("storage-quota", function (quota) {
 		var rounded_quota = Math.round(quota * 100) / 100 + "";
@@ -65,14 +78,32 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 		// falls ein Komma enthalten sein sollte ...
 		rounded_quota = rounded_quota.replace(".", ",");
 		
-		$scope.currentMemoryUsage	=	lang.actual_used_quota + " : " + rounded_quota + "%";
+		$scope.currentMemoryUsage	=	$scope.lang.actual_used_quota + " : " + rounded_quota + "%";
 	});
 
-
-	// Init	
-	$rootScope.tab = 'allScripts';
 	// Userscripte anfragen
-	self.port.emit("request-for---list-all-scripts");
+//	self.port.emit("request-for---list-all-scripts");
+
+	// Promise notwendig, damit beim initialen Aufruf die Daten geladen werden, ohne auf den Button klicken zu müssen
+//	var promise = asyncPortOn("list-all-scripts");
+//		promise.then(function (data) {
+//			// Daten für alle Userscripts setzen
+//			$scope.all_userscripts = data;
+//
+//			// Anzahl der Userscripts - zählen mittels Object.keys
+//			$scope.userscript_count = Object.keys(data).length;
+//		});
+		
+	// Interne Funktion für die Promise API
+	function asyncPortOn(event_name) {
+		var deferred = $q.defer();
+
+		self.port.on(event_name, function(data){
+			deferred.resolve(data);
+		});
+
+		return deferred.promise;
+	}
 	
 }]).directive("listuserscripts", function(){
     return {
@@ -89,8 +120,8 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 	
 	$scope.deleteAll = function (){
 		// Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
-		if(window.confirm(lang.really_reset_all_settings)){
-			if(window.confirm(lang.really_really_reset_all_settings)){
+		if(window.confirm($scope.lang.really_reset_all_settings)){
+			if(window.confirm($scope.lang.really_really_reset_all_settings)){
 				self.port.emit("delete-everything");
 				self.port.emit("request-for---list-all-scripts");
 			}
@@ -104,7 +135,7 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 	
 	// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
 	self.port.on("update-for-userscript-available", function (userscript_infos) {
-		if (window.confirm(lang.userscript_update_was_found_1 + userscript_infos.id + lang.userscript_update_was_found_2)) {
+		if (window.confirm($scope.lang.userscript_update_was_found_1 + userscript_infos.id + $scope.lang.userscript_update_was_found_2)) {
 
 			// Nun das Skript aktualisieren!
 			self.port.emit("override-same-userscript", userscript_infos);
@@ -116,9 +147,9 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 	// Wenn das Skript gelöscht wurde
 	self.port.on("delete-script-is-now-deleted", function (script_was_deleted) {
 		if (script_was_deleted === true) { // script wurde erfolgreich gelöscht
-			window.alert(lang.userscript_was_successful_deleted);
+			window.alert($scope.lang.userscript_was_successful_deleted);
 		} else { // script konnte nicht gelöscht werden
-			window.alert(lang.userscript_could_not_deleted);
+			window.alert($scope.lang.userscript_could_not_deleted);
 		}
 	});
 	
@@ -229,7 +260,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 	self.port.on("same-userscript-was-found",function (userscript_infos){
 	
 		//wurde gefunden, möchtest du es aktualisieren?")){
-		if(window.confirm(lang.same_userscript_was_found_ask_update_it_1 +  userscript_infos.id + lang.same_userscript_was_found_ask_update_it_2)){
+		if(window.confirm($scope.lang.same_userscript_was_found_ask_update_it_1 +  userscript_infos.id + $scope.lang.same_userscript_was_found_ask_update_it_2)){
 			// Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
 			self.port.emit("override-same-userscript", userscript_infos);
 			self.port.emit("request-for---list-all-scripts");

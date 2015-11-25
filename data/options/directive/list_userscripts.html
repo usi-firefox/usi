@@ -1,5 +1,6 @@
 <div ng-controller="ListUserScripts">
 	<div ng-bind="currentMemoryUsage"></div>
+	<hr />
 	<h3 ng-if="userscript_count > 0">Userscripts (<span ng-bind="userscript_count"></span>) :</h3>
 	<h3 ng-if="userscript_count == 0">Du hast bisher noch kein Userscript hinzugefügt</h3>
 	<div class="panel-group" ui-state="ListScriptAccordion" ui-default="0">		

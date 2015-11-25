@@ -5,30 +5,39 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	</head>
-	<body ng-app="usiOptions">
+	<body ng-app="usiOptions" ng-controller="Overlay">
 
 		<!-- Sidebar -->
-		<div class="sidebar sidebar-left">
+		<div class="sidebar sidebar-left" ng-init="tab = 'overview'">
 			<div class="scrollable">
-				<h1 class="scrollable-header app-name">Überblick</h1>  
+				<h1 class="scrollable-header app-name">USI - ({{version}})</h1>  
 				<div class="scrollable-content">
 					<div class="list-group" ui-turn-off='uiSidebarLeft'>
-						<a class="list-group-item" ng-click="tab = 'allScripts'" >
+						<a class="list-group-item" ng-click="tab = 'overview';
+									nav_title = 'Überblick'" >
+							Überblick
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+						<a class="list-group-item" ng-click="tab = 'allScripts';
+									nav_title = 'Alle Userscripts'" >
 							Alle Userscripts
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="tab = 'create'" >
+						<a class="list-group-item" ng-click="tab = 'create';
+									nav_title = 'Neues Userscirpt erstellen'" >
 							Neues Userscirpt erstellen
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="tab = 'loadExternal'" >
+						<a class="list-group-item" ng-click="tab = 'loadExternal';
+									nav_title = 'Userscirpt nachladen'" >
 							Userscirpt nachladen
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
 						<a class="list-group-item" >
 							<!--Trennzeichen-->
 						</a>
-						<a class="list-group-item" ng-click="tab = 'options'" >
+						<a class="list-group-item" ng-click="tab = 'options';
+									nav_title = 'Optionen'" >
 							Optionen
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
@@ -42,7 +51,7 @@
 			<!-- Top Navbar -->
 			<div class="navbar navbar-app navbar-absolute-top">
 				<div class="navbar-brand navbar-brand-center">
-					Alle Userscripte
+					{{nav_title}}
 				</div>
 				<div class="btn-group pull-left">
 					<div class="btn sidebar-toggle" ui-toggle='uiSidebarLeft'>
@@ -58,19 +67,30 @@
 				<div class='app-content'>
 
 					<div class="scrollable-content section">
-						
+						<div ng-show="tab === 'overview'">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">Überblick</h3>
+								</div>
+								<div class="panel-body">
+									Die Optionen sind nun unterteilt in mehrere Bereiche,
+									falls du deine geladenen Userscripte einsehen möchtest gehe auf den Bereich "Alle Userscripts"
+								</div>
+							</div>
+						</div>
+
 						<!--Alle Userscripte auflisten-->
 						<div ng-show="tab === 'allScripts'">
-							
+
 							<!--Directive für die Auflistung der Userscripte laden-->
 							<listuserscripts />
 						</div>
-						
+
 						<!--Userscript nachladen-->
 						<div ng-show="tab === 'loadExternal'">
 							<loadexternaluserscript />
 						</div>
-						
+
 						<!--Neues Userscript erstellen / bearbeiten-->
 						<div ng-show="tab === 'create'">
 							<edituserscript />
@@ -95,7 +115,7 @@
 		</div><!-- ~ .app -->
 
 		<!-- Modals and Overlays -->
-		<div ui-yield-to="modals"></div>
+		<!--<div ui-yield-to="modals"></div>-->
 
 	</body>
 </html>
