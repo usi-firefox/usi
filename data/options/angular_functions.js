@@ -7,11 +7,12 @@ var usiOptions = angular.module('usiOptions', ["mobile-angular-ui","mobile-angul
 /************************************************************************
  ************************* Übersetzungen holen **************************
  ************************************************************************/
-var lang = self.options.language;
+//var lang = self.options.language;
 
 //Auflistung der Userscripte
 usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function ListUserScripts($scope, $rootScope){
 	// Var init...
+//	$scope.all_userscripts	=	{};
 	$scope.all_userscripts	=	self.options.init_storage_data;
 	$scope.userscript_count	=	Object.keys($scope.all_userscripts).length;
 	$scope.lang				=	self.options.language;
@@ -70,10 +71,12 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope" , function List
 
 	// Init	
 	$rootScope.tab = 'allScripts';
+	// Userscripte anfragen
+	self.port.emit("request-for---list-all-scripts");
 	
 }]).directive("listuserscripts", function(){
     return {
-		templateUrl : "directive/listuserscripts.html"
+		templateUrl : "directive/list_userscripts.html"
     };
 });
 
