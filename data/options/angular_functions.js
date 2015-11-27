@@ -11,6 +11,7 @@ var usiOptions = angular.module('usiOptions', ["mobile-angular-ui","mobile-angul
 
 // Overlay Controller
 usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scope, $rootScope){	
+	// Initiale Werte
 	// Version von USI
 	$scope.version		=	self.options.version;
 	$scope.tab			=	'overview';
@@ -19,6 +20,9 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 	// Event für Tab Wechsel
 	$rootScope.$on("USI:changeTab", function(event, data){
 		$scope.tab			=	data;
+	});
+	$rootScope.$on("USI:changeNavTitle", function(event, data){
+		$scope.nav_title	=	data;
 	});
 	
 }]);
@@ -78,6 +82,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			// Anzahl der Userscripts - zählen mittels Object.keys
 			$scope.userscript_count = Object.keys(data).length;
 
+//			$scope.$emit("USI:changeNavTitle", "Userscripts (" + $scope.userscript_count + ")" );
 		});
 		
 	// Speicherverbrauch anzeigen

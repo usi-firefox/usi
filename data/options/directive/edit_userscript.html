@@ -34,35 +34,34 @@ document.addEventListener("click", function(){
 alert("Du hast soeben geklickt!");
 });</div>
 	<div class="container">
-	<div class="row">
-		<!--Userscript speichern-->
-		<button class="btn btn-primary btn-block" 
-				ng-click="save()" 
-				data-l10n-id="save_userscript">Userscript speichern</button>
-	</div>
-	<hr />
-	<div class="row">
-		<!--Standard laden oder leeren-->
+		<div class="row">
+			<!--Userscript speichern-->
+			<button class="btn btn-primary btn-block" 
+					ng-click="save()" 
+					data-l10n-id="save_userscript">Userscript speichern</button>
+		</div>
+		<hr />
+		<div class="row">
+			<!--Standard laden oder leeren-->
 			<button class="btn btn-default col-xs-6" 
 					ng-click="textarea = userscript_example;
-						state = 0" >
+								state = 0" >
 				Userscript <span data-l10n-id="load_example">Beispiel laden</span>
 			</button>
 			<button class="btn btn-warning col-xs-6"
 					ng-click="textarea = null;
-						state = 0"
+								state = 0"
 					data-l10n-id="clear_textarea" >Textfeld leeren</button>
-	</div>
-	<hr />
-	<div class="row">
-		<!--Textarea Zoom einstellen-->
-		<div class="col-xs-2">
-			<label>Zoom:</label>
 		</div>
+		<hr />
+		<div class="row">
+			<!--Textarea Zoom einstellen-->
+			<div class="col-xs-2">
+				<label>Zoom:</label>
+			</div>
 			<input type="range" ng-change="changeSize()" class="col-xs-8"
 				   ng-model="textarea_size" style="width: 240px" min="10" max="26" step="0.5" value="14" />
 			<button class="btn btn-default col-xs-2" ng-click="defaulltSize()" ><i class="fa fa-undo"></i></button>
-	</div>
-	</div>
+		</div>
 	</div>
 </div>
