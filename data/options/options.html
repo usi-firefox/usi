@@ -50,8 +50,7 @@
 		<div class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')">
 			<!-- Top Navbar -->
 			<div class="navbar navbar-app navbar-absolute-top">
-				<div class="navbar-brand navbar-brand-center">
-					{{nav_title}}
+				<div class="navbar-brand navbar-brand-center" ng-bind="nav_title">
 				</div>
 				<div class="btn-group pull-left">
 					<div class="btn sidebar-toggle" ui-toggle='uiSidebarLeft'>

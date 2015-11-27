@@ -19,12 +19,23 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 	
 	// Event für Tab Wechsel
 	$rootScope.$on("USI:changeTab", function(event, data){
-		$scope.tab			=	data;
+		$scope.changeTab(data);
 	});
 	$rootScope.$on("USI:changeNavTitle", function(event, data){
-		$scope.nav_title	=	data;
+		$scope.changeNavTitle(data);
 	});
 	
+	$scope.changeTab = function(text){
+		$scope.tab			=	text;
+	};
+	$scope.changeNavTitle = function(text){
+		$scope.nav_title	=	text;
+	};
+
+	$scope.changeTabAndNavTitle = function(tab_text, nav_title_text){
+		$scope.changeTab(tab_text);
+		$scope.changeNavTitle(nav_title_text);
+	};
 }]);
 
 //Auflistung der Userscripte
@@ -68,7 +79,6 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		$rootScope.$emit("USI:EditUserscipt_edit", userscript);
 		
 		// veranlasse den Tab Wechsel!
-		//$rootScope.tab = 'create';
 		$scope.$emit("USI:changeTab", "create");
 
 	};
@@ -94,6 +104,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		
 		$scope.currentMemoryUsage	=	$scope.lang.actual_used_quota + " : " + rounded_quota + "%";
 	});
+	
+	// Initiale Abfrage
+	self.port.emit("request-for---list-all-scripts", false);
 	
 }]).directive("listuserscripts", function(){
     return {

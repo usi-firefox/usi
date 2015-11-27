@@ -3,7 +3,7 @@
 /************************************************************************
  ************************* Übersetzungen holen **************************
  ************************************************************************/
-var lang = self.options.language;
+//var lang = self.options.language;
 
 /************************************************************************
  ************************* neue skripte anlegen *************************
@@ -257,16 +257,16 @@ var lang = self.options.language;
 
 
 // zeige alle Skripte an
-function reload_scripts() {
-	self.port.emit("request-for---list-all-scripts", false);
-}
+//function reload_scripts() {
+//	self.port.emit("request-for---list-all-scripts", false);
+//}
 
 /************************************************************************
  ************************* UI Funktionen ********************************
  ************************************************************************/
 
 // damit zu einem Element hingescrollt werden kann ...
-function scrollto(element){ $('html, body').animate({ scrollTop: ($(element).offset().top)}, 'slow'); };
+//function scrollto(element){ $('html, body').animate({ scrollTop: ($(element).offset().top)}, 'slow'); };
 
 /************************************************************************
  ************************* Textarea Größe *******************************
@@ -324,29 +324,29 @@ function scrollto(element){ $('html, body').animate({ scrollTop: ($(element).off
  ************************* Fehler Meldungen *****************************
  ************************************************************************/
 
-// Zeige einen Fehler an! Wenn es das Addon Skript sagt...
-self.port.on("show-error", function (text) {
-	show_error(text);
-});
-
-function show_error(text, jump_to_element) {
-	// schnelle Variante zur Fehler Darstellung
-	window.alert(text);
-
-	// Wenn es gesetzt ist springe zu diesem Element
-	if (basic_helper.isset(jump_to_element)) {
-		// speichere letzten Zustand
-		var last_css = jQuery(jump_to_element).css("border");
-
-		// Setze den Focus auf das URL Feld
-		jQuery(jump_to_element).css("border", "2px dotted red").focus();
-
-		// zurücksetzen der Markierung
-		window.setTimeout(function () {
-			jQuery(jump_to_element).css("border", last_css);
-		}, 2500);
-	}
-}
+//// Zeige einen Fehler an! Wenn es das Addon Skript sagt...
+//self.port.on("show-error", function (text) {
+//	show_error(text);
+//});
+//
+//function show_error(text, jump_to_element) {
+//	// schnelle Variante zur Fehler Darstellung
+//	window.alert(text);
+//
+//	// Wenn es gesetzt ist springe zu diesem Element
+//	if (basic_helper.isset(jump_to_element)) {
+//		// speichere letzten Zustand
+//		var last_css = jQuery(jump_to_element).css("border");
+//
+//		// Setze den Focus auf das URL Feld
+//		jQuery(jump_to_element).css("border", "2px dotted red").focus();
+//
+//		// zurücksetzen der Markierung
+//		window.setTimeout(function () {
+//			jQuery(jump_to_element).css("border", last_css);
+//		}, 2500);
+//	}
+//}
 
 /************************************************************************
  ************************* Skripte löschen ******************************
@@ -387,7 +387,7 @@ function show_error(text, jump_to_element) {
  ************************* Init Bereich *********************************
  ************************************************************************/
 
-jQuery(document).ready(function (){
-	// lade alle Skripte nach!
-	reload_scripts();
-});
+//jQuery(document).ready(function (){
+//	// lade alle Skripte nach!
+//	reload_scripts();
+//});
