@@ -99,13 +99,17 @@
 						<!--Options Block-->
 						<div ng-show="tab === 'options'">
 							<div ng-controller="ExtraOptionsForUSI">
-								<h3 data-l10n-id="delete_all_userscripts" >Alle Userscripts entfernen</h3>
-								<button class="btn btn-danger" ng-click="deleteAll()"
-										data-l10n-id="revert_all" >-alles zurücksetzen-</button>
+								<div class="container" >
+									<h3 data-l10n-id="delete_all_userscripts" >Alle Userscripts entfernen</h3>
+									<button class="btn btn-danger col-xs-3" ng-click="deleteAll()"
+											data-l10n-id="revert_all" >-alles zurücksetzen-</button>
+								</div>
 								<hr />
+								<div class="container" >
 								<h3 data-l10n-id="check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
 								<button ng-click="checkForUpdates()" 
-										class="btn btn-primary" data-l10n-id="check_now" >-jetzt prüfen-</button>
+										class="btn btn-primary col-xs-3" data-l10n-id="check_now" >-jetzt prüfen-</button>
+								</div>
 							</div>
 						</div>
 					</div>

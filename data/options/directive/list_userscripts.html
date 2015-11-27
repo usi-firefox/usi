@@ -37,12 +37,17 @@
 					</div>
 
 					<!--Buttons-->
-					<button class="btn btn-default" ng-click="showUserscriptContent = !showUserscriptContent" ng-bind="lang.show_hide"></button>
-					<button class="btn btn-info" ng-click="edit(userscript)" ng-bind="lang.change"></button>
-					<button class="btn btn-danger" ng-click="delete(userscript)" ng-bind="lang.delete_x"></button>
-
+					<div class="row">
+						<button class="btn btn-default col-xs-3 col-xs-push-1" ng-click="showUserscriptContent = !showUserscriptContent">
+							<span ng-show="showUserscriptContent">ausblenden</span>
+							<span ng-show="!showUserscriptContent">zeigen</span>
+						</button>
+						<button class="btn btn-info col-xs-3 col-xs-push-2" ng-click="edit(userscript)" ng-bind="lang.change"></button>
+						<button class="btn btn-danger col-xs-3 col-xs-push-3" ng-click="delete(userscript)" ng-bind="lang.delete_x"></button>
+					</div>
 					<!--Userscript Inhalt-->
 					<div ng-show="showUserscriptContent">
+						<hr />
 						<label>Userscript Content: </label>
 						<pre class="border-black" >{{userscript.userscript}}</pre>
 					</div>
