@@ -13,8 +13,13 @@ var usiOptions = angular.module('usiOptions', ["mobile-angular-ui","mobile-angul
 usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scope, $rootScope){	
 	// Version von USI
 	$scope.version		=	self.options.version;
-	
+	$scope.tab			=	'overview';
 	$scope.nav_title	=	"Überblick";
+	
+	// Event für Tab Wechsel
+	$rootScope.$on("USI:changeTab", function(event, data){
+		$scope.tab			=	data;
+	});
 	
 }]);
 
@@ -24,9 +29,6 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 	$scope.all_userscripts	=	{};
 	$scope.userscript_count	=	0;
 	$scope.lang				=	self.options.language;
-	
-	
-		console.log($rootScope.version);
 	
 	/**
 	 * Userscript aktivieren, bzw deaktivieren
@@ -38,6 +40,11 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		self.port.emit("toggle-userscript-state", userscript.id);
 	};
 	
+	/**
+	 * Userscript entfernen
+	 * @param {type} userscript
+	 * @returns {undefined}
+	 */
 	$scope.delete = function (userscript){
 		// das Skript mit der ID löschen!
 		if (!basic_helper.empty(userscript.id)) {
@@ -54,10 +61,12 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 	
 	// Sende es an den Editierungs Controller
 	$scope.edit = function (userscript){
-		$rootScope.$emit("EditUserscipt_edit", userscript);
+		$rootScope.$emit("USI:EditUserscipt_edit", userscript);
 		
 		// veranlasse den Tab Wechsel!
-		$rootScope.tab = 'create';
+		//$rootScope.tab = 'create';
+		$scope.$emit("USI:changeTab", "create");
+
 	};
 	
 		// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
@@ -80,30 +89,6 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		
 		$scope.currentMemoryUsage	=	$scope.lang.actual_used_quota + " : " + rounded_quota + "%";
 	});
-
-	// Userscripte anfragen
-//	self.port.emit("request-for---list-all-scripts");
-
-	// Promise notwendig, damit beim initialen Aufruf die Daten geladen werden, ohne auf den Button klicken zu müssen
-//	var promise = asyncPortOn("list-all-scripts");
-//		promise.then(function (data) {
-//			// Daten für alle Userscripts setzen
-//			$scope.all_userscripts = data;
-//
-//			// Anzahl der Userscripts - zählen mittels Object.keys
-//			$scope.userscript_count = Object.keys(data).length;
-//		});
-		
-	// Interne Funktion für die Promise API
-	function asyncPortOn(event_name) {
-		var deferred = $q.defer();
-
-		self.port.on(event_name, function(data){
-			deferred.resolve(data);
-		});
-
-		return deferred.promise;
-	}
 	
 }]).directive("listuserscripts", function(){
     return {
@@ -115,9 +100,12 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 // Extra Optionen
 usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function ExtraOptionsForUSI($scope, $rootScope){
 	// Var init...
-//	$scope.all_userscripts = {};
 	$scope.lang = self.options.language;
-	
+
+	/**
+	 * Alle Userscripte entfernen
+	 * @returns {undefined}
+	 */	
 	$scope.deleteAll = function (){
 		// Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
 		if(window.confirm($scope.lang.really_reset_all_settings)){
@@ -156,7 +144,7 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope" , function E
 }]);
 
 // Userscript nachladen
-usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope" , function LoadExternalUserScript($scope, $rootScope){
+usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternalUserScript($scope){
 	// Var init...
 	$scope.url		= "";
 	$scope.lang		= self.options.language;
@@ -191,7 +179,10 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 	$scope.textarea_default_size	= angular.element("#script-textarea").css("font-size").split("px")[0];
 	$scope.state					=	0;
 	
-	
+	/**
+	 * Höhe der Textarea an die Fenstergröße anpassen!
+	 * @returns {undefined}
+	 */
 	$scope.setTextareaHeight = function(){
 		var window_innerHeight	=	parseInt(window.innerHeight),
 		size_by_percent			=	65 / 100;
@@ -270,7 +261,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 	/**
 	 * Events
 	 */
-	$rootScope.$on("EditUserscipt_edit", function(event,userscript){
+	$rootScope.$on("USI:EditUserscipt_edit", function(event,userscript){
 		// Nimm das Userscript und schreibe es in die Textarea
 		$scope.textarea = userscript.userscript;
 		$scope.script_id = userscript.id;
@@ -281,7 +272,6 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope" , function EditU
 
 	// Schalter richtig positionieren lassen ...
 	$scope.defaulltSize();
-	
 	$scope.setTextareaHeight();
 	
 }]).directive("edituserscript", function(){
