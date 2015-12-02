@@ -1,5 +1,5 @@
 <div ng-controller="EditUserScript">
-	<h3 data-l10n-id="edit_userscript" ng-show="state == 'edit'" >Editiere das Userscript mit der ID : {{script_id}}</h3>
+	<h3 data-l10n-id="edit_userscript" ng-show="state === 'edit'" >Editiere das Userscript mit der ID : {{script_id}}</h3>
 
 	<!--Userscript Eingabe-->
 	<textarea ng-model="textarea" style="white-space: pre; height: 80%;" class="col-xs-12" id="script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
