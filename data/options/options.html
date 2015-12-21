@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title data-l10n-id="usi_options">usi Optionen</title>
+		<title ng-bind="lang.usi_options">usi Optionen</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	</head>
@@ -13,19 +13,19 @@
 				<h1 class="scrollable-header app-name">USI - ({{version}})</h1>  
 				<div class="scrollable-content">
 					<div class="list-group" ui-turn-off='uiSidebarLeft'>
-						<a class="list-group-item" ng-click="tab = 'overview'" data-l10n-id="overview">
+						<a class="list-group-item" ng-click="tab = 'overview'" ng-bind="lang.overview">
 							<!--Überblick-->
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="tab = 'allScripts'" data-l10n-id="all_userscripts">
+						<a class="list-group-item" ng-click="tab = 'allScripts'" ng-bind="lang.all_userscripts">
 							<!--Alle Userscripts-->
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="tab = 'create'" data-l10n-id="create_new_userscript">
+						<a class="list-group-item" ng-click="tab = 'create'" ng-bind="lang.create_new_userscript">
 							<!--Neues Userscirpt erstellen-->
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="tab = 'loadExternal'" data-l10n-id="userscript_after_load">
+						<a class="list-group-item" ng-click="tab = 'loadExternal'" ng-bind="lang.userscript_after_load">
 							<!--Userscirpt nachladen-->
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
@@ -33,7 +33,7 @@
 							<!--Trennzeichen-->
 						</a>
 						<a class="list-group-item" ng-click="tab = 'options';
-									nav_title = 'Optionen'" data-l10n-id="loadOptions_title">
+									nav_title = 'Optionen'" ng-bind="lang.loadOptions_title">
 							Optionen
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
@@ -51,7 +51,7 @@
 				<div class="btn-group pull-left">
 					<div class="btn sidebar-toggle" ui-toggle='uiSidebarLeft'>
 						<i class="fa fa-bars" ></i>
-						<span data-l10n-id="menu" >Menü</span>
+						<span ng-bind="lang.menu" >Menü</span>
 					</div>
 				</div>
 			</div>
@@ -65,9 +65,9 @@
 						<div ng-show="tab === 'overview'">
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h3 class="panel-title" data-l10n-id="overview" >Überblick</h3>
+									<h3 class="panel-title" ng-bind="lang.overview" >Überblick</h3>
 								</div>
-								<div class="panel-body" data-l10n-id="overview_description" >
+								<div class="panel-body" ng-bind="lang.overview_description" >
 									Die Optionen sind nun unterteilt in mehrere Bereiche,
 									falls du deine geladenen Userscripte einsehen möchtest gehe auf den Bereich "Alle Userscripts"
 								</div>
@@ -95,15 +95,15 @@
 						<div ng-show="tab === 'options'">
 							<div ng-controller="ExtraOptionsForUSI">
 								<div class="container" >
-									<h3 data-l10n-id="delete_all_userscripts" >Alle Userscripts entfernen</h3>
+									<h3 ng-bind="lang.delete_all_userscripts" >Alle Userscripts entfernen</h3>
 									<button class="btn btn-danger col-xs-3" ng-click="deleteAll()"
-											data-l10n-id="revert_all" >-alles zurücksetzen-</button>
+											ng-bind="lang.revert_all" >-alles zurücksetzen-</button>
 								</div>
 								<hr />
 								<div class="container" >
-									<h3 data-l10n-id="check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
+									<h3 ng-bind="lang.check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
 									<button ng-click="checkForUpdates()" 
-											class="btn btn-primary col-xs-3" data-l10n-id="check_now" >-jetzt prüfen-</button>
+											class="btn btn-primary col-xs-3" ng-bind="lang.check_now" >-jetzt prüfen-</button>
 								</div>
 							</div>
 						</div>

@@ -1,8 +1,11 @@
 <div ng-controller="EditUserScript">
-	<h3 data-l10n-id="edit_userscript" ng-show="state === 'edit'" ><span data-l10n-id="edit_userscript_with_id"> --- </span> : {{script_id}}</h3>
+	<h3 ng-show="state === 'edit'" ><span ng-bind="lang.edit_userscript_with_id"> --- </span> : {{script_id}}</h3>
 
 	<!--Userscript Eingabe-->
-	<textarea ng-model="textarea" style="white-space: pre; height: 80%;" class="col-xs-12" id="script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
+	<textarea ng-model="textarea" 
+			  style="white-space: pre; height: 80%;" 
+			  class="col-xs-12" id="script-textarea" rows="30"
+			  cols="64" placeholder="// ==UserScript== ..."></textarea>
 
 	<!--Userscript Beispiel-->
 	<div id="userscript-example" style="display: none;">// ==UserScript==
@@ -38,7 +41,7 @@ alert("Du hast soeben geklickt!");
 			<!--Userscript speichern-->
 			<button class="btn btn-primary btn-block" 
 					ng-click="save()" 
-					data-l10n-id="save_userscript">Userscript speichern</button>
+					ng-bind="lang.save_userscript">Userscript speichern</button>
 		</div>
 		<hr />
 		<div class="row">
@@ -46,12 +49,12 @@ alert("Du hast soeben geklickt!");
 			<button class="btn btn-default col-xs-6" 
 					ng-click="textarea = userscript_example;
 								state = 0" >
-				Userscript <span data-l10n-id="load_example">Beispiel laden</span>
+				Userscript <span ng-bind="lang.load_example">Beispiel laden</span>
 			</button>
 			<button class="btn btn-warning col-xs-6"
 					ng-click="textarea = null;
 								state = 0"
-					data-l10n-id="clear_textarea" >Textfeld leeren</button>
+					ng-bind="lang.clear_textarea" >Textfeld leeren</button>
 		</div>
 		<hr />
 		<div class="row">

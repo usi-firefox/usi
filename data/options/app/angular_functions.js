@@ -15,8 +15,9 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 		// Version von USI
 		$scope.version = self.options.version;
 		$scope.tab = 'overview';
-		$scope.nav_title = "Überblick";
-
+		
+		$scope.lang = self.options.language;
+		
 		// Event für Tab Wechsel
 		$rootScope.$on("USI:changeTab", function (event, data) {
 			$scope.changeTab(data);

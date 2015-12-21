@@ -4,7 +4,7 @@
 		<div class="has-error" ng-bind="error"></div>
 
 		<br />
-		<label data-l10n-id="load_userscript_by_url_label" >
+		<label ng-bind="lang.load_userscript_by_url_label" >
 			Neues Userscript laden (URL):
 		</label>
 		<input class="form-control" type="url"
@@ -14,7 +14,7 @@
 		<br />
 		<div class="row">
 			<button class="btn btn-primary col-xs-push-1 col-xs-7" ng-click="loadExternal()" >
-				Userscript <span data-l10n-id="after_load" >nachladen</span>
+				Userscript <span ng-bind="lang.after_load" >nachladen</span>
 			</button>
 			<button class="btn btn-default col-xs-push-2 col-xs-pull-1 col-xs-2" ng-click="url = ''" >
 				Reset
