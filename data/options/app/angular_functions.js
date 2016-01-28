@@ -194,8 +194,8 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUserScript($scope, $rootScope) {
 		// Var init...
 		$scope.lang = self.options.language;
-		$scope.userscript_example = angular.element("#userscript-example").html();
-		$scope.textarea_default_size = angular.element("#script-textarea").css("font-size").split("px")[0];
+		$scope.userscript_example = jQuery("#userscript-example").html();
+		$scope.textarea_default_size = jQuery("#script-textarea").css("font-size").split("px")[0];
 		$scope.state = 0;
 
 		/**
@@ -210,7 +210,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUs
 			var textarea_height = Math.floor(window_innerHeight * size_by_percent);
 
 			// Größe setzen
-			angular.element("#script-textarea").css("height", textarea_height + "px");
+			jQuery("#script-textarea").css("height", textarea_height + "px");
 		};
 
 
@@ -220,7 +220,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUs
 		 */
 		$scope.changeSize = function () {
 			// Setze die Größe der Textarea auf den Wert aus dem Range "Button"
-			angular.element("#script-textarea").css("font-size", $scope.textarea_size + "px");
+			jQuery("#script-textarea").css("font-size", $scope.textarea_size + "px");
 		};
 
 		/**
@@ -232,7 +232,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUs
 			$scope.textarea_size = $scope.textarea_default_size;
 
 			// Setze die Größe der Textarea auf den Wert aus dem Range "Button"
-			angular.element("#script-textarea").css("font-size", $scope.textarea_default_size + "px");
+			jQuery("#script-textarea").css("font-size", $scope.textarea_default_size + "px");
 		};
 
 		/**
