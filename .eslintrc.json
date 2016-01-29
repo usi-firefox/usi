@@ -2,5 +2,9 @@
     "extends": "standard",
     "plugins": [
         "standard"
-    ]
+    ],
+	 "rules": {
+        "semi": 0,
+        "comma-style": 0
+    }
 }
