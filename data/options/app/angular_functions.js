@@ -19,24 +19,14 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 		$scope.lang = self.options.language;
 		
 		// Event für Tab Wechsel
-		$rootScope.$on("USI:changeTab", function (event, data) {
+		$rootScope.$on("USI-FRONTEND:changeTab", function (event, data) {
 			$scope.changeTab(data);
-		});
-		$rootScope.$on("USI:changeNavTitle", function (event, data) {
-			$scope.changeNavTitle(data);
 		});
 
 		$scope.changeTab = function (text) {
 			$scope.tab = text;
 		};
-		$scope.changeNavTitle = function (text) {
-			$scope.nav_title = text;
-		};
 
-		$scope.changeTabAndNavTitle = function (tab_text, nav_title_text) {
-			$scope.changeTab(tab_text);
-			$scope.changeNavTitle(nav_title_text);
-		};
 	}]);
 
 //Auflistung der Userscripte
@@ -77,10 +67,10 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 		// Sende es an den Editierungs Controller
 		$scope.edit = function (userscript) {
-			$rootScope.$emit("USI:EditUserscipt_edit", userscript);
+			$rootScope.$emit("USI-FRONTEND:EditUserscipt_edit", userscript);
 
 			// veranlasse den Tab Wechsel!
-			$scope.$emit("USI:changeTab", "create");
+			$scope.$emit("USI-FRONTEND:changeTab", "create");
 
 		};
 
@@ -93,7 +83,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			// Anzahl der Userscripts - zählen mittels Object.keys
 			$scope.userscript_count = Object.keys(data).length;
 
-			//			$scope.$emit("USI:changeNavTitle", "Userscripts (" + $scope.userscript_count + ")" );
+			//			$scope.$emit("USI-FRONTEND:changeNavTitle", "Userscripts (" + $scope.userscript_count + ")" );
 		});
 
 		// Speicherverbrauch anzeigen
@@ -280,7 +270,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUs
 		/**
 		 * Events
 		 */
-		$rootScope.$on("USI:EditUserscipt_edit", function (event, userscript) {
+		$rootScope.$on("USI-FRONTEND:EditUserscipt_edit", function (event, userscript) {
 			// Nimm das Userscript und schreibe es in die Textarea
 			$scope.textarea = userscript.userscript;
 			$scope.script_id = userscript.id;
