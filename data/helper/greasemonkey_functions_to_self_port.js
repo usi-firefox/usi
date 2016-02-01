@@ -64,7 +64,7 @@ function GM_setValue(name, value) {
 	set_123141482457923434792(script_localstorage);
 
 	// Im Extension Speichern sichern!
-	self.port.emit("GM_setValue", {name: name, value: value});
+	self.port.emit("USI-BACKEND:GM_setValue", {name: name, value: value});
 }
 
 function GM_deleteValue(name) {
@@ -76,7 +76,7 @@ function GM_deleteValue(name) {
 	set_123141482457923434792(script_localstorage);
 
 	// Variable löschen
-	self.port.emit("GM_deleteValue", {name: name});
+	self.port.emit("USI-BACKEND:GM_deleteValue", {name: name});
 } 
 
 function GM_listValues() {
@@ -90,11 +90,11 @@ function GM_listValues() {
 }
 
 function GM_setClipboard(text) {
-	self.port.emit("GM_setClipboard", text);
+	self.port.emit("USI-BACKEND:GM_setClipboard", text);
 }
 
 function GM_openInTab(url, open_in_background) {
-	self.port.emit("GM_openInTab", {url: url, open_in_background: open_in_background });
+	self.port.emit("USI-BACKEND:GM_openInTab", {url: url, open_in_background: open_in_background });
 }
   
 function GM_log(value) {

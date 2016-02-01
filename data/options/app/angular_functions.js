@@ -43,7 +43,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		 */
 		$scope.toggleActivation = function (userscript) {
 			// aktiviere oder deaktiviere dieses Userscript!
-			self.port.emit("toggle-userscript-state", userscript.id);
+			self.port.emit("USI-BACKEND:toggle-userscript-state", userscript.id);
 		};
 
 		/**
@@ -58,9 +58,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 				if (window.confirm($scope.lang.want_to_delete_this_userscript_1 + userscript.id + $scope.lang.want_to_delete_this_userscript_2)) {
 
 					// @todo erstmal abschalten!!!
-					self.port.emit("delete-script-by-id", userscript.id);
+					self.port.emit("USI-BACKEND:delete-script-by-id", userscript.id);
 
-					self.port.emit("request-for---list-all-scripts");
+					self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 				}
 			}
 		};
@@ -75,7 +75,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		};
 
 		// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
-		self.port.on("list-all-scripts", function (data) {
+		self.port.on("USI-BACKEND:list-all-scripts", function (data) {
 
 			// Daten für alle Userscripts setzen
 			$scope.all_userscripts = data;
@@ -87,7 +87,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		});
 
 		// Speicherverbrauch anzeigen
-		self.port.on("storage-quota", function (quota) {
+		self.port.on("USI-BACKEND:storage-quota", function (quota) {
 			var rounded_quota = Math.round(quota * 100) / 100 + "";
 
 			// falls ein Komma enthalten sein sollte ...
@@ -97,7 +97,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		});
 
 		// Initiale Abfrage
-		self.port.emit("request-for---list-all-scripts", false);
+		self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
 
 	}]).directive("listuserscripts", function () {
 	return {
@@ -119,30 +119,30 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 			// Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
 			if (window.confirm($scope.lang.really_reset_all_settings)) {
 				if (window.confirm($scope.lang.really_really_reset_all_settings)) {
-					self.port.emit("delete-everything");
-					self.port.emit("request-for---list-all-scripts");
+					self.port.emit("USI-BACKEND:delete-everything");
+					self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 				}
 			}
 		};
 
 		// Prüfe ob für die Skripte Updates gefunden wurden!
 		$scope.checkForUpdates = function () {
-			self.port.emit("check-for-userscript-updates");
+			self.port.emit("USI-BACKEND:check-for-userscript-updates");
 		};
 
 		// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
-		self.port.on("update-for-userscript-available", function (userscript_infos) {
+		self.port.on("USI-BACKEND:update-for-userscript-available", function (userscript_infos) {
 			if (window.confirm($scope.lang.userscript_update_was_found_1 + userscript_infos.id + $scope.lang.userscript_update_was_found_2)) {
 
 				// Nun das Skript aktualisieren!
-				self.port.emit("override-same-userscript", userscript_infos);
+				self.port.emit("USI-BACKEND:override-same-userscript", userscript_infos);
 
-				self.port.emit("request-for---list-all-scripts");
+				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 			}
 		});
 
 		// Wenn das Skript gelöscht wurde
-		self.port.on("delete-script-is-now-deleted", function (script_was_deleted) {
+		self.port.on("USI-BACKEND:delete-script-is-now-deleted", function (script_was_deleted) {
 			if (script_was_deleted === true) { // script wurde erfolgreich gelöscht
 				window.alert($scope.lang.userscript_was_successful_deleted);
 			} else { // script konnte nicht gelöscht werden
@@ -163,9 +163,9 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 			$scope.error = "";
 			if (typeof $scope.url !== "undefined" && $scope.url.length > 0) {
 				// sende die URL an das Backend Skript...
-				self.port.emit("loadexternal-script_url", {script_url: $scope.url});
+				self.port.emit("USI-BACKEND:loadexternal-script_url", {script_url: $scope.url});
 
-				self.port.emit("request-for---list-all-scripts");
+				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 			} else {
 				// Fehler Text anzeigen
 				$scope.error = $scope.lang.empty_userscript_url;
@@ -233,9 +233,9 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUs
 			// Textarea nicht leer ...
 			if ($scope.textarea) {
 				// sende den Userscript Text an das Addon Skript...
-				self.port.emit("new-usi-script_content", {script: $scope.textarea});
+				self.port.emit("USI-BACKEND:new-usi-script_content", {script: $scope.textarea});
 
-				self.port.emit("request-for---list-all-scripts");
+				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 			}
 		};
 
@@ -257,13 +257,13 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUs
 		/**
 		 * Wenn das Userscript schon existiert und überschrieben werden kann
 		 */
-		self.port.on("same-userscript-was-found", function (userscript_infos) {
+		self.port.on("USI-BACKEND:same-userscript-was-found", function (userscript_infos) {
 
 			//wurde gefunden, möchtest du es aktualisieren?")){
 			if (window.confirm($scope.lang.same_userscript_was_found_ask_update_it_1 + userscript_infos.id + $scope.lang.same_userscript_was_found_ask_update_it_2)) {
 				// Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
-				self.port.emit("override-same-userscript", userscript_infos);
-				self.port.emit("request-for---list-all-scripts");
+				self.port.emit("USI-BACKEND:override-same-userscript", userscript_infos);
+				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 			}
 		});
 
