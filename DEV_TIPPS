@@ -19,3 +19,6 @@ REPLACE:	$1
 * Sprache umschalten
 
 about:config -> general.useragent.locale -> de | en
+
+* Bevorzugte Sprachen ermitteln
+require("sdk/l10n/locale").getPreferedLocales()

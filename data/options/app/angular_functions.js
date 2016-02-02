@@ -83,7 +83,6 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			// Anzahl der Userscripts - zählen mittels Object.keys
 			$scope.userscript_count = Object.keys(data).length;
 
-			//			$scope.$emit("USI-FRONTEND:changeNavTitle", "Userscripts (" + $scope.userscript_count + ")" );
 		});
 
 		// Speicherverbrauch anzeigen
@@ -181,12 +180,19 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 
 
 // Userscript bearbeiten
-usiOptions.controller("EditUserScript", ["$scope", "$rootScope", function EditUserScript($scope, $rootScope) {
+usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", function EditUserScript($scope, $rootScope, $http) {
 		// Var init...
-		$scope.lang = self.options.language;
-		$scope.userscript_example = jQuery("#userscript-example").html();
-		$scope.textarea_default_size = jQuery("#script-textarea").css("font-size").split("px")[0];
+		$scope.lang						=	self.options.language;
+		$scope.prefered_locale			=	self.options.PreferedLocales[0];
+		$scope.textarea_default_size	=	jQuery("#script-textarea").css("font-size").split("px")[0];
 		$scope.state = 0;
+
+		// Beispiel Datei laden 
+		// self.options.PreferedLocales[0] erste Bevorzugte Sprache
+		$http.get("example/de-example.user.js").then(function(response){
+//		$http.get("example/" + $scope.prefered_locale + "-example.user.js").then(function(response){
+			$scope.userscript_example = response.data;
+		});
 
 		/**
 		 * Höhe der Textarea an die Fenstergröße anpassen!
