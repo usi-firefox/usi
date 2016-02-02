@@ -21,7 +21,7 @@
 							<!--Alle Userscripts-->
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
-						<a class="list-group-item" ng-click="tab = 'create'" ng-bind="lang.create_new_userscript">
+						<a class="list-group-item" ng-click="tab = 'createOrEdit'" ng-bind="lang.create_new_userscript">
 							<!--Neues Userscirpt erstellen-->
 							<i class="fa fa-chevron-right pull-right"></i>
 						</a>
@@ -87,7 +87,7 @@
 						</div>
 
 						<!--Neues Userscript erstellen / bearbeiten-->
-						<div ng-show="tab === 'create'">
+						<div ng-show="tab === 'createOrEdit'">
 							<edituserscript />
 						</div>
 

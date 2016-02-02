@@ -14,3 +14,8 @@ REPLACE:	//$1
 
 SEARCH:		^\/\/(\"use strict\";)
 REPLACE:	$1 
+
+
+* Sprache umschalten
+
+about:config -> general.useragent.locale -> de | en

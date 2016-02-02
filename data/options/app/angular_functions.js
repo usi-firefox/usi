@@ -70,7 +70,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			$rootScope.$emit("USI-FRONTEND:EditUserscipt_edit", userscript);
 
 			// veranlasse den Tab Wechsel!
-			$scope.$emit("USI-FRONTEND:changeTab", "create");
+			$scope.$emit("USI-FRONTEND:changeTab", "createOrEdit");
 
 		};
 
