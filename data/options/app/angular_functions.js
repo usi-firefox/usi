@@ -183,14 +183,20 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", function EditUserScript($scope, $rootScope, $http) {
 		// Var init...
 		$scope.lang						=	self.options.language;
-		$scope.prefered_locale			=	self.options.PreferedLocales[0];
+		$scope.prefered_locale			=	self.options.PreferedLocales[0]; // setze die Standard Sprache
 		$scope.textarea_default_size	=	jQuery("#script-textarea").css("font-size").split("px")[0];
 		$scope.state = 0;
 
+		// nur wenn die erste 'prefered_locale' -> 'de' ist, ansonsten wird die Englische Version geladen
+		if($scope.prefered_locale === "de"){
+			$scope.load_example_by_prefered_locale = "de";
+		}else{
+			$scope.load_example_by_prefered_locale = "en";
+		}
+
 		// Beispiel Datei laden 
 		// self.options.PreferedLocales[0] erste Bevorzugte Sprache
-		$http.get("example/de-example.user.js").then(function(response){
-//		$http.get("example/" + $scope.prefered_locale + "-example.user.js").then(function(response){
+		$http.get("example/" + $scope.load_example_by_prefered_locale + "-example.user.js").then(function(response){
 			$scope.userscript_example = response.data;
 		});
 

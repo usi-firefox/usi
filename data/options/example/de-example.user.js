@@ -6,6 +6,7 @@
 // @include        *
 //		https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/page-mod#Parameters
 //
+// @clean-include   (true || false) Wenn es > true < ist, bleiben deine @includes von USI unangetastet
 // @info           {weitere Informationen ...}
 // @updateURL      {wenn die Versionsnummer verschieden ist,kann USI dein Userscript aktualisieren}
 // @run-at         (document-end || document-start || document-ready)
