@@ -294,6 +294,9 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		// Schalter richtig positionieren lassen ...
 		$scope.defaulltSize();
 		$scope.setTextareaHeight();
+		
+		// Text Area anpassen bei Größen Änderung
+		jQuery(window).on("resize", $scope.setTextareaHeight);
 
 	}]).directive("edituserscript", function () {
 	return {
