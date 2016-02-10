@@ -118,7 +118,8 @@ function GM_addStyle(css) {
  */
 function GM_registerMenuCommand() {
 }
-function GM_xmlhttpRequest() {
+function GM_xmlhttpRequest(details) {
+	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", details);
 }
 function GM_getResourceText() {
 }
