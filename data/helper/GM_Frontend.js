@@ -119,6 +119,37 @@ function GM_addStyle(css) {
 function GM_registerMenuCommand() {
 }
 function GM_xmlhttpRequest(details) {
+	/**
+	 * Alle Funktionen müssen in Strings gewandelt werden, 
+	 * ansonsten werden Sie nicht an das Backend mit übertragen 
+	 */
+	
+	// Abort
+	if (details.onabort && typeof details.onabort === "function") {
+		details.onabort = details.onabort.toString();
+	}
+	// Error
+	if (details.onerror && typeof details.onerror === "function") {
+		details.onerror = details.onerror.toString();
+	}
+	// Load
+	if (details.onload && typeof details.onload === "function") {
+		details.onload = details.onload.toString();
+	}
+	// Progress
+	if (details.onprogress && typeof details.onprogress === "function") {
+		details.onprogress = details.onprogress.toString();
+	}
+	// ReadyStateChange
+	if (details.onreadystatechange && typeof details.onreadystatechange === "function") {
+		details.onreadystatechange = details.onreadystatechange.toString();
+	}
+	// Timeout
+	if (details.ontimeout && typeof details.ontimeout === "function") {
+		details.ontimeout = details.ontimeout.toString();
+	}
+
+	// Übergabe an die Backend Funktion!
 	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", details);
 }
 function GM_getResourceText() {
