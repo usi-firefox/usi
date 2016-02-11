@@ -118,39 +118,50 @@ function GM_addStyle(css) {
  */
 function GM_registerMenuCommand() {
 }
+
+// Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
+var GM_xmlhttpRequest_counter = 0; 
+
 function GM_xmlhttpRequest(details) {
-	/**
-	 * Alle Funktionen müssen in Strings gewandelt werden, 
-	 * ansonsten werden Sie nicht an das Backend mit übertragen 
-	 */
-	
-	// Abort
-	if (details.onabort && typeof details.onabort === "function") {
-		details.onabort = details.onabort.toString();
-	}
-	// Error
-	if (details.onerror && typeof details.onerror === "function") {
-		details.onerror = details.onerror.toString();
-	}
-	// Load
-	if (details.onload && typeof details.onload === "function") {
-		details.onload = details.onload.toString();
-	}
-	// Progress
-	if (details.onprogress && typeof details.onprogress === "function") {
-		details.onprogress = details.onprogress.toString();
-	}
-	// ReadyStateChange
-	if (details.onreadystatechange && typeof details.onreadystatechange === "function") {
-		details.onreadystatechange = details.onreadystatechange.toString();
-	}
-	// Timeout
-	if (details.ontimeout && typeof details.ontimeout === "function") {
-		details.ontimeout = details.ontimeout.toString();
+	// Counter für "eindeutige" Abfragen erhöhen
+	GM_xmlhttpRequest_counter++;
+
+	// Wrapper Funktion
+	function add_self_port(event_name, counter, func) {
+		self.port.on("GM-FRONTEND-xmlhttpRequest---" + event_name + "-" + counter, func);
 	}
 
+	(function (counter) {
+
+		// Abort
+		if (details.onabort && typeof details.onabort === "function") {
+			add_self_port("abort", counter, details.onabort);
+		}
+		// Error
+		if (details.onerror && typeof details.onerror === "function") {
+			add_self_port("error", counter, details.onerror);
+		}
+		// Load
+		if (details.onload && typeof details.onload === "function") {
+			add_self_port("load", counter, details.onload);
+		}
+		// Progress
+		if (details.onprogress && typeof details.onprogress === "function") {
+			add_self_port("progress", counter, details.onprogress);
+		}
+		// ReadyStateChange
+		if (details.onreadystatechange && typeof details.onreadystatechange === "function") {
+			add_self_port("readystatechange", counter, details.onreadystatechange);
+		}
+		// Timeout
+		if (details.ontimeout && typeof details.ontimeout === "function") {
+			add_self_port("timeout", counter, details.ontimeout);
+		}
+
+	})(GM_xmlhttpRequest_counter);
+
 	// Übergabe an die Backend Funktion!
-	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", details);
+	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", {data: details, counter: GM_xmlhttpRequest_counter});
 }
 function GM_getResourceText() {
 }
@@ -161,7 +172,7 @@ var GM_info = {};
 /**
  * END
  */
-
+ 
 /**
  * GREASEMONKEY Funtkionen --- STOP
  */

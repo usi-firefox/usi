@@ -12,7 +12,8 @@
     "fennec": ">=38.0a1"
   },
   "permissions": {
-    "multiprocess": true
+    "multiprocess": true,
+    "systemXHR":{}
   },
   "preferences": [
 	 {
