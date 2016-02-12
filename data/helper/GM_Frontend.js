@@ -108,16 +108,12 @@ function GM_log(value) {
 
 function GM_addStyle(css) {
 	var elem		=	document.createElement("style");
-	elem.innerHTML	=	css;
+	var css_code	=	document.createTextNode(css);
+	// Textsetzen ohne innerHMTML
+	elem.appendChild(css_code);
 	// in den Head schreiben
 	document.getElementsByTagName("head")[0].appendChild(elem);
 } 
-// Bisher nicht implementiert - Nur Platzhalter
-/**
- * START
- */
-function GM_registerMenuCommand() {
-}
 
 // Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
 var GM_xmlhttpRequest_counter = 0; 
@@ -160,8 +156,18 @@ function GM_xmlhttpRequest(details) {
 
 	})(GM_xmlhttpRequest_counter);
 
+	// OriginUrl hinzufügen, für den Fall eine relativen URL
+	details.originUrl = window.location.origin;
+
 	// Übergabe an die Backend Funktion!
 	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", {data: details, counter: GM_xmlhttpRequest_counter});
+}
+
+// Bisher nicht implementiert - Nur Platzhalter
+/**
+ * START
+ */
+function GM_registerMenuCommand() {
 }
 function GM_getResourceText() {
 }
@@ -172,6 +178,12 @@ var GM_info = {};
 /**
  * END
  */
+ 
+// Schreibt Fehlermeldungen vom Backend
+self.port.on("GM-FRONTEND-ERROR", function (err) {
+	console.log("USI: In function -> " + err.func + " , reason -> " + err.reason + " , object ->");
+	console.log(err.object);
+});
  
 /**
  * GREASEMONKEY Funtkionen --- STOP
