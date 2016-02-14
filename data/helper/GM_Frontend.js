@@ -158,12 +158,18 @@ function GM_xmlhttpRequest(details) {
 	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", {data: details, counter: GM_xmlhttpRequest_counter});
 }
 
+function GM_registerMenuCommand(caption, commandFunc, accessKey) {
+	self.port.emit("USI-BACKEND:GM_registerMenuCommand", 
+		{caption: caption,
+			// Wandelt die Funktion in einen String um, ansonsten wird Sie einfach weggeworfen :/ ... 
+		commandFunc: commandFunc.toString(), 
+		accessKey: accessKey}
+	);
+}
 // Bisher nicht implementiert - Nur Platzhalter
 /**
  * START
  */
-function GM_registerMenuCommand() {
-}
 function GM_getResourceText() {
 }
 function GM_getResourceURL() {
