@@ -123,40 +123,35 @@ function GM_xmlhttpRequest(details) {
 	GM_xmlhttpRequest_counter++;
 
 	// Wrapper Funktion
-	function add_self_port(event_name, counter, func) {
-		self.port.on("GM-FRONTEND-xmlhttpRequest---" + event_name + "-" + counter, func);
+	function if_function_add_to_self_port(func, event_name, counter) {
+		if (func && typeof func === "function") {
+			self.port.on("GM-FRONTEND-xmlhttpRequest---" + event_name + "-" + counter, func);
+		}
 	}
 
+	// Wrapper damit definitiv kein Closure entsteht
 	(function (counter) {
 
 		// Abort
-		if (details.onabort && typeof details.onabort === "function") {
-			add_self_port("abort", counter, details.onabort);
-		}
+		if_function_add_to_self_port(details.onabort,			"abort", counter);
 		// Error
-		if (details.onerror && typeof details.onerror === "function") {
-			add_self_port("error", counter, details.onerror);
-		}
+		if_function_add_to_self_port(details.onerror,			"error", counter);
 		// Load
-		if (details.onload && typeof details.onload === "function") {
-			add_self_port("load", counter, details.onload);
-		}
+		if_function_add_to_self_port(details.onload,			"load", counter);
+		// Loadstart
+		if_function_add_to_self_port(details.onloadstart,		"loadstart", counter);
+		// Loadend
+		if_function_add_to_self_port(details.loadend,			"loadend", counter);
 		// Progress
-		if (details.onprogress && typeof details.onprogress === "function") {
-			add_self_port("progress", counter, details.onprogress);
-		}
+		if_function_add_to_self_port(details.onprogress,		"progress", counter);
 		// ReadyStateChange
-		if (details.onreadystatechange && typeof details.onreadystatechange === "function") {
-			add_self_port("readystatechange", counter, details.onreadystatechange);
-		}
+		if_function_add_to_self_port(details.onreadystatechange,"readystatechange", counter);
 		// Timeout
-		if (details.ontimeout && typeof details.ontimeout === "function") {
-			add_self_port("timeout", counter, details.ontimeout);
-		}
+		if_function_add_to_self_port(details.ontimeout,			"timeout", counter);
 
 	})(GM_xmlhttpRequest_counter);
 
-	// OriginUrl hinzufügen, für den Fall eine relativen URL
+	// OriginUrl hinzufügen, für den Fall einer relativen URL
 	details.originUrl = window.location.origin;
 
 	// Übergabe an die Backend Funktion!
@@ -181,8 +176,10 @@ var GM_info = {};
  
 // Schreibt Fehlermeldungen vom Backend
 self.port.on("GM-FRONTEND-ERROR", function (err) {
-	console.log("USI: In function -> " + err.func + " , reason -> " + err.reason + " , object ->");
-	console.log(err.object);
+	console.log("USI: In function -> " + err.func);
+	console.log("USI: reason -> " + err.reason);
+	console.log("USI: object -> " + err.object);
+	console.log("############");
 });
  
 /**
