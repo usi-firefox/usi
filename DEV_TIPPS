@@ -1,3 +1,9 @@
+* mobile-angular-ui und angularjs hinzugefügt
+* https://github.com/mcasimir/mobile-angular-ui
+
+
+* C:\Windows\System32\cmd.exe /c {BATCH Datei}
+
 * Strict Mode deaktivieren
 
 SEARCH:		^(\"use strict\";)
@@ -8,3 +14,11 @@ REPLACE:	//$1
 
 SEARCH:		^\/\/(\"use strict\";)
 REPLACE:	$1 
+
+
+* Sprache umschalten
+
+about:config -> general.useragent.locale -> de | en
+
+* Bevorzugte Sprachen ermitteln
+require("sdk/l10n/locale").getPreferedLocales()

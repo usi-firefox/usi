@@ -1,0 +1,58 @@
+<div ng-controller="ListUserScripts">
+	<div ng-bind="currentMemoryUsage"></div>
+	<hr />
+	<h3 ng-if="userscript_count > 0">Userscripts (<span ng-bind="userscript_count"></span>) :</h3>
+	<h3 ng-if="userscript_count == 0"><span ng-bind="lang.no_userscript_there"></span></h3>
+	<div class="panel-group" ui-state="ListScriptAccordion" ui-default="0">		
+
+		<div class="panel panel-default" ng-repeat="userscript in all_userscripts track by $index">
+
+			<!--Panel Kopf-->
+			<div class="panel-heading" ui-set="{'ListScriptAccordion': $index}">        
+				<h4 class="panel-title">
+					Index: {{$index}} | {{userscript.settings.name}} | {{userscript.settings.author}} | {{userscript.settings.version}}
+				</h4>
+			</div>
+
+			<!--Panel Inhalt-->
+			<div>
+				<!--<div ui-if="ListScriptAccordion == {{$index}}">-->
+				<div class="panel-body">
+
+					<label>usi-id: </label>{{userscript.id}}<br />
+					<label>Name: </label>{{userscript.settings.name}}<br />
+					<label>Author: </label>{{userscript.settings.author}}<br />
+					<label>Version: </label>{{userscript.settings.version}}<br />
+					<label ng-bind="lang.description"></label>: {{userscript.settings.description}}<br />
+
+					<!--Userscript aktivieren oder deaktivieren-->
+					<label>
+						<span ng-show="userscript.deactivated" ng-bind="lang.deactivated"></span>
+						<span ng-show="!userscript.deactivated" ng-bind="lang.activated"></span>
+					</label>
+					<ui-switch ng-model="userscript.deactivated" ng-change="toggleActivation(userscript)"></ui-switch>
+
+					<div>
+						<label>Includes: </label><ol ng-bind="userscript.settings.include"></ol>
+					</div>
+
+					<!--Buttons-->
+					<div class="row">
+						<button class="btn btn-default col-xs-3 col-xs-push-1" ng-click="showUserscriptContent = !showUserscriptContent">
+							<span ng-show="showUserscriptContent" ng-bind="lang.hide"></span>
+							<span ng-show="!showUserscriptContent" ng-bind="lang.show"></span>
+						</button>
+						<button class="btn btn-info col-xs-3 col-xs-push-2" ng-click="edit(userscript)" ng-bind="lang.change"></button>
+						<button class="btn btn-danger col-xs-3 col-xs-push-3" ng-click="delete(userscript)" ng-bind="lang.delete_x"></button>
+					</div>
+					<!--Userscript Inhalt-->
+					<div ng-show="showUserscriptContent">
+						<hr />
+						<label>Userscript Content: </label>
+						<pre class="border-black" >{{userscript.userscript}}</pre>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

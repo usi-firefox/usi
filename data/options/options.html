@@ -1,94 +1,119 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title data-l10n-id="usi_options">usi Optionen</title>
+		<title ng-bind="lang.usi_options">USI Optionen</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	</head>
-	<body>
-		<fieldset>	
-			<div id="currentMemoryUsage">
-			</div>
-			<div>
-				<h2>Userscripts (<span id="currentCountUserscripts"></span>) :</h2>
-				<div id="loadedUserscripts"></div>
-				<div id="loadedUserscripts_template" style="display: none;">
-					<div>usi-id: ###id###<br />
-						Name: ###settings.name###<br />
-						Author: ###settings.author###<br />
-						Version: ###settings.version###<br />
-						<span data-l10n-id="description" >Beschreibung</span>: ###settings.description###<br />
-						<span data-l10n-id="deactivated_userscript" >Deaktiviertes Userscript</span>: ###deactivated###</div>
-					<div>Includes: <ol>###settings.include###</ol></div>
-					<div style="display: none;" id="userscript-###id###">Userscript Content: 
-						<pre class="border-black" >###userscript###</pre>
+	<body ng-app="usiOptions" ng-controller="Overlay">
+
+		<!-- Sidebar -->
+		<div class="sidebar sidebar-left">
+			<div class="scrollable">
+				<h1 class="scrollable-header app-name">USI - ({{version}})</h1>  
+				<div class="scrollable-content">
+					<div class="list-group" ui-turn-off='uiSidebarLeft'>
+						<a class="list-group-item" ng-click="tab = 'overview'" ng-bind="lang.overview">
+							<!--Überblick-->
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+						<a class="list-group-item" ng-click="tab = 'allScripts'" ng-bind="lang.all_userscripts">
+							<!--Alle Userscripts-->
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+						<a class="list-group-item" ng-click="tab = 'createOrEdit'" ng-bind="lang.create_new_userscript">
+							<!--Neues Userscirpt erstellen-->
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+						<a class="list-group-item" ng-click="tab = 'loadExternal'" ng-bind="lang.userscript_after_load">
+							<!--Userscirpt nachladen-->
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
+						<a class="list-group-item" >
+							<!--Trennzeichen-->
+						</a>
+						<a class="list-group-item" ng-click="tab = 'options'" ng-bind="lang.loadOptions_title">
+							Optionen
+							<i class="fa fa-chevron-right pull-right"></i>
+						</a>
 					</div>
 				</div>
 			</div>
-		</fieldset>
-		<fieldset>
-			<div><h2 data-l10n-id="add_new_userscript" >Füge ein neues Userscript hinzu!</h2></div>
-			<div id="option1">
-				<h3 data-l10n-id="load_userscript_by_url" >1. Lade ein Userscript mithilfe einer URL</h3>
-				<button name="new-script-url-button" id="new-script-url-button" >Userscript <span data-l10n-id="after_load" >nachladen</span></button>
-				<br />
-				<label for="new-script-url" data-l10n-id="load_userscript_by_url_label" >Neues Userscript laden (URL):</label>
-				<input type="url" name="new-script-url" placeholder="http://webseite.de/userscript.user.js" id="new-script-url" size="60" />
-				<br />
-			</div>
-			<div id="option2">
-				<h3 data-l10n-id="load_userscript_by_textarea" >2. Lade ein Userscript direkt aus diesem Textfeld</h3>
-				<button name="load-example-textarea-button" id="load-example-textarea-button" >Userscript <span data-l10n-id="load_example">Beispiel laden</span></button>
-				<button name="clear-textarea-button" id="clear-textarea-button" data-l10n-id="clear_textarea" >Textfeld leeren</button>
-				<br />
-				Textarea Zoom:
-				<input type="range" id="textarea-size" min="10" max="26" step="0.5" value="18" />
-				<!--
-				<button id="bigger-textarea-button" >+</button>
-				<button id="smaller-textarea-button" >-</button>
-				-->
-				<button id="default-textarea-button" >Standard</button>
-				<textarea id="new-script-textarea" rows="30"  cols="64" placeholder="User Script eintragen"></textarea>
-				<textarea id="example-textarea" rows="30"  cols="64" placeholder="User Script eintragen" style="display: none;">// ==UserScript==
-// @name           {Userscript Name}
-// @namespace      {deine Webseite?!}
-// @author         {Dein Name}
-// @description    {Userscript Beschreibung}
-// @include        *
-//		Wenn dein Userscript auf allen Seiten ausgeführt werden soll: *
-//		Bei einem Include, kannst du auch mehrere * als Wildcard nutzen
-//		um es als regulären Ausdruck zu verwenden,
-//		allerdings muss dann der gesamte Ausdruck passen!
-//		zum Beispiel: *.beliebige-webseite.de* 
-//		Ansonsten muss es so aussehen: www.beliebige-webseite.de
-// @info           {weitere Informationen ...}
-// @grant          {erbitte Zugriff auf extra Funktionen}
-// @updateURL      {wenn die Versionsnummer verschieden ist, 
-//		USI dein Userscript aktualisieren}
-// @run-at         (document-end || document-start || document-ready)
-// @include-jquery (true || false)
-// @use-greasemonkey (true || false)
-// @version        1.0.0
-// ==/UserScript==
-
-// ACHTUNG: bitte beachte, dass ein neues Userscript sofort eingefügt wird.
-// Dies ist nur ein Beispiel damit du siehst, dass USI funktioniert
-
-document.addEventListener("click", function(){
-	alert("Du hast soeben geklickt!");
-});</textarea>
-                                
-		<button name="new-script-textarea-button" id="new-script-textarea-button" data-l10n-id="save_userscript">Userscript speichern</button>
-
-			</div>
-		</fieldset>
-		<div id="option3">
-			<h3 data-l10n-id="delete_all_userscripts" >Alle Userscripts entfernen</h3>
-			<button class="delete" id="deleteAll" data-l10n-id="revert_all" >-alles zurücksetzen-</button>
 		</div>
-		<div id="option4">
-			<h3 data-l10n-id="check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
-			<button id="checkForUserscriptUpdates" data-l10n-id="check_now" >-jetzt prüfen-</button>
-		</div>
+		<!-- Sidebar -->
+
+		<div class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')">
+			<!-- Top Navbar -->
+			<div class="navbar navbar-app navbar-absolute-top">
+				<div class="navbar-brand navbar-brand-center" ng-bind="nav_title">
+				</div>
+				<div class="btn-group pull-left">
+					<div class="btn sidebar-toggle" ui-toggle='uiSidebarLeft'>
+						<i class="fa fa-bars" ></i>
+						<span ng-bind="lang.menu" >Menü</span>
+					</div>
+				</div>
+			</div>
+			<!-- Top Navbar -->
+
+			<!-- App body -->
+			<div class='app-body'>
+				<div class='app-content'>
+
+					<div class="scrollable-content section">
+						<div ng-show="tab === 'overview'">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title" ng-bind="lang.overview" >Überblick</h3>
+								</div>
+								<div class="panel-body" ng-bind="lang.overview_description" >
+									Die Optionen sind nun unterteilt in mehrere Bereiche,
+									falls du deine geladenen Userscripte einsehen möchtest gehe auf den Bereich "Alle Userscripts"
+								</div>
+							</div>
+						</div>
+
+						<!--Alle Userscripte auflisten-->
+						<div ng-show="tab === 'allScripts'">
+
+							<!--Directive für die Auflistung der Userscripte laden-->
+							<listuserscripts />
+						</div>
+
+						<!--Userscript nachladen-->
+						<div ng-show="tab === 'loadExternal'">
+							<loadexternaluserscript />
+						</div>
+
+						<!--Neues Userscript erstellen / bearbeiten-->
+						<div ng-show="tab === 'createOrEdit'">
+							<edituserscript />
+						</div>
+
+						<!--Options Block-->
+						<div ng-show="tab === 'options'">
+							<div ng-controller="ExtraOptionsForUSI">
+								<div class="container" >
+									<h3 ng-bind="lang.delete_all_userscripts" >Alle Userscripts entfernen</h3>
+									<button class="btn btn-danger col-xs-3" ng-click="deleteAll()"
+											ng-bind="lang.revert_all" >-alles zurücksetzen-</button>
+								</div>
+								<hr />
+								<div class="container" >
+									<h3 ng-bind="lang.check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
+									<button ng-click="checkForUpdates()" 
+											class="btn btn-primary col-xs-3" ng-bind="lang.check_now" >-jetzt prüfen-</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- App body -->
+		</div><!-- ~ .app -->
+
+		<!-- Modals and Overlays -->
+		<!--<div ui-yield-to="modals"></div>-->
+
 	</body>
 </html>

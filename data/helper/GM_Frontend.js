@@ -64,7 +64,7 @@ function GM_setValue(name, value) {
 	set_123141482457923434792(script_localstorage);
 
 	// Im Extension Speichern sichern!
-	self.port.emit("GM_setValue", {name: name, value: value});
+	self.port.emit("USI-BACKEND:GM_setValue", {name: name, value: value});
 }
 
 function GM_deleteValue(name) {
@@ -76,7 +76,7 @@ function GM_deleteValue(name) {
 	set_123141482457923434792(script_localstorage);
 
 	// Variable löschen
-	self.port.emit("GM_deleteValue", {name: name});
+	self.port.emit("USI-BACKEND:GM_deleteValue", {name: name});
 } 
 
 function GM_listValues() {
@@ -90,11 +90,11 @@ function GM_listValues() {
 }
 
 function GM_setClipboard(text) {
-	self.port.emit("GM_setClipboard", text);
+	self.port.emit("USI-BACKEND:GM_setClipboard", text);
 }
 
 function GM_openInTab(url, open_in_background) {
-	self.port.emit("GM_openInTab", {url: url, open_in_background: open_in_background });
+	self.port.emit("USI-BACKEND:GM_openInTab", {url: url, open_in_background: open_in_background });
 }
   
 function GM_log(value) {
@@ -108,18 +108,68 @@ function GM_log(value) {
 
 function GM_addStyle(css) {
 	var elem		=	document.createElement("style");
-	elem.innerHTML	=	css;
+	var css_code	=	document.createTextNode(css);
+	// Textsetzen ohne innerHMTML
+	elem.appendChild(css_code);
 	// in den Head schreiben
 	document.getElementsByTagName("head")[0].appendChild(elem);
 } 
+
+// Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
+var GM_xmlhttpRequest_counter = 0; 
+
+function GM_xmlhttpRequest(details) {
+	// Counter für "eindeutige" Abfragen erhöhen
+	GM_xmlhttpRequest_counter++;
+
+	// Wrapper Funktion
+	function if_function_add_to_self_port(func, event_name, counter) {
+		if (func && typeof func === "function") {
+			self.port.on("GM-FRONTEND-xmlhttpRequest---" + event_name + "-" + counter, func);
+		}
+	}
+
+	// Wrapper damit definitiv kein Closure entsteht
+	(function (counter) {
+
+		// Abort
+		if_function_add_to_self_port(details.onabort,			"abort", counter);
+		// Error
+		if_function_add_to_self_port(details.onerror,			"error", counter);
+		// Load
+		if_function_add_to_self_port(details.onload,			"load", counter);
+		// Loadstart
+		if_function_add_to_self_port(details.onloadstart,		"loadstart", counter);
+		// Loadend
+		if_function_add_to_self_port(details.loadend,			"loadend", counter);
+		// Progress
+		if_function_add_to_self_port(details.onprogress,		"progress", counter);
+		// ReadyStateChange
+		if_function_add_to_self_port(details.onreadystatechange,"readystatechange", counter);
+		// Timeout
+		if_function_add_to_self_port(details.ontimeout,			"timeout", counter);
+
+	})(GM_xmlhttpRequest_counter);
+
+	// OriginUrl hinzufügen, für den Fall einer relativen URL
+	details.originUrl = window.location.origin;
+
+	// Übergabe an die Backend Funktion!
+	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", {data: details, counter: GM_xmlhttpRequest_counter});
+}
+
+function GM_registerMenuCommand(caption, commandFunc, accessKey) {
+	self.port.emit("USI-BACKEND:GM_registerMenuCommand", 
+		{caption: caption,
+			// Wandelt die Funktion in einen String um, ansonsten wird Sie einfach weggeworfen :/ ... 
+		commandFunc: commandFunc.toString(), 
+		accessKey: accessKey}
+	);
+}
 // Bisher nicht implementiert - Nur Platzhalter
 /**
  * START
  */
-function GM_registerMenuCommand() {
-}
-function GM_xmlhttpRequest() {
-}
 function GM_getResourceText() {
 }
 function GM_getResourceURL() {
@@ -129,7 +179,15 @@ var GM_info = {};
 /**
  * END
  */
-
+ 
+// Schreibt Fehlermeldungen vom Backend
+self.port.on("GM-FRONTEND-ERROR", function (err) {
+	console.log("USI: In function -> " + err.func);
+	console.log("USI: reason -> " + err.reason);
+	console.log("USI: object -> " + err.object);
+	console.log("############");
+});
+ 
 /**
  * GREASEMONKEY Funtkionen --- STOP
  */

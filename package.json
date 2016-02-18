@@ -5,11 +5,15 @@
   "description": "nutze UserScripts auf deinem Firefox für Android!",
   "author": "usi-dev",
   "license": "LGPL-2.1",
-  "version": "0.1.33-b",
+  "version": "0.2.3-a",
   "main" : "lib/main.js",
   "engines": {
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"
+  },
+  "permissions": {
+    "multiprocess": true,
+    "systemXHR":{}
   },
   "preferences": [
 	 {

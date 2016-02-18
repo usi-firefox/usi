@@ -1,0 +1,42 @@
+<div ng-controller="EditUserScript">
+	<h3 ng-show="state === 'edit'" ><span ng-bind="lang.edit_userscript_with_id"> --- </span> : {{script_id}}</h3>
+
+	<!--Userscript Eingabe-->
+	<textarea ng-model="textarea" 
+			  style="white-space: pre; height: 80%;" 
+			  class="col-xs-12" id="script-textarea" rows="30"
+			  cols="64" placeholder="// ==UserScript== ..."></textarea>
+
+	<!--Userscript Beispiel-->
+	<div class="container">
+		<div class="row">
+			<!--Userscript speichern-->
+			<button class="btn btn-primary btn-block" 
+					ng-click="save()" 
+					ng-bind="lang.save_userscript">Userscript speichern</button>
+		</div>
+		<hr />
+		<div class="row">
+			<!--Standard laden oder leeren-->
+			<button class="btn btn-default col-xs-6" 
+					ng-click="textarea = userscript_example;
+								state = 0" >
+				Userscript <span ng-bind="lang.load_example">Beispiel laden</span>
+			</button>
+			<button class="btn btn-warning col-xs-6"
+					ng-click="textarea = null;
+								state = 0"
+					ng-bind="lang.clear_textarea" >Textfeld leeren</button>
+		</div>
+		<hr />
+		<div class="row">
+			<!--Textarea Zoom einstellen-->
+			<div class="col-xs-2">
+				<label>Zoom:</label>
+			</div>
+			<input type="range" ng-change="changeSize()" class="col-xs-8"
+				   ng-model="textarea_size" style="width: 240px" min="10" max="26" step="0.5" value="14" />
+			<button class="btn btn-default col-xs-2" ng-click="defaulltSize()" ><i class="fa fa-undo"></i></button>
+		</div>
+	</div>
+</div>

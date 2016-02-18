@@ -3,7 +3,10 @@ batch
 nbproject
 .hg
 .jpmignore
+.eslintrc.json
 *.xpi
 *.zip
 package_BAK.json
 run.bat
+options_fennec.xul
+DEV_TIPPS
