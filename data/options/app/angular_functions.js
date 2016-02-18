@@ -100,7 +100,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 	}]).directive("listuserscripts", function () {
 	return {
-		templateUrl: "directive/list_userscripts.html"
+		templateUrl: "directive/userscripts/list.html"
 	};
 });
 
@@ -173,7 +173,7 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 
 	}]).directive("loadexternaluserscript", function () {
 	return {
-		templateUrl: "directive/load_external_userscript.html"
+		templateUrl: "directive/userscripts/load_external.html"
 	};
 });
 
@@ -300,6 +300,6 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 
 	}]).directive("edituserscript", function () {
 	return {
-		templateUrl: "directive/edit_userscript.html"
+		templateUrl: "directive/userscripts/edit.html"
 	};
 }); 
