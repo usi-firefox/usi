@@ -2,3 +2,4 @@ syntax: glob
 *.xpi
 *.7z
 nbproject/
+test/
