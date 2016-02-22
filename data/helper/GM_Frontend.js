@@ -184,7 +184,8 @@ var GM_info = {};
 self.port.on("GM-FRONTEND-ERROR", function (err) {
 	console.log("USI: In function -> " + err.func);
 	console.log("USI: reason -> " + err.reason);
-	console.log("USI: object -> " + err.object);
+	console.log("USI: object -> ");
+	console.log(err.object);
 	console.log("############");
 });
  
