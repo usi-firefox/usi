@@ -3,7 +3,7 @@
 // @namespace      {e.g. your website}
 // @author         {your name}
 // @description    {Userscript description}
-// @include        *			
+// @include        *
 //		https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/util_match-pattern
 //		
 // @clean-include       (true || false)
