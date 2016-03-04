@@ -165,6 +165,13 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 				self.port.emit("USI-BACKEND:loadexternal-script_url", {script_url: $scope.url});
 
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
+				
+				self.port.on("USI-BACKEND:external-script-is-now-loaded", function(status){
+					if(status === true){
+						// Nachgeladenes Userscript ist geladen
+						alert($scope.lang.external_script_is_now_loaded + " -> " + $scope.url);
+					}
+				});
 			} else {
 				// Fehler Text anzeigen
 				$scope.error = $scope.lang.empty_userscript_url;
