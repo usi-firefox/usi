@@ -34,6 +34,9 @@
 
 					<div>
 						<label>Includes: </label><ol ng-bind="userscript.settings.include"></ol>
+						<label>Test Includes URL:</label>
+						<input type="url" ng-model="userscript.testurl" placeholder="http://www.example.com/" ng-change="testUrlMatch(userscript)"/>
+						<i ng-init="userscript.testurlstate = false" id="testurlstate-{{userscript.id}}" class="fa fa-close"></i>
 					</div>
 
 					<!--Buttons-->

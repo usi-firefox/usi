@@ -73,6 +73,24 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			$scope.$emit("USI-FRONTEND:changeTab", "createOrEdit");
 
 		};
+		
+		// testet die eingebene URL ob ein Include darauf greifen(matchen) würde
+		$scope.testUrlMatch = function (userscript){
+			// Backend anfragen
+			self.port.emit("USI-BACKEND:test-url-match", {url: userscript.testurl, id: userscript.id});
+			
+			// Ergebnis zustand zurückschreiben
+			self.port.once("USI-BACKEND:test-url-match-" + userscript.id, function(state){
+				// Treffer => true
+				if(userscript.testurlstate !== state){
+					// Zustand sichern
+					userscript.testurlstate = state;
+
+					// Symbol ändern
+					jQuery("#testurlstate-" + userscript.id).toggleClass("fa-close").toggleClass("fa-check");
+				}
+			});
+		};
 
 		// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 		self.port.on("USI-BACKEND:list-all-scripts", function (data) {
@@ -166,7 +184,7 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 				
-				self.port.on("USI-BACKEND:external-script-is-now-loaded", function(status){
+				self.port.once("USI-BACKEND:external-script-is-now-loaded", function(status){
 					if(status === true){
 						// Nachgeladenes Userscript ist geladen
 						alert($scope.lang.external_script_is_now_loaded + " -> " + $scope.url);
