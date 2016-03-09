@@ -9,6 +9,10 @@ var usiOptions = angular.module('usiOptions', ["mobile-angular-ui", "mobile-angu
  ************************* Übersetzungen holen **************************
  ************************************************************************/
 
+self.port.on("USI-BACKEND:get-alert", function(text){
+	window.alert(text);
+});
+
 // Overlay Controller
 usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scope, $rootScope) {
 		// Initiale Werte

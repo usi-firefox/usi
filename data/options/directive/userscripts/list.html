@@ -33,9 +33,18 @@
 					<ui-switch ng-model="userscript.deactivated" ng-change="toggleActivation(userscript)"></ui-switch>
 
 					<div>
-						<label>Includes: </label><ol ng-bind="userscript.settings.include"></ol>
+						<div ng-show="userscript.require_scripts">
+							<label>Require Scripts: </label>
+							<ol>
+								<li ng-repeat="require_script in userscript.require_scripts" ng-bind="require_script.url"></li>
+							</ol>
+						</div>
+						<label>Includes: </label>
+						<ol>
+							<li ng-repeat="oneinclude in userscript.settings.include" ng-bind="oneinclude"></li>
+						</ol>
 						<label>Test Includes URL:</label>
-						<input type="url" ng-model="userscript.testurl" placeholder="http://www.example.com/" ng-change="testUrlMatch(userscript)"/>
+						<input type="url" size="45" ng-model="userscript.testurl" placeholder="http://www.example.com/" ng-change="testUrlMatch(userscript)"/>
 						<i ng-init="userscript.testurlstate = false" id="testurlstate-{{userscript.id}}" class="fa fa-close"></i>
 					</div>
 
