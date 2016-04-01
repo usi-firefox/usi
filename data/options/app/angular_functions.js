@@ -150,6 +150,36 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 		$scope.checkForUpdates = function () {
 			self.port.emit("USI-BACKEND:check-for-userscript-updates");
 		};
+                
+		// exportiere die Skripte
+		$scope.exportAll = function () {
+                    
+                    var complete_export;
+                    if($scope.complete_export === true){
+                        complete_export = "TRUE";
+                    }else{
+                        complete_export = "FALSE";
+                    }
+                    
+                    self.port.emit("USI-BACKEND:get-all-userscripts-for-export", complete_export);
+		};
+                
+                self.port.on("USI-BACKEND:get-all-userscripts-for-export-done", function(result_export_data){
+                    
+                    var link = document.createElement('a');
+                    if($scope.complete_export === true){
+                        link.download = "usi-export.usi.json";
+                        link.href = 'data:text/plain;base64,' + btoa(result_export_data);
+                    }else{
+                        link.download = "usi-export.usi.js";
+                        link.href = 'data:application/octet-stream;base64,' + btoa(result_export_data);
+                    }
+                    
+                    // Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
 
 		// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
 		self.port.on("USI-BACKEND:update-for-userscript-available", function (userscript_infos) {

@@ -104,6 +104,18 @@
 									<button ng-click="checkForUpdates()" 
 											class="btn btn-primary col-xs-3" ng-bind="lang.check_now" >-jetzt prüfen-</button>
 								</div>
+								<hr />
+								<div class="container" >
+                                                                    <h3 ng-bind="lang.export_all_userscripts" >Alle Userscripts exportieren</h3>
+                                                                    <label>
+                                                                        <span ng-bind="lang.complete_export">Kompletter Export</span>
+                                                                        (<span ng-show="!complete_export" ng-bind="lang.no"></span><span ng-show="complete_export" ng-bind="lang.yes"></span>)
+                                                                    </label>
+                                                                    <ui-switch ng-model="complete_export"></ui-switch>
+                                                                    <br />
+                                                                    <button ng-click="exportAll()" 
+                                                                            class="btn btn-primary col-xs-3" ng-bind="lang.export_all_now" >-jetzt exportieren-</button>
+                                                                </div>
 							</div>
 						</div>
 					</div>
