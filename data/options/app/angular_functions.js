@@ -13,6 +13,37 @@ self.port.on("USI-BACKEND:get-alert", function(text){
 	window.alert(text);
 });
 
+/**
+ * erzeugt einen Download (Datei Speichern Dialog)
+ * @param string data
+ * @param string type
+ * @param string filename
+ * @returns void
+ */
+function createDownload(data, type, filename){
+	var link = document.createElement('a');
+	// Dateinamen angeben
+	if(!basic_helper.empty(filename)){
+		link.download = filename;
+	}
+	
+	// data type festlegen
+	link.href = 'data:';
+	if(!basic_helper.empty(type)){
+		link.href += type;
+	}else{
+		link.href += 'text/plain';
+	}
+	
+	// Datenanhängen
+	link.href += ';base64,' + btoa(data);
+
+	// Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
+
 // Overlay Controller
 usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scope, $rootScope) {
 		// Initiale Werte
@@ -48,6 +79,11 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		$scope.toggleActivation = function (userscript) {
 			// aktiviere oder deaktiviere dieses Userscript!
 			self.port.emit("USI-BACKEND:toggle-userscript-state", userscript.id);
+		};
+
+		$scope.export = function (userscript_id) {
+			// aktiviere oder deaktiviere dieses Userscript!
+			self.port.emit("USI-BACKEND:export-userscript", userscript_id);
 		};
 
 		/**
@@ -96,6 +132,11 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			});
 		};
 
+		// Speichert ein Userscript!
+		self.port.on("USI-BACKEND:export-userscript-done", function (result) {
+			createDownload(result.userscript, "text/plain", encodeURI(result.filename + ".user.js"));
+		});
+		
 		// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 		self.port.on("USI-BACKEND:list-all-scripts", function (data) {
 
@@ -163,21 +204,16 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 			self.port.emit("USI-BACKEND:get-all-userscripts-for-export", complete_export);
 		};
 
+		/** 
+		 * Erzeugt ein Download Fenster für den Fertigen Export
+		 */
 		self.port.on("USI-BACKEND:get-all-userscripts-for-export-done", function (result_export_data) {
 
-			var link = document.createElement('a');
 			if (typeof $scope.complete_export !== "undefined" && $scope.complete_export === true) {
-				link.download = "usi-export.usi.json";
-				link.href = 'data:text/plain;base64,' + btoa(result_export_data);
+				createDownload(result_export_data, "text/plain", "usi-export.usi.json");
 			} else {
-				link.download = "usi-export.usi.js";
-				link.href = 'data:application/octet-stream;base64,' + btoa(result_export_data);
+				createDownload(result_export_data, "application/octet-stream", "usi-export.usi.js");
 			}
-
-			// Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
 		});
 
 		// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...

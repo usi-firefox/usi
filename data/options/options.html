@@ -95,27 +95,27 @@
 							<div ng-controller="ExtraOptionsForUSI">
 								<div class="container" >
 									<h3 ng-bind="lang.delete_all_userscripts" >Alle Userscripts entfernen</h3>
-									<button class="btn btn-danger col-xs-3" ng-click="deleteAll()"
+									<button class="btn btn-danger" ng-click="deleteAll()"
 											ng-bind="lang.revert_all" >-alles zurücksetzen-</button>
 								</div>
 								<hr />
 								<div class="container" >
 									<h3 ng-bind="lang.check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
 									<button ng-click="checkForUpdates()" 
-											class="btn btn-primary col-xs-3" ng-bind="lang.check_now" >-jetzt prüfen-</button>
+											class="btn btn-primary" ng-bind="lang.check_now" >-jetzt prüfen-</button>
 								</div>
 								<hr />
 								<div class="container" >
-                                                                    <h3 ng-bind="lang.export_all_userscripts" >Alle Userscripts exportieren</h3>
-                                                                    <label>
-                                                                        <span ng-bind="lang.complete_export">Kompletter Export</span>
-                                                                        (<span ng-show="!complete_export" ng-bind="lang.no"></span><span ng-show="complete_export" ng-bind="lang.yes"></span>)
-                                                                    </label>
-                                                                    <ui-switch ng-model="complete_export"></ui-switch>
-                                                                    <br />
-                                                                    <button ng-click="exportAll()" 
-                                                                            class="btn btn-primary col-xs-3" ng-bind="lang.export_all_now" >-jetzt exportieren-</button>
-                                                                </div>
+									<h3 ng-bind="lang.export_all_userscripts" >Alle Userscripts exportieren</h3>
+									<label>
+										<span ng-bind="lang.complete_export">Kompletter Export</span>
+										(<span ng-show="!complete_export" ng-bind="lang.no"></span><span ng-show="complete_export" ng-bind="lang.yes"></span>)
+									</label>
+									<ui-switch ng-model="complete_export"></ui-switch>
+									<br />
+									<button ng-click="exportAll()" 
+											class="btn btn-primary" ng-bind="lang.export_all_now" >-jetzt exportieren-</button>
+								</div>
 							</div>
 						</div>
 					</div>
