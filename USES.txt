@@ -3,3 +3,4 @@ Other Projects & Software used by USI
 * jQuery 2.2.1 (https://github.com/jquery/jquery)
 * angularJS 1.4.9 (https://github.com/angular/angular.js)
 * mobile-angular-ui 0.5 (https://github.com/mcasimir/mobile-angular-ui/)
+* highlight.js 9.2.0 (https://github.com/isagalaev/highlight.js)

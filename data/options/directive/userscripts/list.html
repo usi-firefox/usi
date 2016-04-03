@@ -52,7 +52,7 @@
 
 					<!--Buttons-->
 					<div class="row">
-						<button class="btn btn-default col-xs-3 col-xs-push-1" ng-click="showUserscriptContent = !showUserscriptContent">
+						<button class="btn btn-default col-xs-3 col-xs-push-1" ng-click="showUserscriptContent = !showUserscriptContent;highlightCode()">
 							<span ng-show="showUserscriptContent" ng-bind="lang.hide"></span>
 							<span ng-show="!showUserscriptContent" ng-bind="lang.show"></span>
 						</button>
@@ -63,7 +63,7 @@
 					<div ng-show="showUserscriptContent">
 						<hr />
 						<label>Userscript Content: </label>
-						<pre class="border-black" >{{userscript.userscript}}</pre>
+						<pre class="border-black" ><code class="lang-js">{{userscript.userscript}}</code></pre>
 					</div>
 				</div>
 			</div>

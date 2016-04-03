@@ -148,6 +148,14 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 		});
 
+		// Code highlight
+		$scope.highlightCode = function(){
+			// highlight ausführen!
+			jQuery("code").each(function (i, block) {
+				hljs.highlightBlock(block);
+			});
+		};
+
 		// Speicherverbrauch anzeigen
 		self.port.on("USI-BACKEND:storage-quota", function (quota) {
 			var rounded_quota = Math.round(quota * 100) / 100 + "";

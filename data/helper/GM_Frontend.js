@@ -43,7 +43,7 @@ function GM_getValue(name, default_value) {
 		// Daten aus dem Localstorage beziehen...
 //		console.log("--- aus Localstorage ---");
 		return script_localstorage[name];
-	} else if (typeof self.options.storage[name] !== "undefined") {
+	} else if (typeof self.options.storage !== "undefined" && typeof self.options.storage[name] !== "undefined") {
 //		console.log("--- aus übergebenen Optionen ---");
 		// Daten aus den übergebenen ScriptOptions
 		return self.options.storage[name];
