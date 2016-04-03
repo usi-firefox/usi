@@ -63,6 +63,9 @@
 					<div ng-show="showUserscriptContent">
 						<hr />
 						<label>Userscript Content: </label>
+						<select ng-click="selectHighlightJSStyle($index)" id="selectHighlightJSStyle-{{$index}}">
+							<option ng-repeat="style in hightlightjsstyles">{{style}}</option>
+						</select>
 						<pre class="border-black" ><code class="lang-js">{{userscript.userscript}}</code></pre>
 					</div>
 				</div>
