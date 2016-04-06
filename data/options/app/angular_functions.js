@@ -167,7 +167,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		// Code highlight
 		$scope.highlightCode = function(){
 			// highlight ausführen!
-			jQuery("code").each(function (i, block) {
+			jQuery(".jscode").each(function (i, block) {
 				hljs.highlightBlock(block);
 			});
 		};
