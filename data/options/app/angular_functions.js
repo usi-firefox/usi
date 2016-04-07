@@ -64,11 +64,18 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 
 		// enthält alle möglich highlight js styles
 		$scope.hightlightjsstyles = ["agate" ,"androidstudio" ,"arduino-light" ,"arta" ,"ascetic" ,"atelier-cave-dark" ,"atelier-cave-light" ,"atelier-dune-dark" ,"atelier-dune-light" ,"atelier-estuary-dark" ,"atelier-estuary-light" ,"atelier-forest-dark" ,"atelier-forest-light" ,"atelier-heath-dark" ,"atelier-heath-light" ,"atelier-lakeside-dark" ,"atelier-lakeside-light" ,"atelier-plateau-dark" ,"atelier-plateau-light" ,"atelier-savanna-dark" ,"atelier-savanna-light" ,"atelier-seaside-dark" ,"atelier-seaside-light" ,"atelier-sulphurpool-dark" ,"atelier-sulphurpool-light" ,"brown-paper" ,"codepen-embed" ,"color-brewer" ,"dark" ,"darkula" ,"default" ,"docco" ,"dracula" ,"far" ,"foundation" ,"github-gist" ,"github" ,"googlecode" ,"grayscale" ,"gruvbox-dark" ,"gruvbox-light" ,"hopscotch" ,"hybrid" ,"idea" ,"ir-black" ,"kimbie.dark" ,"kimbie.light" ,"magula" ,"mono-blue" ,"monokai-sublime" ,"monokai" ,"obsidian" ,"paraiso-dark" ,"paraiso-light" ,"pojoaque" ,"qtcreator_dark" ,"qtcreator_light" ,"railscasts" ,"rainbow" ,"school-book" ,"solarized-dark" ,"solarized-light" ,"sunburst" ,"tomorrow-night-blue" ,"tomorrow-night-bright" ,"tomorrow-night-eighties" ,"tomorrow-night" ,"tomorrow" ,"vs" ,"xcode" ,"zenburn"];
-		$scope.highlightjsActiveStyleGlobal = "github";
 
-		self.port.on("USI-BACKEND:highlightjs-is-deactivated-state", function(state){
-			$scope.hightlightjsisdeactivated = state;
+		self.port.on("USI-BACKEND:highlightjs-style", function(style){
+			$scope.highlightjsActiveStyleGlobal = style;
 		});
+		
+		// Funktion zum Laden der nötigen CSS Datei
+		$scope.changeHighlightJSStyle = function(style){
+			// Pfad zur CSS Datei festlegen
+			var style_filepath	=	"../libs/highlight/styles/" + style + ".css";
+			// Link auf die neue CSS Datei ändern
+			$("#HighlightJSStyle").attr("href", style_filepath);
+		};
 		
 	}]);
 
@@ -82,9 +89,10 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		// Hightlight JS Style anpassen
 		$scope.selectHighlightJSStyle = function(index){
 			var style_opt	=	jQuery("#selectHighlightJSStyle-" + index).val();
-			var style		=	"../libs/highlight/styles/" + style_opt + ".css";
 
-			$("#HighlightJSStyle").attr("href", style);
+			$scope.changeHighlightJSStyle(style_opt);
+			// Style speichern
+			self.port.emit("USI-BACKEND:highlightjs-style-set", style_opt);
 		};
 
 		/**
@@ -166,9 +174,20 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 		// Code highlight
 		$scope.highlightCode = function(){
+			
+			// Zur Sicherheit nochmal den aktuellen Style laden!
+			$scope.changeHighlightJSStyle($scope.highlightjsActiveStyleGlobal);
+			
 			// highlight ausführen!
 			jQuery(".jscode").each(function (i, block) {
 				hljs.highlightBlock(block);
+			});
+			
+			// setze die Option noch auf das richtige Feld
+			jQuery('select[id^="selectHighlightJSStyle"] option').each(function(index,element){
+				if(jQuery(element).text() === $scope.highlightjsActiveStyleGlobal){
+					jQuery(element).prop("selected", true);
+				}
 			});
 		};
 
