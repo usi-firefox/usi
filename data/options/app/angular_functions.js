@@ -331,10 +331,16 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 			$scope.load_example_by_prefered_locale = "en";
 		}
 
-		// Beispiel Datei laden 
+		$scope.userscript_example = "";
+
 		// self.options.PreferedLocales[0] erste Bevorzugte Sprache
-		$http.get("example/" + $scope.load_example_by_prefered_locale + "-example.user.js").then(function(response){
-			$scope.userscript_example = response.data;
+
+		// Beispiel Datei laden  
+		// Anfrage für das Userscript Beispiel
+		self.port.emit("USI-BACKEND:get-userscript-example", $scope.load_example_by_prefered_locale);
+		// Rückantwort sichern
+		self.port.on("USI-BACKEND:get-userscript-example-done", function(data){
+			$scope.userscript_example = data;
 		});
 
 		/**
