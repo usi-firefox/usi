@@ -176,6 +176,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			
 			// zurücksetzen 
 			$scope.highlightactive = false;
+			
+			// Beende die Lade Animation
+			window.loading_screen.finish();
 		});
 		
 		// Code highlight
