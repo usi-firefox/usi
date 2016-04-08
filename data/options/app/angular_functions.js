@@ -171,6 +171,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			// Anzahl der Userscripts - zählen mittels Object.keys
 			$scope.userscript_count = Object.keys(data).length;
 
+			// Aktualisiere den View, falls Elemente gelöscht wurden!
+			$scope.$digest();
+			
 			// zurücksetzen 
 			$scope.highlightactive = false;
 		});
