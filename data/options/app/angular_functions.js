@@ -85,6 +85,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		$scope.all_userscripts = {};
 		$scope.userscript_count = 0;
 		$scope.lang = self.options.language;
+		$scope.highlightactive = false;
 
 		// Hightlight JS Style anpassen
 		$scope.selectHighlightJSStyle = function(index){
@@ -170,10 +171,10 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			// Anzahl der Userscripts - zählen mittels Object.keys
 			$scope.userscript_count = Object.keys(data).length;
 
+			// zurücksetzen 
+			$scope.highlightactive = false;
 		});
 		
-		$scope.highlightactive = false;
-
 		// Code highlight
 		$scope.highlightCode = function(){
 			
