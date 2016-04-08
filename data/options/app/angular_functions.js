@@ -171,6 +171,8 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			$scope.userscript_count = Object.keys(data).length;
 
 		});
+		
+		$scope.highlightactive = false;
 
 		// Code highlight
 		$scope.highlightCode = function(){
@@ -178,10 +180,14 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			// Zur Sicherheit nochmal den aktuellen Style laden!
 			$scope.changeHighlightJSStyle($scope.highlightjsActiveStyleGlobal);
 			
-			// highlight ausführen!
-			jQuery(".jscode").each(function (i, block) {
-				hljs.highlightBlock(block);
-			});
+			// damit die Funktion nicht zu oft aufgerufen wird!
+			if ($scope.highlightactive === false) {
+				$scope.highlightactive = true;
+				// highlight ausführen!
+				jQuery(".jscode").each(function (i, block) {
+					hljs.highlightBlock(block);
+				});
+			}
 			
 			// setze die Option noch auf das richtige Feld
 			jQuery('select[id^="selectHighlightJSStyle"] option').each(function(index,element){
