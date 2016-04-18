@@ -385,7 +385,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		 * Textarea auf Standard Größe zurücksetzen
 		 * @returns {undefined}
 		 */
-		$scope.defaulltSize = function () {
+		$scope.defaultSize = function () {
 			// Wert des ZOOM Reglers auf den Standard setzen
 			$scope.textarea_size = $scope.textarea_default_size;
 
@@ -423,6 +423,17 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		};
 
 		/**
+		 * Convert Funktionen, falls es Probleme mit den Charset's geben sollte
+		 */
+		$scope.utf8_to_latin1 = function () {
+			$scope.textarea = unescape(encodeURIComponent($scope.textarea));
+		};
+		$scope.latin1_to_utf8 = function () {
+			$scope.textarea = decodeURIComponent(escape($scope.textarea));
+		};
+
+
+		/**
 		 * Wenn das Userscript schon existiert und überschrieben werden kann
 		 */
 		self.port.on("USI-BACKEND:same-userscript-was-found", function (userscript_infos) {
@@ -448,7 +459,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 
 
 		// Schalter richtig positionieren lassen ...
-		$scope.defaulltSize();
+		$scope.defaultSize();
 		$scope.setTextareaHeight();
 		
 		// Text Area anpassen bei Größen Änderung
