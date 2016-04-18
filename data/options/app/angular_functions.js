@@ -63,7 +63,7 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 		};
 
 		// enthält alle möglich highlight js styles
-		$scope.hightlightjsstyles = ["agate" ,"androidstudio" ,"arduino-light" ,"arta" ,"ascetic" ,"atelier-cave-dark" ,"atelier-cave-light" ,"atelier-dune-dark" ,"atelier-dune-light" ,"atelier-estuary-dark" ,"atelier-estuary-light" ,"atelier-forest-dark" ,"atelier-forest-light" ,"atelier-heath-dark" ,"atelier-heath-light" ,"atelier-lakeside-dark" ,"atelier-lakeside-light" ,"atelier-plateau-dark" ,"atelier-plateau-light" ,"atelier-savanna-dark" ,"atelier-savanna-light" ,"atelier-seaside-dark" ,"atelier-seaside-light" ,"atelier-sulphurpool-dark" ,"atelier-sulphurpool-light" ,"brown-paper" ,"codepen-embed" ,"color-brewer" ,"dark" ,"darkula" ,"default" ,"docco" ,"dracula" ,"far" ,"foundation" ,"github-gist" ,"github" ,"googlecode" ,"grayscale" ,"gruvbox-dark" ,"gruvbox-light" ,"hopscotch" ,"hybrid" ,"idea" ,"ir-black" ,"kimbie.dark" ,"kimbie.light" ,"magula" ,"mono-blue" ,"monokai-sublime" ,"monokai" ,"obsidian" ,"paraiso-dark" ,"paraiso-light" ,"pojoaque" ,"qtcreator_dark" ,"qtcreator_light" ,"railscasts" ,"rainbow" ,"school-book" ,"solarized-dark" ,"solarized-light" ,"sunburst" ,"tomorrow-night-blue" ,"tomorrow-night-bright" ,"tomorrow-night-eighties" ,"tomorrow-night" ,"tomorrow" ,"vs" ,"xcode" ,"zenburn"];
+		$scope.hightlightjsstyles = ["agate" ,"androidstudio" ,"arduino-light" ,"arta" ,"ascetic" ,"atelier-cave-dark" ,"atelier-cave-light" ,"atelier-dune-dark" ,"atelier-dune-light" ,"atelier-estuary-dark" ,"atelier-estuary-light" ,"atelier-forest-dark" ,"atelier-forest-light" ,"atelier-heath-dark" ,"atelier-heath-light" ,"atelier-lakeside-dark" ,"atelier-lakeside-light" ,"atelier-plateau-dark" ,"atelier-plateau-light" ,"atelier-savanna-dark" ,"atelier-savanna-light" ,"atelier-seaside-dark" ,"atelier-seaside-light" ,"atelier-sulphurpool-dark" ,"atelier-sulphurpool-light" ,"brown-paper" ,"codepen-embed" ,"color-brewer" ,"dark" ,"darkula" ,"default" ,"docco" ,"dracula" ,"far" ,"foundation" ,"github-gist" ,"github" ,"googlecode" ,"grayscale" ,"gruvbox-dark" ,"gruvbox-light" ,"hopscotch" ,"hybrid" ,"idea" ,"ir-black" ,"kimbie.dark" ,"kimbie.light" ,"magula" ,"mono-blue" ,"monokai-sublime" ,"monokai" ,"obsidian" ,"paraiso-dark" ,"paraiso-light" ,"pojoaque" ,"qtcreator_dark" ,"qtcreator_light" ,"railscasts" ,"rainbow" ,"school-book" ,"solarized-dark" ,"solarized-light" ,"sunburst" ,"tomorrow-night-blue" ,"tomorrow-night-bright" ,"tomorrow-night-eighties" ,"tomorrow-night" ,"tomorrow" ,"vs" ,"xcode" ,"xt256" ,"zenburn"];
 
 		self.port.on("USI-BACKEND:highlightjs-style", function(style){
 			$scope.highlightjsActiveStyleGlobal = style;
@@ -178,7 +178,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			$scope.highlightactive = false;
 			
 			// Beende die Lade Animation
-			window.loading_screen.finish();
+			if(typeof window.loading_screen !== "undefined" && typeof window.loading_screen.finish === "function"){
+				window.loading_screen.finish();
+			}
 		});
 		
 		// Code highlight
@@ -190,9 +192,15 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			// damit die Funktion nicht zu oft aufgerufen wird!
 			if ($scope.highlightactive === false) {
 				$scope.highlightactive = true;
-				// highlight ausführen!
+				
+				// HighlightJS als Worker ausführen
+				var worker = new Worker("/data/options/app/highlightjs_worker.js");
+				
 				jQuery(".jscode").each(function (i, block) {
-					hljs.highlightBlock(block);
+					// highlight ausführen!
+					worker.onmessage = function(event) { block.innerHTML = event.data; };
+					worker.postMessage(block.textContent);
+//					hljs.highlightBlock(block);
 				});
 			}
 			
