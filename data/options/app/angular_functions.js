@@ -202,7 +202,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 				$scope.highlightactive = true;
 				
 				// HighlightJS als Worker ausführen
-				var worker = new Worker("/data/options/app/highlightjs_worker.js");
+				var worker = new Worker(self.options.baseurl + "options/app/highlightjs_worker.js");
 				
 				jQuery(".jscode").each(function (i, block) {
 					// highlight ausführen!
