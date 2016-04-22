@@ -13,6 +13,16 @@
 			   ng-model="url" size="60" />
 		<br />
 		<div class="row">
+			<label>Alternatives Charset</label>
+			<select id="alternativeCharsets" ng-model="alternativeCharset">
+				<option value="">default</option>
+				<option value="utf-8">utf-8</option>
+				<option value="cp1252">cp1252</option>
+			</select>
+			<button ng-click="addCustomCharset()"><i class="fa fa-plus-circle"></i></button>
+		</div>
+		<br />
+		<div class="row">
 			<button class="btn btn-primary col-xs-push-1 col-xs-7" ng-click="loadExternal()" >
 				Userscript <span ng-bind="lang.after_load" >nachladen</span>
 			</button>

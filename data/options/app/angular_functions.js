@@ -358,12 +358,36 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 		$scope.url = "";
 		$scope.lang = self.options.language;
 
+		$scope.alternativeCharset = "";
+
+		$scope.addCustomCharset = function(){
+			var new_charset;
+			if( new_charset = window.prompt("Add new custom Charset")){
+				
+				var found = false;
+				
+				jQuery("#alternativeCharsets option").each(function(i,element){
+					if(jQuery(element).val() === new_charset ){
+						found = true;
+					}
+				});
+				
+				if(found === false){
+					jQuery("#alternativeCharsets").append(
+						jQuery("<option>").val(new_charset).html(new_charset)
+					);
+				}else{
+					alert("Charset already exist");
+				}
+			}
+		};
+
 		// Userscript nachladen
 		$scope.loadExternal = function () {
 			$scope.error = "";
 			if (typeof $scope.url !== "undefined" && $scope.url.length > 0) {
 				// sende die URL an das Backend Skript...
-				self.port.emit("USI-BACKEND:loadexternal-script_url", {script_url: $scope.url});
+				self.port.emit("USI-BACKEND:loadexternal-script_url", {script_url: $scope.url, charset: $scope.alternativeCharset});
 
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 				
