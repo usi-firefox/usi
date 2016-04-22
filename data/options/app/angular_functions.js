@@ -96,6 +96,11 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			self.port.emit("USI-BACKEND:highlightjs-style-set", style_opt);
 		};
 
+		// fragt die Userscripte ab
+		$scope.refresh = function(){
+			self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
+		};
+
 		/**
 		 * Userscript aktivieren, bzw deaktivieren
 		 * @param {type} userscript
@@ -153,6 +158,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 					// Symbol ändern
 					jQuery("#testurlstate-" + userscript.id).toggleClass("fa-close").toggleClass("fa-check");
+					
+					// Aktualisiere den View
+					$scope.$digest();
 				}
 			});
 		};
@@ -223,7 +231,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		});
 
 		// Initiale Abfrage
-		self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
+		$scope.refresh();
 
 	}]).directive("listuserscripts", function () {
 	return {
@@ -236,6 +244,32 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function ExtraOptionsForUSI($scope, $rootScope) {
 		// Var init...
 		$scope.lang = self.options.language;
+		$scope.options_activate_highlightjs = false;
+		$scope.options_always_activate_greasemonkey = false;
+		
+		self.port.on("USI-BACKEND:highlightjs-activation-state",function(state){
+			// Setzt den aktuellen Aktivierungs Status von HighlightJS
+			$scope.options_activate_highlightjs = state;
+			
+			$scope.$digest();
+		});
+		
+		self.port.on("USI-BACKEND:options_always_activate_greasemonkey",function(state){
+			$scope.options_always_activate_greasemonkey = state;
+			$scope.$digest();
+		});
+		
+		
+		
+		// ändert den Aktivierungs Status
+		$scope.change_options_activate_highlightjs = function(){
+			self.port.emit("USI-BACKEND:highlightjs-activation-state-change",$scope.options_activate_highlightjs);
+		};
+
+		// Aktiviert Greasemonkey Funktionen immer, egal ob @use-greasemonkey gesetzt wurde oder nicht
+		$scope.change_options_always_activate_greasemonkey = function(){
+			self.port.emit("USI-BACKEND:options_always_activate_greasemonkey-change",$scope.options_always_activate_greasemonkey);
+		};
 
 		/**
 		 * Alle Userscripte entfernen
@@ -256,6 +290,9 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 			self.port.emit("USI-BACKEND:check-for-userscript-updates");
 		};
                 
+		// init
+		$scope.complete_export = false;
+		
 		// exportiere die Skripte
 		$scope.exportAll = function () {
 			var complete_export;
