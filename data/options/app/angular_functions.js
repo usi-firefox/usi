@@ -257,12 +257,21 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 		// Var init...
 		$scope.lang = self.options.language;
 		$scope.options_always_activate_greasemonkey = false;
+		$scope.enableExternalScriptLoadQuestion = false;
 		
 		self.port.on("USI-BACKEND:options_always_activate_greasemonkey",function(state){
 			$scope.options_always_activate_greasemonkey = state;
 			$scope.$digest();
 		});
 		
+		self.port.on("USI-BACKEND:ExternalScriptLoadQuestion",function(state){
+			$scope.enableExternalScriptLoadQuestion = state;
+			$scope.$digest();
+		});
+		
+		$scope.change_enableExternalScriptLoadQuestion = function(){
+			self.port.emit("USI-BACKEND:ExternalScriptLoadQuestion-change",$scope.enableExternalScriptLoadQuestion);
+		};
 		
 		
 		// ändert den Aktivierungs Status
@@ -475,10 +484,14 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		 * Convert Funktionen, falls es Probleme mit den Charset's geben sollte
 		 */
 		$scope.utf8_to_latin1 = function () {
-			$scope.textarea = unescape(encodeURIComponent($scope.textarea));
+			try{
+				$scope.textarea = unescape(encodeURIComponent($scope.textarea));
+			}catch(e){}
 		};
 		$scope.latin1_to_utf8 = function () {
-			$scope.textarea = decodeURIComponent(escape($scope.textarea));
+			try{
+				$scope.textarea = decodeURIComponent(escape($scope.textarea));
+			}catch(e){}
 		};
 
 
