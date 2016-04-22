@@ -1,7 +1,7 @@
 <div ng-controller="ListUserScripts">
 	<div class="container">
 		<div ng-bind="currentMemoryUsage"></div>
-		<button class="col-xs-push-11 col-xs-1" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
+		<button class="col-xs-push-10 col-xs-2" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
 	</div>
 	<hr />
 	<h3 ng-if="userscript_count > 0">Userscripts (<span ng-bind="userscript_count"></span>) :</h3>
@@ -55,7 +55,7 @@
 
 					<!--Buttons-->
 					<div class="row">
-						<button class="btn btn-default col-xs-3 col-xs-push-1" ng-click="showUserscriptContent = !showUserscriptContent;highlightCode()">
+						<button class="btn btn-default col-xs-3 col-xs-push-1" ng-click="showUserscriptContent = !showUserscriptContent;highlightCode($index)">
 							<span ng-show="showUserscriptContent" ng-bind="lang.hide"></span>
 							<span ng-show="!showUserscriptContent" ng-bind="lang.show"></span>
 						</button>
@@ -66,10 +66,10 @@
 					<div ng-show="showUserscriptContent">
 						<hr />
 						<label>Userscript Content: </label>
-						<select ng-change="selectHighlightJSStyle($index)" id="selectHighlightJSStyle-{{$index}}" ng-model="highlightjs_tmp">
+						<select ng-show="options_activate_highlightjs" ng-change="selectHighlightJSStyle($index)" id="selectHighlightJSStyle-{{$index}}" ng-model="highlightjs_tmp">
 							<option ng-repeat="style in hightlightjsstyles">{{style}}</option>
 						</select>
-						<pre class="border-black jscode hljs" >{{userscript.userscript}}</pre>
+						<pre class="border-black jscode hljs" id="formatted-userscript-{{$index}}" >{{userscript.userscript}}</pre>
 					</div>
 				</div>
 			</div>

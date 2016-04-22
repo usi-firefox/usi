@@ -69,6 +69,15 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 			$scope.highlightjsActiveStyleGlobal = style;
 		});
 		
+		$scope.options_activate_highlightjs = false;
+		
+		self.port.on("USI-BACKEND:highlightjs-activation-state",function(state){
+			// Setzt den aktuellen Aktivierungs Status von HighlightJS
+			$scope.options_activate_highlightjs = state;
+			
+			$scope.$digest();
+		});
+		
 		// Funktion zum Laden der nötigen CSS Datei
 		$scope.changeHighlightJSStyle = function(style){
 			// Pfad zur CSS Datei festlegen
@@ -85,8 +94,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		$scope.all_userscripts = {};
 		$scope.userscript_count = 0;
 		$scope.lang = self.options.language;
-		$scope.highlightactive = false;
-
+		
 		// Hightlight JS Style anpassen
 		$scope.selectHighlightJSStyle = function(index){
 			var style_opt	=	jQuery("#selectHighlightJSStyle-" + index).val();
@@ -183,7 +191,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			$scope.$digest();
 			
 			// zurücksetzen 
-			$scope.highlightactive = false;
+			$scope.already_highlighted = [];
 			
 			// Beende die Lade Animation
 			if(typeof window.loading_screen !== "undefined" && typeof window.loading_screen.finish === "function"){
@@ -191,33 +199,37 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			}
 		});
 		
+		// speichert den Status ob HighlightJS bereits durchgelaufen ist
+		$scope.already_highlighted = [];
+		
 		// Code highlight
-		$scope.highlightCode = function(){
+		$scope.highlightCode = function(index){
 			
-			// Zur Sicherheit nochmal den aktuellen Style laden!
-			$scope.changeHighlightJSStyle($scope.highlightjsActiveStyleGlobal);
-			
-			// damit die Funktion nicht zu oft aufgerufen wird!
-			if ($scope.highlightactive === false) {
-				$scope.highlightactive = true;
+			// Nur ausführen wenn es global aktiviert wurde
+			if($scope.options_activate_highlightjs === true){
 				
-				// HighlightJS als Worker ausführen
-				var worker = new Worker(self.options.baseurl + "options/app/highlightjs_worker.js");
-				
-				jQuery(".jscode").each(function (i, block) {
-					// highlight ausführen!
-					worker.onmessage = function(event) { block.innerHTML = event.data; };
-					worker.postMessage(block.textContent);
-//					hljs.highlightBlock(block);
-				});
-			}
-			
-			// setze die Option noch auf das richtige Feld
-			jQuery('select[id^="selectHighlightJSStyle"] option').each(function(index,element){
-				if(jQuery(element).text() === $scope.highlightjsActiveStyleGlobal){
-					jQuery(element).prop("selected", true);
+				// Zur Sicherheit nochmal den aktuellen Style laden!
+				$scope.changeHighlightJSStyle($scope.highlightjsActiveStyleGlobal);
+
+				// damit die Funktion nicht zu oft aufgerufen wird!
+				if (typeof $scope.already_highlighted[index] === "undefined" ) {
+
+					$scope.already_highlighted[index] = true;
+
+					jQuery("#formatted-userscript-" + index).each(function (i, block) {
+						// highlight ausführen!
+						hljs.highlightBlock(block);
+					});
 				}
-			});
+
+				// setze die Option noch auf das richtige Feld
+				jQuery('select[id^="selectHighlightJSStyle"] option').each(function(index,element){
+					if(jQuery(element).text() === $scope.highlightjsActiveStyleGlobal){
+						jQuery(element).prop("selected", true);
+					}
+				});
+			
+			}
 		};
 
 		// Speicherverbrauch anzeigen
@@ -244,15 +256,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function ExtraOptionsForUSI($scope, $rootScope) {
 		// Var init...
 		$scope.lang = self.options.language;
-		$scope.options_activate_highlightjs = false;
 		$scope.options_always_activate_greasemonkey = false;
-		
-		self.port.on("USI-BACKEND:highlightjs-activation-state",function(state){
-			// Setzt den aktuellen Aktivierungs Status von HighlightJS
-			$scope.options_activate_highlightjs = state;
-			
-			$scope.$digest();
-		});
 		
 		self.port.on("USI-BACKEND:options_always_activate_greasemonkey",function(state){
 			$scope.options_always_activate_greasemonkey = state;
