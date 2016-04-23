@@ -152,6 +152,14 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 		};
 		
+		// Übergibt die URL an die Nachlade Funktion, damit 
+		$scope.loadAgain = function(url){
+			$rootScope.$emit("USI-FRONTEND:LoadExternalUserScript_reload_from_source", url);
+
+			// veranlasse den Tab Wechsel!
+			$scope.$emit("USI-FRONTEND:changeTab", "loadExternal");
+		};
+		
 		// testet die eingebene URL ob ein Include darauf greifen(matchen) würde
 		$scope.testUrlMatch = function (userscript){
 			// Backend anfragen
@@ -353,7 +361,7 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 	}]);
 
 // Userscript nachladen
-usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternalUserScript($scope) {
+usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope", function LoadExternalUserScript($scope, $rootScope) {
 		// Var init...
 		$scope.url = "";
 		$scope.lang = self.options.language;
@@ -387,7 +395,11 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 			$scope.error = "";
 			if (typeof $scope.url !== "undefined" && $scope.url.length > 0) {
 				// sende die URL an das Backend Skript...
-				self.port.emit("USI-BACKEND:loadexternal-script_url", {script_url: $scope.url, charset: $scope.alternativeCharset});
+				self.port.emit("USI-BACKEND:loadexternal-script_url",
+					{script_url: $scope.url,
+						charset: $scope.alternativeCharset,
+						moreinformations: {getFromUrl: true, url: $scope.url}}
+				);
 
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 				
@@ -402,6 +414,11 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 				$scope.error = $scope.lang.empty_userscript_url;
 			}
 		};
+
+		$rootScope.$on("USI-FRONTEND:LoadExternalUserScript_reload_from_source", function (event, url) {
+			// Nimm die Userscript URL
+			$scope.url = url;
+		});
 
 	}]).directive("loadexternaluserscript", function () {
 	return {
