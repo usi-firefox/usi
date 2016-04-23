@@ -91,9 +91,11 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 //Auflistung der Userscripte
 usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function ListUserScripts($scope, $rootScope, $q) {
 		// Var init...
-		$scope.all_userscripts = {};
-		$scope.userscript_count = 0;
-		$scope.lang = self.options.language;
+		$scope.lang				=	self.options.language;
+		$scope.all_userscripts	=	{};
+		$scope.userscript_count	=	0;
+		// speichert den Status ob HighlightJS bereits durchgelaufen ist
+		$scope.already_highlighted = [];
 		
 		// Hightlight JS Style anpassen
 		$scope.selectHighlightJSStyle = function(index){
@@ -188,7 +190,10 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		
 		// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 		self.port.on("USI-BACKEND:list-all-scripts", function (data) {
-
+			$scope.all_userscripts = {};
+			// Aktualisiere den View, falls Elemente gelöscht wurden!
+			$scope.$digest();
+					
 			// Daten für alle Userscripts setzen
 			$scope.all_userscripts = data;
 
@@ -206,10 +211,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 				window.loading_screen.finish();
 			}
 		});
-		
-		// speichert den Status ob HighlightJS bereits durchgelaufen ist
-		$scope.already_highlighted = [];
-		
+				
 		// Code highlight
 		$scope.highlightCode = function(index){
 			
