@@ -372,7 +372,7 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope", functio
 
 		$scope.addCustomCharset = function(){
 			var new_charset;
-			if( new_charset = window.prompt("Add new custom Charset")){
+			if( new_charset = window.prompt($scope.lang.add_new_custom_charset)){
 				
 				var found = false;
 				
@@ -387,7 +387,7 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope", functio
 						jQuery("<option>").val(new_charset).html(new_charset)
 					);
 				}else{
-					alert("Charset already exist");
+					alert($scope.lang.charset_already_exist);
 				}
 			}
 		};

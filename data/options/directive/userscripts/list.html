@@ -65,7 +65,7 @@
 				</div>
 				<div class="row"><br /></div>
 				<div class="row"><br /></div>
-				<label class="col-xs-3" ng-show="userscript.moreinformations.getFromUrl">reload from source</label>
+				<label class="col-xs-3" ng-show="userscript.moreinformations.getFromUrl" ng-bind="lang.reload_from_source">Neuladen von der Quelle</label>
 				<button class="btn btn-info col-xs-3 col-xs-push-6"
 						 ng-show="userscript.moreinformations.getFromUrl"
 						ng-click="loadAgain(userscript.moreinformations.url)">
