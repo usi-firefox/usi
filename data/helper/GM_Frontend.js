@@ -1,4 +1,4 @@
-/* global self */
+/* global self,console,document */
 
 //window.localStorage.clear();
 
@@ -175,7 +175,14 @@ function GM_getResourceText() {
 function GM_getResourceURL() {
 }
 
-var GM_info = {};
+var GM_info = {
+	script : JSON.parse(self.options.scriptsettings)
+	, uuid : self.options.id
+	, scriptSource : self.options.scriptSource
+	, scriptMetaStr : self.options.scriptMetaStr
+	, scriptWillUpdate : false
+	, version : self.options.usiversion
+};
 /**
  * END
  */
