@@ -13,6 +13,14 @@ self.port.on("USI-BACKEND:get-alert", function(text){
 	window.alert(text);
 });
 
+// Lade alle CSS Dateien nach!
+(function(){
+	var css_files = self.options.cssFiles;
+	for(var i in css_files){
+		jQuery("head").append(jQuery("<link>").attr("href",css_files[i]).attr("type","text/css").attr("rel","stylesheet"));
+	}
+})();
+
 /**
  * erzeugt einen Download (Datei Speichern Dialog)
  * @param string data
