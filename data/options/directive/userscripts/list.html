@@ -13,6 +13,7 @@
 			<!--Panel Kopf-->
 			<div class="panel-heading" ui-set="{'ListScriptAccordion': $index}">        
 				<h4 class="panel-title">
+					<img ng-show="userscript.settings.icon_data" src="{{userscript.settings.icon_data}}" /> 
 					Index: {{$index}} | {{userscript.settings.name}} | {{userscript.settings.author}} | {{userscript.settings.version}}
 				</h4>
 			</div>

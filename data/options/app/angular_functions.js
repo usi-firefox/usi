@@ -9,8 +9,14 @@ var usiOptions = angular.module('usiOptions', ["mobile-angular-ui", "mobile-angu
  ************************* Übersetzungen holen **************************
  ************************************************************************/
 
-self.port.on("USI-BACKEND:get-alert", function(text){
-	window.alert(text);
+self.port.on("USI-BACKEND:get-alert", 
+	/**
+	 * 
+	 * @param {string} text
+	 * @returns {void}
+	 */
+	function(text){
+		window.alert(text);
 });
 
 // Lade alle CSS Dateien nach!
@@ -23,10 +29,10 @@ self.port.on("USI-BACKEND:get-alert", function(text){
 
 /**
  * erzeugt einen Download (Datei Speichern Dialog)
- * @param string data
- * @param string type
- * @param string filename
- * @returns void
+ * @param {string} data
+ * @param {string} type
+ * @param {string} filename
+ * @returns {void}
  */
 function createDownload(data, type, filename){
 	var link = document.createElement('a');
@@ -339,7 +345,13 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 		/** 
 		 * Erzeugt ein Download Fenster für den Fertigen Export
 		 */
-		self.port.on("USI-BACKEND:get-all-userscripts-for-export-done", function (result_export_data) {
+		self.port.on("USI-BACKEND:get-all-userscripts-for-export-done", 
+			/**
+			 * 
+			 * @param {boolean} result_export_data
+			 * @returns {void}
+			 */
+			function (result_export_data) {
 
 			if (typeof $scope.complete_export !== "undefined" && $scope.complete_export === true) {
 				createDownload(result_export_data, "text/plain", "usi-export.usi.json");
@@ -549,7 +561,13 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		/**
 		 * Wenn das Userscript schon existiert und überschrieben werden kann
 		 */
-		self.port.on("USI-BACKEND:same-userscript-was-found", function (userscript_infos) {
+		self.port.on("USI-BACKEND:same-userscript-was-found", 
+			/**
+			 * 
+			 * @param {object} userscript_infos
+			 * @returns {void}
+			 */
+			function (userscript_infos) {
 
 			//wurde gefunden, möchtest du es aktualisieren?")){
 			if (window.confirm($scope.lang.same_userscript_was_found_ask_update_it_1 + userscript_infos.id + $scope.lang.same_userscript_was_found_ask_update_it_2)) {
@@ -562,7 +580,14 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		/**
 		 * Events
 		 */
-		$rootScope.$on("USI-FRONTEND:EditUserscipt_edit", function (event, userscript) {
+		$rootScope.$on("USI-FRONTEND:EditUserscipt_edit",
+			/**
+			 * 
+			 * @param {event} event
+			 * @param {object} userscript
+			 * @returns {void}
+			 */
+			function (event, userscript) {
 			// Nimm das Userscript und schreibe es in die Textarea
 			$scope.textarea = userscript.userscript;
 			$scope.script_id = userscript.id;
