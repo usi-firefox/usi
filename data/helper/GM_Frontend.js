@@ -41,14 +41,11 @@ function GM_getValue(name, default_value) {
 	// Prüft ob im Localstorage etwas zu finden ist...
 	if (typeof script_localstorage[name] !== "undefined") {
 		// Daten aus dem Localstorage beziehen...
-//		console.log("--- aus Localstorage ---");
 		return script_localstorage[name];
 	} else if (typeof self.options.storage !== "undefined" && typeof self.options.storage[name] !== "undefined") {
-//		console.log("--- aus übergebenen Optionen ---");
 		// Daten aus den übergebenen ScriptOptions
 		return self.options.storage[name];
 	} else { 
-//		console.log("--- DEFAULT ---");
 		return default_value;
 	}
 }
@@ -103,7 +100,7 @@ function GM_log(value) {
 		value =	value.toString();
 	}
 	// Ausgabe in die Konsole
-	console.log(value);
+	console.error(value);
 }
 
 function GM_addStyle(css) {
@@ -166,13 +163,58 @@ function GM_registerMenuCommand(caption, commandFunc, accessKey) {
 		accessKey: accessKey}
 	);
 }
-// Bisher nicht implementiert - Nur Platzhalter
+
 /**
- * START
+ * Liefert den Inhalt der Resource zurück
+ * @param {string} name
+ * @returns {string}
  */
-function GM_getResourceText() {
+function GM_getResourceText(name) {
+	if(typeof name === "string" && name.trim() !== ""){
+	// name muss ein String sein
+		name = name.trim();
+		// die Resource Daten werden in den Script Settings gesichert
+		var resources = GM_info.script.resources_data;
+		if(typeof resources === "object" && resources.length > 0){
+			for (var i in resources){
+				if(name === resources[i].name){
+					return resources[i].data;
+				}
+			}
+			
+			// Name nicht gefunden Error werfen
+			throw new Error("USI-Function GM_getResourceText: name -> " + name + " was not found!");
+		}
+	}
 }
-function GM_getResourceURL() {
+
+/**
+ * Liefert die Datauri der Resource zurück
+ * @param {string} name
+ * @returns {string}
+ */
+function GM_getResourceURL(name) {
+	// name muss ein String sein
+	if(typeof name === "string" && name.trim() !== ""){
+		name = name.trim();
+		// die Resource Daten werden in den Script Settings gesichert
+		var resources = GM_info.script.resources_data;
+		if(typeof resources === "object" && resources.length > 0){
+			for (var i in resources){
+				// Wenn der Name gefunden wurde, und es eine Datauri ist!
+				if(name === resources[i].name){
+					if(/^data:/.test(resources[i].data)){
+						return resources[i].data;
+					}else{
+						// keine Datauri
+						throw new Error("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
+					}
+				}
+			}
+			// Name nicht gefunden!
+			throw new Error("USI-Function GM_getResourceURL: name -> " + name + " was not found!");
+		}
+	}
 }
 
 var GM_info = {
@@ -183,17 +225,14 @@ var GM_info = {
 	, scriptWillUpdate : false
 	, version : self.options.usiversion
 };
-/**
- * END
- */
- 
+
 // Schreibt Fehlermeldungen vom Backend
 self.port.on("GM-FRONTEND-ERROR", function (err) {
-	console.log("USI: In function -> " + err.func);
-	console.log("USI: reason -> " + err.reason);
-	console.log("USI: object -> ");
-	console.log(err.object);
-	console.log("############");
+	console.error("USI: In function -> " + err.func);
+	console.error("USI: reason -> " + err.reason);
+	console.error("USI: object -> ");
+	console.error(err.object);
+	console.error("############");
 });
  
 /**
