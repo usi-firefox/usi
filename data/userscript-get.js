@@ -16,7 +16,11 @@ self.port.on("USI-BACKEND:active", function (status) {
 		// frage ob das Skript heruntergeladen werden soll
 		if (window.confirm(lang.should_usi_import_this_userscript)) {
 			// sende die aktuelle URL an das ADD-ON
-			self.port.emit("USI-BACKEND:new-usi-script_url---call", {script_url: window.location.href});
+			self.port.emit("USI-BACKEND:new-usi-script_url---call",
+				{script_url: window.location.href,
+					moreinformations: {getFromUrl: true, url: window.location.href}
+				}
+			);
 		}
 
 		// Falls ein identisches Userscript gefunden wurde!

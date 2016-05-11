@@ -107,6 +107,32 @@
 								</div>
 								<hr />
 								<div class="container" >
+									<h3 ng-bind="lang.enableExternalScriptLoadQuestion_title" >Importiere externe Skripte</h3>
+									<label>
+										<span ng-bind="lang.enableExternalScriptLoadQuestion_description">Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)</span>
+										<br />
+										(<span ng-show="!enableExternalScriptLoadQuestion" ng-bind="lang.no"></span><span ng-show="enableExternalScriptLoadQuestion" ng-bind="lang.yes"></span>)
+									</label>
+									<ui-switch ng-model="enableExternalScriptLoadQuestion" ng-change="change_enableExternalScriptLoadQuestion()"></ui-switch>
+								</div>	
+								<hr />
+								<div class="container" >
+									<h3 ng-bind="lang.options_activate_highlightjs_title" >HighlightJS aktiv</h3>
+									<label>
+										(<span ng-show="!options_activate_highlightjs" ng-bind="lang.no"></span><span ng-show="options_activate_highlightjs" ng-bind="lang.yes"></span>)
+									</label>
+									<ui-switch ng-model="options_activate_highlightjs" ng-change="change_options_activate_highlightjs()"></ui-switch>
+								</div>	
+								<hr />
+								<div class="container" >
+									<h3 ng-bind="lang.options_always_activate_greasemonkey_title" >Greasemonkey immer aktivieren</h3>
+									<label>
+										(<span ng-show="!options_always_activate_greasemonkey" ng-bind="lang.no"></span><span ng-show="options_always_activate_greasemonkey" ng-bind="lang.yes"></span>)
+									</label>
+									<ui-switch ng-model="options_always_activate_greasemonkey" ng-change="change_options_always_activate_greasemonkey()"></ui-switch>
+								</div>	
+								<hr />
+								<div class="container" >
 									<h3 ng-bind="lang.export_all_userscripts" >Alle Userscripts exportieren</h3>
 									<label>
 										<span ng-bind="lang.complete_export">Kompletter Export</span>

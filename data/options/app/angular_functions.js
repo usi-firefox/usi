@@ -9,16 +9,30 @@ var usiOptions = angular.module('usiOptions', ["mobile-angular-ui", "mobile-angu
  ************************* Übersetzungen holen **************************
  ************************************************************************/
 
-self.port.on("USI-BACKEND:get-alert", function(text){
-	window.alert(text);
+self.port.on("USI-BACKEND:get-alert", 
+	/**
+	 * 
+	 * @param {string} text
+	 * @returns {void}
+	 */
+	function(text){
+		window.alert(text);
 });
+
+// Lade alle CSS Dateien nach!
+(function(){
+	var css_files = self.options.cssFiles;
+	for(var i in css_files){
+		jQuery("head").append(jQuery("<link>").attr("href",css_files[i]).attr("type","text/css").attr("rel","stylesheet"));
+	}
+})();
 
 /**
  * erzeugt einen Download (Datei Speichern Dialog)
- * @param string data
- * @param string type
- * @param string filename
- * @returns void
+ * @param {string} data
+ * @param {string} type
+ * @param {string} filename
+ * @returns {void}
  */
 function createDownload(data, type, filename){
 	var link = document.createElement('a');
@@ -63,10 +77,19 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 		};
 
 		// enthält alle möglich highlight js styles
-		$scope.hightlightjsstyles = ["agate" ,"androidstudio" ,"arduino-light" ,"arta" ,"ascetic" ,"atelier-cave-dark" ,"atelier-cave-light" ,"atelier-dune-dark" ,"atelier-dune-light" ,"atelier-estuary-dark" ,"atelier-estuary-light" ,"atelier-forest-dark" ,"atelier-forest-light" ,"atelier-heath-dark" ,"atelier-heath-light" ,"atelier-lakeside-dark" ,"atelier-lakeside-light" ,"atelier-plateau-dark" ,"atelier-plateau-light" ,"atelier-savanna-dark" ,"atelier-savanna-light" ,"atelier-seaside-dark" ,"atelier-seaside-light" ,"atelier-sulphurpool-dark" ,"atelier-sulphurpool-light" ,"brown-paper" ,"codepen-embed" ,"color-brewer" ,"dark" ,"darkula" ,"default" ,"docco" ,"dracula" ,"far" ,"foundation" ,"github-gist" ,"github" ,"googlecode" ,"grayscale" ,"gruvbox-dark" ,"gruvbox-light" ,"hopscotch" ,"hybrid" ,"idea" ,"ir-black" ,"kimbie.dark" ,"kimbie.light" ,"magula" ,"mono-blue" ,"monokai-sublime" ,"monokai" ,"obsidian" ,"paraiso-dark" ,"paraiso-light" ,"pojoaque" ,"qtcreator_dark" ,"qtcreator_light" ,"railscasts" ,"rainbow" ,"school-book" ,"solarized-dark" ,"solarized-light" ,"sunburst" ,"tomorrow-night-blue" ,"tomorrow-night-bright" ,"tomorrow-night-eighties" ,"tomorrow-night" ,"tomorrow" ,"vs" ,"xcode" ,"zenburn"];
+		$scope.hightlightjsstyles = ["agate" ,"androidstudio" ,"arduino-light" ,"arta" ,"ascetic" ,"atelier-cave-dark" ,"atelier-cave-light" ,"atelier-dune-dark" ,"atelier-dune-light" ,"atelier-estuary-dark" ,"atelier-estuary-light" ,"atelier-forest-dark" ,"atelier-forest-light" ,"atelier-heath-dark" ,"atelier-heath-light" ,"atelier-lakeside-dark" ,"atelier-lakeside-light" ,"atelier-plateau-dark" ,"atelier-plateau-light" ,"atelier-savanna-dark" ,"atelier-savanna-light" ,"atelier-seaside-dark" ,"atelier-seaside-light" ,"atelier-sulphurpool-dark" ,"atelier-sulphurpool-light" ,"brown-paper" ,"codepen-embed" ,"color-brewer" ,"dark" ,"darkula" ,"default" ,"docco" ,"dracula" ,"far" ,"foundation" ,"github-gist" ,"github" ,"googlecode" ,"grayscale" ,"gruvbox-dark" ,"gruvbox-light" ,"hopscotch" ,"hybrid" ,"idea" ,"ir-black" ,"kimbie.dark" ,"kimbie.light" ,"magula" ,"mono-blue" ,"monokai-sublime" ,"monokai" ,"obsidian" ,"paraiso-dark" ,"paraiso-light" ,"pojoaque" ,"qtcreator_dark" ,"qtcreator_light" ,"railscasts" ,"rainbow" ,"school-book" ,"solarized-dark" ,"solarized-light" ,"sunburst" ,"tomorrow-night-blue" ,"tomorrow-night-bright" ,"tomorrow-night-eighties" ,"tomorrow-night" ,"tomorrow" ,"vs" ,"xcode" ,"xt256" ,"zenburn"];
 
 		self.port.on("USI-BACKEND:highlightjs-style", function(style){
 			$scope.highlightjsActiveStyleGlobal = style;
+		});
+		
+		$scope.options_activate_highlightjs = false;
+		
+		self.port.on("USI-BACKEND:highlightjs-activation-state",function(state){
+			// Setzt den aktuellen Aktivierungs Status von HighlightJS
+			$scope.options_activate_highlightjs = state;
+			
+			$scope.$digest();
 		});
 		
 		// Funktion zum Laden der nötigen CSS Datei
@@ -82,11 +105,12 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 //Auflistung der Userscripte
 usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function ListUserScripts($scope, $rootScope, $q) {
 		// Var init...
-		$scope.all_userscripts = {};
-		$scope.userscript_count = 0;
-		$scope.lang = self.options.language;
-		$scope.highlightactive = false;
-
+		$scope.lang				=	self.options.language;
+		$scope.all_userscripts	=	{};
+		$scope.userscript_count	=	0;
+		// speichert den Status ob HighlightJS bereits durchgelaufen ist
+		$scope.already_highlighted = [];
+		
 		// Hightlight JS Style anpassen
 		$scope.selectHighlightJSStyle = function(index){
 			var style_opt	=	jQuery("#selectHighlightJSStyle-" + index).val();
@@ -94,6 +118,11 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			$scope.changeHighlightJSStyle(style_opt);
 			// Style speichern
 			self.port.emit("USI-BACKEND:highlightjs-style-set", style_opt);
+		};
+
+		// fragt die Userscripte ab
+		$scope.refresh = function(){
+			self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
 		};
 
 		/**
@@ -139,6 +168,14 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 		};
 		
+		// Übergibt die URL an die Nachlade Funktion, damit 
+		$scope.loadAgain = function(url){
+			$rootScope.$emit("USI-FRONTEND:LoadExternalUserScript_reload_from_source", url);
+
+			// veranlasse den Tab Wechsel!
+			$scope.$emit("USI-FRONTEND:changeTab", "loadExternal");
+		};
+		
 		// testet die eingebene URL ob ein Include darauf greifen(matchen) würde
 		$scope.testUrlMatch = function (userscript){
 			// Backend anfragen
@@ -153,6 +190,9 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 
 					// Symbol ändern
 					jQuery("#testurlstate-" + userscript.id).toggleClass("fa-close").toggleClass("fa-check");
+					
+					// Aktualisiere den View
+					$scope.$digest();
 				}
 			});
 		};
@@ -164,7 +204,10 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		
 		// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 		self.port.on("USI-BACKEND:list-all-scripts", function (data) {
-
+			$scope.all_userscripts = {};
+			// Aktualisiere den View, falls Elemente gelöscht wurden!
+			$scope.$digest();
+					
 			// Daten für alle Userscripts setzen
 			$scope.all_userscripts = data;
 
@@ -175,30 +218,42 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 			$scope.$digest();
 			
 			// zurücksetzen 
-			$scope.highlightactive = false;
-		});
-		
-		// Code highlight
-		$scope.highlightCode = function(){
+			$scope.already_highlighted = [];
 			
-			// Zur Sicherheit nochmal den aktuellen Style laden!
-			$scope.changeHighlightJSStyle($scope.highlightjsActiveStyleGlobal);
-			
-			// damit die Funktion nicht zu oft aufgerufen wird!
-			if ($scope.highlightactive === false) {
-				$scope.highlightactive = true;
-				// highlight ausführen!
-				jQuery(".jscode").each(function (i, block) {
-					hljs.highlightBlock(block);
-				});
+			// Beende die Lade Animation
+			if(typeof window.loading_screen !== "undefined" && typeof window.loading_screen.finish === "function"){
+				window.loading_screen.finish();
 			}
+		});
+				
+		// Code highlight
+		$scope.highlightCode = function(index){
 			
-			// setze die Option noch auf das richtige Feld
-			jQuery('select[id^="selectHighlightJSStyle"] option').each(function(index,element){
-				if(jQuery(element).text() === $scope.highlightjsActiveStyleGlobal){
-					jQuery(element).prop("selected", true);
+			// Nur ausführen wenn es global aktiviert wurde
+			if($scope.options_activate_highlightjs === true){
+				
+				// Zur Sicherheit nochmal den aktuellen Style laden!
+				$scope.changeHighlightJSStyle($scope.highlightjsActiveStyleGlobal);
+
+				// damit die Funktion nicht zu oft aufgerufen wird!
+				if (typeof $scope.already_highlighted[index] === "undefined" ) {
+
+					$scope.already_highlighted[index] = true;
+
+					jQuery("#formatted-userscript-" + index).each(function (i, block) {
+						// highlight ausführen!
+						hljs.highlightBlock(block);
+					});
 				}
-			});
+
+				// setze die Option noch auf das richtige Feld
+				jQuery('select[id^="selectHighlightJSStyle"] option').each(function(index,element){
+					if(jQuery(element).text() === $scope.highlightjsActiveStyleGlobal){
+						jQuery(element).prop("selected", true);
+					}
+				});
+			
+			}
 		};
 
 		// Speicherverbrauch anzeigen
@@ -212,7 +267,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		});
 
 		// Initiale Abfrage
-		self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
+		$scope.refresh();
 
 	}]).directive("listuserscripts", function () {
 	return {
@@ -225,6 +280,33 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function ExtraOptionsForUSI($scope, $rootScope) {
 		// Var init...
 		$scope.lang = self.options.language;
+		$scope.options_always_activate_greasemonkey = false;
+		$scope.enableExternalScriptLoadQuestion = false;
+		
+		self.port.on("USI-BACKEND:options_always_activate_greasemonkey",function(state){
+			$scope.options_always_activate_greasemonkey = state;
+			$scope.$digest();
+		});
+		
+		self.port.on("USI-BACKEND:ExternalScriptLoadQuestion",function(state){
+			$scope.enableExternalScriptLoadQuestion = state;
+			$scope.$digest();
+		});
+		
+		$scope.change_enableExternalScriptLoadQuestion = function(){
+			self.port.emit("USI-BACKEND:ExternalScriptLoadQuestion-change",$scope.enableExternalScriptLoadQuestion);
+		};
+		
+		
+		// ändert den Aktivierungs Status
+		$scope.change_options_activate_highlightjs = function(){
+			self.port.emit("USI-BACKEND:highlightjs-activation-state-change",$scope.options_activate_highlightjs);
+		};
+
+		// Aktiviert Greasemonkey Funktionen immer, egal ob @use-greasemonkey gesetzt wurde oder nicht
+		$scope.change_options_always_activate_greasemonkey = function(){
+			self.port.emit("USI-BACKEND:options_always_activate_greasemonkey-change",$scope.options_always_activate_greasemonkey);
+		};
 
 		/**
 		 * Alle Userscripte entfernen
@@ -245,6 +327,9 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 			self.port.emit("USI-BACKEND:check-for-userscript-updates");
 		};
                 
+		// init
+		$scope.complete_export = false;
+		
 		// exportiere die Skripte
 		$scope.exportAll = function () {
 			var complete_export;
@@ -260,7 +345,13 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 		/** 
 		 * Erzeugt ein Download Fenster für den Fertigen Export
 		 */
-		self.port.on("USI-BACKEND:get-all-userscripts-for-export-done", function (result_export_data) {
+		self.port.on("USI-BACKEND:get-all-userscripts-for-export-done", 
+			/**
+			 * 
+			 * @param {boolean} result_export_data
+			 * @returns {void}
+			 */
+			function (result_export_data) {
 
 			if (typeof $scope.complete_export !== "undefined" && $scope.complete_export === true) {
 				createDownload(result_export_data, "text/plain", "usi-export.usi.json");
@@ -292,17 +383,45 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 	}]);
 
 // Userscript nachladen
-usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternalUserScript($scope) {
+usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope", function LoadExternalUserScript($scope, $rootScope) {
 		// Var init...
 		$scope.url = "";
 		$scope.lang = self.options.language;
+
+		$scope.alternativeCharset = "";
+
+		$scope.addCustomCharset = function(){
+			var new_charset;
+			if( new_charset = window.prompt($scope.lang.add_new_custom_charset)){
+				
+				var found = false;
+				
+				jQuery("#alternativeCharsets option").each(function(i,element){
+					if(jQuery(element).val() === new_charset ){
+						found = true;
+					}
+				});
+				
+				if(found === false){
+					jQuery("#alternativeCharsets").append(
+						jQuery("<option>").val(new_charset).html(new_charset)
+					);
+				}else{
+					alert($scope.lang.charset_already_exist);
+				}
+			}
+		};
 
 		// Userscript nachladen
 		$scope.loadExternal = function () {
 			$scope.error = "";
 			if (typeof $scope.url !== "undefined" && $scope.url.length > 0) {
 				// sende die URL an das Backend Skript...
-				self.port.emit("USI-BACKEND:loadexternal-script_url", {script_url: $scope.url});
+				self.port.emit("USI-BACKEND:loadexternal-script_url",
+					{script_url: $scope.url,
+						charset: $scope.alternativeCharset,
+						moreinformations: {getFromUrl: true, url: $scope.url}}
+				);
 
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 				
@@ -317,6 +436,11 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", function LoadExternal
 				$scope.error = $scope.lang.empty_userscript_url;
 			}
 		};
+
+		$rootScope.$on("USI-FRONTEND:LoadExternalUserScript_reload_from_source", function (event, url) {
+			// Nimm die Userscript URL
+			$scope.url = url;
+		});
 
 	}]).directive("loadexternaluserscript", function () {
 	return {
@@ -382,7 +506,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		 * Textarea auf Standard Größe zurücksetzen
 		 * @returns {undefined}
 		 */
-		$scope.defaulltSize = function () {
+		$scope.defaultSize = function () {
 			// Wert des ZOOM Reglers auf den Standard setzen
 			$scope.textarea_size = $scope.textarea_default_size;
 
@@ -420,9 +544,30 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		};
 
 		/**
+		 * Convert Funktionen, falls es Probleme mit den Charset's geben sollte
+		 */
+		$scope.utf8_to_latin1 = function () {
+			try{
+				$scope.textarea = unescape(encodeURIComponent($scope.textarea));
+			}catch(e){}
+		};
+		$scope.latin1_to_utf8 = function () {
+			try{
+				$scope.textarea = decodeURIComponent(escape($scope.textarea));
+			}catch(e){}
+		};
+
+
+		/**
 		 * Wenn das Userscript schon existiert und überschrieben werden kann
 		 */
-		self.port.on("USI-BACKEND:same-userscript-was-found", function (userscript_infos) {
+		self.port.on("USI-BACKEND:same-userscript-was-found", 
+			/**
+			 * 
+			 * @param {object} userscript_infos
+			 * @returns {void}
+			 */
+			function (userscript_infos) {
 
 			//wurde gefunden, möchtest du es aktualisieren?")){
 			if (window.confirm($scope.lang.same_userscript_was_found_ask_update_it_1 + userscript_infos.id + $scope.lang.same_userscript_was_found_ask_update_it_2)) {
@@ -435,7 +580,14 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		/**
 		 * Events
 		 */
-		$rootScope.$on("USI-FRONTEND:EditUserscipt_edit", function (event, userscript) {
+		$rootScope.$on("USI-FRONTEND:EditUserscipt_edit",
+			/**
+			 * 
+			 * @param {event} event
+			 * @param {object} userscript
+			 * @returns {void}
+			 */
+			function (event, userscript) {
 			// Nimm das Userscript und schreibe es in die Textarea
 			$scope.textarea = userscript.userscript;
 			$scope.script_id = userscript.id;
@@ -445,7 +597,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 
 
 		// Schalter richtig positionieren lassen ...
-		$scope.defaulltSize();
+		$scope.defaultSize();
 		$scope.setTextareaHeight();
 		
 		// Text Area anpassen bei Größen Änderung
