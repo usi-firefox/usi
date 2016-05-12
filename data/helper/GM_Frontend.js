@@ -29,8 +29,8 @@ function set_123141482457923434792(script_localstorage) {
 
 /**
  * 
- * @param string name
- * @param {type} default_value
+ * @param {string} name
+ * @param {any} default_value
  * @returns {Array|Object|GM_getValue.script_localstorage|self.options.storage|Window.options.storage}
  */
 
@@ -50,6 +50,12 @@ function GM_getValue(name, default_value) {
 	}
 }
 
+/**
+ * 
+ * @param {string} name
+ * @param {any} value
+ * @returns {void}
+ */
 function GM_setValue(name, value) {
 	// holt aus dem Localstorage, den Speicher für das USI Skript
 	var script_localstorage = get_123141482457923434792();
@@ -64,6 +70,11 @@ function GM_setValue(name, value) {
 	self.port.emit("USI-BACKEND:GM_setValue", {name: name, value: value});
 }
 
+/**
+ * 
+ * @param {string} name
+ * @returns {void}
+ */
 function GM_deleteValue(name) {
 	var script_localstorage = get_123141482457923434792();
 	// Variable entfernen
@@ -76,6 +87,10 @@ function GM_deleteValue(name) {
 	self.port.emit("USI-BACKEND:GM_deleteValue", {name: name});
 } 
 
+/**
+ * 
+ * @returns {Array|GM_listValues.result}
+ */
 function GM_listValues() {
 	// Alle Variablen namen zurück liefern
 	var script_storage = get_123141482457923434792();
@@ -86,23 +101,40 @@ function GM_listValues() {
 	return result;
 }
 
+/**
+ * 
+ * @param {string} text
+ * @returns {void}
+ */
 function GM_setClipboard(text) {
 	self.port.emit("USI-BACKEND:GM_setClipboard", text);
 }
 
+/**
+ * 
+ * @param {string} url
+ * @param {boolean} open_in_background
+ * @returns {void}
+ */
 function GM_openInTab(url, open_in_background) {
 	self.port.emit("USI-BACKEND:GM_openInTab", {url: url, open_in_background: open_in_background });
 }
-  
+
+/**
+ * 
+ * @param {any} value
+ * @returns {void}
+ */
 function GM_log(value) {
-	// falls es eine Variable ist, und toString() anbietet, wird es genutzt
-	if(typeof value !== "string" && typeof value.toString === "function"){
-		value =	value.toString();
-	}
 	// Ausgabe in die Konsole
 	console.error(value);
 }
 
+/**
+ * 
+ * @param {string} css
+ * @returns {void}
+ */
 function GM_addStyle(css) {
 	var elem		=	document.createElement("style");
 	var css_code	=	document.createTextNode(css);
@@ -115,6 +147,11 @@ function GM_addStyle(css) {
 // Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
 var GM_xmlhttpRequest_counter = 0; 
 
+/**
+ * 
+ * @param {object} details
+ * @returns {void}
+ */
 function GM_xmlhttpRequest(details) {
 	// Counter für "eindeutige" Abfragen erhöhen
 	GM_xmlhttpRequest_counter++;
@@ -155,6 +192,13 @@ function GM_xmlhttpRequest(details) {
 	self.port.emit("USI-BACKEND:GM_xmlhttpRequest", {data: details, counter: GM_xmlhttpRequest_counter});
 }
 
+/**
+ * 
+ * @param {string} caption
+ * @param {string} commandFunc
+ * @param {string} accessKey
+ * @returns {void}
+ */
 function GM_registerMenuCommand(caption, commandFunc, accessKey) {
 	self.port.emit("USI-BACKEND:GM_registerMenuCommand", 
 		{caption: caption,
@@ -165,11 +209,11 @@ function GM_registerMenuCommand(caption, commandFunc, accessKey) {
 }
 
 /**
- * Liefert den Inhalt der Resource zurück
+ * Hilfsfunktion die die gesuchte Resource zurückliefert
  * @param {string} name
- * @returns {string}
+ * @returns {object|null}
  */
-function GM_getResourceText(name) {
+function GM_helper___search_for_resource(name){
 	if(typeof name === "string" && name.trim() !== ""){
 	// name muss ein String sein
 		name = name.trim();
@@ -178,13 +222,31 @@ function GM_getResourceText(name) {
 		if(typeof resources === "object" && resources.length > 0){
 			for (var i in resources){
 				if(name === resources[i].name){
-					return resources[i].data;
+					// Rückgabe der gefundenen Resource
+					return resources[i];
 				}
 			}
-			
-			// Name nicht gefunden Error werfen
-			throw new Error("USI-Function GM_getResourceText: name -> " + name + " was not found!");
 		}
+	}
+	
+	// Name nicht gefunden gibt null zurück
+	return null;
+}
+
+/**
+ * Liefert den Inhalt der Resource zurück
+ * @param {string} name
+ * @returns {string}
+ */
+function GM_getResourceText(name) {
+	// Resource suchen
+	var resource = GM_helper___search_for_resource(name);
+	
+	if(resource !== null){
+		return resource.data;
+	}else{
+		// Name nicht gefunden Error werfen
+		throw new Error("USI-Function GM_getResourceText: name -> " + name + " was not found!");
 	}
 }
 
@@ -194,26 +256,20 @@ function GM_getResourceText(name) {
  * @returns {string}
  */
 function GM_getResourceURL(name) {
-	// name muss ein String sein
-	if(typeof name === "string" && name.trim() !== ""){
-		name = name.trim();
-		// die Resource Daten werden in den Script Settings gesichert
-		var resources = GM_info.script.resources_data;
-		if(typeof resources === "object" && resources.length > 0){
-			for (var i in resources){
-				// Wenn der Name gefunden wurde, und es eine Datauri ist!
-				if(name === resources[i].name){
-					if(/^data:/.test(resources[i].data)){
-						return resources[i].data;
-					}else{
-						// keine Datauri
-						throw new Error("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
-					}
-				}
-			}
-			// Name nicht gefunden!
-			throw new Error("USI-Function GM_getResourceURL: name -> " + name + " was not found!");
+	// Resource suchen
+	var resource = GM_helper___search_for_resource(name);
+
+	if(resource !== null){
+		// Test ob es eine datauri ist
+		if(/^data:/.test(resource.data)){
+			return resource.data;
+		}else{
+			// keine Datauri
+			throw new Error("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
 		}
+	}else{
+		// Name nicht gefunden!
+		throw new Error("USI-Function GM_getResourceURL: name -> " + name + " was not found!");
 	}
 }
 
@@ -234,7 +290,13 @@ self.port.on("GM-FRONTEND-ERROR", function (err) {
 	console.error(err.object);
 	console.error("############");
 });
- 
+
+/*
+ *  damit keine Fehler geworfen werden
+ *  jedoch ist es praktisch nicht nutzbar
+ */
+var unsafeWindow = {};
+
 /**
  * GREASEMONKEY Funtkionen --- STOP
  */
