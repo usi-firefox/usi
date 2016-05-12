@@ -391,8 +391,8 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope", functio
 		$scope.alternativeCharset = "";
 
 		$scope.addCustomCharset = function(){
-			var new_charset;
-			if( new_charset = window.prompt($scope.lang.add_new_custom_charset)){
+			var new_charset = window.prompt($scope.lang.add_new_custom_charset);
+			if(new_charset){
 				
 				var found = false;
 				
