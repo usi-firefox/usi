@@ -11,17 +11,7 @@
 			   name="script_url"
 			   placeholder="http://webseite.de/userscript.user.js"
 			   ng-model="url" size="60" />
-		<br />
-		<div class="row">
-			<label>Alternatives Charset</label>
-			<select id="alternativeCharsets" ng-model="alternativeCharset">
-				<option value="">default</option>
-				<option value="utf-8">utf-8</option>
-				<option value="cp1252">cp1252</option>
-			</select>
-			<button ng-click="addCustomCharset()"><i class="fa fa-plus-circle"></i></button>
-		</div>
-		<br />
+		<br /><br /><br />
 		<div class="row">
 			<button class="btn btn-primary col-xs-push-1 col-xs-7" ng-click="loadExternal()" >
 				Userscript <span ng-bind="lang.after_load" >nachladen</span>
@@ -30,5 +20,22 @@
 				Reset
 			</button>
 		</div>
+		<br /><br /><br />
+		<label ng-bind="lang.direct_userscript_upload">Userscript direkt hochladen</label>
+		<i class="fa fa-upload" aria-hidden="true"></i>
+		<input type="file" accept="text/*" id="direct-userscript-upload" />
+		<br />
+		<button class="btn btn-primary col-xs-push-1 col-xs-10" ng-click="loadLocalFile()">Start</button>
+		
+		<br /><br /><br />
+		<label ng-bind="lang.alternative_charset_description">Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen</label>
+		<br />
+		<label ng-bind="lang.alternative_charset">Alternatives Charset</label>
+		<select id="alternativeCharsets" ng-model="alternativeCharset">
+			<option value="">default</option>
+			<option value="utf-8">utf-8</option>
+			<option value="cp1252">cp1252</option>
+		</select>
+		<button ng-click="addCustomCharset()"><i class="fa fa-plus-circle"></i></button>
 	</form>
 </div>

@@ -406,12 +406,36 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope", functio
 					jQuery("#alternativeCharsets").append(
 						jQuery("<option>").val(new_charset).html(new_charset)
 					);
+					jQuery("#alternativeCharsets option[value='" + new_charset + "']").prop("selected",true);
 				}else{
 					alert($scope.lang.charset_already_exist);
 				}
 			}
 		};
+		
+		// Direkter Userscript Datei Upload
+		$scope.loadLocalFile = function(){
+		
+			var file = jQuery("#direct-userscript-upload").get(0).files[0];
 
+			if(typeof file === "object"){
+				var reader = new FileReader();
+
+				reader.onload = function (e) {
+					// Daten an den EditController weiterreichen
+					$rootScope.$emit("USI-FRONTEND:EditUserscipt_newFromFile", e.target.result);
+					
+					// veranlasse den Tab Wechsel!
+					$rootScope.$emit("USI-FRONTEND:changeTab", "createOrEdit");
+					$rootScope.$digest();
+				};
+
+				// Read in the image file as a data URL.
+				reader.readAsText(file, $scope.alternativeCharset);
+			}
+			
+		};
+		
 		// Userscript nachladen
 		$scope.loadExternal = function () {
 			$scope.error = "";
@@ -580,6 +604,19 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 		/**
 		 * Events
 		 */
+		$rootScope.$on("USI-FRONTEND:EditUserscipt_newFromFile",
+			/**
+			 * 
+			 * @param {event} event
+			 * @param {object} userscript
+			 * @returns {void}
+			 */
+			function (event, userscript) {
+			// Nimm das Userscript und schreibe es in die Textarea
+			$scope.textarea = userscript;
+			// Schalte den State um
+			$scope.state = 0;
+		});
 		$rootScope.$on("USI-FRONTEND:EditUserscipt_edit",
 			/**
 			 * 
