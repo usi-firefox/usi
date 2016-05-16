@@ -3,6 +3,20 @@
   "title": "usi (User|Unified Script Injector)",
   "id": "firefox-addon-usi@jetpack",
   "description": "nutze UserScripts auf deinem Firefox für Android!",
+  "locales": {
+      "fr": {
+          "title": "usi (User|Unified Script Injector)",
+          "description": "utiliser UserScripts sur votre Firefox pour Android!"
+      },
+      "en": {
+          "title": "usi (User|Unified Script Injector)",
+          "description": "use UserScripts on your Firefox for Android!"
+      },
+      "de":{
+          "title": "usi (User|Unified Script Injector)",
+          "description": "nutze UserScripts auf deinem Firefox für Android!",
+      }
+  },
   "author": "usi-dev",
   "license": "LGPL-2.1",
   "version": "0.3.0-c",
