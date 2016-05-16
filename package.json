@@ -6,7 +6,7 @@
   "locales": {
       "fr": {
           "title": "usi (User|Unified Script Injector)",
-          "description": "utiliser UserScripts sur votre Firefox pour Android!"
+          "description": "utiliser des UserScripts sur votre Firefox pour Android!"
       },
       "en": {
           "title": "usi (User|Unified Script Injector)",
