@@ -72,6 +72,18 @@
 									falls du deine geladenen Userscripte einsehen möchtest gehe auf den Bereich "Alle Userscripts"
 								</div>
 							</div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title" ng-bind="lang.changelog" >Changelog</h3>
+								</div>
+								<div class="panel-body">
+									<span ng-bind="lang.changelog_1" >
+									Die USI Version 0.3.2-a-alpha und aufwärts nutzen die Methoden aus Greasemonkey für die Verarbeitung der Include Regeln,
+									falls es bei dir zu Problemen kommen sollte und deine Userscripte nicht mehr geladen werden, 
+									kannst du in den Optionen das alte Verhalten wieder aktivieren.
+									</span>
+								</div>
+							</div>
 						</div>
 
 						<!--Alle Userscripte auflisten-->
@@ -107,6 +119,17 @@
 								</div>
 								<hr />
 								<div class="container" >
+									<h3 ng-bind="lang.OldUsiIncludeBehavior_title" >USI Include Verhalten</h3>
+									<label>
+										<span ng-bind="lang.OldUsiIncludeBehavior_description">Hier kannst du das alte Verhalten von USI für die Einbindung der Include regeln wieder aktivieren,
+											ansonsten wird die Art und Weise wie GreaseMonkey Include Regeln behandelt verwendet.</span>
+										<br />
+										(<span ng-show="!OldUsiIncludeBehavior" ng-bind="lang.OldUsiIncludeBehavior_GMMethod"></span><span ng-show="OldUsiIncludeBehavior" ng-bind="lang.OldUsiIncludeBehavior_oldUsiMethod"></span>)
+									</label>
+									<ui-switch ng-model="OldUsiIncludeBehavior" ng-change="change_OldUsiIncludeBehavior()"></ui-switch>
+								</div>
+								<hr />
+								<div class="container" >
 									<h3 ng-bind="lang.enableExternalScriptLoadQuestion_title" >Importiere externe Skripte</h3>
 									<label>
 										<span ng-bind="lang.enableExternalScriptLoadQuestion_description">Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)</span>
@@ -114,7 +137,7 @@
 										(<span ng-show="!enableExternalScriptLoadQuestion" ng-bind="lang.no"></span><span ng-show="enableExternalScriptLoadQuestion" ng-bind="lang.yes"></span>)
 									</label>
 									<ui-switch ng-model="enableExternalScriptLoadQuestion" ng-change="change_enableExternalScriptLoadQuestion()"></ui-switch>
-								</div>	
+								</div>
 								<hr />
 								<div class="container" >
 									<h3 ng-bind="lang.options_activate_highlightjs_title" >HighlightJS aktiv</h3>

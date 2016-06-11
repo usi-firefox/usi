@@ -297,6 +297,15 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 			self.port.emit("USI-BACKEND:ExternalScriptLoadQuestion-change",$scope.enableExternalScriptLoadQuestion);
 		};
 		
+		self.port.on("USI-BACKEND:OldUsiIncludeBehavior",function(state){
+			$scope.OldUsiIncludeBehavior = state;
+			$scope.$digest();
+		});
+		
+		$scope.change_OldUsiIncludeBehavior = function(){
+			self.port.emit("USI-BACKEND:OldUsiIncludeBehavior-change",$scope.OldUsiIncludeBehavior);
+		};
+		
 		
 		// ändert den Aktivierungs Status
 		$scope.change_options_activate_highlightjs = function(){

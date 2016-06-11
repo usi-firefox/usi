@@ -19,7 +19,7 @@
   },
   "author": "usi-dev",
   "license": "LGPL-2.1",
-  "version": "0.3.1-b-alpha",
+  "version": "0.3.2-a-alpha",
   "main" : "lib/main.js",
   "engines": {
     "firefox": ">=39.0",
@@ -64,6 +64,13 @@
 			"name": "options_always_activate_greasemonkey",
 			"title": "Greasemonkey Funktionen immer aktivieren",
 			"description": "Aktiviert immer die Greasemonkey Funktionen, so dass die Angabe von '// @use-greasemonkey true' im Userscript nicht notwendig ist"
+		}
+		, {
+			"type": "bool",
+			"value": false,
+			"name": "OldUsiIncludeBehavior",
+			"title": "USI Include Verhalten",
+			"description": "Hier kannst du das alte Verhalten von USI für die Einbindung der Include regeln wieder aktivieren, ansonsten wird die Art und Weise wie GreaseMonkey Include Regeln behandelt verwendet."
 		}
 	]
 }
