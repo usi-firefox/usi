@@ -70,6 +70,7 @@ usiOptions.controller("Overlay", ["$scope", "$rootScope", function Overlay($scop
 		// Event für Tab Wechsel
 		$rootScope.$on("USI-FRONTEND:changeTab", function (event, data) {
 			$scope.changeTab(data);
+			$scope.$digest();
 		});
 
 		$scope.changeTab = function (text) {
@@ -283,6 +284,11 @@ usiOptions.controller("ExtraOptionsForUSI", ["$scope", "$rootScope", function Ex
 		$scope.options_always_activate_greasemonkey = false;
 		$scope.enableExternalScriptLoadQuestion = false;
 		
+		// Wrapper Funktion für AngularJS, da im Backend keine Event() gebaut werden können -.-
+		self.port.on("USI-FRONTEND:Event-Wrapper", function(conf){
+			$rootScope.$emit(conf.event_name, conf.data);
+		});
+		
 		self.port.on("USI-BACKEND:options_always_activate_greasemonkey",function(state){
 			$scope.options_always_activate_greasemonkey = state;
 			$scope.$digest();
@@ -436,7 +442,6 @@ usiOptions.controller("LoadExternalUserScript", ["$scope", "$rootScope", functio
 					
 					// veranlasse den Tab Wechsel!
 					$rootScope.$emit("USI-FRONTEND:changeTab", "createOrEdit");
-					$rootScope.$digest();
 				};
 
 				// Read in the image file as a data URL.
@@ -609,7 +614,7 @@ usiOptions.controller("EditUserScript", ["$scope", "$rootScope", "$http", functi
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 			}
 		});
-
+		
 		/**
 		 * Events
 		 */
