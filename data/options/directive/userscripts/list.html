@@ -74,6 +74,17 @@
 						ng-click="loadAgain(userscript.moreinformations.url)">
 					<i class="fa fa-repeat"></i>
 				</button>
+				<!--Greasemonkey Variablen-->
+				<div class="row"><br /></div>
+				<label class="col-xs-3" ng-bind="lang.show_GMValues">Zeige die gespeicherten GM Variablen</label>
+				<button class="btn btn-info col-xs-3"
+						ng-click="getGMValues(userscript.id)">
+					<i class="fa fa-list"></i>
+				</button>
+				<div ng-show="GMValues[userscript.id]">
+					<div class="row"><br /></div>
+					{{GMValues[userscript.id]}}
+				</div>
 				<!--Userscript Inhalt-->
 				<div class="row"><br /></div>
 				<div ng-show="showUserscriptContent">

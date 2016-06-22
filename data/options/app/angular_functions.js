@@ -111,6 +111,7 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		$scope.userscript_count	=	0;
 		// speichert den Status ob HighlightJS bereits durchgelaufen ist
 		$scope.already_highlighted = [];
+		$scope.GMValues			=	[];
 		
 		// Hightlight JS Style anpassen
 		$scope.selectHighlightJSStyle = function(index){
@@ -139,6 +140,18 @@ usiOptions.controller("ListUserScripts", ["$scope", "$rootScope", "$q", function
 		$scope.export = function (userscript_id) {
 			// aktiviere oder deaktiviere dieses Userscript!
 			self.port.emit("USI-BACKEND:export-userscript", userscript_id);
+		};
+		
+		// fragt nach den gesetzten Greasemonkey Variablen
+		$scope.getGMValues = function(userscript_id){
+			self.port.emit("USI-BACKEND:list-GMValues", userscript_id);
+			
+			self.port.once("USI-BACKEND:list-GMValues-done-" + userscript_id, function(GMValues){
+				
+				$scope.GMValues[userscript_id] = GMValues;
+				$scope.$digest();
+			});
+			
 		};
 
 		/**
