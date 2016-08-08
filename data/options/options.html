@@ -2,172 +2,197 @@
 <html>
 	<head>
 		<title ng-bind="lang.usi_options">USI Optionen</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="../libs/highlight/styles/default.css" type="text/css" rel="stylesheet" id="HighlightJSStyle" />
+
+		<!-- Bootstrap -->
+		<link href="../libs/gentelella/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Font Awesome -->
+		<link href="../libs/gentelella/css/font-awesome.min.css" rel="stylesheet">
+		<!-- Custom Theme Style -->
+		<link href="../libs/gentelella/css/custom.min.css" rel="stylesheet">
 	</head>
-	<body ng-app="usiOptions" ng-controller="Overlay">
+	<body class="nav-md" ng-app="usiOptions" ng-controller="Overlay">
+		<div class="container body">
+			<div class="main_container">
+				<div class="col-md-3 left_col">
+					<div class="left_col scroll-view">
 
-		<!-- Sidebar -->
-		<div class="sidebar sidebar-left">
-			<div class="scrollable">
-				<h1 class="scrollable-header app-name">USI - ({{version}})</h1>  
-				<div class="scrollable-content">
-					<div class="list-group" ui-turn-off='uiSidebarLeft'>
-						<a class="list-group-item" ng-click="tab = 'overview'" ng-bind="lang.overview">
-							<!--Überblick-->
-							<i class="fa fa-chevron-right pull-right"></i>
-						</a>
-						<a class="list-group-item" ng-click="tab = 'allScripts'" ng-bind="lang.all_userscripts">
-							<!--Alle Userscripts-->
-							<i class="fa fa-chevron-right pull-right"></i>
-						</a>
-						<a class="list-group-item" ng-click="tab = 'createOrEdit'" ng-bind="lang.create_new_userscript">
-							<!--Neues Userscirpt erstellen-->
-							<i class="fa fa-chevron-right pull-right"></i>
-						</a>
-						<a class="list-group-item" ng-click="tab = 'loadExternal'" ng-bind="lang.userscript_after_load">
-							<!--Userscirpt nachladen-->
-							<i class="fa fa-chevron-right pull-right"></i>
-						</a>
-						<a class="list-group-item" >
-							<!--Trennzeichen-->
-						</a>
-						<a class="list-group-item" ng-click="tab = 'options'" ng-bind="lang.loadOptions_title">
-							Optionen
-							<i class="fa fa-chevron-right pull-right"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Sidebar -->
+						<div class="clearfix"></div>
 
-		<div class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')">
-			<!-- Top Navbar -->
-			<div class="navbar navbar-app navbar-absolute-top">
-				<div class="navbar-brand navbar-brand-center" ng-bind="nav_title">
-				</div>
-				<div class="btn-group pull-left">
-					<div class="btn sidebar-toggle" ui-toggle='uiSidebarLeft'>
-						<i class="fa fa-bars" ></i>
-						<span ng-bind="lang.menu" >Menü</span>
-					</div>
-				</div>
-			</div>
-			<!-- Top Navbar -->
+						<!-- Sidebar -->
+						<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+							<div class="menu_section">
+								<h2>USI - ({{version}})</h2>
+								<ul class="nav side-menu">
+									<li>
+										<a ng-click="tab = 'overview'" ng-bind="lang.overview">
+											<!--Überblick-->
+											<i class="fa fa-chevron-right pull-right"></i>
+										</a>
+									</li>
+									<li>
+										<a ng-click="tab = 'allScripts'" ng-bind="lang.all_userscripts">
+											<!--Alle Userscripts-->
+											<i class="fa fa-chevron-right pull-right"></i>
+										</a>
+									</li>
+									<li>
+										<a ng-click="tab = 'createOrEdit'" ng-bind="lang.create_new_userscript">
+											<!--Neues Userscirpt erstellen-->
+											<i class="fa fa-chevron-right pull-right"></i>
+										</a>
+									</li>
+									<li>
+										<a ng-click="tab = 'loadExternal'" ng-bind="lang.userscript_after_load">
+											<!--Userscirpt nachladen-->
+											<i class="fa fa-chevron-right pull-right"></i>
+										</a>
+									</li>
+									<li>
+										<span> </span>
+										<!--Trennzeichen-->
+									</li>
+									<li>
+										<a ng-click="tab = 'options'" ng-bind="lang.loadOptions_title">
+											Optionen
+											<i class="fa fa-chevron-right pull-right"></i>
+										</a>
+									</li>
 
-			<!-- App body -->
-			<div class='app-body'>
-				<div class='app-content'>
-
-					<div class="scrollable-content section">
-						<div ng-show="tab === 'overview'">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title" ng-bind="lang.overview" >Überblick</h3>
-								</div>
-								<div class="panel-body" ng-bind="lang.overview_description" >
-									Die Optionen sind nun unterteilt in mehrere Bereiche,
-									falls du deine geladenen Userscripte einsehen möchtest gehe auf den Bereich "Alle Userscripts"
-								</div>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title" ng-bind="lang.changelog" >Changelog</h3>
-								</div>
-								<div class="panel-body">
-									<ul>
-										<li ng-bind="lang.changelog_1" >
+						</div>
+					</div>
+				</div>
+				<!-- Sidebar -->
+				<!-- Top Navbar -->
+				<div class="top_nav">
+					<div class="nav_menu">
+						<nav class="" role="navigation">
+							<div class="nav toggle">
+								<a id="menu_toggle">
+									<i class="fa fa-bars"></i>
+								</a>
+							</div>
+						</nav>
+					</div>
+				</div>
+				<!-- Top Navbar -->
+
+
+
+				<!-- App body -->
+				<div class="right_col" role="main">
+					<div ng-show="tab === 'overview'">
+						<div class="row">
+							<div class="panel-heading">
+								<h3 class="panel-title" ng-bind="lang.overview" >Überblick</h3>
+							</div>
+							<div class="panel-body" ng-bind="lang.overview_description" >
+								Die Optionen sind nun unterteilt in mehrere Bereiche,
+								falls du deine geladenen Userscripte einsehen möchtest gehe auf den Bereich "Alle Userscripts"
+							</div>
+						</div>
+						<div class="row">
+							<div class="panel-heading">
+								<h3 class="panel-title" ng-bind="lang.changelog" >Changelog</h3>
+							</div>
+							<div class="panel-body">
+								<ul>
+									<li ng-bind="lang.changelog_1" >
 										Die USI Version 0.3.2-a-alpha und aufwärts nutzen die Methoden aus Greasemonkey für die Verarbeitung der Include Regeln,
 										falls es bei dir zu Problemen kommen sollte und deine Userscripte nicht mehr geladen werden, 
 										kannst du in den Optionen das alte Verhalten wieder aktivieren.
-										</li>
-									</ul>
-								</div>
+									</li>
+								</ul>
 							</div>
 						</div>
+					</div>
 
-						<!--Alle Userscripte auflisten-->
-						<div ng-show="tab === 'allScripts'">
+					<!--Alle Userscripte auflisten-->
+					<div ng-show="tab === 'allScripts'">
 
-							<!--Directive für die Auflistung der Userscripte laden-->
-							<listuserscripts />
-						</div>
+						<!--Directive für die Auflistung der Userscripte laden-->
+						<listuserscripts />
+					</div>
 
-						<!--Userscript nachladen-->
-						<div ng-show="tab === 'loadExternal'">
-							<loadexternaluserscript />
-						</div>
+					<!--Userscript nachladen-->
+					<div ng-show="tab === 'loadExternal'">
+						<loadexternaluserscript />
+					</div>
 
-						<!--Neues Userscript erstellen / bearbeiten-->
-						<div ng-show="tab === 'createOrEdit'">
-							<edituserscript />
-						</div>
+					<!--Neues Userscript erstellen / bearbeiten-->
+					<div ng-show="tab === 'createOrEdit'">
+						<edituserscript />
+					</div>
 
-						<!--Options Block-->
-						<div ng-show="tab === 'options'">
-							<div ng-controller="ExtraOptionsForUSI">
-								<div class="container" >
-									<h3 ng-bind="lang.delete_all_userscripts" >Alle Userscripts entfernen</h3>
-									<button class="btn btn-danger" ng-click="deleteAll()"
-											ng-bind="lang.revert_all" >-alles zurücksetzen-</button>
-								</div>
-								<hr />
-								<div class="container" >
-									<h3 ng-bind="lang.check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
-									<button ng-click="checkForUpdates()" 
-											class="btn btn-primary" ng-bind="lang.check_now" >-jetzt prüfen-</button>
-								</div>
-								<hr />
-								<div class="container" >
-									<h3 ng-bind="lang.OldUsiIncludeBehavior_title" >USI Include Verhalten</h3>
-									<label>
-										<span ng-bind="lang.OldUsiIncludeBehavior_description">Hier kannst du das alte Verhalten von USI für die Einbindung der Include regeln wieder aktivieren,
-											ansonsten wird die Art und Weise wie GreaseMonkey Include Regeln behandelt verwendet.</span>
-										<br />
-										(<span ng-show="!OldUsiIncludeBehavior" ng-bind="lang.OldUsiIncludeBehavior_GMMethod"></span><span ng-show="OldUsiIncludeBehavior" ng-bind="lang.OldUsiIncludeBehavior_oldUsiMethod"></span>)
-									</label>
-									<ui-switch ng-model="OldUsiIncludeBehavior" ng-change="change_OldUsiIncludeBehavior()"></ui-switch>
-								</div>
-								<hr />
-								<div class="container" >
-									<h3 ng-bind="lang.enableExternalScriptLoadQuestion_title" >Importiere externe Skripte</h3>
-									<label>
-										<span ng-bind="lang.enableExternalScriptLoadQuestion_description">Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)</span>
-										<br />
-										(<span ng-show="!enableExternalScriptLoadQuestion" ng-bind="lang.no"></span><span ng-show="enableExternalScriptLoadQuestion" ng-bind="lang.yes"></span>)
-									</label>
-									<ui-switch ng-model="enableExternalScriptLoadQuestion" ng-change="change_enableExternalScriptLoadQuestion()"></ui-switch>
-								</div>
-								<hr />
-								<div class="container" >
-									<h3 ng-bind="lang.options_activate_highlightjs_title" >HighlightJS aktiv</h3>
-									<label>
-										(<span ng-show="!options_activate_highlightjs" ng-bind="lang.no"></span><span ng-show="options_activate_highlightjs" ng-bind="lang.yes"></span>)
-									</label>
-									<ui-switch ng-model="options_activate_highlightjs" ng-change="change_options_activate_highlightjs()"></ui-switch>
-								</div>	
-								<hr />
-								<div class="container" >
-									<h3 ng-bind="lang.options_always_activate_greasemonkey_title" >Greasemonkey immer aktivieren</h3>
-									<label>
-										(<span ng-show="!options_always_activate_greasemonkey" ng-bind="lang.no"></span><span ng-show="options_always_activate_greasemonkey" ng-bind="lang.yes"></span>)
-									</label>
-									<ui-switch ng-model="options_always_activate_greasemonkey" ng-change="change_options_always_activate_greasemonkey()"></ui-switch>
-								</div>	
-								<hr />
-								<div class="container" >
-									<h3 ng-bind="lang.export_all_userscripts" >Alle Userscripts exportieren</h3>
-									<label>
-										<span ng-bind="lang.complete_export">Kompletter Export</span>
-										(<span ng-show="!complete_export" ng-bind="lang.no"></span><span ng-show="complete_export" ng-bind="lang.yes"></span>)
-									</label>
-									<ui-switch ng-model="complete_export"></ui-switch>
+					<!--Options Block-->
+					<div ng-show="tab === 'options'">
+						<div ng-controller="ExtraOptionsForUSI">
+							<div class="container" >
+								<h3 ng-bind="lang.delete_all_userscripts" >Alle Userscripts entfernen</h3>
+								<button class="btn btn-danger" ng-click="deleteAll()"
+										ng-bind="lang.revert_all" >-alles zurücksetzen-</button>
+							</div>
+							<hr />
+							<div class="container" >
+								<h3 ng-bind="lang.check_updates_for_all_userscripts" >Alle Userscripts auf Updates überprüfen</h3>
+								<button ng-click="checkForUpdates()" 
+										class="btn btn-primary" ng-bind="lang.check_now" >-jetzt prüfen-</button>
+							</div>
+							<hr />
+							<div class="container" >
+								<h3 ng-bind="lang.OldUsiIncludeBehavior_title" >USI Include Verhalten</h3>
+								<label>
+									<span ng-bind="lang.OldUsiIncludeBehavior_description">Hier kannst du das alte Verhalten von USI für die Einbindung der Include regeln wieder aktivieren,
+										ansonsten wird die Art und Weise wie GreaseMonkey Include Regeln behandelt verwendet.</span>
 									<br />
-									<button ng-click="exportAll()" 
-											class="btn btn-primary" ng-bind="lang.export_all_now" >-jetzt exportieren-</button>
-								</div>
+									(<span ng-show="!OldUsiIncludeBehavior" ng-bind="lang.OldUsiIncludeBehavior_GMMethod"></span><span ng-show="OldUsiIncludeBehavior" ng-bind="lang.OldUsiIncludeBehavior_oldUsiMethod"></span>)
+								</label>
+								<input class="js-switch" type="checkbox" ng-model="OldUsiIncludeBehavior" ng-change="change_OldUsiIncludeBehavior()" />
+							</div>
+							<hr />
+							<div class="container" >
+								<h3 ng-bind="lang.enableExternalScriptLoadQuestion_title" >Importiere externe Skripte</h3>
+								<label>
+									<span ng-bind="lang.enableExternalScriptLoadQuestion_description">Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)</span>
+									<br />
+									(<span ng-show="!enableExternalScriptLoadQuestion" ng-bind="lang.no"></span><span ng-show="enableExternalScriptLoadQuestion" ng-bind="lang.yes"></span>)
+								</label>
+								<input class="js-switch" type="checkbox" ng-model="enableExternalScriptLoadQuestion" ng-change="change_enableExternalScriptLoadQuestion()"/>
+							</div>
+							<hr />
+							<div class="container" >
+								<h3 ng-bind="lang.options_activate_highlightjs_title" >HighlightJS aktiv</h3>
+								<label>
+									(<span ng-show="!options_activate_highlightjs" ng-bind="lang.no"></span><span ng-show="options_activate_highlightjs" ng-bind="lang.yes"></span>)
+								</label>
+								<input class="js-switch" type="checkbox" ng-model="options_activate_highlightjs" ng-change="change_options_activate_highlightjs()"/>
+							</div>	
+							<hr />
+							<div class="container" >
+								<h3 ng-bind="lang.options_always_activate_greasemonkey_title" >Greasemonkey immer aktivieren</h3>
+								<label>
+									(<span ng-show="!options_always_activate_greasemonkey" ng-bind="lang.no"></span><span ng-show="options_always_activate_greasemonkey" ng-bind="lang.yes"></span>)
+								</label>
+								<input class="js-switch" type="checkbox" ng-model="options_always_activate_greasemonkey" ng-change="change_options_always_activate_greasemonkey()"/>
+							</div>	
+							<hr />
+							<div class="container" >
+								<h3 ng-bind="lang.export_all_userscripts" >Alle Userscripts exportieren</h3>
+								<label>
+									<span ng-bind="lang.complete_export">Kompletter Export</span>
+									(<span ng-show="!complete_export" ng-bind="lang.no"></span><span ng-show="complete_export" ng-bind="lang.yes"></span>)
+								</label>
+								<input class="js-switch" type="checkbox" ng-model="complete_export"/>
+								<br />
+								<button ng-click="exportAll()" 
+										class="btn btn-primary" ng-bind="lang.export_all_now" >-jetzt exportieren-</button>
 							</div>
 						</div>
 					</div>
