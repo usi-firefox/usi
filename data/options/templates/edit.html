@@ -1,5 +1,7 @@
+<!--Neues Userscript erstellen / bearbeiten-->
+
 <div ng-controller="EditUserScript">
-	<h3 ng-show="state === 'edit'" ><span ng-bind="lang.edit_userscript_with_id"> --- </span> : {{script_id}}</h3>
+	<h3 ng-show="state === 'edit'" ><span data-usi-lang="edit_userscript_with_id"> --- </span> : {{script_id}}</h3>
 
 	<!--Userscript Eingabe-->
 	<textarea ng-model="textarea" 
@@ -13,7 +15,9 @@
 			<!--Userscript speichern-->
 			<button class="btn btn-primary btn-block" 
 					ng-click="save()" 
-					ng-bind="lang.save_userscript">Userscript speichern</button>
+					data-usi-lang="save_userscript">
+				<!--Userscript speichern-->
+			</button>
 		</div>
 		<hr />
 		<div class="row">
@@ -21,12 +25,16 @@
 			<button class="btn btn-default col-xs-6" 
 					ng-click="textarea = userscript_example;
 								state = 0" >
-				Userscript <span ng-bind="lang.load_example">Beispiel laden</span>
+				Userscript <span data-usi-lang="load_example">
+					<!--Beispiel laden-->
+				</span>
 			</button>
 			<button class="btn btn-warning col-xs-6"
 					ng-click="textarea = null;
 								state = 0"
-					ng-bind="lang.clear_textarea" >Textfeld leeren</button>
+					data-usi-lang="clear_textarea" >
+				<!--Textfeld leeren-->
+			</button>
 		</div>
 		<div class="row">
 			<br />

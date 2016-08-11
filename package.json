@@ -19,7 +19,7 @@
   },
   "author": "usi-dev",
   "license": "LGPL-2.1",
-  "version": "0.3.4-a-alpha",
+  "version": "0.4.0-a-alpha",
   "main" : "lib/main.js",
   "engines": {
     "firefox": ">=39.0",
@@ -49,7 +49,310 @@
 			"title": "Standard Style für hightlight.js",
 			"value": "github",
 			"options": [
-				{"value":"agate","label":"agate"} ,{"value":"androidstudio","label":"androidstudio"} ,{"value":"arduino-light","label":"arduino-light"} ,{"value":"arta","label":"arta"} ,{"value":"ascetic","label":"ascetic"} ,{"value":"atelier-cave-dark","label":"atelier-cave-dark"} ,{"value":"atelier-cave-light","label":"atelier-cave-light"} ,{"value":"atelier-dune-dark","label":"atelier-dune-dark"} ,{"value":"atelier-dune-light","label":"atelier-dune-light"} ,{"value":"atelier-estuary-dark","label":"atelier-estuary-dark"} ,{"value":"atelier-estuary-light","label":"atelier-estuary-light"} ,{"value":"atelier-forest-dark","label":"atelier-forest-dark"} ,{"value":"atelier-forest-light","label":"atelier-forest-light"} ,{"value":"atelier-heath-dark","label":"atelier-heath-dark"} ,{"value":"atelier-heath-light","label":"atelier-heath-light"} ,{"value":"atelier-lakeside-dark","label":"atelier-lakeside-dark"} ,{"value":"atelier-lakeside-light","label":"atelier-lakeside-light"} ,{"value":"atelier-plateau-dark","label":"atelier-plateau-dark"} ,{"value":"atelier-plateau-light","label":"atelier-plateau-light"} ,{"value":"atelier-savanna-dark","label":"atelier-savanna-dark"} ,{"value":"atelier-savanna-light","label":"atelier-savanna-light"} ,{"value":"atelier-seaside-dark","label":"atelier-seaside-dark"} ,{"value":"atelier-seaside-light","label":"atelier-seaside-light"} ,{"value":"atelier-sulphurpool-dark","label":"atelier-sulphurpool-dark"} ,{"value":"atelier-sulphurpool-light","label":"atelier-sulphurpool-light"} ,{"value":"brown-paper","label":"brown-paper"} ,{"value":"codepen-embed","label":"codepen-embed"} ,{"value":"color-brewer","label":"color-brewer"} ,{"value":"dark","label":"dark"} ,{"value":"darkula","label":"darkula"} ,{"value":"default","label":"default"} ,{"value":"docco","label":"docco"} ,{"value":"dracula","label":"dracula"} ,{"value":"far","label":"far"} ,{"value":"foundation","label":"foundation"} ,{"value":"github-gist","label":"github-gist"} ,{"value":"github","label":"github"} ,{"value":"googlecode","label":"googlecode"} ,{"value":"grayscale","label":"grayscale"} ,{"value":"gruvbox-dark","label":"gruvbox-dark"} ,{"value":"gruvbox-light","label":"gruvbox-light"} ,{"value":"hopscotch","label":"hopscotch"} ,{"value":"hybrid","label":"hybrid"} ,{"value":"idea","label":"idea"} ,{"value":"ir-black","label":"ir-black"} ,{"value":"kimbie.dark","label":"kimbie.dark"} ,{"value":"kimbie.light","label":"kimbie.light"} ,{"value":"magula","label":"magula"} ,{"value":"mono-blue","label":"mono-blue"} ,{"value":"monokai-sublime","label":"monokai-sublime"} ,{"value":"monokai","label":"monokai"} ,{"value":"obsidian","label":"obsidian"} ,{"value":"paraiso-dark","label":"paraiso-dark"} ,{"value":"paraiso-light","label":"paraiso-light"} ,{"value":"pojoaque","label":"pojoaque"} ,{"value":"purebasic","label":"purebasic"} ,{"value":"qtcreator_dark","label":"qtcreator_dark"} ,{"value":"qtcreator_light","label":"qtcreator_light"} ,{"value":"railscasts","label":"railscasts"} ,{"value":"rainbow","label":"rainbow"} ,{"value":"school-book","label":"school-book"} ,{"value":"solarized-dark","label":"solarized-dark"} ,{"value":"solarized-light","label":"solarized-light"} ,{"value":"sunburst","label":"sunburst"} ,{"value":"tomorrow-night-blue","label":"tomorrow-night-blue"} ,{"value":"tomorrow-night-bright","label":"tomorrow-night-bright"} ,{"value":"tomorrow-night-eighties","label":"tomorrow-night-eighties"} ,{"value":"tomorrow-night","label":"tomorrow-night"} ,{"value":"tomorrow","label":"tomorrow"} ,{"value":"vs","label":"vs"} ,{"value":"xcode","label":"xcode"} ,{"value":"zenburn","label":"zenburn"}
+				{
+					"value": "agate",
+					"label": "agate"
+				},
+				{
+					"value": "androidstudio",
+					"label": "androidstudio"
+				},
+				{
+					"value": "arduino-light",
+					"label": "arduino-light"
+				},
+				{
+					"value": "arta",
+					"label": "arta"
+				},
+				{
+					"value": "ascetic",
+					"label": "ascetic"
+				},
+				{
+					"value": "atelier-cave-dark",
+					"label": "atelier-cave-dark"
+				},
+				{
+					"value": "atelier-cave-light",
+					"label": "atelier-cave-light"
+				},
+				{
+					"value": "atelier-dune-dark",
+					"label": "atelier-dune-dark"
+				},
+				{
+					"value": "atelier-dune-light",
+					"label": "atelier-dune-light"
+				},
+				{
+					"value": "atelier-estuary-dark",
+					"label": "atelier-estuary-dark"
+				},
+				{
+					"value": "atelier-estuary-light",
+					"label": "atelier-estuary-light"
+				},
+				{
+					"value": "atelier-forest-dark",
+					"label": "atelier-forest-dark"
+				},
+				{
+					"value": "atelier-forest-light",
+					"label": "atelier-forest-light"
+				},
+				{
+					"value": "atelier-heath-dark",
+					"label": "atelier-heath-dark"
+				},
+				{
+					"value": "atelier-heath-light",
+					"label": "atelier-heath-light"
+				},
+				{
+					"value": "atelier-lakeside-dark",
+					"label": "atelier-lakeside-dark"
+				},
+				{
+					"value": "atelier-lakeside-light",
+					"label": "atelier-lakeside-light"
+				},
+				{
+					"value": "atelier-plateau-dark",
+					"label": "atelier-plateau-dark"
+				},
+				{
+					"value": "atelier-plateau-light",
+					"label": "atelier-plateau-light"
+				},
+				{
+					"value": "atelier-savanna-dark",
+					"label": "atelier-savanna-dark"
+				},
+				{
+					"value": "atelier-savanna-light",
+					"label": "atelier-savanna-light"
+				},
+				{
+					"value": "atelier-seaside-dark",
+					"label": "atelier-seaside-dark"
+				},
+				{
+					"value": "atelier-seaside-light",
+					"label": "atelier-seaside-light"
+				},
+				{
+					"value": "atelier-sulphurpool-dark",
+					"label": "atelier-sulphurpool-dark"
+				},
+				{
+					"value": "atelier-sulphurpool-light",
+					"label": "atelier-sulphurpool-light"
+				},
+				{
+					"value": "brown-paper",
+					"label": "brown-paper"
+				},
+				{
+					"value": "codepen-embed",
+					"label": "codepen-embed"
+				},
+				{
+					"value": "color-brewer",
+					"label": "color-brewer"
+				},
+				{
+					"value": "dark",
+					"label": "dark"
+				},
+				{
+					"value": "darkula",
+					"label": "darkula"
+				},
+				{
+					"value": "default",
+					"label": "default"
+				},
+				{
+					"value": "docco",
+					"label": "docco"
+				},
+				{
+					"value": "dracula",
+					"label": "dracula"
+				},
+				{
+					"value": "far",
+					"label": "far"
+				},
+				{
+					"value": "foundation",
+					"label": "foundation"
+				},
+				{
+					"value": "github-gist",
+					"label": "github-gist"
+				},
+				{
+					"value": "github",
+					"label": "github"
+				},
+				{
+					"value": "googlecode",
+					"label": "googlecode"
+				},
+				{
+					"value": "grayscale",
+					"label": "grayscale"
+				},
+				{
+					"value": "gruvbox-dark",
+					"label": "gruvbox-dark"
+				},
+				{
+					"value": "gruvbox-light",
+					"label": "gruvbox-light"
+				},
+				{
+					"value": "hopscotch",
+					"label": "hopscotch"
+				},
+				{
+					"value": "hybrid",
+					"label": "hybrid"
+				},
+				{
+					"value": "idea",
+					"label": "idea"
+				},
+				{
+					"value": "ir-black",
+					"label": "ir-black"
+				},
+				{
+					"value": "kimbie.dark",
+					"label": "kimbie.dark"
+				},
+				{
+					"value": "kimbie.light",
+					"label": "kimbie.light"
+				},
+				{
+					"value": "magula",
+					"label": "magula"
+				},
+				{
+					"value": "mono-blue",
+					"label": "mono-blue"
+				},
+				{
+					"value": "monokai-sublime",
+					"label": "monokai-sublime"
+				},
+				{
+					"value": "monokai",
+					"label": "monokai"
+				},
+				{
+					"value": "obsidian",
+					"label": "obsidian"
+				},
+				{
+					"value": "paraiso-dark",
+					"label": "paraiso-dark"
+				},
+				{
+					"value": "paraiso-light",
+					"label": "paraiso-light"
+				},
+				{
+					"value": "pojoaque",
+					"label": "pojoaque"
+				},
+				{
+					"value": "purebasic",
+					"label": "purebasic"
+				},
+				{
+					"value": "qtcreator_dark",
+					"label": "qtcreator_dark"
+				},
+				{
+					"value": "qtcreator_light",
+					"label": "qtcreator_light"
+				},
+				{
+					"value": "railscasts",
+					"label": "railscasts"
+				},
+				{
+					"value": "rainbow",
+					"label": "rainbow"
+				},
+				{
+					"value": "school-book",
+					"label": "school-book"
+				},
+				{
+					"value": "solarized-dark",
+					"label": "solarized-dark"
+				},
+				{
+					"value": "solarized-light",
+					"label": "solarized-light"
+				},
+				{
+					"value": "sunburst",
+					"label": "sunburst"
+				},
+				{
+					"value": "tomorrow-night-blue",
+					"label": "tomorrow-night-blue"
+				},
+				{
+					"value": "tomorrow-night-bright",
+					"label": "tomorrow-night-bright"
+				},
+				{
+					"value": "tomorrow-night-eighties",
+					"label": "tomorrow-night-eighties"
+				},
+				{
+					"value": "tomorrow-night",
+					"label": "tomorrow-night"
+				},
+				{
+					"value": "tomorrow",
+					"label": "tomorrow"
+				},
+				{
+					"value": "vs",
+					"label": "vs"
+				},
+				{
+					"value": "xcode",
+					"label": "xcode"
+				},
+				{
+					"value": "zenburn",
+					"label": "zenburn"
+				},
+				{
+					"value": "atom-one-dark",
+					"label": "atom-one-dark"
+				},
+				{
+					"value": "atom-one-light",
+					"label": "atom-one-light"
+				},
+				{
+					"value": "darcula",
+					"label": "darcula"
+				},
+				{
+					"value": "ocean",
+					"label": "ocean"
+				}
 			]
 		}
 		, {

@@ -1,0 +1,17 @@
+<!--Alle Userscripte auflisten-->
+
+<div ng-controller="ListUserScripts">
+	<div class="container">
+		<div data-content="currentMemoryUsage"></div>
+		<button class="col-xs-push-10 col-xs-2" ng-click="refresh()"><i class="fa fa-refresh"></i></button>
+	</div>
+	<hr />
+	<h3 ng-if="userscript_count > 0">Userscripts (<span data-content="userscript_count"></span>) :</h3>
+	<h3 ng-if="userscript_count == 0"><span data-usi-lang="no_userscript_there"></span></h3>
+	<div class="panel-group" ui-state="ListScriptAccordion" ui-default="0">		
+
+		<div class="panel panel-default" ng-repeat="userscript in all_userscripts track by $index">
+			
+		</div>
+	</div>
+</div>
