@@ -1,12 +1,12 @@
 <!--USI Konfiguration bearbeiten-->
 
-<div ng-controller="ExtraOptionsForUSI">
+<div>
 	<div class="container" >
 		<h3 data-usi-lang="delete_all_userscripts" >
 			<!--Alle Userscripts entfernen-->
 		</h3>
 		
-		<button class="btn btn-danger" ng-click="deleteAll()"
+		<button class="btn btn-danger" id="usi-config-delete-all"
 				data-usi-lang="revert_all" >
 		</button>
 		<!--alles zurücksetzen-->
@@ -17,7 +17,7 @@
 			<!--Alle Userscripts auf Updates überprüfen-->
 		</h3>
 		
-		<button ng-click="checkForUpdates()" 
+		<button id="usi-config-check-for-updates" 
 				class="btn btn-primary" data-usi-lang="check_now" >
 		</button>
 		<!--jetzt prüfen-->
@@ -33,9 +33,9 @@
 				ansonsten wird die Art und Weise wie GreaseMonkey Include Regeln behandelt verwendet.-->
 			</span>
 			<br />
-			(<span ng-show="!OldUsiIncludeBehavior" data-usi-lang="OldUsiIncludeBehavior_GMMethod"></span><span ng-show="OldUsiIncludeBehavior" data-usi-lang="OldUsiIncludeBehavior_oldUsiMethod"></span>)
+			(<span id="usi-config-change-old-usi-include-behavior---false" data-usi-lang="OldUsiIncludeBehavior_GMMethod"></span><span id="usi-config-change-old-usi-include-behavior---true" data-usi-lang="OldUsiIncludeBehavior_oldUsiMethod"></span>)
 		</label>
-		<input class="js-switch" type="checkbox" ng-model="OldUsiIncludeBehavior" ng-change="change_OldUsiIncludeBehavior()" />
+		<input class="js-switch" type="checkbox" id="usi-config-change-old-usi-include-behavior" />
 	</div>
 	<hr />
 	<div class="container" >
@@ -47,9 +47,9 @@
 				<!--Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)-->
 			</span>
 			<br />
-			(<span ng-show="!enableExternalScriptLoadQuestion" data-usi-lang="no"></span><span ng-show="enableExternalScriptLoadQuestion" data-usi-lang="yes"></span>)
+			(<span id="usi-config-change-enable-external-script-load-question---false" data-usi-lang="no"></span><span id="usi-config-change-enable-external-script-load-question---true" data-usi-lang="yes"></span>)
 		</label>
-		<input class="js-switch" type="checkbox" ng-model="enableExternalScriptLoadQuestion" ng-change="change_enableExternalScriptLoadQuestion()"/>
+		<input class="js-switch" type="checkbox" id="usi-config-change-enable-external-script-load-question"/>
 	</div>
 	<hr />
 	<div class="container" >
@@ -57,9 +57,9 @@
 			<!--HighlightJS aktiv-->
 		</h3>
 		<label>
-			(<span ng-show="!options_activate_highlightjs" data-usi-lang="no"></span><span ng-show="options_activate_highlightjs" data-usi-lang="yes"></span>)
+			(<span id="usi-config-change-options-activate-highlightjs---false" data-usi-lang="no"></span><span id="usi-config-change-options-activate-highlightjs---true" data-usi-lang="yes"></span>)
 		</label>
-		<input class="js-switch" type="checkbox" ng-model="options_activate_highlightjs" ng-change="change_options_activate_highlightjs()"/>
+		<input class="js-switch" type="checkbox" id="usi-config-change-options-activate-highlightjs"/>
 	</div>	
 	<hr />
 	<div class="container" >
@@ -67,9 +67,9 @@
 			<!--Greasemonkey immer aktivieren-->
 		</h3>
 		<label>
-			(<span ng-show="!options_always_activate_greasemonkey" data-usi-lang="no"></span><span ng-show="options_always_activate_greasemonkey" data-usi-lang="yes"></span>)
+			(<span id="usi-config-change-options-always-activate-greasemonkey---false" data-usi-lang="no"></span><span id="usi-config-change-options-always-activate-greasemonkey---true" data-usi-lang="yes"></span>)
 		</label>
-		<input class="js-switch" type="checkbox" ng-model="options_always_activate_greasemonkey" ng-change="change_options_always_activate_greasemonkey()"/>
+		<input class="js-switch" type="checkbox" id="usi-config-change-options-always-activate-greasemonkey"/>
 	</div>	
 	<hr />
 	<div class="container" >
@@ -80,12 +80,12 @@
 			<span data-usi-lang="complete_export">
 				<!--Kompletter Export-->
 			</span>
-			(<span ng-show="!complete_export" data-usi-lang="no"></span><span ng-show="complete_export" data-usi-lang="yes"></span>)
+			(<span id="usi-config-change-complete-export---false" data-usi-lang="no"></span><span id="usi-config-change-complete-export---true" data-usi-lang="yes"></span>)
 		</label>
-		<input class="js-switch" type="checkbox" ng-model="complete_export"/>
+		<input class="js-switch" type="checkbox" id="usi-config-change-complete-export" />
 		<br />
 		
-		<button ng-click="exportAll()" 
+		<button id="usi-config-export-all" 
 				class="btn btn-primary" data-usi-lang="export_all_now" >
 		</button>
 		<!--jetzt exportieren-->
