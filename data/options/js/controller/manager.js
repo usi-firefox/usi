@@ -14,14 +14,16 @@ function manager_class(){
 			if(typeof name === "string"){
 				
 				switch(name){
+					case "overview":
+						return false;
 					case "list":
-						return userscript_list_controller();
+						return userscript_list_controller;
 					case "edit":
-						return userscript_edit_controller();
+						return userscript_edit_controller;
 					case "load_external":
-						return userscript_load_external_controller();
+						return userscript_load_external_controller;
 					case "config":
-						return userscript_config_controller();
+						return userscript_config_controller;
 					default:
 						// unbekannter Controller!
 						console.error("unbekannter Controller! im 'manager' angefragt ### " + name + " ###");

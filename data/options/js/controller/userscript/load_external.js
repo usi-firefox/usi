@@ -4,7 +4,7 @@ function userscript_load_external_class(){
 	
 	return {
 		
-		init: function(){
+		before_rendering: function(){
 			
 		}
 	

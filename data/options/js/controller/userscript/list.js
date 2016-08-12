@@ -3,7 +3,7 @@
 function userscript_list_class(){
 
 	return {
-		init : function(){
+		before_rendering : function(){
 			// highlightJS Optionen einpflegen
 			highlightjs_controller.fill_in_options();
 			

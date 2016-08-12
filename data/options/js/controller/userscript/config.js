@@ -7,10 +7,14 @@ function userscript_config_class (){
 
 	return {
 	
-		init : function(){
+		before_rendering : function(){
+			// Die Buttons mittels switchery_controller anpassen
+//			switchery_controller.run();
+		}
+		
+		,after_rendering : function(){
 			// Die Buttons mittels switchery_controller anpassen
 			switchery_controller.run();
-			
 		}
 	
 		,change_enableExternalScriptLoadQuestion : function(){

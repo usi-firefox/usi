@@ -16,15 +16,14 @@ jQuery().ready(function () {
 
 	// suche nach der Klasse load_template, diese benötigt das data Attribut "usiurl" darin wird der Name des Templates angegeben
 	jQuery(".load_template").on("click", function () {
-		if (jQuery(this).attr("data-usi-templateurl")) {
-			template_controller.load(
-				jQuery(this).attr("data-usi-templateurl")
-			);
+		var name = jQuery(this).attr("data-usi-templateurl");
+		if (name) {
+			template_controller.load(name);
 		}
 	});
 
 	// ersetze das Versionslabel
-	jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template").first(),{version : self.options.version});
+	jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template"),{version : self.options.version});
 	
 
 	// INIT

@@ -3,9 +3,11 @@
 // Userscript bearbeiten
 function userscript_edit_class(){
 
-	var prefered_locale			=	self.options.PreferedLocales[0]; // setze die Standard Sprache
-	var textarea_default_size	=	jQuery("#script-textarea").css("font-size").split("px")[0];
-	var load_example_by_prefered_locale;
+	var prefered_locale
+	,textarea_default_size
+	,load_example_by_prefered_locale
+	,textarea_id
+	,script_id = 3123213213;
 	
 	// nur wenn die erste 'prefered_locale' -> 'de' ist, ansonsten wird die Englische Version geladen
 	if(prefered_locale === "de"){
@@ -14,19 +16,46 @@ function userscript_edit_class(){
 		load_example_by_prefered_locale = "en";
 	}
 	
+	// Die ID der Textarea
+	textarea_id = "#usi-edit-script-textarea";
 	
 	return {
 
-		init : function(){
+		// Führe dies aus wenn der Controller zum ersten Mal geladen wurde
+		before_rendering : function(){
+
+		}
+		
+		// liefert die benötigten Variablen für jQuery.loadTemplate zurück
+		,deliver_vars : function(){
+			return {
+				script_id : script_id
+			};
+		}
+		
+		// Führe dies aus, sobald das Template geladen wurde
+		,after_rendering : function (){
+			prefered_locale			=	self.options.PreferedLocales[0]; // setze die Standard Sprache
+			textarea_default_size	=	jQuery(textarea_id).css("font-size").split("px")[0];
+
+			// Text Area anpassen bei Größen Änderung
+			jQuery(window).on("resize", this.setTextareaHeight);
+			
+			// Button Events registieren
+			jQuery("#usi-edit-script-load-example").on("click", this.load_example );
+			jQuery("#usi-edit-script-textarea-clear").on("click", this.textarea_clear );
+			jQuery("#usi-edit-script-textarea-default-size").on("click", this.defaultSize );
+			jQuery("#usi-edit-script-save").on("click", this.save );
+			jQuery("#usi-edit-script-textarea-size").on("change", this.changeSize );
+			
+			jQuery("#usi-edit-script-utf8-to-latin1").on("click", this.utf8_to_latin1 );
+			jQuery("#usi-edit-script-latin1-to-utf8").on("click", this.latin1_to_utf8 );
+
 			// Schalter richtig positionieren lassen ...
 			this.defaultSize();
 			this.setTextareaHeight();
-			
-			// Text Area anpassen bei Größen Änderung
-			event_manager_controller.register_once(window, "resize", this.setTextareaHeight);
 		}
-	
-
+		
 		/**
 		 * Höhe der Textarea an die Fenstergröße anpassen!
 		 * @returns {undefined}
@@ -39,7 +68,7 @@ function userscript_edit_class(){
 			var textarea_height = Math.floor(window_innerHeight * size_by_percent);
 
 			// Größe setzen
-			jQuery("#script-textarea").css("height", textarea_height + "px");
+			jQuery(textarea_id).css("height", textarea_height + "px");
 		}
 		
 		/**
@@ -48,7 +77,7 @@ function userscript_edit_class(){
 		 */
 		,changeSize : function () {
 			// Setze die Größe der Textarea auf den Wert aus dem Range "Button"
-			jQuery("#script-textarea").css("font-size", $scope.textarea_size + "px");
+			jQuery(textarea_id).css("font-size", jQuery("#usi-edit-script-textarea-size").val() + "px");
 		}
 		
 		/**
@@ -57,10 +86,25 @@ function userscript_edit_class(){
 		 */
 		,defaultSize : function () {
 			// Wert des ZOOM Reglers auf den Standard setzen
-			var textarea_size = $scope.textarea_default_size;
-
 			// Setze die Größe der Textarea auf den Wert aus dem Range "Button"
-			jQuery("#script-textarea").css("font-size", $scope.textarea_default_size + "px");
+			jQuery(textarea_id).css("font-size", textarea_default_size + "px");
+			
+			jQuery("#usi-edit-script-textarea-size").val(textarea_default_size);
+		}
+		
+		,textarea_clear : function(){
+			jQuery(textarea_id).text(null);
+		}
+		
+		,load_example : function(){
+			// Beispiel Datei laden  
+			// Anfrage für das Userscript Beispiel
+			self.port.emit("USI-BACKEND:get-userscript-example", load_example_by_prefered_locale);
+			// Rückantwort sichern
+			self.port.once("USI-BACKEND:get-userscript-example-done", function(data){
+				jQuery(textarea_id).text(data);
+			});
+			
 		}
 		
 		/**
@@ -69,9 +113,9 @@ function userscript_edit_class(){
 		 */
 		,save : function () {
 			// Textarea nicht leer ...
-			if ($scope.textarea) {
+			if (jQuery(textarea_id).text().length > 20) {
 				// sende den Userscript Text an das Addon Skript...
-				self.port.emit("USI-BACKEND:new-usi-script_content", {script: $scope.textarea});
+				self.port.emit("USI-BACKEND:new-usi-script_content", {script: jQuery(textarea_id).text()});
 
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
 			}
@@ -89,7 +133,7 @@ function userscript_edit_class(){
 			var textarea_height = Math.floor(window_innerHeight * size_by_percent);
 
 			// Größe setzen
-			jQuery("#script-textarea").css("height", textarea_height + "px");
+			jQuery(textarea_id).css("height", textarea_height + "px");
 		}
 
 		/**
@@ -97,15 +141,20 @@ function userscript_edit_class(){
 		 */
 		,utf8_to_latin1 : function () {
 			try{
-				$scope.textarea = unescape(encodeURIComponent($scope.textarea));
+				jQuery(textarea_id).text(
+						unescape(
+						encodeURIComponent(
+						jQuery(textarea_id).text())));
 			}catch(e){}
 		}
 		,latin1_to_utf8 : function () {
 			try{
-				$scope.textarea = decodeURIComponent(escape($scope.textarea));
+				jQuery(textarea_id).text(
+						decodeURIComponent(
+						escape(
+						jQuery(textarea_id).text())));
 			}catch(e){}
 		}
-		
 		
 	};
 };
