@@ -15,7 +15,7 @@ function manager_class(){
 				
 				switch(name){
 					case "overview":
-						return false;
+						return userscript_overview_controller;
 					case "list":
 						return userscript_list_controller;
 					case "edit":

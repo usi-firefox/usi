@@ -8,7 +8,7 @@ function switchery_class(){
 				var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 				elems.forEach(function (html) {
 					new Switchery(html, {
-						color: '#26B99A'
+						color: '#007aff'
 					});
 				});
 			}
