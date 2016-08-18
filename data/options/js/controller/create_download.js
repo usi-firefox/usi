@@ -23,7 +23,7 @@ function createDownload(data, type, filename){
 	}
 	
 	// Datenanhängen
-	link.href += ';base64,' + btoa(data);
+	link.href += ';base64,' + btoa(unescape(encodeURIComponent(data)));
 
 	// Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
 	document.body.appendChild(link);

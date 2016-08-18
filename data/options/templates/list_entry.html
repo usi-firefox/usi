@@ -1,8 +1,9 @@
 <!--Panel Kopf-->
-<div class="panel-heading" ui-set="{'ListScriptAccordion': $index}">        
+<div class="usi-list-entry-id" data-id="usi-list-entry-id">
+<div class="panel-heading" >
 	<h4 class="panel-title">
-		<img ng-show="userscript.settings.icon_data" src="{{userscript.settings.icon_data}}" /> 
-		Index: {{$index}} | {{userscript.settings.name}} | {{userscript.settings.author}} | {{userscript.settings.version}}
+		<span data-id="icon_data_id"></span>
+		Index: <span data-content="index"></span> | <span data-content="userscript-settings-name"></span> | <span data-content="userscript-settings-author"></span> | <span data-content="userscript-settings-version"></span>
 	</h4>
 </div>
 
@@ -10,81 +11,90 @@
 <!--<div ui-if="ListScriptAccordion == {{$index}}">-->
 <div class="panel-body">
 	<div class="row">
-		<button class="btn btn-info col-xs-3 col-xs-push-9" ng-click="export(userscript.id)">export</button>
+		<button class="btn btn-info col-xs-3 col-xs-push-9 usi-list-entry-export">export</button>
 	</div>
-	<label>usi-id: </label>{{userscript.id}}<br />
-	<label>Name: </label>{{userscript.settings.name}}<br />
-	<label>Author: </label>{{userscript.settings.author}}<br />
-	<label>Version: </label>{{userscript.settings.version}}<br />
-	<label data-usi-lang="description"></label>: {{userscript.settings.description}}<br />
+	<label>usi-id: </label><span data-content="userscript-id"></span><br />
+	<label>Name: </label><span data-content="userscript-settings-name"></span><br />
+	<label>Author: </label><span data-content="userscript-settings-author"></span><br />
+	<label>Version: </label><span data-content="userscript-settings-version"></span><br />
+	<label data-usi-lang="description"></label>: <span data-content="userscript-settings-description"></span><br />
 
 	<!--Userscript aktivieren oder deaktivieren-->
 	<label>
-		<span ng-show="userscript.deactivated" data-usi-lang="deactivated"></span>
-		<span ng-show="!userscript.deactivated" data-usi-lang="activated"></span>
+		<span class="usi-list-entry-deactivated---true" data-usi-lang="deactivated"></span>
+		<span class="usi-list-entry-deactivated---false" data-usi-lang="activated"></span>
 	</label>
-	<ui-switch ng-model="userscript.deactivated" ng-change="toggleActivation(userscript)"></ui-switch>
+	
+	<input type="checkbox" class="usi-list-entry-deactivated js-switch" />
 
+	
 	<div class="row"><br /></div>
 	<div>
 		<!--Require Skripte-->
-		<div ng-show="userscript.require_scripts">
+		<div class="usi-list-entry-required-scripts">
 			<label>Require Scripts: </label>
-			<ol>
-				<li ng-repeat="require_script in userscript.require_scripts" data-content="require_script.url"></li>
+			<ol class="usi-list-entry-required-scripts---output">
+				
 			</ol>
 		</div>
 		<!--gültige Include Regeln-->
-		<label>Includes: </label>
-		<ol>
-			<li ng-repeat="oneinclude in userscript.settings.include" data-content="oneinclude"></li>
-		</ol>
-		<label>Test Includes URL:</label>
-		<input type="url" size="45" class="col-xs-offset-1 col-xs-10" ng-model="userscript.testurl" placeholder="http://www.example.com/" ng-change="testUrlMatch(userscript)"/>
-		<i ng-init="userscript.testurlstate = false" id="testurlstate-{{userscript.id}}" class="fa fa-close"></i>
+		<div class="usi-list-entry-includes">
+			<label>Includes: </label>
+			<ol class="usi-list-entry-includes---output">
+				
+			</ol>
+			<label>Test Includes URL:</label>
+			<input type="url" size="45" class="col-xs-offset-1 col-xs-10 usi-list-entry-includes-testurl" placeholder="http://www.example.com/" />
+			<i class="fa fa-close usi-list-entry-includes-testurl-state"></i>
+		</div>
 	</div>
 	<div class="row"><br /></div>
 	<div class="row"><br /></div>
 	<!--Buttons-->
 	<div class="row">
-		<button class="btn btn-default col-xs-3 col-xs-push-1" ng-click="showUserscriptContent = !showUserscriptContent;highlightCode($index)">
-			<span ng-show="showUserscriptContent" data-usi-lang="hide"></span>
-			<span ng-show="!showUserscriptContent" data-usi-lang="show"></span>
-		</button>
-		<button class="btn btn-info col-xs-3 col-xs-push-2" ng-click="edit(userscript)" data-usi-lang="change"></button>
-		<button class="btn btn-danger col-xs-3 col-xs-push-3" ng-click="delete(userscript)" data-usi-lang="delete_x"></button>
+		<!--Userscript anzeigen/ausblenden-->
+		<label>
+			<span class="usi-list-entry-view-userscript---false" data-usi-lang="hide"></span>
+			<span class="usi-list-entry-view-userscript---true" data-usi-lang="show"></span>
+		</label>
+		<input type="checkbox" class="btn btn-default col-xs-3 col-xs-push-1 usi-list-entry-view-userscript js-switch" />
+		
+		<!--Userscript bearbeiten-->
+		<button class="btn btn-info col-xs-3 col-xs-push-2 usi-list-entry-edit" data-usi-lang="change"></button>
+		<!--Userscript entfernen-->
+		<button class="btn btn-danger col-xs-3 col-xs-push-3 usi-list-entry-delete" data-usi-lang="delete_x"></button>
 	</div>
 	<div class="row"><br /></div>
 	<div class="row"><br /></div>
-	<label class="col-xs-3" ng-show="userscript.moreinformations.getFromUrl" data-usi-lang="reload_from_source">
-		<!--Neuladen von der Quelle-->
-	</label>
-	<button class="btn btn-info col-xs-3 col-xs-push-6"
-			ng-show="userscript.moreinformations.getFromUrl"
-			ng-click="loadAgain(userscript.moreinformations.url)">
-		<i class="fa fa-repeat"></i>
-	</button>
+	<div class="usi-list-entry-load-again---block" >
+		<label class="col-xs-3" data-usi-lang="reload_from_source">
+			<!--Neuladen von der Quelle-->
+		</label>
+		<button class="btn btn-info col-xs-3 col-xs-push-6 usi-list-entry-load-again" >
+			<i class="fa fa-repeat"></i>
+		</button>
+	</div>
 	<!--Greasemonkey Variablen-->
 	<div class="row"><br /></div>
 	<label class="col-xs-3" data-usi-lang="show_GMValues">
 		<!--Zeige die gespeicherten GM Variablen-->
 	</label>
-	<button class="btn btn-info col-xs-3"
-			ng-click="getGMValues(userscript.id)">
+	<button class="btn btn-info col-xs-3 usi-list-entry-get-gm-values">
 		<i class="fa fa-list"></i>
 	</button>
-	<div ng-show="GMValues[userscript.id]">
-		<div class="row"><br /></div>
-		{{GMValues[userscript.id]}}
+	
+	<div class="usi-list-entry-get-gm-values---output">
+		<!--Ausgabe der GM Variablen-->
 	</div>
 	<!--Userscript Inhalt-->
 	<div class="row"><br /></div>
-	<div ng-show="showUserscriptContent">
+	<div class="usi-list-entry-view-userscript---output">
 		<hr />
 		<label>Userscript Content: </label>
 		<select class="selectHighlightJSStyle" >
-
 		</select>
-		<pre class="border-black jscode hljs" id="formatted-userscript-{{$index}}" >{{userscript.userscript}}</pre>
+		<pre><code class="border-black jscode hljs" data-content="userscript-userscript"></code></pre>
 	</div>
+</div>
+
 </div>

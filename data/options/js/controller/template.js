@@ -1,5 +1,7 @@
 "use strict";
 
+/* global language_controller,manager_controller */
+
 function template_class(){
 	
 	var last_used_controller = false
@@ -8,7 +10,7 @@ function template_class(){
 	,controllers_already_started = [];
 	
 	return {
-		load : function(name, additional_callback){
+		load : function(name, additional){
 		
 			var controller_already_started = false;
 		
@@ -32,7 +34,13 @@ function template_class(){
 			// führt die before_rendering() Funktion aus, falls diese existiert
 			if(actual_controller !== false && typeof actual_controller.before_rendering === "function" && controller_already_started === false){
 				// falls ein gültiger Controller gerufen wurde, wird nun seine init() augeführt
-				actual_controller.before_rendering();
+				if(additional && typeof additional.before_rendering_data !== "undefined"){
+					// Extra Übergabe Daten
+					actual_controller.before_rendering(additional.before_rendering_data);
+				}else{
+					// Ohne zusätzliche Parameter before_rendering aufrufen
+					actual_controller.before_rendering();
+				}
 			}
 			
 			var replaceValues;
@@ -51,10 +59,10 @@ function template_class(){
 			}
 			
 			if(controller_already_started === false){
-				var block = jQuery("<div>").attr("id", actual_controller_container_id);
-				jQuery(block).attr("class", "usi-controller-container");
-				
-				jQuery(".right_col").append(block);
+				// Controller Container hinzufügen
+				jQuery(".right_col").append(
+					jQuery("<div>").attr("id", actual_controller_container_id).attr("class", "usi-controller-container")
+				);
 			
 				// Lade das Template und ersetze die Variablen
 				jQuery("#" + actual_controller_container_id).loadTemplate("templates/" + name + ".html", replaceValues, {
@@ -72,15 +80,23 @@ function template_class(){
 
 						controllers_already_started.push(name);
 						last_used_controller_container_id = actual_controller_container_id;
-
-						if(typeof additional_callback === "function"){
-							additional_callback();
+						
+						// Ausführen nachdem das Template fertig geladen wurde
+						if(additional && typeof additional.callback_on_complete === "function"){
+							additional.callback_on_complete();
 						}
 					}
 				});
 				
 			}else{
+				// Controller wurde bereits geladen, daher wird dieser nun wieder eingeblendet!
 				jQuery("#" + actual_controller_container_id).show();
+				
+				// !!!ACHTUNG!!!
+				// Dies wird auch ausgeführt, wenn der Controller bereits 1x geladen wurde!
+				if(additional && typeof additional.callback_on_complete === "function"){
+					additional.callback_on_complete();
+				}
 			}
 			
 		}

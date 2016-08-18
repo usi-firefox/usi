@@ -1,5 +1,7 @@
 "use strict";
 
+/* global self,event_manager_controller */
+
 // Userscript bearbeiten
 function userscript_edit_class(){
 
@@ -7,7 +9,7 @@ function userscript_edit_class(){
 	,textarea_default_size
 	,load_example_by_prefered_locale
 	,textarea_id
-	,script_id = 3123213213;
+	,script_id;
 	
 	// nur wenn die erste 'prefered_locale' -> 'de' ist, ansonsten wird die Englische Version geladen
 	if(prefered_locale === "de"){
@@ -19,11 +21,11 @@ function userscript_edit_class(){
 	// Die ID der Textarea
 	textarea_id = "#usi-edit-script-textarea";
 	
-	return {
-
+	var private_functions = {
+	
 		// Führe dies aus wenn der Controller zum ersten Mal geladen wurde
 		before_rendering : function(){
-
+			
 		}
 		
 		// liefert die benötigten Variablen für jQuery.loadTemplate zurück
@@ -35,25 +37,57 @@ function userscript_edit_class(){
 		
 		// Führe dies aus, sobald das Template geladen wurde
 		,after_rendering : function (){
-			prefered_locale			=	self.options.PreferedLocales[0]; // setze die Standard Sprache
+			prefered_locale			=	self.options.prefered_locales[0]; // setze die Standard Sprache
 			textarea_default_size	=	jQuery(textarea_id).css("font-size").split("px")[0];
 
 			// Text Area anpassen bei Größen Änderung
-			jQuery(window).on("resize", this.setTextareaHeight);
+			event_manager_controller.register_once(window, "resize", private_functions.setTextareaHeight);
 			
 			// Button Events registieren
-			jQuery("#usi-edit-script-load-example").on("click", this.load_example );
-			jQuery("#usi-edit-script-textarea-clear").on("click", this.textarea_clear );
-			jQuery("#usi-edit-script-textarea-default-size").on("click", this.defaultSize );
-			jQuery("#usi-edit-script-save").on("click", this.save );
-			jQuery("#usi-edit-script-textarea-size").on("change", this.changeSize );
+			event_manager_controller.register_once("#usi-edit-script-load-example", "click", private_functions.load_example );
+			event_manager_controller.register_once("#usi-edit-script-textarea-clear", "click", private_functions.textarea_clear );
+			event_manager_controller.register_once("#usi-edit-script-textarea-default-size", "click", private_functions.defaultSize );
+			event_manager_controller.register_once("#usi-edit-script-save", "click", private_functions.save );
+			event_manager_controller.register_once("#usi-edit-script-textarea-size", "change", private_functions.changeSize );
 			
-			jQuery("#usi-edit-script-utf8-to-latin1").on("click", this.utf8_to_latin1 );
-			jQuery("#usi-edit-script-latin1-to-utf8").on("click", this.latin1_to_utf8 );
+			event_manager_controller.register_once("#usi-edit-script-utf8-to-latin1", "click", private_functions.utf8_to_latin1 );
+			event_manager_controller.register_once("#usi-edit-script-latin1-to-utf8", "click", private_functions.latin1_to_utf8 );
 
 			// Schalter richtig positionieren lassen ...
-			this.defaultSize();
-			this.setTextareaHeight();
+			private_functions.defaultSize();
+			private_functions.setTextareaHeight();
+			
+			// Setze die Script ID in den Kopf, falls vorhanden
+			private_functions.change_userscript_id(script_id);
+
+			// Falls ein Userscript zur Editierung übergeben wurde
+			event_manager_controller.register_once(document, "USI-FRONTEND:editTab-get-userscript", function(event, userscript){
+				// prüfe ob ein Userscript übergeben wurde und trage den Inhalt in die Textarea ein
+				if(userscript.userscript){
+					jQuery(textarea_id).val(userscript.userscript);
+				}
+				
+				// aktuelle Userscript ID setzen
+				if(userscript.id){
+					private_functions.change_userscript_id(userscript.id);
+				}
+				
+				// nach ganz oben scrollen
+				jQuery(document).scrollTop(0);
+			});
+		}
+		
+		// Blendet den Kopfbereich für die Userscript ID ein/aus, und setzt die "script_id"
+		, change_userscript_id : function(userscrpt_id){
+			// Script ID überschreiben
+			script_id = userscrpt_id;
+			if(script_id){
+				jQuery("#usi-edit-script-id---block").show();
+				jQuery("#usi-edit-script-id").html(script_id);
+			}else{
+				jQuery("#usi-edit-script-id---block").hide();
+				jQuery("#usi-edit-script-id").html("");
+			}
 		}
 		
 		/**
@@ -63,7 +97,7 @@ function userscript_edit_class(){
 		,setTextareaHeight : function () {
 			var window_innerHeight = parseInt(window.innerHeight),
 					size_by_percent = 65 / 100;
-
+			
 			// Textarea höhe berechnen
 			var textarea_height = Math.floor(window_innerHeight * size_by_percent);
 
@@ -93,7 +127,8 @@ function userscript_edit_class(){
 		}
 		
 		,textarea_clear : function(){
-			jQuery(textarea_id).text(null);
+			private_functions.change_userscript_id();
+			jQuery(textarea_id).val("");
 		}
 		
 		,load_example : function(){
@@ -102,9 +137,9 @@ function userscript_edit_class(){
 			self.port.emit("USI-BACKEND:get-userscript-example", load_example_by_prefered_locale);
 			// Rückantwort sichern
 			self.port.once("USI-BACKEND:get-userscript-example-done", function(data){
-				jQuery(textarea_id).text(data);
+				private_functions.textarea_clear();
+				jQuery(textarea_id).val(data);
 			});
-			
 		}
 		
 		/**
@@ -113,11 +148,9 @@ function userscript_edit_class(){
 		 */
 		,save : function () {
 			// Textarea nicht leer ...
-			if (jQuery(textarea_id).text().length > 20) {
+			if (jQuery(textarea_id).val().length > 20) {
 				// sende den Userscript Text an das Addon Skript...
-				self.port.emit("USI-BACKEND:new-usi-script_content", {script: jQuery(textarea_id).text()});
-
-				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
+				self.port.emit("USI-BACKEND:new-usi-script_content", {script: jQuery(textarea_id).val()});
 			}
 		}
 
@@ -141,22 +174,25 @@ function userscript_edit_class(){
 		 */
 		,utf8_to_latin1 : function () {
 			try{
-				jQuery(textarea_id).text(
+				jQuery(textarea_id).val(
 						unescape(
 						encodeURIComponent(
-						jQuery(textarea_id).text())));
+						jQuery(textarea_id).val())));
 			}catch(e){}
 		}
 		,latin1_to_utf8 : function () {
 			try{
-				jQuery(textarea_id).text(
+				jQuery(textarea_id).val(
 						decodeURIComponent(
 						escape(
-						jQuery(textarea_id).text())));
+						jQuery(textarea_id).val())));
 			}catch(e){}
 		}
 		
 	};
+	
+	// da es hier keine Funktionen gibt die nicht von außen aufgerufen werden dürften kann das komplett Objekt zurückgegeben werden
+	return private_functions;
 };
 
 var userscript_edit_controller = userscript_edit_class();

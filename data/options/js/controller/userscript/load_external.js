@@ -8,6 +8,14 @@ function userscript_load_external_class(){
 			
 		}
 	
+		,after_rendering : function(){
+			
+			event_manager_controller.register_once(document, "USI-FRONTEND:loadExternal-reload-from-url", function(event, reload_from_url){
+				
+			});
+			
+		}
+		
 		,addCustomCharset : function(){
 			var new_charset = window.prompt($scope.lang.add_new_custom_charset);
 			if(new_charset){

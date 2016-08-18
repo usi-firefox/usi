@@ -4,15 +4,17 @@ jQuery().ready(function () {
 
 	// Lade alle CSS Dateien nach!
 	// cssFiles => self.options.cssFiles
-	function load_required_css_files(cssFiles) {
-		var css_files = cssFiles;
+	(function load_required_css_files() {
+		var css_files = self.options.css_files;
 		for (var i in css_files) {
 			jQuery("head").append(jQuery("<link>").attr("href", css_files[i]).attr("type", "text/css").attr("rel", "stylesheet"));
 		}
-	}
-	// Lade alle CSS Dateien nach! -> Start
-	load_required_css_files(self.options.cssFiles);
+	}());
 
+
+
+	// initialisiere die globalen Events für die Kommunikation mit dem Backend
+	backend_events_controller.register_global_events();
 
 	// suche nach der Klasse load_template, diese benötigt das data Attribut "usiurl" darin wird der Name des Templates angegeben
 	jQuery(".load_template").on("click", function () {
@@ -25,6 +27,9 @@ jQuery().ready(function () {
 	// ersetze das Versionslabel
 	jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template"),{version : self.options.version});
 	
+	
+	// Initialisiere die Frontend Events
+	frontend_events_controller.init();
 
 	// INIT
 

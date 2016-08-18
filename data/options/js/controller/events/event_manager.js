@@ -4,12 +4,17 @@ function event_manager_class(){
 	
 	var registered_once_events = [];
 	
-	return {
+	var private_functions = {
 		
 		// registriert ein neues Event
 		register : function(element, eventname, func){
 			// neues Event registrieren
 			jQuery(element).on(eventname, func);
+		}
+		
+		,unregister : function(element, eventname){
+			// neues Event registrieren
+			jQuery(element).off(eventname);
 		}
 		
 		// Stellt sicher dass 
@@ -28,7 +33,7 @@ function event_manager_class(){
 			}
 			
 			// neues Event registrieren
-			this.register(element, eventname, func);
+			private_functions.register(element, eventname, func);
 			
 			// neuen eintrag im sichern
 			var entry = {
@@ -42,6 +47,16 @@ function event_manager_class(){
 			// alles in ordnung
 			return true;
 		}
+	};
+	
+	return {
+		
+		register : private_functions.register
+		
+		,unregister : private_functions.unregister
+		
+		// Stellt sicher dass 
+		,register_once : private_functions.register_once
 		
 	};
 	

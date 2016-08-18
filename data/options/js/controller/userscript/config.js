@@ -2,53 +2,95 @@
 
 function userscript_config_class (){
 	
+	// 4 Buttons --- Zusätzlich wird jedoch noch das Event "USI-BACKEND:highlightjs-style" behandelt
+	var initial_requests_done = 5;
+	
 	// init
 	return {
 	
 		before_rendering : function(){
+		}
+
+			/**
+			 * Registriert einen Button für sein Backend Event
+			 * 
+			 * @param string event_name
+			 * @param string id
+			 * @returns void
+			 */
+		, init_button_with_data : function (event_name, id){
+			var __change_switch_option = this.__change_switch_option;
+			
+			self.port.on(event_name, function(state){
+				jQuery("#" + id).prop("checked", state);
+				__change_switch_option(id);
+				jQuery(document).trigger("all-intial-requests-done", --initial_requests_done);
+			});
 		}
 		
 		,after_rendering : function(){
 			
 			var __change_switch_option = this.__change_switch_option;
 			
-			var initial_requests_done = 4;
-				// Verstecke zunächst alle Labels
-				// registriere alle Events für die States
-				self.port.emit("USI-BACKEND:register-all-change-states");
-				
-				// Setze die gesetzen Einstellungen für die Buttons --- START
-				self.port.on("USI-BACKEND:options_always_activate_greasemonkey",function(state){
-					jQuery("#usi-config-change-options-always-activate-greasemonkey").prop("checked", state);
-					__change_switch_option("usi-config-change-options-always-activate-greasemonkey");
-					jQuery(document).trigger("all-intial-requests-done",--initial_requests_done);
-				});
-				self.port.on("USI-BACKEND:ExternalScriptLoadQuestion",function(state){
-					jQuery("#usi-config-change-enable-external-script-load-question").prop("checked", state);
-					__change_switch_option("usi-config-change-enable-external-script-load-question");
-					jQuery(document).trigger("all-intial-requests-done",--initial_requests_done);
-				});
-				self.port.on("USI-BACKEND:OldUsiIncludeBehavior",function(state){
-					jQuery("#usi-config-change-old-usi-include-behavior").prop("checked", state);
-					__change_switch_option("usi-config-change-old-usi-include-behavior");
-					jQuery(document).trigger("all-intial-requests-done",--initial_requests_done);
-				});
-				self.port.on("USI-BACKEND:highlightjs-activation-state",function(state){
-					jQuery("#usi-config-change-options-activate-highlightjs").prop("checked", state);
-					__change_switch_option("usi-config-change-options-activate-highlightjs");
+			// Verstecke zunächst alle Labels
+			// registriere alle Events für die States
+			self.port.emit("USI-BACKEND:register-all-change-states");
 
-					jQuery(document).trigger("all-intial-requests-done",--initial_requests_done);
-				});
+			// Setze die gesetzen Einstellungen für die Buttons --- START
+			this.init_button_with_data("USI-BACKEND:options_always_activate_greasemonkey", "usi-config-change-options-always-activate-greasemonkey");
+			this.init_button_with_data("USI-BACKEND:ExternalScriptLoadQuestion", "usi-config-change-enable-external-script-load-question");
+			this.init_button_with_data("USI-BACKEND:OldUsiIncludeBehavior", "usi-config-change-old-usi-include-behavior");
+			this.init_button_with_data("USI-BACKEND:highlightjs-activation-state", "usi-config-change-options-activate-highlightjs");
 
-				jQuery("#usi-config-change-complete-export---true").hide();
+			// Legt den Style fest
+			self.port.on("USI-BACKEND:highlightjs-style", function(style){
+				highlightjs_controller.set_active_style(style);
+				jQuery(document).trigger("all-intial-requests-done", --initial_requests_done);
+			});
+
+			jQuery("#usi-config-change-complete-export---true").hide();
 			
 			// Setze die gesetzen Einstellungen für die Buttons --- END
 			
 			
+			// Zusätzliche Events registrieren --- START
+			/** 
+			 * Erzeugt ein Download Fenster für den Fertigen Export
+			 */
+			self.port.on("USI-BACKEND:get-all-userscripts-for-export-done", function (result_export_data) {
+				if (jQuery("#usi-config-change-complete-export").prop("checked") === true) {
+					createDownload(result_export_data, "text/plain", "usi-export.usi.json");
+				} else {
+					createDownload(result_export_data, "application/octet-stream", "usi-export.usi.js");
+				}
+			});
+
+			// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
+			self.port.on("USI-BACKEND:update-for-userscript-available", function (userscript_infos) {
+				if (window.confirm(language_controller.get("userscript_update_was_found_1") + userscript_infos.id + language_controller.get("userscript_update_was_found_2"))) {
+					// Nun das Skript aktualisieren!
+					self.port.emit("USI-BACKEND:override-same-userscript", userscript_infos);
+
+					self.port.emit("USI-BACKEND:request-for---list-all-scripts");
+				}
+			});
+
+			// Wenn das Skript gelöscht wurde
+			self.port.on("USI-BACKEND:delete-script-is-now-deleted", function (script_was_deleted) {
+				if (script_was_deleted === true) { // script wurde erfolgreich gelöscht
+					window.alert(language_controller.get("userscript_was_successful_deleted"));
+				} else { // script konnte nicht gelöscht werden
+					window.alert(language_controller.get("userscript_could_not_deleted"));
+				}
+			});
+
+			// Zusätzliche Events registrieren --- END
+			
+			
 			// Button Events --- START
-			jQuery("#usi-config-delete-all").on("click", this.deleteAll );
-			jQuery("#usi-config-check-for-updates").on("click", this.checkForUpdates );
-			jQuery("#usi-config-export-all").on("click", this.exportAll );
+			event_manager_controller.register_once("#usi-config-delete-all", "click", this.deleteAll );
+			event_manager_controller.register_once("#usi-config-check-for-updates", "click", this.checkForUpdates );
+			event_manager_controller.register_once("#usi-config-export-all", "click", this.exportAll );
 			
 			// Sobald der Counter auf 0 steht, 
 			jQuery(document).on("all-intial-requests-done", function(evt, counter){
@@ -58,26 +100,26 @@ function userscript_config_class (){
 					switchery_controller.run();
 
 					// Switch Events behandeln
-					jQuery("#usi-config-change-old-usi-include-behavior").on("change", function(){
+					event_manager_controller.register_once("#usi-config-change-old-usi-include-behavior", "change", function(){
 						__change_switch_option(this.id);
 						self.port.emit("USI-BACKEND:OldUsiIncludeBehavior-change", jQuery(this).prop("checked"));
 					});
-					jQuery("#usi-config-change-enable-external-script-load-question").on("change", function(){
+					event_manager_controller.register_once("#usi-config-change-enable-external-script-load-question", "change", function(){
 						__change_switch_option(this.id);
 						self.port.emit("USI-BACKEND:ExternalScriptLoadQuestion-change",  jQuery(this).prop("checked"));
 					});
-					jQuery("#usi-config-change-options-activate-highlightjs").on("change", function(){
+					event_manager_controller.register_once("#usi-config-change-options-activate-highlightjs", "change", function(){
 						// ändert den Aktivierungs Status
 						__change_switch_option(this.id);
 						self.port.emit("USI-BACKEND:highlightjs-activation-state-change",  jQuery(this).prop("checked"));
 					});
-					jQuery("#usi-config-change-options-always-activate-greasemonkey").on("change", function(){
+					event_manager_controller.register_once("#usi-config-change-options-always-activate-greasemonkey", "change", function(){
 						// Aktiviert Greasemonkey Funktionen immer, egal ob @use-greasemonkey gesetzt wurde oder nicht
 						__change_switch_option(this.id);
 						self.port.emit("USI-BACKEND:options_always_activate_greasemonkey-change",  jQuery(this).prop("checked"));
 					});
 
-					jQuery("#usi-config-change-complete-export").on("change", function(){
+					event_manager_controller.register_once("#usi-config-change-complete-export", "change", function(){
 						__change_switch_option(this.id);
 					});
 				}
