@@ -1,5 +1,6 @@
 "use strict";
-/* global self, highlightjs_controller, event_manager_controller, language_controller */
+
+/* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller */
 
 function userscript_list_class(){
 	
@@ -7,6 +8,26 @@ function userscript_list_class(){
 	// Anzahl der Userscripts - zählen mittels Object.keys
 	var userscript_count	=	0;
 	var all_userscripts		=	[];
+	
+	
+	var private_functions = {
+		// fragt die Userscripte ab
+		refresh : function(){
+			self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
+		}
+		
+		,set_userscript_counter : function(counter){
+			if(counter && counter > 0){
+				jQuery("#usi-list-userscript-count-negative").hide();
+				jQuery("#usi-list-userscript-count-positive").show();
+				
+				jQuery("#usi-list-userscript-count").html(counter);
+			}else{
+				jQuery("#usi-list-userscript-count-positive").hide();
+				jQuery("#usi-list-userscript-count-negative").show();
+			}
+		}
+	};
 	
 	// Active Style festlegen
 	self.port.on("USI-BACKEND:highlightjs-style", function(style){
@@ -28,47 +49,57 @@ function userscript_list_class(){
 	// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 	self.port.on("USI-BACKEND:list-all-scripts", function (userscripts) {
 		
-		var userscript_entries = [];
-		var index = 0;
+		var index = 0
+		,userscript_entries = []
+		// Anzahl der Userscripts - zählen mittels Object.keys
+		,userscript_count = Object.keys(userscripts).length;
+
+		// setze die Anzahl der Userscripts
+		private_functions.set_userscript_counter(userscript_count);
+		
 		// leeren 
 		jQuery("#usi-list-userscript-entries").html("");
 		
 		// Daten für alle Userscripts setzen
-		for(var id in userscripts){
+		for (var id in userscripts) {
 			userscript_entries.push(
-					// Instanziere das Userscript
+				// Instanziere das Userscript
 				new userscript_list_entry_class(userscripts[id], index)
-			);
-			
+				);
+
 			// falls ein Fehler auftreten sollte, ist der userscript_entry === false
-			if(userscript_entries[index] !== false){
-				// template laden und Variablen ersetzen
-				jQuery("#usi-list-userscript-entries").
+			if (userscript_entries[index] !== false) {
+				// führe die Funktion direkt aus
+				(function (userscript_entry, idx) {
+					// template laden und Variablen ersetzen
+					jQuery("#usi-list-userscript-entries").
 						loadTemplate("templates/list_entry.html",
-								userscript_entries[index].deliver_vars(),
-								{append: true, complete: userscript_entries[index].after_rendering});
-				
+							userscript_entry.deliver_vars(),
+							{append: true, complete: function () {
+
+									// after_rendering ausführen
+									userscript_entry.after_rendering();
+
+									// switchery_controller ausführen sobald alle Userscripts geladen wurden
+									if ((idx + 1) === userscript_count) {
+										switchery_controller.run();
+									}
+								}});
+
+				}(userscript_entries[index], index));
+
+				// index hochzählen
 				++index;
 			}
 			
 		}
 		
-		// Anzahl der Userscripts - zählen mittels Object.keys
-		userscript_count = Object.keys(userscripts).length;
 
 		// Beende die Lade Animation
 		if(typeof window.loading_screen !== "undefined" && typeof window.loading_screen.finish === "function"){
 			window.loading_screen.finish();
 		}
 	});
-
-
-	var private_functions = {
-		// fragt die Userscripte ab
-		refresh : function(){
-			self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
-		}
-	};
 
 	return {
 		before_rendering : function(){
@@ -83,6 +114,7 @@ function userscript_list_class(){
 		}
 		
 		,after_rendering : function(){
+			private_functions.set_userscript_counter();
 			
 			event_manager_controller.register_once("#usi-list-refresh","click", private_functions.refresh);
 			

@@ -61,7 +61,7 @@ function template_class(){
 			if(controller_already_started === false){
 				// Controller Container hinzufügen
 				jQuery(".right_col").append(
-					jQuery("<div>").attr("id", actual_controller_container_id).attr("class", "usi-controller-container")
+					jQuery("<div>").attr("id", actual_controller_container_id).attr("class", "usi-controller-container").hide()
 				);
 			
 				// Lade das Template und ersetze die Variablen
@@ -85,18 +85,21 @@ function template_class(){
 						if(additional && typeof additional.callback_on_complete === "function"){
 							additional.callback_on_complete();
 						}
+						
+						// Sobald alles abgearbeitet wurde, kann der gesamte Container angezeigt werden
+						jQuery("#" + actual_controller_container_id).show();
 					}
 				});
 				
 			}else{
-				// Controller wurde bereits geladen, daher wird dieser nun wieder eingeblendet!
-				jQuery("#" + actual_controller_container_id).show();
-				
 				// !!!ACHTUNG!!!
 				// Dies wird auch ausgeführt, wenn der Controller bereits 1x geladen wurde!
 				if(additional && typeof additional.callback_on_complete === "function"){
 					additional.callback_on_complete();
 				}
+				
+				// Controller wurde bereits geladen, daher wird dieser nun wieder eingeblendet!
+				jQuery("#" + actual_controller_container_id).show();
 			}
 			
 		}

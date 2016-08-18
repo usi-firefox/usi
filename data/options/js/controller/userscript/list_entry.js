@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self,basic_helper */
+/* global self,basic_helper, language_controller, highlightjs_controller */
 
 
 function flatten_keys(obj, prepend_key, result) {
@@ -45,6 +45,8 @@ function userscript_list_entry_class(script, index) {
 		 * erstellt die Variablen die im Template ersetzt werden sollen
 		 * END
 		 */
+
+		 var highlightjs_already_done = false;
 
 		var private_functions = {
 			export: function () {
@@ -146,15 +148,23 @@ function userscript_list_entry_class(script, index) {
 			// Code highlight
 			, highlightCode: function () {
 
-				highlightjs_controller.fill_in_options("#" + usi_list_entry_id);
-				
-				highlightjs_controller.run("#" + usi_list_entry_id);
+				if(highlightjs_already_done === false){
+					highlightjs_controller.fill_in_options("#" + usi_list_entry_id);
+
+					highlightjs_controller.run("#" + usi_list_entry_id);
+					
+					// damit es nicht ein weiteres mal durchgeführt werden muss
+					highlightjs_already_done = true;
+				}
 
 			}
 			
 			, showUserscript : function(){
+//				var state = jQuery(usi_list_entry_id_plus_class + "view-userscript").prop("checked");
 				
-				var state = jQuery(usi_list_entry_id_plus_class + "view-userscript").prop("checked");
+				// highlightCode
+				private_functions.highlightCode();
+				
 				jQuery(usi_list_entry_id_plus_class + "view-userscript---output").toggle();
 			}
 			
@@ -218,9 +228,6 @@ function userscript_list_entry_class(script, index) {
 				}
 				
 				
-				
-				
-				
 			}
 			
 		};
@@ -240,9 +247,6 @@ function userscript_list_entry_class(script, index) {
 				
 				// Button Events registieren
 				private_functions.register_buttons();
-				
-				// highlightCode
-				private_functions.highlightCode();
 
 				// Sprachspezifische Variablen ersetzen
 				language_controller.replace_in_DOM();

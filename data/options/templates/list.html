@@ -6,8 +6,8 @@
 		<button class="col-xs-push-10 col-xs-2" id="usi-list-refresh"><i class="fa fa-refresh"></i></button>
 	</div>
 	<hr />
-	<h3 ng-if="userscript_count > 0">Userscripts (<span data-content="userscript_count"></span>) :</h3>
-	<h3 ng-if="userscript_count == 0"><span data-usi-lang="no_userscript_there"></span></h3>
+	<h3 id="usi-list-userscript-count-positive">Userscripts (<span id="usi-list-userscript-count" ></span>) :</h3>
+	<h3 id="usi-list-userscript-count-negative"><span data-usi-lang="no_userscript_there"></span></h3>
 	<div class="panel-group" ui-state="ListScriptAccordion" ui-default="0">		
 
 		<div class="panel panel-default" id="usi-list-userscript-entries">

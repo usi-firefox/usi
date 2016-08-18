@@ -10,6 +10,8 @@ function switchery_class(){
 					new Switchery(html, {
 						color: '#007aff'
 					});
+					// entferne die Klasse damit das Element nicht nochmal bearbeitet wird
+					jQuery(html).removeClass("js-switch");
 				});
 			}
 		}
