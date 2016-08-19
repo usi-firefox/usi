@@ -65,7 +65,7 @@ function template_class(){
 				);
 			
 				// Lade das Template und ersetze die Variablen
-				jQuery("#" + actual_controller_container_id).loadTemplate("templates/" + name + ".html", replaceValues, {
+				jQuery("#" + actual_controller_container_id).loadTemplate("options/templates/" + name + ".html", replaceValues, {
 
 					complete: function(){
 						// nach Abschluss des Nachladens ...

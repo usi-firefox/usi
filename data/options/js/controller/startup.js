@@ -12,8 +12,6 @@ jQuery().ready(function () {
 		}
 	}());
 
-
-
 	// initialisiere die globalen Events für die Kommunikation mit dem Backend
 	backend_events_controller.register_global_events();
 

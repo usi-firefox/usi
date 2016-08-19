@@ -73,7 +73,7 @@ function userscript_list_class(){
 				(function (userscript_entry, idx) {
 					// template laden und Variablen ersetzen
 					jQuery("#usi-list-userscript-entries").
-						loadTemplate("templates/list_entry.html",
+						loadTemplate("options/templates/list_entry.html",
 							userscript_entry.deliver_vars(),
 							{append: true, complete: function () {
 

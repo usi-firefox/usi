@@ -9,6 +9,8 @@ function highlightjs_class(){
 
 	var active_style;
 	
+	var highlight_styles_path = self.options.baseurl + "libs/highlight/styles/";
+	
 	var private_functions = {
 		
 		fill_in_options: function(id){
@@ -48,10 +50,8 @@ function highlightjs_class(){
 			// neuen Style setzen
 			private_functions.set_active_style(style);
 			
-			// Pfad zur CSS Datei festlegen
-			var style_filepath	=	"../libs/highlight/styles/" + style + ".css";
-			// Link auf die neue CSS Datei ändern
-			jQuery("#HighlightJSStyle").attr("href", style_filepath);
+			// CSS Datei tauschen
+			private_functions.change_css_file(style);
 
 			// Style speichern
 			self.port.emit("USI-BACKEND:highlightjs-style-change", style);
@@ -60,7 +60,17 @@ function highlightjs_class(){
 		,set_active_style : function(style){
 			active_style = style;
 		}
+		
+		,change_css_file : function(style){
+			// Pfad zur CSS Datei festlegen
+			var style_filepath	=	highlight_styles_path + style + ".css";
+			// Link auf die neue CSS Datei ändern
+			jQuery("#HighlightJSStyle").attr("href", style_filepath);
+		}
 	};
+
+	// Standard CSS laden
+	private_functions.change_css_file("default");
 
 	return {
 		
