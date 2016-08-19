@@ -1,7 +1,7 @@
 <!--Panel Kopf-->
-<div class="usi-list-entry-id row" data-id="usi-list-entry-id">
-<div class="panel-heading" >
-	<h4 class="panel-title">
+<div class="usi-list-entry-id container-fluid" data-id="usi-list-entry-id">
+<div class="row-fluid">
+	<h4>
 		<span data-id="icon_data_id"></span>
 		Index: <span data-content="index"></span> | <span data-content="userscript-settings-name"></span> | <span data-content="userscript-settings-author"></span> | <span data-content="userscript-settings-version"></span>
 	</h4>
@@ -9,27 +9,41 @@
 
 <!--Panel Inhalt-->
 <!--<div ui-if="ListScriptAccordion == {{$index}}">-->
-<div class="panel-body">
+<div class="container-fluid">
 	<div class="row">
-		<button class="btn btn-info col-xs-3 col-xs-push-9 usi-list-entry-export">export</button>
+		<div class="col-md-6 col-xs-6">
+			<div class="row">
+				<label>usi-id: </label><span data-content="userscript-id"></span><br />
+			</div>
+			<div class="row">
+				<label>Name: </label><span data-content="userscript-settings-name"></span><br />
+			</div>
+			<div class="row">
+				<label>Author: </label><span data-content="userscript-settings-author"></span><br />
+			</div>
+			<div class="row">
+				<label>Version: </label><span data-content="userscript-settings-version"></span><br />
+			</div>
+			<div class="row">
+				<label data-usi-lang="description"></label>: <span data-content="userscript-settings-description"></span><br />
+			</div>
+		</div>
+		<div class="col-md-4 col-md-push-4 col-xs-4 col-xs-push-4">
+			<button class="btn btn-info usi-list-entry-export">export</button>
+		</div>
 	</div>
-	<label>usi-id: </label><span data-content="userscript-id"></span><br />
-	<label>Name: </label><span data-content="userscript-settings-name"></span><br />
-	<label>Author: </label><span data-content="userscript-settings-author"></span><br />
-	<label>Version: </label><span data-content="userscript-settings-version"></span><br />
-	<label data-usi-lang="description"></label>: <span data-content="userscript-settings-description"></span><br />
 
 	<!--Userscript aktivieren oder deaktivieren-->
-	<label>
-		<span class="usi-list-entry-deactivated---true" data-usi-lang="deactivated"></span>
-		<span class="usi-list-entry-deactivated---false" data-usi-lang="activated"></span>
-	</label>
-	
-	<input type="checkbox" class="usi-list-entry-deactivated js-switch" />
+	<div class="row">
+		<label>
+			<span class="usi-list-entry-deactivated---true" data-usi-lang="deactivated"></span>
+			<span class="usi-list-entry-deactivated---false" data-usi-lang="activated"></span>
+		</label>
 
+		<input type="checkbox" class="usi-list-entry-deactivated js-switch" />
+	</div>
 	
-	<div class="row"><br /></div>
-	<div>
+	<div class="row">
 		<!--Require Skripte-->
 		<div class="usi-list-entry-required-scripts">
 			<label>Require Scripts: </label>
@@ -51,7 +65,7 @@
 	<div class="row"><br /></div>
 	<div class="row"><br /></div>
 	<!--Buttons-->
-	<div class="row">
+	<div class="row-fluid">
 		<!--Userscript bearbeiten-->
 		<button class="btn btn-info col-xs-3 col-xs-push-2 usi-list-entry-edit" data-usi-lang="change"></button>
 		<!--Userscript entfernen-->
