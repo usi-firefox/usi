@@ -1,5 +1,5 @@
 <!--Panel Kopf-->
-<div class="usi-list-entry-id" data-id="usi-list-entry-id">
+<div class="usi-list-entry-id row" data-id="usi-list-entry-id">
 <div class="panel-heading" >
 	<h4 class="panel-title">
 		<span data-id="icon_data_id"></span>
@@ -52,13 +52,6 @@
 	<div class="row"><br /></div>
 	<!--Buttons-->
 	<div class="row">
-		<!--Userscript anzeigen/ausblenden-->
-		<label>
-			<span class="usi-list-entry-view-userscript---false" data-usi-lang="hide"></span>
-			<span class="usi-list-entry-view-userscript---true" data-usi-lang="show"></span>
-		</label>
-		<input type="checkbox" class="btn btn-default col-xs-3 col-xs-push-1 usi-list-entry-view-userscript js-switch" />
-		
 		<!--Userscript bearbeiten-->
 		<button class="btn btn-info col-xs-3 col-xs-push-2 usi-list-entry-edit" data-usi-lang="change"></button>
 		<!--Userscript entfernen-->
@@ -88,6 +81,14 @@
 	</div>
 	<!--Userscript Inhalt-->
 	<div class="row"><br /></div>
+	<!--Userscript anzeigen/ausblenden-->
+		<label>
+			<span class="usi-list-entry-view-userscript---hide" data-usi-lang="hide"></span>
+			<span class="usi-list-entry-view-userscript---show" data-usi-lang="show"></span>
+		</label>
+		<input type="checkbox" class="btn btn-default col-xs-3 col-xs-push-1 usi-list-entry-view-userscript js-switch" />
+	<div class="row"><br /></div>
+	
 	<div class="usi-list-entry-view-userscript---output">
 		<hr />
 		<label>Userscript Content: </label>

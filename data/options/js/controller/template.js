@@ -1,6 +1,6 @@
 "use strict";
 
-/* global language_controller,manager_controller */
+/* global language_controller,manager_controller, switchery_controller */
 
 function template_class(){
 	
@@ -86,6 +86,9 @@ function template_class(){
 							additional.callback_on_complete();
 						}
 						
+						// Die Buttons mittels switchery_controller anpassen
+						switchery_controller.run();
+						
 						// Sobald alles abgearbeitet wurde, kann der gesamte Container angezeigt werden
 						jQuery("#" + actual_controller_container_id).show();
 					}
@@ -101,6 +104,10 @@ function template_class(){
 				// Controller wurde bereits geladen, daher wird dieser nun wieder eingeblendet!
 				jQuery("#" + actual_controller_container_id).show();
 			}
+			
+			// Seiten Menü Active umschalten
+			jQuery(".nav.side-menu li").removeClass("active");
+			jQuery(".nav.side-menu li a[data-usi-templateurl="+name+"]").parent().addClass("active");
 			
 		}
 		

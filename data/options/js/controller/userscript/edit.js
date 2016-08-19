@@ -84,9 +84,12 @@ function userscript_edit_class(){
 			if(script_id){
 				jQuery("#usi-edit-script-id---block").show();
 				jQuery("#usi-edit-script-id").html(script_id);
+				// Möglichkeit anzugeben, dass ein Userscript überschrieben werden soll
+				jQuery("#usi-edit-script-overwrite---block").show();
 			}else{
 				jQuery("#usi-edit-script-id---block").hide();
 				jQuery("#usi-edit-script-id").html("");
+				jQuery("#usi-edit-script-overwrite---block").hide();
 			}
 		}
 		
@@ -150,7 +153,14 @@ function userscript_edit_class(){
 			// Textarea nicht leer ...
 			if (jQuery(textarea_id).val().length > 20) {
 				// sende den Userscript Text an das Addon Skript...
-				self.port.emit("USI-BACKEND:new-usi-script_content", {script: jQuery(textarea_id).val()});
+				// Falls eine Userscript ID existiert und es überschrieben werden soll
+				if(script_id && jQuery("#usi-edit-script-overwrite").prop("checked")){
+					// Vorhandes Userscript überschreiben
+					self.port.emit("USI-BACKEND:override-same-userscript", {userscript: jQuery(textarea_id).val(), id: script_id});
+				}else{
+					// Keine Script ID gegeben
+					self.port.emit("USI-BACKEND:new-usi-script_content", {script: jQuery(textarea_id).val()});
+				}
 			}
 		}
 

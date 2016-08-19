@@ -1,5 +1,7 @@
 "use strict";
 
+/* global self */
+
 // verwaltet die Übersetzungen
 function language_class(){
 	var lang	=	self.options.language;

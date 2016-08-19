@@ -1,6 +1,7 @@
 "use strict";
 
 jQuery().ready(function () {
+	// INIT
 
 	// Lade alle CSS Dateien nach!
 	// cssFiles => self.options.cssFiles
@@ -27,11 +28,8 @@ jQuery().ready(function () {
 	// ersetze das Versionslabel
 	jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template"),{version : self.options.version});
 	
-	
 	// Initialisiere die Frontend Events
 	frontend_events_controller.init();
-
-	// INIT
 
 	// ersetze alle Language Keys!
 	language_controller.replace_in_DOM();

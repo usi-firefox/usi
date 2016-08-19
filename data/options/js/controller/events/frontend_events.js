@@ -1,5 +1,7 @@
 "use strict";
 
+/* global event_manager_controller, template_controller */
+
 function frontend_events_class(){
 	
 	var private_functions = {

@@ -77,6 +77,8 @@ function userscript_list_entry_class(script, index) {
 				// aktiviere oder deaktiviere dieses Userscript!
 				self.port.emit("USI-BACKEND:toggle-userscript-state", script.id);
 				
+				jQuery(usi_list_entry_id_plus_class + "deactivated---false").toggle();
+				jQuery(usi_list_entry_id_plus_class + "deactivated---true").toggle();
 			}
 
 
@@ -100,7 +102,7 @@ function userscript_list_entry_class(script, index) {
 				// das Skript mit der ID löschen!
 				if (!basic_helper.empty(script.id)) {
 					//zusätzliche Abfrage
-					if (window.confirm(language_controller().get("want_to_delete_this_userscript_1") + script.id + language_controller().get("want_to_delete_this_userscript_2"))) {
+					if (window.confirm(language_controller.get("want_to_delete_this_userscript_1") + script.id + language_controller.get("want_to_delete_this_userscript_2"))) {
 
 						// @todo erstmal abschalten!!!
 						self.port.emit("USI-BACKEND:delete-script-by-id", script.id);
@@ -160,12 +162,13 @@ function userscript_list_entry_class(script, index) {
 			}
 			
 			, showUserscript : function(){
-//				var state = jQuery(usi_list_entry_id_plus_class + "view-userscript").prop("checked");
-				
 				// highlightCode
 				private_functions.highlightCode();
 				
 				jQuery(usi_list_entry_id_plus_class + "view-userscript---output").toggle();
+				
+				jQuery(usi_list_entry_id_plus_class + "view-userscript---show").toggle();
+				jQuery(usi_list_entry_id_plus_class + "view-userscript---hide").toggle();
 			}
 			
 			// register Button Events
@@ -175,8 +178,16 @@ function userscript_list_entry_class(script, index) {
 				jQuery(usi_list_entry_id_plus_class + "export").on("click", private_functions.export);
 								
 				// Userscript de/-aktivieren
-				jQuery(usi_list_entry_id_plus_class + "deactivated").prop("checked",script.deactivated);
-				jQuery(usi_list_entry_id_plus_class + "deactivated").on("change", private_functions.toggleActivation);
+				(function(){
+					jQuery(usi_list_entry_id_plus_class + "deactivated").prop("checked",script.deactivated);
+					if(script.deactivated === true){
+						jQuery(usi_list_entry_id_plus_class + "deactivated---true").hide();
+					}else{
+						jQuery(usi_list_entry_id_plus_class + "deactivated---false").hide();
+					}
+					
+					jQuery(usi_list_entry_id_plus_class + "deactivated").on("change", private_functions.toggleActivation);
+				}());
 				
 				// edit
 				jQuery(usi_list_entry_id_plus_class + "edit").on("click", private_functions.edit);
@@ -204,6 +215,7 @@ function userscript_list_entry_class(script, index) {
 				
 				// Ausgabe jedoch zunächst ausblenden
 				jQuery(usi_list_entry_id_plus_class + "view-userscript---output").hide();
+				jQuery(usi_list_entry_id_plus_class + "view-userscript---hide").hide();
 
 				// Required Scripts
 				if(!basic_helper.empty(script.require_scripts)){
