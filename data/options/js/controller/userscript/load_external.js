@@ -1,8 +1,12 @@
 "use strict";
 
+/* global language_controller, event_manager_controller, self */
+
 function userscript_load_external_class(){
 	
-	return {
+	var id_prefix = "#usi-load-external-";
+	
+	var private_functions = {
 		
 		before_rendering: function(){
 			
@@ -14,27 +18,46 @@ function userscript_load_external_class(){
 				
 			});
 			
+			// alle Buttons registrieren
+			private_functions.register_buttons();
+			
+		}
+		
+		, register_buttons : function(){
+			// Script von einer URL holen
+			jQuery(id_prefix + "execute-url-load").on("click", private_functions.loadExternal);
+			
+			// Reset Button für URL Eingabe
+			jQuery(id_prefix + "reset").on("click", private_functions.reset_url);
+			// Start Button für das Laden einer lokalen Datei
+			jQuery(id_prefix + "execute-local-load").on("click", private_functions.loadLocalFile);
+			// alternatives Charset hinzufügen
+			jQuery(id_prefix + "add-custom-charset").on("click", private_functions.addCustomCharset);
+		}
+		
+		, reset_url : function(){
+			jQuery(id_prefix + "script-url").val("");
 		}
 		
 		,addCustomCharset : function(){
-			var new_charset = window.prompt($scope.lang.add_new_custom_charset);
+			var new_charset = window.prompt(language_controller.get("add_new_custom_charset"));
 			if(new_charset){
 				
 				var found = false;
 				
-				jQuery("#alternativeCharsets option").each(function(i,element){
+				jQuery(id_prefix + "alternativeCharsets option").each(function(i,element){
 					if(jQuery(element).val() === new_charset ){
 						found = true;
 					}
 				});
 				
 				if(found === false){
-					jQuery("#alternativeCharsets").append(
+					jQuery(id_prefix + "alternativeCharsets").append(
 						jQuery("<option>").val(new_charset).html(new_charset)
 					);
-					jQuery("#alternativeCharsets option[value='" + new_charset + "']").prop("selected",true);
+					jQuery(id_prefix + "alternativeCharsets option[value='" + new_charset + "']").prop("selected",true);
 				}else{
-					alert($scope.lang.charset_already_exist);
+					alert(language_controller.get("charset_already_exist"));
 				}
 			}
 		}
@@ -49,27 +72,29 @@ function userscript_load_external_class(){
 
 				reader.onload = function (e) {
 					// Daten an den EditController weiterreichen
-					$rootScope.$emit("USI-FRONTEND:EditUserscipt_newFromFile", e.target.result);
-					
-					// veranlasse den Tab Wechsel!
-					$rootScope.$emit("USI-FRONTEND:changeTab", "createOrEdit");
+					jQuery(document).trigger("USI-FRONTEND:changeTab", ["edit", {userscript : e.target.result}]);
 				};
 
 				// Read in the image file as a data URL.
-				reader.readAsText(file, $scope.alternativeCharset);
+				reader.readAsText(file, jQuery(id_prefix + "alternativeCharsets").val());
 			}
 			
 		}
-		
+
 		// Userscript nachladen
 		,loadExternal : function () {
-			$scope.error = "";
-			if (typeof $scope.url !== "undefined" && $scope.url.length > 0) {
+			// Fehlertext entfernen
+			jQuery(id_prefix + "has-error").html("");
+			
+			var script_url = jQuery(id_prefix + "script-url").val();
+			var alternativeCharset = jQuery(id_prefix + "alternativeCharsets").val();
+			
+			if (script_url !== "undefined" && script_url.length > 0) {
 				// sende die URL an das Backend Skript...
 				self.port.emit("USI-BACKEND:loadexternal-script_url",
-					{script_url: $scope.url,
-						charset: $scope.alternativeCharset,
-						moreinformations: {getFromUrl: true, url: $scope.url}}
+					{script_url: script_url,
+						charset: alternativeCharset,
+						moreinformations: {getFromUrl: true, url: script_url}}
 				);
 
 				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
@@ -77,15 +102,26 @@ function userscript_load_external_class(){
 				self.port.once("USI-BACKEND:external-script-is-now-loaded", function(status){
 					if(status === true){
 						// Nachgeladenes Userscript ist geladen
-						alert($scope.lang.external_script_is_now_loaded + " -> " + $scope.url);
+						alert(language_controller.get("external_script_is_now_loaded") + " -> " + script_url);
 					}
 				});
 			} else {
 				// Fehler Text anzeigen
-				$scope.error = $scope.lang.empty_userscript_url;
+				jQuery(id_prefix + "has-error").html(
+					language_controller.get("empty_userscript_url")
+				);
 			}
 		}
 		
+	};
+	
+	
+	return {
+		// Wrapper
+		before_rendering: private_functions.before_rendering
+	
+		// Wrapper
+		,after_rendering : private_functions.after_rendering
 	};
 	
 };
