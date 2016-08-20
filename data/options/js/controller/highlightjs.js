@@ -42,6 +42,10 @@ function highlightjs_class(){
 			});
 		}
 		
+		, select_active_style_in_buttons : function (style){
+			jQuery(".selectHighlightJSStyle").val(style);
+		}
+		
 		// Funktion zum Laden der nötigen CSS Datei
 		,change_style : function(evt){
 			// Beispiel:  evt.data.called_id -> #usi-list-entry-id---1471351232788 .selectHighlightJSStyle
@@ -50,11 +54,14 @@ function highlightjs_class(){
 			// neuen Style setzen
 			private_functions.set_active_style(style);
 			
+			// Auswahl Buttons --- aktiven Style selektieren
+			private_functions.select_active_style_in_buttons(style);
+			
 			// CSS Datei tauschen
 			private_functions.change_css_file(style);
 
 			// Style speichern
-			self.port.emit("USI-BACKEND:highlightjs-style-change", style);
+			backend_events_controller.api.emit("USI-BACKEND:highlightjs-style-change", style);
 		}
 		
 		,set_active_style : function(style){

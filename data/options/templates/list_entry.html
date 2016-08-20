@@ -35,12 +35,15 @@
 
 	<!--Userscript aktivieren oder deaktivieren-->
 	<div class="row block">
-		<label class="col-md-2 col-xs-2">
-			<span class="usi-list-entry-deactivated---true" data-usi-lang="deactivated"></span>
-			<span class="usi-list-entry-deactivated---false" data-usi-lang="activated"></span>
-		</label>
-
-		<input type="checkbox" class="usi-list-entry-deactivated js-switch col-md-offset-1 col-xs-offset-1" />
+		<div class="col-md-1">
+			<label>
+				<span class="usi-list-entry-deactivated---false" data-usi-lang="deactivated"></span>
+				<span class="usi-list-entry-deactivated---true" data-usi-lang="activated"></span>
+			</label>
+		</div>
+		<div class="col-md-3 col-md-offset-1">
+			<input type="checkbox" class="usi-list-entry-deactivated js-switch" />
+		</div>
 	</div>
 	
 	<div class="row">
@@ -88,10 +91,10 @@
 	<div class="row"><br /></div>
 
 	<div class="row block">
-		<label class="col-xs-2" data-usi-lang="show_GMValues">
+		<label class="col-md-3" data-usi-lang="show_GMValues">
 			<!--Zeige die gespeicherten GM Variablen-->
 		</label>
-		<button class="btn btn-info col-xs-3 col-xs-offset-1 usi-list-entry-get-gm-values">
+		<button class="btn btn-info col-md-2 col-md-offset-1 usi-list-entry-get-gm-values">
 			<i class="fa fa-list"></i>
 		</button>
 	</div>
@@ -104,11 +107,11 @@
 	<div class="row"><br /></div>
 	<!--Userscript anzeigen/ausblenden-->
 	<div class="row">
-		<label class="col-md-2 col-xs-2">
+		<label class="col-md-2">
 			<span class="usi-list-entry-view-userscript---hide" data-usi-lang="hide"></span>
 			<span class="usi-list-entry-view-userscript---show" data-usi-lang="show"></span>
 		</label>
-		<input type="checkbox" class="btn btn-default col-md-3 col-xs-3 col-xs-offset-1 col-md-offset-1 usi-list-entry-view-userscript js-switch" />
+		<input type="checkbox" class="btn btn-default col-md-3 col-md-offset-1 usi-list-entry-view-userscript js-switch" />
 	</div>
 	<div class="row"><br /></div>
 	

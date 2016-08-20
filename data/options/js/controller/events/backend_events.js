@@ -6,10 +6,15 @@ function backend_events_class() {
 
 	if (typeof self.port !== "undefined") {
 
+		// Abstraktions Möglichkeit
 		var api = self.port;
 
 		return {
-			register_global_events: function () {
+			// erlaubt einen Zugriff auf die API
+			api : api
+			
+			// Registiert die globalen Events
+			,register_global_events: function () {
 
 				api.on("USI-BACKEND:get-alert", function (text) {
 					window.alert(text);

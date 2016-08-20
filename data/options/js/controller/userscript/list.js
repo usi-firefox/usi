@@ -13,7 +13,7 @@ function userscript_list_class(){
 	var private_functions = {
 		// fragt die Userscripte ab
 		refresh : function(){
-			self.port.emit("USI-BACKEND:request-for---list-all-scripts", false);
+			backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts", false);
 		}
 		
 		,set_userscript_counter : function(counter){
@@ -30,12 +30,12 @@ function userscript_list_class(){
 	};
 	
 	// Active Style festlegen
-	self.port.on("USI-BACKEND:highlightjs-style", function(style){
+	backend_events_controller.api.on("USI-BACKEND:highlightjs-style", function(style){
 		highlightjs_controller.set_active_style(style);
 	});
 
 	// Speicherverbrauch anzeigen
-	self.port.on("USI-BACKEND:storage-quota", function (quota) {
+	backend_events_controller.api.on("USI-BACKEND:storage-quota", function (quota) {
 		var rounded_quota = Math.round(quota * 100) / 100 + "";
 
 		// falls ein Komma enthalten sein sollte ...
@@ -47,7 +47,7 @@ function userscript_list_class(){
 	});
 
 	// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
-	self.port.on("USI-BACKEND:list-all-scripts", function (userscripts) {
+	backend_events_controller.api.on("USI-BACKEND:list-all-scripts", function (userscripts) {
 		
 		var index = 0
 		,userscript_entries = []

@@ -91,15 +91,15 @@ function userscript_load_external_class(){
 			
 			if (script_url !== "undefined" && script_url.length > 0) {
 				// sende die URL an das Backend Skript...
-				self.port.emit("USI-BACKEND:loadexternal-script_url",
+				backend_events_controller.api.emit("USI-BACKEND:loadexternal-script_url",
 					{script_url: script_url,
 						charset: alternativeCharset,
 						moreinformations: {getFromUrl: true, url: script_url}}
 				);
 
-				self.port.emit("USI-BACKEND:request-for---list-all-scripts");
+				backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");
 				
-				self.port.once("USI-BACKEND:external-script-is-now-loaded", function(status){
+				backend_events_controller.api.once("USI-BACKEND:external-script-is-now-loaded", function(status){
 					if(status === true){
 						// Nachgeladenes Userscript ist geladen
 						alert(language_controller.get("external_script_is_now_loaded") + " -> " + script_url);

@@ -86,9 +86,6 @@ function template_class(){
 							additional.callback_on_complete();
 						}
 						
-						// Die Buttons mittels switchery_controller anpassen
-						switchery_controller.run();
-						
 						// Sobald alles abgearbeitet wurde, kann der gesamte Container angezeigt werden
 						jQuery("#" + actual_controller_container_id).show();
 					}

@@ -51,7 +51,7 @@ function userscript_list_entry_class(script, index) {
 		var private_functions = {
 			export: function () {
 				// aktiviere oder deaktiviere dieses Userscript!
-				self.port.emit("USI-BACKEND:export-userscript", script.id);
+				backend_events_controller.api.emit("USI-BACKEND:export-userscript", script.id);
 			}
 			, add_icon: function () {
 				// Icon mit usi logo füllen, falls leer
@@ -75,7 +75,7 @@ function userscript_list_entry_class(script, index) {
 			 */
 			, toggleActivation: function () {
 				// aktiviere oder deaktiviere dieses Userscript!
-				self.port.emit("USI-BACKEND:toggle-userscript-state", script.id);
+				backend_events_controller.api.emit("USI-BACKEND:toggle-userscript-state", script.id);
 				
 				jQuery(usi_list_entry_id_plus_class + "deactivated---false").toggle();
 				jQuery(usi_list_entry_id_plus_class + "deactivated---true").toggle();
@@ -85,9 +85,9 @@ function userscript_list_entry_class(script, index) {
 
 			// fragt nach den gesetzten Greasemonkey Variablen
 			, getGMValues: function () {
-				self.port.emit("USI-BACKEND:list-GMValues", script.id);
+				backend_events_controller.api.emit("USI-BACKEND:list-GMValues", script.id);
 
-				self.port.once("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
+				backend_events_controller.api.once("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
 					jQuery(usi_list_entry_id_plus_class + "get-gm-values---output").html(GMValues);
 				});
 			}
@@ -105,9 +105,9 @@ function userscript_list_entry_class(script, index) {
 					if (window.confirm(language_controller.get("want_to_delete_this_userscript_1") + script.id + language_controller.get("want_to_delete_this_userscript_2"))) {
 
 						// @todo erstmal abschalten!!!
-						self.port.emit("USI-BACKEND:delete-script-by-id", script.id);
+						backend_events_controller.api.emit("USI-BACKEND:delete-script-by-id", script.id);
 
-						self.port.emit("USI-BACKEND:request-for---list-all-scripts");
+						backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");
 					}
 				}
 			}
@@ -129,12 +129,12 @@ function userscript_list_entry_class(script, index) {
 				var url = jQuery(usi_list_entry_id_plus_class + "includes-testurl").val();
 				
 				// Backend anfragen
-				self.port.emit("USI-BACKEND:test-url-match", {url: url, id: script.id});
+				backend_events_controller.api.emit("USI-BACKEND:test-url-match", {url: url, id: script.id});
 				
 				var last_state = false;
 
 				// Ergebnis zustand zurückschreiben
-				self.port.once("USI-BACKEND:test-url-match-" + script.id, function (state) {
+				backend_events_controller.api.once("USI-BACKEND:test-url-match-" + script.id, function (state) {
 					// Treffer => true
 					if (last_state !== state) {
 						// sichern
