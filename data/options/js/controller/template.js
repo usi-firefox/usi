@@ -26,10 +26,14 @@ function template_class(){
 				}
 			}
 			
+			// Controller ID festlegen
 			actual_controller_container_id = "usi-controller-container-" + name;
 			
 			// lädt den passenden Controller
 			var actual_controller = manager_controller.getController(name);
+			
+			// ersetze die Überschrift
+			jQuery("#nav_title").html(manager_controller.getControllerTitle(name));
 			
 			// führt die before_rendering() Funktion aus, falls diese existiert
 			if(actual_controller !== false && typeof actual_controller.before_rendering === "function" && controller_already_started === false){

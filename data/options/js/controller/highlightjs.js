@@ -9,6 +9,14 @@ function highlightjs_class(){
 
 	var active_style;
 	
+	// holt den festgelegten Style
+	backend_events_controller.api.on("USI-BACKEND:highlightjs-style", function(style){
+		private_functions.set_active_style(style);
+	});
+	
+	// lass dir alle Events States nochmal schicken 
+	backend_events_controller.api.emit("USI-BACKEND:get-all-changeable-states");
+	
 	var highlight_styles_path = self.options.baseurl + "libs/highlight/styles/";
 	
 	var private_functions = {

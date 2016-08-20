@@ -3,7 +3,7 @@
 function userscript_config_class (){
 	
 	// 4 Buttons --- Zusätzlich wird jedoch noch das Event "USI-BACKEND:highlightjs-style" behandelt
-	var initial_requests_done = 5;
+	var initial_requests_done = 4;
 	
 	// init
 	var private_functions = {
@@ -28,22 +28,16 @@ function userscript_config_class (){
 		
 		,after_rendering : function(){
 			
-			// Verstecke zunächst alle Labels
-			// registriere alle Events für die States
-			backend_events_controller.api.emit("USI-BACKEND:register-all-change-states");
-
 			// Setze die gesetzen Einstellungen für die Buttons --- START
 			private_functions.init_button_with_data("USI-BACKEND:options_always_activate_greasemonkey", "usi-config-change-options-always-activate-greasemonkey");
 			private_functions.init_button_with_data("USI-BACKEND:ExternalScriptLoadQuestion", "usi-config-change-enable-external-script-load-question");
 			private_functions.init_button_with_data("USI-BACKEND:OldUsiIncludeBehavior", "usi-config-change-old-usi-include-behavior");
 			private_functions.init_button_with_data("USI-BACKEND:highlightjs-activation-state", "usi-config-change-options-activate-highlightjs");
 
-			// Legt den Style fest
-			backend_events_controller.api.on("USI-BACKEND:highlightjs-style", function(style){
-				highlightjs_controller.set_active_style(style);
-				jQuery(document).trigger("all-intial-requests-done", --initial_requests_done);
-			});
+			// liefere alle Daten für die States
+			backend_events_controller.api.emit("USI-BACKEND:get-all-changeable-states");
 
+			// Verstecke zunächst alle Labels
 			jQuery("#usi-config-change-complete-export---true").hide();
 			
 			// Setze die gesetzen Einstellungen für die Buttons --- END

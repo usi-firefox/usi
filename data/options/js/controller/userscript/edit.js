@@ -70,6 +70,8 @@ function userscript_edit_class(){
 				// aktuelle Userscript ID setzen
 				if(userscript.id){
 					private_functions.change_userscript_id(userscript.id);
+					
+					switchery_controller.run();
 				}
 				
 				// nach ganz oben scrollen

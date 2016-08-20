@@ -16,47 +16,44 @@
 	<body class="nav-md">
 		<div class="container body">
 			<div class="main_container">
-				<div class="left_col scroll-view">
-					<div class="col-md-3 left_col">
+				<div class="left_col scroll-view col-md-3">
+					<!--<div class="clearfix"></div>-->
 
-						<div class="clearfix"></div>
-
-						<!-- Sidebar -->
-						<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-							<div class="menu_section">
-								<h2 class="white">USI - (<span id="usi-version"></span>)</h2>
-								<ul class="nav side-menu">
-									<li class="active">
-										<a class="load_template" data-usi-templateurl="overview" data-usi-lang="overview">
-											<!--Überblick-->
-										</a>
-									</li>
-									<li>
-										<a class="load_template" data-usi-templateurl="list" data-usi-lang="all_userscripts">
-											<!--Alle Userscripts-->
-										</a>
-									</li>
-									<li>
-										<a class="load_template" data-usi-templateurl="edit" data-usi-lang="create_new_userscript">
-											<!--Neues Userscirpt erstellen-->
-										</a>
-									</li>
-									<li>
-										<a class="load_template" data-usi-templateurl="load_external" data-usi-lang="userscript_after_load">
-											<!--Userscirpt nachladen-->
-										</a>
-									</li>
-									<li>
-										<span> </span>
-										<!--Trennzeichen-->
-									</li>
-									<li>
-										<a class="load_template" data-usi-templateurl="config" data-usi-lang="loadOptions_title">
-											<!--Optionen-->
-										</a>
-									</li>
-								</ul>
-							</div>
+					<!-- Sidebar -->
+					<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+						<div class="menu_section">
+							<h2 class="white">USI - (<span id="usi-version"></span>)</h2>
+							<ul class="nav side-menu">
+								<li class="active">
+									<a class="load_template" data-usi-templateurl="overview" data-usi-lang="overview">
+										<!--Überblick-->
+									</a>
+								</li>
+								<li>
+									<a class="load_template" data-usi-templateurl="list" data-usi-lang="all_userscripts">
+										<!--Alle Userscripts-->
+									</a>
+								</li>
+								<li>
+									<a class="load_template" data-usi-templateurl="edit" data-usi-lang="create_new_userscript">
+										<!--Neues Userscirpt erstellen-->
+									</a>
+								</li>
+								<li>
+									<a class="load_template" data-usi-templateurl="load_external" data-usi-lang="userscript_after_load">
+										<!--Userscirpt nachladen-->
+									</a>
+								</li>
+								<li>
+									<span> </span>
+									<!--Trennzeichen-->
+								</li>
+								<li>
+									<a class="load_template" data-usi-templateurl="config" data-usi-lang="loadOptions_title">
+										<!--Optionen-->
+									</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -64,19 +61,23 @@
 				<!-- Top Navbar -->
 				<div class="top_nav">
 					<div class="nav_menu">
-						<nav role="navigation">
-							<div class="nav toggle">
-								<a id="menu_toggle">
-									<i class="fa fa-bars"></i>
-								</a>
-							</div>
-						</nav>
+						<div class="col-xs-2">
+							<nav role="navigation">
+								<div class="nav toggle">
+									<a id="menu_toggle">
+										<i class="fa fa-bars"></i>
+									</a>
+								</div>
+							</nav>
+						</div>
+						<h2 id="nav_title" class="col-xs-7 text-center">
+						</h2>
 					</div>
 				</div>
 				<!-- Top Navbar -->
 
 				<!-- App body -->
-				<div class="right_col" id="right_col" role="main">
+				<div class="right_col col-md-9" id="right_col" role="main">
 				</div>
 			</div>
 			<!-- App body -->

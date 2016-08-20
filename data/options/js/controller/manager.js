@@ -37,6 +37,35 @@ function manager_class(){
 			
 		}
 		
+		,getControllerTitle : function(name){
+			
+			var key;
+			
+			switch(name){
+				case "overview":
+					key = "overview";
+					break;
+				case "list":
+					key = "all_userscripts";
+					break;
+				case "edit":
+					key = "create_new_userscript";
+					break;
+				case "load_external":
+					key = "userscript_after_load";
+					break;
+				case "config":
+					key = "loadOptions_title";
+					break;
+				default:
+					// unbekannter Controller!
+					console.error("unbekannter Controller! im 'manager' angefragt ### " + name + " ###");
+					return false;
+			}
+			// Rückgabe des Controller Titels
+			return language_controller.get(key);
+		}
+		
 	};
 	
 }
