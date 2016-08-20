@@ -36,4 +36,10 @@ jQuery().ready(function () {
 	template_controller.load("overview");
 	// INIT
 
+
+	// toggle small or large menu
+	// taken from gentelella
+    jQuery('#menu_toggle').on('click', function() {
+        jQuery('body').toggleClass('nav-md nav-sm');
+    });
 });
