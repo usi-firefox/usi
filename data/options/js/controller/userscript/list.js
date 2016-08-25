@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller */
+/* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller, backend_events_controller */
 
 function userscript_list_class(){
 	
@@ -81,9 +81,9 @@ function userscript_list_class(){
 									userscript_entry.after_rendering();
 
 									// switchery_controller ausführen sobald alle Userscripts geladen wurden
-									if ((idx + 1) === userscript_count) {
-										switchery_controller.run();
-									}
+//									if ((idx + 1) === userscript_count) {
+//										
+//									}
 								}});
 
 				}(userscript_entries[index], index));

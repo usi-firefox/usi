@@ -9,5 +9,6 @@ Other Projects & Software used by USI
 * Font-Awesome 4.6.3 (http://fontawesome.io/)
 * switchery 0.8.1 (https://github.com/abpetkov/switchery)
 * jquery.loadtemplate 1.5.10 (https://github.com/codepb/jquery-template)
+* Bootstrap Toggle v2.2.0 (https://github.com/minhur/bootstrap-toggle/)
 
 * a way to download images and convert them to a datauri (http://stackoverflow.com/questions/20035615/using-raw-image-data-from-ajax-request-for-data-uri | http://stackoverflow.com/a/20048852)

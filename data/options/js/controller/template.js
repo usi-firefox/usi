@@ -1,6 +1,6 @@
 "use strict";
 
-/* global language_controller,manager_controller, switchery_controller */
+/* global language_controller,manager_controller */
 
 function template_class(){
 	

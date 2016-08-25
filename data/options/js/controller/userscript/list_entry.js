@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self,basic_helper, language_controller, highlightjs_controller */
+/* global self,basic_helper, language_controller, highlightjs_controller, backend_events_controller, bootstrap_toggle_controller */
 
 
 function flatten_keys(obj, prepend_key, result) {
@@ -185,6 +185,11 @@ function userscript_list_entry_class(script, index) {
 					}else{
 						jQuery(usi_list_entry_id_plus_class + "deactivated---false").hide();
 					}
+					
+					bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "deactivated", 
+						jQuery(usi_list_entry_id_plus_class + "deactivated---true").text(),  
+						jQuery(usi_list_entry_id_plus_class + "deactivated---false").text()
+					);
 					
 					jQuery(usi_list_entry_id_plus_class + "deactivated").on("change", private_functions.toggleActivation);
 				}());

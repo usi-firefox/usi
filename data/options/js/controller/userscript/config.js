@@ -27,6 +27,8 @@ function userscript_config_class (){
 		}
 		
 		,after_rendering : function(){
+			// aktiviere die Toggle Buttons
+//			bootstrap_toggle_controller.run();
 			
 			// Setze die gesetzen Einstellungen für die Buttons --- START
 			private_functions.init_button_with_data("USI-BACKEND:options_always_activate_greasemonkey", "usi-config-change-options-always-activate-greasemonkey");
@@ -37,8 +39,7 @@ function userscript_config_class (){
 			// liefere alle Daten für die States
 			backend_events_controller.api.emit("USI-BACKEND:get-all-changeable-states");
 
-			// Verstecke zunächst alle Labels
-			jQuery("#usi-config-change-complete-export---true").hide();
+			private_functions.__change_switch_option("usi-config-change-complete-export");
 			
 			// Setze die gesetzen Einstellungen für die Buttons --- END
 			
@@ -89,31 +90,25 @@ function userscript_config_class (){
 
 					// Switch Events behandeln
 					event_manager_controller.register_once("#usi-config-change-old-usi-include-behavior", "change", function(event){
-						private_functions.__change_switch_option(event.target.id);
+//						private_functions.__change_switch_option(event.target.id);
 						backend_events_controller.api.emit("USI-BACKEND:OldUsiIncludeBehavior-change", jQuery("#" + event.target.id).prop("checked"));
 					});
 					event_manager_controller.register_once("#usi-config-change-enable-external-script-load-question", "change", function(event){
-						private_functions.__change_switch_option(event.target.id);
+//						private_functions.__change_switch_option(event.target.id);
 						backend_events_controller.api.emit("USI-BACKEND:ExternalScriptLoadQuestion-change",  jQuery("#" + event.target.id).prop("checked"));
 					});
 					event_manager_controller.register_once("#usi-config-change-options-activate-highlightjs", "change", function(event){
 						// ändert den Aktivierungs Status
-						private_functions.__change_switch_option(event.target.id);
+//						private_functions.__change_switch_option(event.target.id);
 						backend_events_controller.api.emit("USI-BACKEND:highlightjs-activation-state-change",  jQuery("#" + event.target.id).prop("checked"));
 					});
 					event_manager_controller.register_once("#usi-config-change-options-always-activate-greasemonkey", "change", function(event){
 						// Aktiviert Greasemonkey Funktionen immer, egal ob @use-greasemonkey gesetzt wurde oder nicht
-						private_functions.__change_switch_option(event.target.id);
+//						private_functions.__change_switch_option(event.target.id);
 						backend_events_controller.api.emit("USI-BACKEND:options_always_activate_greasemonkey-change",  jQuery("#" + event.target.id).prop("checked"));
 					});
-
-					event_manager_controller.register_once("#usi-config-change-complete-export", "change", function(event){
-						private_functions.__change_switch_option(event.target.id);
-					});
-					
-					// Die Buttons mittels switchery_controller anpassen
-					switchery_controller.run();
 				}
+								
 			});
 			// Button Events --- END
 			
@@ -122,15 +117,16 @@ function userscript_config_class (){
 		
 		, __change_switch_option : function(id){
 			id = "#" + id; // für jQuery
-			var state = jQuery(id).prop("checked");
 			
-			if(state === true){
-				jQuery(id + "---false").hide();
-				jQuery(id + "---true").fadeIn();
-			}else{
-				jQuery(id + "---true").hide();
-				jQuery(id + "---false").fadeIn();
-			}
+			var off_text = jQuery(id + "---false").text();
+			var on_text = jQuery(id + "---true").text();
+			
+			// init bootstrap toggle
+			bootstrap_toggle_controller.initButton(id, on_text, off_text);
+
+			// Text ausblenden
+			jQuery(id + "---false").hide();
+			jQuery(id + "---true").hide();
 			
 		}
 			
