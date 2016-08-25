@@ -76,8 +76,6 @@ function userscript_list_entry_class(script, index) {
 				// aktiviere oder deaktiviere dieses Userscript!
 				backend_events_controller.api.emit("USI-BACKEND:toggle-userscript-state", script.id);
 				
-				jQuery(usi_list_entry_id_plus_class + "deactivated---false").toggle();
-				jQuery(usi_list_entry_id_plus_class + "deactivated---true").toggle();
 			}
 
 
@@ -161,21 +159,17 @@ function userscript_list_entry_class(script, index) {
 				jQuery(usi_list_entry_id_plus_class + "export").on("click", private_functions.export);
 								
 				// Userscript de/-aktivieren
-				(function(){
-					jQuery(usi_list_entry_id_plus_class + "deactivated").prop("checked",script.deactivated);
-					if(script.deactivated === true){
-						jQuery(usi_list_entry_id_plus_class + "deactivated---true").hide();
-					}else{
-						jQuery(usi_list_entry_id_plus_class + "deactivated---false").hide();
-					}
-					
-					bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "deactivated", 
-						jQuery(usi_list_entry_id_plus_class + "deactivated---true").text(),  
-						jQuery(usi_list_entry_id_plus_class + "deactivated---false").text()
-					);
-					
-					jQuery(usi_list_entry_id_plus_class + "deactivated").on("change", private_functions.toggleActivation);
-				}());
+				jQuery(usi_list_entry_id_plus_class + "deactivated").prop("checked",script.deactivated);
+
+				// ACHTUNG hierbei müssen Aktiviert und Deaktiviert getauscht werden
+				// Da -> script.deactivated === true , bedeutet dass das Skript deaktiviert ist!
+				bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "deactivated",
+					language_controller.get("deactivated"),
+					language_controller.get("activated")
+				);
+				// ACHTUNG hierbei müssen Aktiviert und Deaktiviert getauscht werden
+				
+				jQuery(usi_list_entry_id_plus_class + "deactivated").on("change", private_functions.toggleActivation);
 				
 				// edit
 				jQuery(usi_list_entry_id_plus_class + "edit").on("click", private_functions.edit);

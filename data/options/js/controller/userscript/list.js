@@ -63,57 +63,50 @@ function userscript_list_class(){
 		// leeren 
 		jQuery("#usi-list-userscript-entries").html("");
 		
-		// Daten für alle Userscripts setzen
-		for (var id in userscripts) {
-			userscript_entries.push(
-				// Instanziere das Userscript
-				new userscript_list_entry_class(userscripts[id], index)
-				);
+		if(userscript_count > 0) {
+			// Daten für alle Userscripts setzen
+			for (var id in userscripts) {
+				userscript_entries.push(
+					// Instanziere das Userscript
+					new userscript_list_entry_class(userscripts[id], index)
+					);
 
-			// falls ein Fehler auftreten sollte, ist der userscript_entry === false
-			if (userscript_entries[index] !== false) {
-				// führe die Funktion direkt aus
-				(function (userscript_entry, idx) {
-					// template laden und Variablen ersetzen
-					jQuery("#usi-list-userscript-entries").
-						loadTemplate("options/templates/list_entry.html",
-							userscript_entry.deliver_vars(),
-							{append: true, complete: function () {
+				// falls ein Fehler auftreten sollte, ist der userscript_entry === false
+				if (userscript_entries[index] !== false) {
+					// führe die Funktion direkt aus
+					(function (userscript_entry, idx) {
+						// template laden und Variablen ersetzen
+						jQuery("#usi-list-userscript-entries").
+							loadTemplate("options/templates/list_entry.html",
+								userscript_entry.deliver_vars(),
+								{append: true, complete: function () {
 
-									// after_rendering ausführen
-									userscript_entry.after_rendering();
+										// after_rendering ausführen
+										userscript_entry.after_rendering();
 
-									// Preload Image ausblenden, sobald alle Userscripts geladen wurden
-									if ((idx + 1) === userscript_count) {
-										jQuery("#usi-list-preload-image").hide();
-									}
-								}});
+										// Preload Image ausblenden, sobald alle Userscripts geladen wurden
+										if ((idx + 1) === userscript_count) {
+											jQuery("#usi-list-preload-image").hide();
+										}
+									}});
 
-				}(userscript_entries[index], index));
+					}(userscript_entries[index], index));
 
-				// index hochzählen
-				++index;
-			}
+					// index hochzählen
+					++index;
+				}
+
+			} // for (var id in userscripts) 
 			
+		} else {
+			// es gibt keine Userscripts
+			jQuery("#usi-list-preload-image").hide();
 		}
 		
-
-		// Beende die Lade Animation
-		if(typeof window.loading_screen !== "undefined" && typeof window.loading_screen.finish === "function"){
-			window.loading_screen.finish();
-		}
 	});
 
 	return {
 		before_rendering : function(){
-			// highlightJS Optionen einpflegen
-			highlightjs_controller.fill_in_options();
-			
-			// EventListener für den Wechsel aktivieren
-			jQuery(".selectHighlightJSStyle").on("change", function () {
-				highlightjs_controller.change_style(jQuery(this).val());
-			});
-			
 		}
 		
 		,after_rendering : function(){
