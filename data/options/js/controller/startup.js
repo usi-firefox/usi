@@ -1,5 +1,7 @@
 "use strict";
 
+/* global backend_events_controller, frontend_events_controller, template_controller, language_controller */
+
 jQuery().ready(function () {
 	// INIT
 

@@ -70,7 +70,6 @@ function userscript_list_entry_class(script, index) {
 			}
 			/**
 			 * Userscript aktivieren, bzw deaktivieren
-			 * @param {type} userscript
 			 * @returns void
 			 */
 			, toggleActivation: function () {
@@ -95,8 +94,7 @@ function userscript_list_entry_class(script, index) {
 
 			/**
 			 * Userscript entfernen
-			 * @param {type} userscript
-			 * @returns {undefined}
+			 * @returns {void}
 			 */
 			, delete: function () {
 				// das Skript mit der ID löschen!
@@ -210,6 +208,12 @@ function userscript_list_entry_class(script, index) {
 				
 				// GM-Values holen
 				jQuery(usi_list_entry_id_plus_class + "get-gm-values").on("click", private_functions.getGMValues);
+				
+				
+				bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "view-userscript", 
+					language_controller.get("show"),  
+					language_controller.get("hide")
+				);
 				
 				// Userscript Inhalt anzeigen/ausblenden
 				jQuery(usi_list_entry_id_plus_class + "view-userscript").on("change", private_functions.showUserscript);

@@ -10,7 +10,7 @@ function backend_events_class() {
 		var api = self.port;
 
 		return {
-			// erlaubt einen Zugriff auf die API
+			// erlaubt einen direkten Zugriff auf die API
 			api : api
 			
 			// Registiert die globalen Events

@@ -1,6 +1,6 @@
 "use strict";
 
-/* global language_controller, event_manager_controller, self */
+/* global language_controller, event_manager_controller, self, backend_events_controller */
 
 function userscript_load_external_class(){
 	

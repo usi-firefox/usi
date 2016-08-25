@@ -1,5 +1,7 @@
 "use strict";
 
+/* global basic_helper */
+
 /**
  * erzeugt einen Download (Datei Speichern Dialog)
  * @param {string} data

@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self,event_manager_controller */
+/* global self,event_manager_controller, backend_events_controller */
 
 // Userscript bearbeiten
 function userscript_edit_class(){
