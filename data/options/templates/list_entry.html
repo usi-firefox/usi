@@ -1,3 +1,4 @@
+<html>
 <!--Panel Kopf-->
 <div class="usi-list-entry-id container-fluid panel" data-id="usi-list-entry-id">
 <div class="row-fluid">
@@ -33,6 +34,8 @@
 		</div>
 	</div>
 
+	<hr />
+	
 	<!--Userscript aktivieren oder deaktivieren-->
 	<div class="row block">
 		<div class="col-md-1">
@@ -42,6 +45,8 @@
 			<input type="checkbox" class="usi-list-entry-deactivated" data-toggle="toggle" />
 		</div>
 	</div>
+	
+	<hr />
 	
 	<div class="row">
 		<!--Require Skripte-->
@@ -60,22 +65,13 @@
 			</ol>
 		</div>
 		<div class="row">
-			<label class="col-md-3 col-xs-3">Test Includes URL:</label>
+			<label class="col-md-3 col-xs-3">Test Includes URL:   <i class="fa fa-close usi-list-entry-includes-testurl-state"></i></label>
 			<input type="url" size="45" class="usi-list-entry-includes-testurl col-md-8 col-xs-8" placeholder="http://www.example.com/" />
-			<i class="fa fa-close usi-list-entry-includes-testurl-state"></i>
 		</div>
 	</div>
-	<div class="row"><br /></div>
-	<div class="row"><br /></div>
-	<!--Buttons-->
-	<div class="row-fluid block">
-		<!--Userscript bearbeiten-->
-		<button class="btn btn-info col-xs-3 col-xs-push-2 usi-list-entry-edit" data-usi-lang="change"></button>
-		<!--Userscript entfernen-->
-		<button class="btn btn-danger col-xs-3 col-xs-push-3 usi-list-entry-delete" data-usi-lang="delete_x"></button>
-	</div>
-	<div class="row"><br /></div>
-	<div class="row"><br /></div>
+	
+	<hr />
+	
 	<div class="usi-list-entry-load-again---block" >
 		<label class="col-xs-3" data-usi-lang="reload_from_source">
 			<!--Neuladen von der Quelle-->
@@ -100,22 +96,33 @@
 		<!--Ausgabe der GM Variablen-->
 	</div>
 	
+	<hr />
+	
 	<!--Userscript Inhalt-->
 	<div class="row"><br /></div>
 	<!--Userscript anzeigen/ausblenden-->
 	<div class="row">
-		<label class="col-md-2">Userscipt:</label>
-		<input type="checkbox" data-toggle="toggle" class="col-md-3 col-md-offset-1 usi-list-entry-view-userscript" />
+		<div>
+			<label>Userscipt:</label>
+		</div>
+		<input type="checkbox" data-toggle="toggle" class="col-xs-3 usi-list-entry-view-userscript" />
+		
+		<!--Userscript bearbeiten-->
+		<button class="btn btn-info col-xs-3 col-md-3 col-md-offset-2 usi-list-entry-edit" data-usi-lang="change"></button>
+		<!--Userscript entfernen-->
+		<button class="btn btn-danger col-xs-3 col-md-3 col-md-offset-2 usi-list-entry-delete" data-usi-lang="delete_x"></button>
 	</div>
-	<div class="row"><br /></div>
+	
+	<br />
 	
 	<div class="usi-list-entry-view-userscript---output row">
+		<label class="col-xs-2">HighlightJS Style:</label>
+		<select class="selectHighlightJSStyle"></select>
 		<hr />
-		<label>Userscript Content: </label>
-		<select class="selectHighlightJSStyle" >
-		</select>
 		<pre><code class="border-black jscode hljs lang-javascript" data-content-text="userscript-userscript"></code></pre>
 	</div>
 </div>
 
 </div>
+
+</html>

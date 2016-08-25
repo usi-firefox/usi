@@ -27,8 +27,6 @@ function userscript_config_class (){
 		}
 		
 		,after_rendering : function(){
-			// aktiviere die Toggle Buttons
-//			bootstrap_toggle_controller.run();
 			
 			// Setze die gesetzen Einstellungen für die Buttons --- START
 			private_functions.init_button_with_data("USI-BACKEND:options_always_activate_greasemonkey", "usi-config-change-options-always-activate-greasemonkey");

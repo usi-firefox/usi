@@ -123,26 +123,11 @@ function userscript_list_entry_class(script, index) {
 			}
 
 			// testet die eingebene URL ob ein Include darauf greifen(matchen) würde
-			, testUrlMatch: function (evt) {
+			, testUrlMatch: function () {
 				var url = jQuery(usi_list_entry_id_plus_class + "includes-testurl").val();
 				
 				// Backend anfragen
 				backend_events_controller.api.emit("USI-BACKEND:test-url-match", {url: url, id: script.id});
-				
-				var last_state = false;
-
-				// Ergebnis zustand zurückschreiben
-				backend_events_controller.api.once("USI-BACKEND:test-url-match-" + script.id, function (state) {
-					// Treffer => true
-					if (last_state !== state) {
-						// sichern
-						last_state = state;
-
-						// Symbol ändern
-						jQuery(usi_list_entry_id_plus_class + "includes-testurl-state" ).toggleClass("fa-close").toggleClass("fa-check");
-
-					}
-				});
 			}
 
 			// Code highlight
@@ -218,6 +203,20 @@ function userscript_list_entry_class(script, index) {
 				// Userscript Inhalt anzeigen/ausblenden
 				jQuery(usi_list_entry_id_plus_class + "view-userscript").on("change", private_functions.showUserscript);
 				
+				// Ergebnis des URL Tests empfangen --- START
+				var last_state = false;
+
+				backend_events_controller.api.on("USI-BACKEND:test-url-match-" + script.id, function (state) {
+					// Treffer => true
+					if (last_state !== state) {
+						// sichern
+						last_state = state;
+						// Symbol ändern
+						jQuery(usi_list_entry_id_plus_class + "includes-testurl-state" ).toggleClass("fa-close").toggleClass("fa-check");
+					}
+				});
+				// Ergebnis des URL Tests empfangen --- END
+				
 				// URL Test gegen die Includes
 				jQuery(usi_list_entry_id_plus_class + "includes-testurl").on("keyup", private_functions.testUrlMatch);
 				
@@ -247,13 +246,8 @@ function userscript_list_entry_class(script, index) {
 				}else{
 					// Das darf eigentlich nicht passieren ...
 				}
-				
-				
 			}
-			
 		};
-
-
 
 		return {
 			// liefert die benötigten Variablen für jQuery.loadTemplate zurück

@@ -2,7 +2,7 @@
 
 function highlightjs_class(){
 	
-	var is_active = false;
+	var is_active = true;
 	
 	// enthält alle möglich highlight js styles
 	var hightlightjsstyles = ["agate" ,"androidstudio" ,"arduino-light" ,"arta" ,"ascetic" ,"atelier-cave-dark" ,"atelier-cave-light" ,"atelier-dune-dark" ,"atelier-dune-light" ,"atelier-estuary-dark" ,"atelier-estuary-light" ,"atelier-forest-dark" ,"atelier-forest-light" ,"atelier-heath-dark" ,"atelier-heath-light" ,"atelier-lakeside-dark" ,"atelier-lakeside-light" ,"atelier-plateau-dark" ,"atelier-plateau-light" ,"atelier-savanna-dark" ,"atelier-savanna-light" ,"atelier-seaside-dark" ,"atelier-seaside-light" ,"atelier-sulphurpool-dark" ,"atelier-sulphurpool-light" ,"brown-paper" ,"codepen-embed" ,"color-brewer" ,"dark" ,"darkula" ,"default" ,"docco" ,"dracula" ,"far" ,"foundation" ,"github-gist" ,"github" ,"googlecode" ,"grayscale" ,"gruvbox-dark" ,"gruvbox-light" ,"hopscotch" ,"hybrid" ,"idea" ,"ir-black" ,"kimbie.dark" ,"kimbie.light" ,"magula" ,"mono-blue" ,"monokai-sublime" ,"monokai" ,"obsidian" ,"paraiso-dark" ,"paraiso-light" ,"pojoaque" ,"purebasic" ,"qtcreator_dark" ,"qtcreator_light" ,"railscasts" ,"rainbow" ,"school-book" ,"solarized-dark" ,"solarized-light" ,"sunburst" ,"tomorrow-night-blue" ,"tomorrow-night-bright" ,"tomorrow-night-eighties" ,"tomorrow-night" ,"tomorrow" ,"vs" ,"xcode" ,"xt256" ,"zenburn"];
@@ -12,6 +12,11 @@ function highlightjs_class(){
 	// holt den festgelegten Style
 	backend_events_controller.api.on("USI-BACKEND:highlightjs-style", function(style){
 		private_functions.set_active_style(style);
+	});
+	
+	// legt fest ob HighlightJS aktiviert sein soll
+	backend_events_controller.api.on("USI-BACKEND:highlightjs-activation-state", function(state){
+		is_active = state;
 	});
 	
 	// lass dir alle Events States nochmal schicken 
@@ -36,18 +41,25 @@ function highlightjs_class(){
 					jQuery(option)
 				);
 			}
-			
-			// register Event
-			// übergib die aufgerufene ID
-			jQuery(id + " .selectHighlightJSStyle").on("change", {called_id : id + " .selectHighlightJSStyle"}, private_functions.change_style);
-			
+
+			if(is_active === true){
+				// register Event
+				// übergib die aufgerufene ID
+				jQuery(id + " .selectHighlightJSStyle").prop("disabled", false);
+				
+				jQuery(id + " .selectHighlightJSStyle").on("change", {called_id : id + " .selectHighlightJSStyle"}, private_functions.change_style);
+			}else{
+				jQuery(id + " .selectHighlightJSStyle").prop("disabled", true);
+			}
 		}
 		
 		, run : function(id){
 			// HighlightJS ausführen
-			jQuery(id + " pre code").each(function(i, html){
-				hljs.highlightBlock(html);
-			});
+			if(is_active === true){
+				jQuery(id + " pre code").each(function(i, html){
+					hljs.highlightBlock(html);
+				});
+			}
 		}
 		
 		, select_active_style_in_buttons : function (style){

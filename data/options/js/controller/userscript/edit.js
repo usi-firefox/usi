@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self,event_manager_controller, backend_events_controller */
+/* global self,event_manager_controller, backend_events_controller, language_controller, bootstrap_toggle_controller */
 
 // Userscript bearbeiten
 function userscript_edit_class(){
@@ -10,13 +10,6 @@ function userscript_edit_class(){
 	,load_example_by_prefered_locale
 	,textarea_id
 	,script_id;
-	
-	// nur wenn die erste 'prefered_locale' -> 'de' ist, ansonsten wird die Englische Version geladen
-	if(prefered_locale === "de"){
-		load_example_by_prefered_locale = "de";
-	}else{
-		load_example_by_prefered_locale = "en";
-	}
 	
 	// Die ID der Textarea
 	textarea_id = "#usi-edit-script-textarea";
@@ -40,6 +33,13 @@ function userscript_edit_class(){
 			prefered_locale			=	self.options.prefered_locales[0]; // setze die Standard Sprache
 			textarea_default_size	=	jQuery(textarea_id).css("font-size").split("px")[0];
 
+			// nur wenn die erste 'prefered_locale' -> 'de' ist, ansonsten wird die Englische Version geladen
+			if (prefered_locale === "de" || prefered_locale === "de-de") {
+				load_example_by_prefered_locale = "de";
+			} else {
+				load_example_by_prefered_locale = "en";
+			}
+
 			// Text Area anpassen bei Größen Änderung
 			event_manager_controller.register_once(window, "resize", private_functions.setTextareaHeight);
 			
@@ -59,6 +59,12 @@ function userscript_edit_class(){
 			
 			// Setze die Script ID in den Kopf, falls vorhanden
 			private_functions.change_userscript_id(script_id);
+
+			// Overwrite Button stylen
+			bootstrap_toggle_controller.initButton("#usi-edit-script-overwrite", 
+				language_controller.get("yes"),  
+				language_controller.get("no")
+			);
 
 			// Falls ein Userscript zur Editierung übergeben wurde
 			event_manager_controller.register_once(document, "USI-FRONTEND:editTab-get-userscript", function(event, userscript){
