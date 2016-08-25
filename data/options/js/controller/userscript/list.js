@@ -13,6 +13,9 @@ function userscript_list_class(){
 	var private_functions = {
 		// fragt die Userscripte ab
 		refresh : function(){
+			// Zeige das Preload Image
+			jQuery("#usi-list-preload-image").show();
+			
 			backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts", false);
 		}
 		
@@ -80,10 +83,10 @@ function userscript_list_class(){
 									// after_rendering ausführen
 									userscript_entry.after_rendering();
 
-									// switchery_controller ausführen sobald alle Userscripts geladen wurden
-//									if ((idx + 1) === userscript_count) {
-//										
-//									}
+									// Preload Image ausblenden, sobald alle Userscripts geladen wurden
+									if ((idx + 1) === userscript_count) {
+										jQuery("#usi-list-preload-image").hide();
+									}
 								}});
 
 				}(userscript_entries[index], index));

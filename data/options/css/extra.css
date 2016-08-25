@@ -9,3 +9,9 @@ body{
 .white{
 	color: white;
 }
+
+pre code{
+  overflow: scroll;
+  word-wrap: normal;
+  white-space: pre;
+}
