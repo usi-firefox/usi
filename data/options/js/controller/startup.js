@@ -39,9 +39,11 @@ jQuery().ready(function () {
 	// INIT
 
 
-	// toggle small or large menu
-	// taken from gentelella
+	// Toggle Menu
     jQuery('#menu_toggle').on('click', function() {
         jQuery("body").toggleClass("sidebar-left-visible sidebar-left-in");
+    });
+    jQuery('.load_template').on('click', function() {
+        jQuery("body").removeClass("sidebar-left-visible sidebar-left-in");
     });
 });
