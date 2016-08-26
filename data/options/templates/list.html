@@ -1,20 +1,16 @@
 <html>
 	<!--Alle Userscripte auflisten-->
-
-	<div>
-		<div class="container">
-			<div class="" data-content="currentMemoryUsage" id="usi-list-current-memory-usage"></div>
-			<button class="btn btn-primary " id="usi-list-refresh"><i class="fa fa-refresh"></i></button>
-			<div class="" id="usi-list-preload-image" style="display: none;">
-				<img src="icon/hourglass.svg" alt="preloader-image" />
-			</div>
-		</div>
-		<hr />
-		<h3 id="usi-list-userscript-count-positive">Userscripts (<span id="usi-list-userscript-count" ></span>) :</h3>
-		<h3 id="usi-list-userscript-count-negative"><span data-usi-lang="no_userscript_there"></span></h3>
-		<div class="panel-group">		
-			<div class="panel panel-default" id="usi-list-userscript-entries"></div>
+	<div class="container">
+		<div data-content="currentMemoryUsage" id="usi-list-current-memory-usage"></div>
+		<button class="btn btn-primary col-xs-push-10 col-xs-2" id="usi-list-refresh"><i class="fa fa-refresh"></i></button>
+		<div class="col-xs-1" id="usi-list-preload-image" style="display: none;">
+			<img src="icon/hourglass.svg" alt="preloader-image" />
 		</div>
 	</div>
-
+	<hr />
+	<h3 id="usi-list-userscript-count-positive">Userscripts (<span id="usi-list-userscript-count" ></span>) :</h3>
+	<h3 id="usi-list-userscript-count-negative"><span data-usi-lang="no_userscript_there"></span></h3>
+	<div class="panel-group">		
+		<div id="usi-list-userscript-entries"></div>
+	</div>
 </html>

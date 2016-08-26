@@ -1,17 +1,6 @@
-.block {
-	margin-top: 5px;
+#sidebar-menu{
+	padding-top: 70px;
 }
-
-body{
-	background-color: #EDEDED;
-}
-
-.white{
-	color: white;
-}
-
-pre code{
-  overflow: scroll;
-  word-wrap: normal;
-  white-space: pre;
+pre code {
+	white-space: pre;
 }

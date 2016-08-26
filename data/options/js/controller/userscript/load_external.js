@@ -15,6 +15,14 @@ function userscript_load_external_class(){
 		,after_rendering : function(){
 			
 			event_manager_controller.register_once(document, "USI-FRONTEND:loadExternal-reload-from-url", function(event, reload_from_url){
+				// URL eintragen!
+				jQuery(id_prefix + "script-url").text(reload_from_url);
+				jQuery(id_prefix + "script-url").val(reload_from_url);
+				
+				// kurz aufblinken
+				jQuery(id_prefix + "script-url").animate({opacity:0},500,"linear",function(){
+					$(this).animate({opacity:1},500);
+				});
 				
 			});
 			

@@ -7,7 +7,7 @@
 
 	<!--Userscript Eingabe-->
 	<textarea style="white-space: pre; height: 80%;" 
-			  class="" id="usi-edit-script-textarea" rows="30"
+			  class="col-xs-12" id="usi-edit-script-textarea" rows="30"
 			  cols="64" placeholder="// ==UserScript== ..."></textarea>
 
 	<!--Userscript Beispiel-->
@@ -30,10 +30,10 @@
 			</div>
 			
 			<!--Standard laden oder leeren-->
-			<button id="usi-edit-script-load-example" class="btn btn-default  " data-usi-lang="load_example" >
+			<button id="usi-edit-script-load-example" class="btn btn-default col-xs-6 " data-usi-lang="load_example" >
 				<!--Beispiel laden-->
 			</button>
-			<button id="usi-edit-script-textarea-clear" class="btn btn-warning  " data-usi-lang="clear" >
+			<button id="usi-edit-script-textarea-clear" class="btn btn-warning col-xs-6 " data-usi-lang="clear" >
 				<!--Textfeld leeren-->
 			</button>
 		</div>
@@ -42,12 +42,12 @@
 		</div>
 		<div class="row">
 			<!--Textarea Zoom einstellen-->
-			<div class="">
+			<div class="col-xs-2">
 				<label>Zoom:</label>
 			</div>
-			<input type="range" class=" "
+			<button class="btn btn-default col-xs-1 " id="usi-edit-script-textarea-default-size" ><i class="fa fa-undo"></i></button>
+			<input type="range" class="col-xs-offset-1 col-xs-7"
 				   id="usi-edit-script-textarea-size" style="width: 280px" min="8" max="30" step="0.5" value="14" />
-			<button class="btn btn-default  " id="usi-edit-script-textarea-default-size" ><i class="fa fa-undo"></i></button>
 		</div>
 		<div class="row">
 			<br />
@@ -58,10 +58,10 @@
 				<label>Convert : </label>
 			</div>
 			<div>
-				<button id="usi-edit-script-utf8-to-latin1" class="btn btn-default " >UTF-8 -> Latin1</button>
+				<button id="usi-edit-script-utf8-to-latin1" class="btn btn-default col-xs-4 " >UTF-8 -> Latin1</button>
 			</div>
 			<div>
-				<button id="usi-edit-script-latin1-to-utf8" class="btn btn-primary " >Latin1 -> UTF-8</button>
+				<button id="usi-edit-script-latin1-to-utf8" class="btn btn-primary col-xs-4 col-xs-offset-2" >Latin1 -> UTF-8</button>
 			</div>
 		</div>
 	</div>

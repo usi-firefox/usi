@@ -1,128 +1,108 @@
 <html>
-<!--Panel Kopf-->
-<div class="usi-list-entry-id container-fluid panel" data-id="usi-list-entry-id">
-<div class="row-fluid">
-	<h4>
-		<span data-id="icon_data_id"></span>
-		Index: <span data-content="index"></span> | <span data-content="userscript-settings-name"></span> | <span data-content="userscript-settings-author"></span> | <span data-content="userscript-settings-version"></span>
-	</h4>
-</div>
+	<body>
+		<div class="panel panel-default">
 
-<!--Panel Inhalt-->
-<!--<div ui-if="ListScriptAccordion == {{$index}}">-->
-<div class="container-fluid">
-	<div class="row block">
-		<div class=" ">
-			<div class="row">
-				<label>usi-id: </label><span data-content="userscript-id"></span><br />
-			</div>
-			<div class="row">
-				<label>Name: </label><span data-content="userscript-settings-name"></span><br />
-			</div>
-			<div class="row">
-				<label>Author: </label><span data-content="userscript-settings-author"></span><br />
-			</div>
-			<div class="row">
-				<label>Version: </label><span data-content="userscript-settings-version"></span><br />
-			</div>
-			<div class="row">
-				<label data-usi-lang="description"></label>: <span data-content="userscript-settings-description"></span><br />
-			</div>
-		</div>
-		<div class=" ">
-			<button class="btn btn-info  usi-list-entry-export">export</button>
-		</div>
-	</div>
+			<!--Panel Kopf-->
 
-	<hr />
-	
-	<!--Userscript aktivieren oder deaktivieren-->
-	<div class="row block">
-		<div>
-			<label>Userscript:</label>
-		</div>
-		<div>
-			<input type="checkbox" class="usi-list-entry-deactivated" data-toggle="toggle" />
-		</div>
-	</div>
-	
-	<hr />
-	
-	<div class="row">
-		<!--Require Skripte-->
-		<div class="usi-list-entry-required-scripts   block">
-			<label>Require Scripts: </label>
-			<ol class="usi-list-entry-required-scripts---output">
-				
-			</ol>
-		</div>
-	</div>
-	<div class="usi-list-entry-includes">
-		<!--gültige Include Regeln-->
-		<div class="row">
-			<label>Includes: </label>
-			<ol class="usi-list-entry-includes---output">
-			</ol>
-		</div>
-		<div class="row">
-			<label class=" ">Test Includes URL:   <i class="fa fa-close usi-list-entry-includes-testurl-state"></i></label>
-			<input type="url" size="45" class="usi-list-entry-includes-testurl  " placeholder="http://www.example.com/" />
-		</div>
-	</div>
-	
-	<hr />
-	
-	<div class="usi-list-entry-load-again---block" >
-		<label class="" data-usi-lang="reload_from_source">
-			<!--Neuladen von der Quelle-->
-		</label>
-		<button class="btn btn-info   usi-list-entry-load-again" >
-			<i class="fa fa-repeat"></i>
-		</button>
-	</div>
-	<!--Greasemonkey Variablen-->
-	<div class="row"><br /></div>
+			<div class="usi-list-entry-id" data-id="usi-list-entry-id">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<span data-id="icon_data_id"></span>
+						Index: <span data-content="index"></span> | <span data-content="userscript-settings-name"></span> | <span data-content="userscript-settings-author"></span> | <span data-content="userscript-settings-version"></span>
+					</h4>
+				</div>
 
-	<div class="row block">
-		<label class="" data-usi-lang="show_GMValues">
-			<!--Zeige die gespeicherten GM Variablen-->
-		</label>
-		<button class="btn btn-info   usi-list-entry-get-gm-values">
-			<i class="fa fa-list"></i>
-		</button>
-	</div>
-	
-	<div class="usi-list-entry-get-gm-values---output row">
-		<!--Ausgabe der GM Variablen-->
-	</div>
-	
-	<hr />
-	
-	<!--Userscript Inhalt-->
-	<div class="row"><br /></div>
-	<!--Userscript anzeigen/ausblenden-->
-	<div class="row">
-		<div>
-			<label>Userscipt:</label>
+				<!--Panel Inhalt-->
+				<!--<div ui-if="ListScriptAccordion == {{$index}}">-->
+				<div class="panel-body">
+					<div class="row">
+						<button class="btn btn-info col-xs-3 col-xs-push-9 usi-list-entry-export">export</button>
+					</div>
+
+					<label>usi-id: </label><span data-content="userscript-id"></span><br />
+					<label>Name: </label><span data-content="userscript-settings-name"></span><br />
+					<label>Author: </label><span data-content="userscript-settings-author"></span><br />
+					<label>Version: </label><span data-content="userscript-settings-version"></span><br />
+					<label data-usi-lang="description"></label>: <span data-content="userscript-settings-description"></span><br />
+
+					<hr />
+
+					<!--Userscript aktivieren oder deaktivieren-->
+					<label>Userscript:</label><br />
+					<input type="checkbox" class="usi-list-entry-deactivated" data-toggle="toggle" />
+
+					<hr />
+
+					<!--Require Skripte-->
+					<div class="usi-list-entry-required-scripts">
+						<hr />
+						<label>Require Scripts:</label><br />
+						<ol class="usi-list-entry-required-scripts---output"></ol>
+					</div>
+
+					<div class="usi-list-entry-includes">
+						<!--gültige Include Regeln-->
+						<label>Includes: </label><br />
+						<ol class="usi-list-entry-includes---output"></ol>
+						<br />
+						<label>Test Includes URL:   <i class="fa fa-close usi-list-entry-includes-testurl-state"></i></label><br />
+						<br />
+						<input type="url" size="45" class="usi-list-entry-includes-testurl col-xs-offset-1 col-xs-10" placeholder="http://www.example.com/" />
+						<br />
+					</div>
+
+					<hr />
+
+					<div class="usi-list-entry-load-again---block" >
+						<label class="" data-usi-lang="reload_from_source">
+							<!--Neuladen von der Quelle-->
+						</label><br />
+						<button class="btn btn-info usi-list-entry-load-again" >
+							<i class="fa fa-repeat"></i>
+						</button>
+					</div>
+					<!--Greasemonkey Variablen-->
+					<br />
+
+					<label data-usi-lang="show_GMValues">
+						<!--Zeige die gespeicherten GM Variablen-->
+					</label><br />
+					<button class="btn btn-info usi-list-entry-get-gm-values">
+						<i class="fa fa-list"></i>
+					</button>
+
+					<div class="usi-list-entry-get-gm-values---output">
+						<!--Ausgabe der GM Variablen-->
+					</div>
+
+					<hr />
+
+					<!--Userscript Inhalt-->
+					<br />
+					<label>Userscipt:</label><br />
+
+					<!--Userscript bearbeiten-->
+					<div class="row">
+						
+						<button class="btn btn-info col-xs-3 col-xs-offset-1 usi-list-entry-edit" data-usi-lang="change"></button>
+						<!--Userscript entfernen-->
+						<button class="btn btn-danger col-xs-3 col-xs-offset-1 usi-list-entry-delete" data-usi-lang="delete_x"></button>
+					</div>
+					
+					<br />
+					
+					<!--Userscript anzeigen/ausblenden-->
+					<input type="checkbox" data-toggle="toggle" class="col-xs-2 usi-list-entry-view-userscript" />
+
+					<div class="usi-list-entry-view-userscript---output">
+						<br /><br />
+						<label class="">HighlightJS Style:</label>
+						<select class="selectHighlightJSStyle  form-control"></select>
+						<hr />
+						<pre><code class="border-black jscode hljs lang-javascript" data-content-text="userscript-userscript"></code></pre>
+					</div>
+				</div>
+			</div>
 		</div>
-		<input type="checkbox" data-toggle="toggle" class="  usi-list-entry-view-userscript" />
-		
-		<!--Userscript bearbeiten-->
-		<button class="btn btn-info    usi-list-entry-edit" data-usi-lang="change"></button>
-		<!--Userscript entfernen-->
-		<button class="btn btn-danger    usi-list-entry-delete" data-usi-lang="delete_x"></button>
-	</div>
-	
-	<br />
-	
-	<div class="usi-list-entry-view-userscript---output row">
-		<label class="">HighlightJS Style:</label>
-		<select class="selectHighlightJSStyle  form-control"></select>
-		<hr />
-		<pre><code class="border-black jscode hljs lang-javascript" data-content-text="userscript-userscript"></code></pre>
-	</div>
-</div>
-
-</div>
-
+	</body>
 </html>
