@@ -13,76 +13,64 @@
 		<link href="../libs/highlight/styles/default.css" type="text/css" rel="stylesheet" id="HighlightJSStyle" />
 
 	</head>
-	<body class="nav-md">
-		<div class="container body">
-			<div class="main_container">
-				<div class="left_col scroll-view col-md-3 col-lg-3 col-sm-3">
-					<!--<div class="clearfix"></div>-->
+	<body class="has-sidebar-left has-navbar-top">
+		<div class="sidebar sidebar-left">
+			<!--<div class="clearfix"></div>-->
 
-					<!-- Sidebar -->
-					<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-						<div class="menu_section">
-							<h2 class="white">USI - (<span id="usi-version"></span>)</h2>
-							<ul class="nav side-menu">
-								<li class="active">
-									<a class="load_template" data-usi-templateurl="overview" data-usi-lang="overview">
-										<!--Überblick-->
-									</a>
-								</li>
-								<li>
-									<a class="load_template" data-usi-templateurl="list" data-usi-lang="all_userscripts">
-										<!--Alle Userscripts-->
-									</a>
-								</li>
-								<li>
-									<a class="load_template" data-usi-templateurl="edit" data-usi-lang="create_new_userscript">
-										<!--Neues Userscirpt erstellen-->
-									</a>
-								</li>
-								<li>
-									<a class="load_template" data-usi-templateurl="load_external" data-usi-lang="userscript_after_load">
-										<!--Userscirpt nachladen-->
-									</a>
-								</li>
-								<li>
-									<span> </span>
-									<!--Trennzeichen-->
-								</li>
-								<li>
-									<a class="load_template" data-usi-templateurl="config" data-usi-lang="loadOptions_title">
-										<!--Optionen-->
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<!-- Sidebar -->
-				<!-- Top Navbar -->
-				<div class="top_nav">
-					<div class="nav_menu">
-						<div class="col-xs-2">
-							<nav role="navigation">
-								<div class="nav toggle">
-									<a id="menu_toggle">
-										<i class="fa fa-bars"></i>
-									</a>
-								</div>
-							</nav>
-						</div>
-						<h2 id="nav_title" class="col-xs-7 text-center">
-						</h2>
-					</div>
-				</div>
-				<!-- Top Navbar -->
-
-				<!-- App body -->
-				<div class="right_col col-md-10 col-lg-10 col-sm-9" id="right_col" role="main">
+			<!-- Sidebar -->
+			<div id="sidebar-menu" class="scrollable">
+				<h1 class="scrollable-header app-name">USI - (<span id="usi-version"></span>)</h1>
+				<div class="scrollable-content">
+					<a class="list-group-item load_template" data-usi-templateurl="overview" data-usi-lang="overview">
+						<!--Überblick-->
+					</a>
+					<a class="list-group-item load_template" data-usi-templateurl="list" data-usi-lang="all_userscripts">
+						<!--Alle Userscripts-->
+					</a>
+					<a class="list-group-item load_template" data-usi-templateurl="edit" data-usi-lang="create_new_userscript">
+						<!--Neues Userscirpt erstellen-->
+					</a>
+					<a class="list-group-item load_template" data-usi-templateurl="load_external" data-usi-lang="userscript_after_load">
+						<!--Userscirpt nachladen-->
+					</a>
+					<span> </span>
+					<!--Trennzeichen-->
+					<a class="list-group-item load_template" data-usi-templateurl="config" data-usi-lang="loadOptions_title">
+						<!--Optionen-->
+					</a>
 				</div>
 			</div>
-			<!-- App body -->
-		</div><!-- ~ .app -->
+		</div>
+		<!-- Sidebar -->
+		<!-- Top Navbar -->
+		<div class="app">
+			<div id="menu_toggle" class="navbar navbar-app navbar-absolute-top">
+				<div class="navbar-brand navbar-brand-center" id="nav_title">
+				</div>
+				<div class="btn-group pull-left">
+					<div class="btn sidebar-toggle">
+						<i class="fa fa-bars" ></i>
+					</div>
+				</div>
+			</div>
+		<!-- Top Navbar -->
 
+		<!-- App body -->
+		<div class="right_col" id="right_col" >
+		</div>
+		<!-- App body -->
+		<!-- ~ .app -->
+
+			<!-- App body -->
+			<div class='app-body'>
+				<div class='app-content'>
+					<div class="scrollable-content section" id="app-body-content">
+						
+					</div>
+				</div>
+			</div>
+					
+		</div>
 		<div style="display: none;" class="jquery-template-container">
 			<span id="usi-version-template" data-content="version"></span>
 		</div>

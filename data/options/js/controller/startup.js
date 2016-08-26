@@ -42,6 +42,6 @@ jQuery().ready(function () {
 	// toggle small or large menu
 	// taken from gentelella
     jQuery('#menu_toggle').on('click', function() {
-        jQuery('body').toggleClass('nav-md nav-sm');
+        jQuery("body").toggleClass("sidebar-left-visible sidebar-left-in");
     });
 });

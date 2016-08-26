@@ -64,7 +64,7 @@ function template_class(){
 			
 			if(controller_already_started === false){
 				// Controller Container hinzufügen
-				jQuery(".right_col").append(
+				jQuery("#app-body-content").append(
 					jQuery("<div>").attr("id", actual_controller_container_id).attr("class", "usi-controller-container").hide()
 				);
 			

@@ -12,7 +12,7 @@
 <!--<div ui-if="ListScriptAccordion == {{$index}}">-->
 <div class="container-fluid">
 	<div class="row block">
-		<div class="col-md-6 col-xs-6">
+		<div class=" ">
 			<div class="row">
 				<label>usi-id: </label><span data-content="userscript-id"></span><br />
 			</div>
@@ -29,8 +29,8 @@
 				<label data-usi-lang="description"></label>: <span data-content="userscript-settings-description"></span><br />
 			</div>
 		</div>
-		<div class="col-xs-5 col-xs-push-1">
-			<button class="btn btn-info col-xs-9 usi-list-entry-export">export</button>
+		<div class=" ">
+			<button class="btn btn-info  usi-list-entry-export">export</button>
 		</div>
 	</div>
 
@@ -50,7 +50,7 @@
 	
 	<div class="row">
 		<!--Require Skripte-->
-		<div class="usi-list-entry-required-scripts col-md-6 col-xs-6 block">
+		<div class="usi-list-entry-required-scripts   block">
 			<label>Require Scripts: </label>
 			<ol class="usi-list-entry-required-scripts---output">
 				
@@ -65,18 +65,18 @@
 			</ol>
 		</div>
 		<div class="row">
-			<label class="col-md-3 col-xs-3">Test Includes URL:   <i class="fa fa-close usi-list-entry-includes-testurl-state"></i></label>
-			<input type="url" size="45" class="usi-list-entry-includes-testurl col-md-8 col-xs-8" placeholder="http://www.example.com/" />
+			<label class=" ">Test Includes URL:   <i class="fa fa-close usi-list-entry-includes-testurl-state"></i></label>
+			<input type="url" size="45" class="usi-list-entry-includes-testurl  " placeholder="http://www.example.com/" />
 		</div>
 	</div>
 	
 	<hr />
 	
 	<div class="usi-list-entry-load-again---block" >
-		<label class="col-xs-3" data-usi-lang="reload_from_source">
+		<label class="" data-usi-lang="reload_from_source">
 			<!--Neuladen von der Quelle-->
 		</label>
-		<button class="btn btn-info col-xs-3 col-xs-push-6 usi-list-entry-load-again" >
+		<button class="btn btn-info   usi-list-entry-load-again" >
 			<i class="fa fa-repeat"></i>
 		</button>
 	</div>
@@ -84,10 +84,10 @@
 	<div class="row"><br /></div>
 
 	<div class="row block">
-		<label class="col-xs-3" data-usi-lang="show_GMValues">
+		<label class="" data-usi-lang="show_GMValues">
 			<!--Zeige die gespeicherten GM Variablen-->
 		</label>
-		<button class="btn btn-info col-xs-3 col-xs-offset-1 usi-list-entry-get-gm-values">
+		<button class="btn btn-info   usi-list-entry-get-gm-values">
 			<i class="fa fa-list"></i>
 		</button>
 	</div>
@@ -105,19 +105,19 @@
 		<div>
 			<label>Userscipt:</label>
 		</div>
-		<input type="checkbox" data-toggle="toggle" class="col-xs-3 col-md-3 usi-list-entry-view-userscript" />
+		<input type="checkbox" data-toggle="toggle" class="  usi-list-entry-view-userscript" />
 		
 		<!--Userscript bearbeiten-->
-		<button class="btn btn-info col-xs-3 col-md-3 col-md-offset-2 usi-list-entry-edit" data-usi-lang="change"></button>
+		<button class="btn btn-info    usi-list-entry-edit" data-usi-lang="change"></button>
 		<!--Userscript entfernen-->
-		<button class="btn btn-danger col-xs-3 col-md-3 col-md-offset-2 usi-list-entry-delete" data-usi-lang="delete_x"></button>
+		<button class="btn btn-danger    usi-list-entry-delete" data-usi-lang="delete_x"></button>
 	</div>
 	
 	<br />
 	
 	<div class="usi-list-entry-view-userscript---output row">
-		<label class="col-xs-2">HighlightJS Style:</label>
-		<select class="selectHighlightJSStyle col-xs-8 form-control"></select>
+		<label class="">HighlightJS Style:</label>
+		<select class="selectHighlightJSStyle  form-control"></select>
 		<hr />
 		<pre><code class="border-black jscode hljs lang-javascript" data-content-text="userscript-userscript"></code></pre>
 	</div>
