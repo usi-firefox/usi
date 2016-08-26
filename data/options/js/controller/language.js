@@ -6,13 +6,13 @@
 function language_class(){
 	var lang	=	self.options.language;
 	
-	return {
+	var private_functions = {
 		get: function(name){
 			return lang[name];
 		}
 		,replace_in_DOM: function(){
 			// damit im each() ein Zugriff möglich ist
-			var get_wrapper = this.get;
+			var get_wrapper = private_functions.get;
 			
 			jQuery("[data-usi-lang]").each(function(idx, element){
 				// füge die Übersetzung als ersten Textknoten ein
@@ -24,6 +24,8 @@ function language_class(){
 			});
 		}
 	};
+	
+	return private_functions;
 };
 
 var language_controller = language_class();

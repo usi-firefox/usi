@@ -11,13 +11,9 @@ function userscript_config_class (){
 		before_rendering : function(){
 		}
 
-			/**
-			 * Registriert einen Button für sein Backend Event
-			 * 
-			 * @param string event_name
-			 * @param string id
-			 * @returns void
-			 */
+		/**
+		 * Registriert einen Button für sein Backend Event
+		 */
 		, init_button_with_data : function (event_name, id){
 			backend_events_controller.api.on(event_name, function(state){
 				jQuery("#" + id).prop("checked", state);

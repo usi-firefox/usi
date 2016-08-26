@@ -28,9 +28,9 @@ function userscript_list_entry_class(script, index) {
 		 * erstellt die Variablen die im Template ersetzt werden sollen
 		 * START
 		 */
-		var deliver_vars = flatten_keys(script, "userscript"),
-		usi_list_entry_id = "usi-list-entry-id---" + script.id,
-		usi_list_entry_id_plus_class = "#" + usi_list_entry_id + " .usi-list-entry-";
+		var deliver_vars = flatten_keys(script, "userscript");
+		var usi_list_entry_id = "usi-list-entry-id---" + script.id;
+		var usi_list_entry_id_plus_class = "#" + usi_list_entry_id + " .usi-list-entry-";
 				
 		// Index hinzufügen
 		deliver_vars["index"] = index;
