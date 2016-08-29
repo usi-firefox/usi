@@ -44,7 +44,7 @@ function userscript_list_class(){
 		// falls ein Komma enthalten sein sollte ...
 		rounded_quota = rounded_quota.replace(".", ",");
 
-		currentMemoryUsage = language_controller.get("actual_used_quota") + " : " + rounded_quota + "%";
+		currentMemoryUsage = lang["actual_used_quota"] + " : " + rounded_quota + "%";
 		
 		jQuery("#usi-list-current-memory-usage").text(currentMemoryUsage);
 	});

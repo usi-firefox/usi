@@ -7,17 +7,15 @@ function language_class(){
 	var lang	=	self.options.language;
 	
 	var private_functions = {
-		get: function(name){
-			return lang[name];
+        // für direkten Zugriff
+		lang: function(){
+			return lang;
 		}
 		,replace_in_DOM: function(){
-			// damit im each() ein Zugriff möglich ist
-			var get_wrapper = private_functions.get;
-			
 			jQuery("[data-usi-lang]").each(function(idx, element){
 				// füge die Übersetzung als ersten Textknoten ein
 				jQuery(element).prepend(
-					get_wrapper(jQuery(element).attr("data-usi-lang"))
+					lang[jQuery(element).attr("data-usi-lang")]
 				);
 				// entferne das Attribut
 				jQuery(element).removeAttr("data-usi-lang");
@@ -28,4 +26,5 @@ function language_class(){
 	return private_functions;
 };
 
-var language_controller = language_class();
+var language_controller = language_class(),
+lang = language_controller.lang();

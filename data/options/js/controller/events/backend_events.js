@@ -1,6 +1,6 @@
 "use strict";
 
-/* global language_controller, self */
+/* global language_controller, self, lang */
 
 function backend_events_class() {
 
@@ -32,7 +32,7 @@ function backend_events_class() {
 					function (userscript_infos) {
 
 						//wurde gefunden, möchtest du es aktualisieren?")){
-						if (window.confirm(language_controller.get("same_userscript_was_found_ask_update_it_1") + userscript_infos.id + language_controller.get("same_userscript_was_found_ask_update_it_2"))) {
+						if (window.confirm(lang["same_userscript_was_found_ask_update_it_1"] + userscript_infos.id + lang["same_userscript_was_found_ask_update_it_2"])) {
 							// Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
 							api.emit("USI-BACKEND:override-same-userscript", userscript_infos);
 							api.emit("USI-BACKEND:request-for---list-all-scripts");

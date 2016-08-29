@@ -13,10 +13,10 @@ function bootstrap_toggle_class(){
 		,initButton : function(selector, on_text, off_text){
 			var width = null;
 			if(basic_helper.empty(on_text)){
-				on_text = language_controller.get("activated");
+				on_text = lang["activated"];
 			}
 			if(basic_helper.empty(off_text)){
-				off_text = language_controller.get("deactivated");
+				off_text = lang["deactivated"];
 			}
 			
 			// ermittele die passende Breite

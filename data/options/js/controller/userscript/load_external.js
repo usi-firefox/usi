@@ -1,6 +1,6 @@
 "use strict";
 
-/* global language_controller, event_manager_controller, self, backend_events_controller */
+/* global language_controller, event_manager_controller, self, backend_events_controller, lang */
 
 function userscript_load_external_class(){
 	
@@ -48,7 +48,7 @@ function userscript_load_external_class(){
 		}
 		
 		,addCustomCharset : function(){
-			var new_charset = window.prompt(language_controller.get("add_new_custom_charset"));
+			var new_charset = window.prompt(lang["add_new_custom_charset"]);
 			if(new_charset){
 				
 				var found = false;
@@ -65,7 +65,7 @@ function userscript_load_external_class(){
 					);
 					jQuery(id_prefix + "alternativeCharsets option[value='" + new_charset + "']").prop("selected",true);
 				}else{
-					alert(language_controller.get("charset_already_exist"));
+					alert(lang["charset_already_exist"]);
 				}
 			}
 		}
@@ -110,13 +110,13 @@ function userscript_load_external_class(){
 				backend_events_controller.api.once("USI-BACKEND:external-script-is-now-loaded", function(status){
 					if(status === true){
 						// Nachgeladenes Userscript ist geladen
-						alert(language_controller.get("external_script_is_now_loaded") + " -> " + script_url);
+						alert(lang["external_script_is_now_loaded"] + " -> " + script_url);
 					}
 				});
 			} else {
 				// Fehler Text anzeigen
 				jQuery(id_prefix + "has-error").html(
-					language_controller.get("empty_userscript_url")
+					lang["empty_userscript_url"]
 				);
 			}
 		}

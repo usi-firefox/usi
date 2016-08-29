@@ -62,8 +62,8 @@ function userscript_edit_class(){
 
 			// Overwrite Button stylen
 			bootstrap_toggle_controller.initButton("#usi-edit-script-overwrite", 
-				language_controller.get("yes"),  
-				language_controller.get("no")
+				lang["yes"],  
+				lang["no"]
 			);
 
 			// Falls ein Userscript zur Editierung übergeben wurde

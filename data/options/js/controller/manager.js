@@ -63,7 +63,7 @@ function manager_class(){
 					return false;
 			}
 			// Rückgabe des Controller Titels
-			return language_controller.get(key);
+			return lang[key];
 		}
 		
 	};

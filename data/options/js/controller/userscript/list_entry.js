@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self,basic_helper, language_controller, highlightjs_controller, backend_events_controller, bootstrap_toggle_controller, event_manager_controller */
+/* global self,basic_helper, language_controller, highlightjs_controller, backend_events_controller, bootstrap_toggle_controller, event_manager_controller, lang */
 
 
 function flatten_keys(obj, prepend_key, result) {
@@ -98,7 +98,7 @@ function userscript_list_entry_class(script, index) {
 				// das Skript mit der ID löschen!
 				if (!basic_helper.empty(script.id)) {
 					//zusätzliche Abfrage
-					if (window.confirm(language_controller.get("want_to_delete_this_userscript_1") + script.id + language_controller.get("want_to_delete_this_userscript_2"))) {
+					if (window.confirm(lang["want_to_delete_this_userscript_1"] + script.id + lang["want_to_delete_this_userscript_2"])) {
 
 						// @todo erstmal abschalten!!!
 						backend_events_controller.api.emit("USI-BACKEND:delete-script-by-id", script.id);
@@ -164,8 +164,8 @@ function userscript_list_entry_class(script, index) {
 				// ACHTUNG hierbei müssen Aktiviert und Deaktiviert getauscht werden
 				// Da -> script.deactivated === true , bedeutet dass das Skript deaktiviert ist!
 				bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "deactivated",
-					language_controller.get("deactivated"),
-					language_controller.get("activated")
+					lang["deactivated"],
+					lang["activated"]
 				);
 				// ACHTUNG hierbei müssen Aktiviert und Deaktiviert getauscht werden
 				
@@ -190,8 +190,8 @@ function userscript_list_entry_class(script, index) {
 				
 				
 				bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "view-userscript", 
-					language_controller.get("show"),  
-					language_controller.get("hide")
+					lang["show"],  
+					lang["hide"]
 				);
 				
 				// Userscript Inhalt anzeigen/ausblenden

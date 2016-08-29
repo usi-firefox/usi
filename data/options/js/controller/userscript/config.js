@@ -52,7 +52,7 @@ function userscript_config_class (){
 
 			// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
 			backend_events_controller.api.on("USI-BACKEND:update-for-userscript-available", function (userscript_infos) {
-				if (window.confirm(language_controller.get("userscript_update_was_found_1") + userscript_infos.id + language_controller.get("userscript_update_was_found_2"))) {
+				if (window.confirm(lang["userscript_update_was_found_1"] + userscript_infos.id + lang["userscript_update_was_found_2"])) {
 					// Nun das Skript aktualisieren!
 					backend_events_controller.api.emit("USI-BACKEND:override-same-userscript", userscript_infos);
 
@@ -63,9 +63,9 @@ function userscript_config_class (){
 			// Wenn das Skript gelöscht wurde
 			backend_events_controller.api.on("USI-BACKEND:delete-script-is-now-deleted", function (script_was_deleted) {
 				if (script_was_deleted === true) { // script wurde erfolgreich gelöscht
-					window.alert(language_controller.get("userscript_was_successful_deleted"));
+					window.alert(lang["userscript_was_successful_deleted"]);
 				} else { // script konnte nicht gelöscht werden
-					window.alert(language_controller.get("userscript_could_not_deleted"));
+					window.alert(lang["userscript_could_not_deleted"]);
 				}
 			});
 
@@ -130,8 +130,8 @@ function userscript_config_class (){
 		 */
 		,deleteAll : function () {
 			// Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
-			if (window.confirm(language_controller.get("really_reset_all_settings"))) {
-				if (window.confirm(language_controller.get("really_really_reset_all_settings"))) {
+			if (window.confirm(lang["really_reset_all_settings"])) {
+				if (window.confirm(lang["really_really_reset_all_settings"])) {
 					backend_events_controller.api.emit("USI-BACKEND:delete-everything");
 					backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");
 				}
