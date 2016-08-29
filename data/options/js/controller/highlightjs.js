@@ -47,7 +47,9 @@ function highlightjs_class(){
 				// übergib die aufgerufene ID
 				jQuery(id + " .selectHighlightJSStyle").prop("disabled", false);
 				
-				event_manager_controller.register_once(id + " .selectHighlightJSStyle" ,"change", {called_id : id + " .selectHighlightJSStyle"}, private_functions.change_style);
+				event_manager_controller.register_once(id + " .selectHighlightJSStyle", "change", function(){
+                    private_functions.change_style(id + " .selectHighlightJSStyle");
+                });
 			}else{
 				jQuery(id + " .selectHighlightJSStyle").prop("disabled", true);
 			}
@@ -67,9 +69,9 @@ function highlightjs_class(){
 		}
 		
 		// Funktion zum Laden der nötigen CSS Datei
-		,change_style : function(evt){
-			// Beispiel:  evt.data.called_id -> #usi-list-entry-id---1471351232788 .selectHighlightJSStyle
-			var style = jQuery(evt.data.called_id).val();
+		,change_style : function(called_id){
+			// Beispiel:  called_id -> #usi-list-entry-id---1471351232788 .selectHighlightJSStyle
+			var style = jQuery(called_id).val();
 			
 			// neuen Style setzen
 			private_functions.set_active_style(style);
