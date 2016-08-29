@@ -12,24 +12,25 @@ function event_manager_class(){
 			jQuery(element).on(eventname, func);
 		}
 		
-		,unregister : function(element, eventname){
+		,unregister : function(element, eventname, func){
 			// neues Event registrieren
-			jQuery(element).off(eventname);
+			jQuery(element).off(eventname, func);
 		}
 		
-		// Stellt sicher dass 
+		// Stellt sicher dass das Event nur einmal registriert ist, ansonsten wird es zunächst wieder entfernt
 		,register_once : function(element, eventname, func){
 			
 			for (var i in registered_once_events){
-				
 				if(registered_once_events[i].element === element
 					&& registered_once_events[i].eventname === eventname 
 					&& registered_once_events[i].func_s === func.toString()){
-					
+
+                    // aktuelles Element entfernen - ACHTUNG "sPlice" nicht "slice"!
+                    registered_once_events.splice(i,1);
+                    
 					// Event wurde bereits registriert
-					return false;
+                    private_functions.unregister(element, eventname, func);
 				}
-				
 			}
 			
 			// neues Event registrieren
