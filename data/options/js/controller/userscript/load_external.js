@@ -33,14 +33,14 @@ function userscript_load_external_class(){
 		
 		, register_buttons : function(){
 			// Script von einer URL holen
-			jQuery(id_prefix + "execute-url-load").on("click", private_functions.loadExternal);
+			event_manager_controller.register_once(id_prefix + "execute-url-load" ,"click", private_functions.loadExternal);
 			
 			// Reset Button für URL Eingabe
-			jQuery(id_prefix + "reset").on("click", private_functions.reset_url);
+			event_manager_controller.register_once(id_prefix + "reset" ,"click", private_functions.reset_url);
 			// Start Button für das Laden einer lokalen Datei
-			jQuery(id_prefix + "execute-local-load").on("click", private_functions.loadLocalFile);
+			event_manager_controller.register_once(id_prefix + "execute-local-load" ,"click", private_functions.loadLocalFile);
 			// alternatives Charset hinzufügen
-			jQuery(id_prefix + "add-custom-charset").on("click", private_functions.addCustomCharset);
+			event_manager_controller.register_once(id_prefix + "add-custom-charset" ,"click", private_functions.addCustomCharset);
 		}
 		
 		, reset_url : function(){

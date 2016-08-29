@@ -10,22 +10,22 @@
  * @returns {void}
  */
 function createDownload(data, type, filename){
-	var link = document.createElement('a');
+	var link = document.createElement("a");
 	// Dateinamen angeben
 	if(!basic_helper.empty(filename)){
 		link.download = filename;
 	}
 	
 	// data type festlegen
-	link.href = 'data:';
+	link.href = "data:";
 	if(!basic_helper.empty(type)){
 		link.href += type;
 	}else{
-		link.href += 'text/plain';
+		link.href += "text/plain";
 	}
 	
 	// Datenanhängen
-	link.href += ';base64,' + btoa(unescape(encodeURIComponent(data)));
+	link.href += ";base64," + btoa(unescape(encodeURIComponent(data)));
 
 	// Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
 	document.body.appendChild(link);

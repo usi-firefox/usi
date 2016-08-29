@@ -78,7 +78,7 @@ function userscript_config_class (){
 			event_manager_controller.register_once("#usi-config-export-all", "click", private_functions.exportAll );
 			
 			// Sobald der Counter auf 0 steht, 
-			jQuery(document).on("all-intial-requests-done", function(evt, counter){
+			event_manager_controller.register_once(document, "all-intial-requests-done", function(evt, counter){
 
 				if(counter === 0){
 

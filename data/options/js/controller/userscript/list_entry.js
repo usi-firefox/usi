@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self,basic_helper, language_controller, highlightjs_controller, backend_events_controller, bootstrap_toggle_controller */
+/* global self,basic_helper, language_controller, highlightjs_controller, backend_events_controller, bootstrap_toggle_controller, event_manager_controller */
 
 
 function flatten_keys(obj, prepend_key, result) {
@@ -156,7 +156,7 @@ function userscript_list_entry_class(script, index) {
 			, register_buttons : function(){
 				
 				// Export Button
-				jQuery(usi_list_entry_id_plus_class + "export").on("click", private_functions.export);
+				event_manager_controller.register_once(usi_list_entry_id_plus_class + "export" ,"click", private_functions.export);
 								
 				// Userscript de/-aktivieren
 				jQuery(usi_list_entry_id_plus_class + "deactivated").prop("checked",script.deactivated);
@@ -169,24 +169,24 @@ function userscript_list_entry_class(script, index) {
 				);
 				// ACHTUNG hierbei müssen Aktiviert und Deaktiviert getauscht werden
 				
-				jQuery(usi_list_entry_id_plus_class + "deactivated").on("change", private_functions.toggleActivation);
+				event_manager_controller.register_once(usi_list_entry_id_plus_class + "deactivated" ,"change", private_functions.toggleActivation);
 				
 				// edit
-				jQuery(usi_list_entry_id_plus_class + "edit").on("click", private_functions.edit);
+				event_manager_controller.register_once(usi_list_entry_id_plus_class + "edit" ,"click", private_functions.edit);
 				// delete
-				jQuery(usi_list_entry_id_plus_class + "delete").on("click", private_functions.delete);
+				event_manager_controller.register_once(usi_list_entry_id_plus_class + "delete" ,"click", private_functions.delete);
 
 				// Wenn das Userscript von einer URL geladen wurde
 				if(!basic_helper.empty(script.moreinformations) && !basic_helper.empty(script.moreinformations.url)){
 					// von der URL neuladen
-					jQuery(usi_list_entry_id_plus_class + "load-again").on("click", private_functions.loadAgain);
+					event_manager_controller.register_once(usi_list_entry_id_plus_class + "load-again" ,"click", private_functions.loadAgain);
 				}else{
 					// Nicht vorhanden daher ausblenden
 					jQuery(usi_list_entry_id_plus_class + "load-again---block").hide();
 				}
 				
 				// GM-Values holen
-				jQuery(usi_list_entry_id_plus_class + "get-gm-values").on("click", private_functions.getGMValues);
+				event_manager_controller.register_once(usi_list_entry_id_plus_class + "get-gm-values" ,"click", private_functions.getGMValues);
 				
 				
 				bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "view-userscript", 
@@ -195,7 +195,7 @@ function userscript_list_entry_class(script, index) {
 				);
 				
 				// Userscript Inhalt anzeigen/ausblenden
-				jQuery(usi_list_entry_id_plus_class + "view-userscript").on("change", private_functions.showUserscript);
+				event_manager_controller.register_once(usi_list_entry_id_plus_class + "view-userscript" ,"change", private_functions.showUserscript);
 				
 				// Ergebnis des URL Tests empfangen --- START
 				var last_state = false;
@@ -212,7 +212,7 @@ function userscript_list_entry_class(script, index) {
 				// Ergebnis des URL Tests empfangen --- END
 				
 				// URL Test gegen die Includes
-				jQuery(usi_list_entry_id_plus_class + "includes-testurl").on("keyup", private_functions.testUrlMatch);
+				event_manager_controller.register_once(usi_list_entry_id_plus_class + "includes-testurl" ,"keyup", private_functions.testUrlMatch);
 				
 				
 				// Ausgabe jedoch zunächst ausblenden

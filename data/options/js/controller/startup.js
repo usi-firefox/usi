@@ -1,6 +1,6 @@
 "use strict";
 
-/* global backend_events_controller, frontend_events_controller, template_controller, language_controller */
+/* global backend_events_controller, frontend_events_controller, template_controller, language_controller, event_manager_controller */
 
 jQuery().ready(function () {
 	// INIT
@@ -18,7 +18,7 @@ jQuery().ready(function () {
 	backend_events_controller.register_global_events();
 
 	// suche nach der Klasse load_template, diese benötigt das data Attribut "usiurl" darin wird der Name des Templates angegeben
-	jQuery(".load_template").on("click", function () {
+	event_manager_controller.register_once(".load_template" ,"click", function () {
 		var name = jQuery(this).attr("data-usi-templateurl");
 		if (name) {
 			template_controller.load(name);
@@ -40,10 +40,10 @@ jQuery().ready(function () {
 
 
 	// Toggle Menu
-    jQuery('#menu_toggle').on('click', function() {
+    event_manager_controller.register_once("#menu_toggle" ,"click", function() {
         jQuery("body").toggleClass("sidebar-left-visible sidebar-left-in");
     });
-    jQuery('.load_template').on('click', function() {
+    event_manager_controller.register_once(".load_template" ,"click", function() {
         jQuery("body").removeClass("sidebar-left-visible sidebar-left-in");
     });
 });

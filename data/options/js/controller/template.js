@@ -12,7 +12,8 @@ function template_class(){
 	return {
 		load : function(name, additional){
 		
-			var controller_already_started = false;
+			var controller_already_started = false,
+            actual_controller,replaceValues;
 		
 			// Ruft die Destroy Funktion des letzten Controllers auf
 			if(last_used_controller !== false && typeof last_used_controller.destroy === "function"){
@@ -30,7 +31,7 @@ function template_class(){
 			actual_controller_container_id = "usi-controller-container-" + name;
 			
 			// lädt den passenden Controller
-			var actual_controller = manager_controller.getController(name);
+			actual_controller = manager_controller.getController(name);
 			
 			// ersetze die Überschrift
 			jQuery("#nav_title").html(manager_controller.getControllerTitle(name));
@@ -47,9 +48,8 @@ function template_class(){
 				}
 			}
 			
-			var replaceValues;
 			if(actual_controller !== false && typeof actual_controller.deliver_vars === "function"){
-				// falls ein gültiger Controller gerufen wurde, wird nun seine init() augeführt
+				// falls ein gültiger Controller gerufen wurde, wird nun seine deliver_vars() augeführt
 				replaceValues = actual_controller.deliver_vars();
 			}else{
 				replaceValues = {};

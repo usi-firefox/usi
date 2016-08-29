@@ -47,7 +47,7 @@ function highlightjs_class(){
 				// übergib die aufgerufene ID
 				jQuery(id + " .selectHighlightJSStyle").prop("disabled", false);
 				
-				jQuery(id + " .selectHighlightJSStyle").on("change", {called_id : id + " .selectHighlightJSStyle"}, private_functions.change_style);
+				event_manager_controller.register_once(id + " .selectHighlightJSStyle" ,"change", {called_id : id + " .selectHighlightJSStyle"}, private_functions.change_style);
 			}else{
 				jQuery(id + " .selectHighlightJSStyle").prop("disabled", true);
 			}
