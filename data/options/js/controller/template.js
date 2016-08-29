@@ -38,7 +38,7 @@ function template_class(){
 			
 			// führt die before_rendering() Funktion aus, falls diese existiert
 			if(actual_controller !== false && typeof actual_controller.before_rendering === "function" && controller_already_started === false){
-				// falls ein gültiger Controller gerufen wurde, wird nun seine init() augeführt
+				// falls ein gültiger Controller gerufen wurde, wird nun seine before_rendering_data() augeführt
 				if(additional && typeof additional.before_rendering_data !== "undefined"){
 					// Extra Übergabe Daten
 					actual_controller.before_rendering(additional.before_rendering_data);
@@ -105,11 +105,6 @@ function template_class(){
 				// Controller wurde bereits geladen, daher wird dieser nun wieder eingeblendet!
 				jQuery("#" + actual_controller_container_id).show();
 			}
-			
-			// Seiten Menü Active umschalten
-			jQuery(".nav.side-menu li").removeClass("active");
-			jQuery(".nav.side-menu li a[data-usi-templateurl="+name+"]").parent().addClass("active");
-			
 		}
 		
 	};

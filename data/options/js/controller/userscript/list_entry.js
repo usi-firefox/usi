@@ -78,17 +78,10 @@ function userscript_list_entry_class(script, index) {
 				
 			}
 
-
-
 			// fragt nach den gesetzten Greasemonkey Variablen
 			, getGMValues: function () {
 				backend_events_controller.api.emit("USI-BACKEND:list-GMValues", script.id);
-
-				backend_events_controller.api.once("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
-					jQuery(usi_list_entry_id_plus_class + "get-gm-values---output").html(GMValues);
-				});
 			}
-
 
 			/**
 			 * Userscript entfernen
@@ -187,8 +180,15 @@ function userscript_list_entry_class(script, index) {
 				
 				// GM-Values holen
 				event_manager_controller.register_once(usi_list_entry_id_plus_class + "get-gm-values" ,"click", private_functions.getGMValues);
-				
-				
+                
+                // Event zum Daten erhalten einmalig registrieren
+         		backend_events_controller.api.on("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
+					jQuery(usi_list_entry_id_plus_class + "get-gm-values---output").
+                        html(""). // leeren
+                        html(GMValues);
+				});
+
+                // Bootstrap Toggle
 				bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "view-userscript", 
 					lang["show"],  
 					lang["hide"]
