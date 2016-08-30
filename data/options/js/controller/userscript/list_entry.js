@@ -178,16 +178,21 @@ function userscript_list_entry_class(script, index) {
 					jQuery(usi_list_entry_id_plus_class + "load-again---block").hide();
 				}
 				
-				// GM-Values holen
-				event_manager_controller.register_once(usi_list_entry_id_plus_class + "get-gm-values" ,"click", private_functions.getGMValues);
-                
-                // Event zum Daten erhalten einmalig registrieren
-         		backend_events_controller.api.on("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
-					jQuery(usi_list_entry_id_plus_class + "get-gm-values---output").
-                        html(""). // leeren
-                        html(GMValues);
-				});
+                // falls es bisher keine gespeicherten GM_Values gibt blende diesen Block aus
+                if(Object.keys(script.val_store).length === 0){
+                    jQuery(usi_list_entry_id_plus_class + "gm-values").hide();
+                }else{
+                    // GM-Values holen
+                    event_manager_controller.register_once(usi_list_entry_id_plus_class + "get-gm-values" ,"click", private_functions.getGMValues);
 
+                    // Event zum Daten erhalten einmalig registrieren
+                    backend_events_controller.api.on("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
+                        jQuery(usi_list_entry_id_plus_class + "get-gm-values---output").
+                            html(""). // leeren
+                            html(GMValues);
+                    });
+                }
+                
                 // Bootstrap Toggle
 				bootstrap_toggle_controller.initButton(usi_list_entry_id_plus_class + "view-userscript", 
 					lang["show"],  

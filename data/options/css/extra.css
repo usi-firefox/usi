@@ -7,3 +7,6 @@ pre code {
 .usi-controller-container{
     padding-bottom: 50px;
 }
+label{
+    margin-right: 10px;
+}
