@@ -101,6 +101,14 @@ function userscript_list_entry_class(script, index) {
 				}
 			}
 
+            // entfernt alle gesetzten GM_Values
+            , delete_GM_Values: function(){
+                // Frage den Benutzer nochmals ob er wirklich alle gesetzten Werte entfernen möchte
+                if(window.confirm(lang["confirm_delete_all_GMValues"])){
+                    backend_events_controller.api.emit("USI-BACKEND:delete-reset-GM-Values-userscript", script.id);
+                }
+            }
+
 			// Sende es an den Editierungs Controller
 			, edit: function () {
 				// veranlasse den Tab Wechsel!
@@ -184,6 +192,9 @@ function userscript_list_entry_class(script, index) {
                 }else{
                     // GM-Values holen
                     event_manager_controller.register_once(usi_list_entry_id_plus_class + "get-gm-values" ,"click", private_functions.getGMValues);
+                    
+                    // GM-Values Löschen
+                    event_manager_controller.register_once(usi_list_entry_id_plus_class + "delete-gm-values" ,"click", private_functions.delete_GM_Values);
 
                     // Event zum Daten erhalten einmalig registrieren
                     backend_events_controller.api.on("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
