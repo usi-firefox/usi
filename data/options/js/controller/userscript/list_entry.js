@@ -55,16 +55,18 @@ function userscript_list_entry_class(script, index) {
 			}
 			, add_icon: function () {
 				// Icon mit usi logo füllen, falls leer
-				var icon_path;
+				var icon_path,height = 16;
 				if (basic_helper.empty(deliver_vars["userscript-settings-icon_data"])) {
 					icon_path = "/data/icon/usi.png";
 				} else {
 					icon_path = deliver_vars["userscript-settings-icon_data"];
+                    height = height * 2;
 				}
 
 				// Icon hinzufügen
 				jQuery("<img>").
 						attr("id", deliver_vars["icon_data_id"]).
+						attr("height", height).
 						attr("src", icon_path).
 						appendTo("#" + deliver_vars["icon_data_id"]);
 			}
