@@ -3,7 +3,7 @@
 /* global self */
 
 // verwaltet die Übersetzungen
-function language_class(){
+var language_controller = (function language_class(){
 	var lang	=	self.options.language;
 	
 	var private_functions = {
@@ -24,7 +24,5 @@ function language_class(){
 	};
 	
 	return private_functions;
-};
-
-var language_controller = language_class(),
+}()),
 lang = language_controller.lang();

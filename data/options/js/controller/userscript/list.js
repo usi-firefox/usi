@@ -2,7 +2,7 @@
 
 /* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller, backend_events_controller */
 
-function userscript_list_class(){
+var userscript_list_controller = (function userscript_list_class(){
 	
 	var currentMemoryUsage;
 	// Anzahl der Userscripts - zählen mittels Object.keys
@@ -119,6 +119,4 @@ function userscript_list_class(){
 		}
 		
 	};
-};
-
-var userscript_list_controller = userscript_list_class();
+}());

@@ -3,7 +3,7 @@
 /* global language_controller, basic_helper */
 
 // Bootstrap Toggle
-function bootstrap_toggle_class(){
+var bootstrap_toggle_controller = (function bootstrap_toggle_class(){
 	return{
 		run : function(){
 			if (jQuery("[data-toggle]")[0]) {
@@ -32,7 +32,4 @@ function bootstrap_toggle_class(){
 			});
 		}
 	};
-};
-// 
-
-var bootstrap_toggle_controller = bootstrap_toggle_class();
+}());

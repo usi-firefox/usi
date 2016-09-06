@@ -2,7 +2,7 @@
 
 /* global language_controller,manager_controller */
 
-function template_class(){
+var template_controller = (function template_class(){
 	
 	var last_used_controller = false
 	,last_used_controller_container_id = false
@@ -108,6 +108,4 @@ function template_class(){
 		}
 		
 	};
-};
-
-var template_controller = template_class();
+}());

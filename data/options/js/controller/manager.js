@@ -7,7 +7,7 @@
  * 
  * @returns object controller
  */
-function manager_class(){
+var manager_controller = (function manager_class(){
 	
 	return {
 
@@ -75,6 +75,4 @@ function manager_class(){
 		
 	};
 	
-}
-
-var manager_controller = manager_class();
+}());

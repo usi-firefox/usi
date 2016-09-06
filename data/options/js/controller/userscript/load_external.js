@@ -2,7 +2,7 @@
 
 /* global language_controller, event_manager_controller, self, backend_events_controller, lang */
 
-function userscript_load_external_class(){
+var userscript_load_external_controller = (function userscript_load_external_class(){
 	
 	var id_prefix = "#usi-load-external-";
 	
@@ -132,6 +132,4 @@ function userscript_load_external_class(){
 		,after_rendering : private_functions.after_rendering
 	};
 	
-};
-
-var userscript_load_external_controller = userscript_load_external_class();
+}());

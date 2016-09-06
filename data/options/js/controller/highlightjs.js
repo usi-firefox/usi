@@ -1,6 +1,6 @@
 "use strict";
 
-function highlightjs_class(){
+var highlightjs_controller = (function highlightjs_class(){
 	
 	var is_active = true;
 	
@@ -121,6 +121,4 @@ function highlightjs_class(){
 		,run : private_functions.run
 	};
 	
-}
-
-var highlightjs_controller = highlightjs_class();
+}());

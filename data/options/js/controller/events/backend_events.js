@@ -2,7 +2,7 @@
 
 /* global language_controller, self, lang */
 
-function backend_events_class() {
+var backend_events_controller = (function backend_events_class() {
 
 	if (typeof self.port !== "undefined") {
 
@@ -52,6 +52,4 @@ function backend_events_class() {
 		return false;
 	}
 
-};
-
-var backend_events_controller = backend_events_class();
+}());

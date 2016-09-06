@@ -2,7 +2,7 @@
 
 /* global event_manager_controller, template_controller */
 
-function frontend_events_class(){
+var frontend_events_controller = (function frontend_events_class(){
 	
 	var private_functions = {
 	
@@ -33,6 +33,4 @@ function frontend_events_class(){
 		init : private_functions.init
 	};
 	
-}
-
-var frontend_events_controller = frontend_events_class();
+}());

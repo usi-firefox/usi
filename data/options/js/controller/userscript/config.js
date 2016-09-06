@@ -1,6 +1,6 @@
 "use strict";
 
-function userscript_config_class (){
+var userscript_config_controller = (function userscript_config_class (){
 	
 	// 4 Buttons --- Zusätzlich wird jedoch noch das Event "USI-BACKEND:highlightjs-style" behandelt
 	var initial_requests_done = 4;
@@ -159,6 +159,4 @@ function userscript_config_class (){
 	// gib einfach alles zurück
 	return private_functions;
 	
-};
-
-var userscript_config_controller = userscript_config_class();
+}());

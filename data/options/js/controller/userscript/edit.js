@@ -1,9 +1,9 @@
 "use strict";
 
-/* global self,event_manager_controller, backend_events_controller, language_controller, bootstrap_toggle_controller */
+/* global self,event_manager_controller, backend_events_controller, language_controller, bootstrap_toggle_controller, lang */
 
 // Userscript bearbeiten
-function userscript_edit_class(){
+var userscript_edit_controller = (function userscript_edit_class(){
 
 	var prefered_locale
 	,textarea_default_size
@@ -209,6 +209,4 @@ function userscript_edit_class(){
 	
 	// da es hier keine Funktionen gibt die nicht von außen aufgerufen werden dürften kann das komplett Objekt zurückgegeben werden
 	return private_functions;
-};
-
-var userscript_edit_controller = userscript_edit_class();
+}());

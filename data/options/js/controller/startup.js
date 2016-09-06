@@ -1,6 +1,6 @@
 "use strict";
 
-/* global backend_events_controller, frontend_events_controller, template_controller, language_controller, event_manager_controller */
+/* global backend_events_controller, frontend_events_controller, template_controller, language_controller, event_manager_controller, self */
 
 jQuery().ready(function () {
 	// INIT
@@ -37,8 +37,8 @@ jQuery().ready(function () {
 	// Initial die Übersicht laden
 	template_controller.load("overview");
 	// INIT
-
-
+    
+    
 	// Toggle Menu
     event_manager_controller.register_once("#menu_toggle" ,"click", function() {
         jQuery("body").toggleClass("sidebar-left-visible sidebar-left-in");

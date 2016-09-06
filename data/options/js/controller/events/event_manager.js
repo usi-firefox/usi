@@ -1,6 +1,6 @@
 "use strict";
 
-function event_manager_class(){
+var event_manager_controller = (function event_manager_class(){
 	
 	var registered_once_events = [];
 	
@@ -61,6 +61,4 @@ function event_manager_class(){
 		
 	};
 	
-}
-
-var event_manager_controller = event_manager_class();
+}());
