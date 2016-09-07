@@ -1,16 +1,11 @@
 "use strict";
 
-/* global language_controller, basic_helper */
+/* global language_controller, basic_helper, lang */
 
 // Bootstrap Toggle
 var bootstrap_toggle_controller = (function bootstrap_toggle_class(){
 	return{
-		run : function(){
-			if (jQuery("[data-toggle]")[0]) {
-				jQuery("[data-toggle]").bootstrapToggle();
-			}
-		}
-		,initButton : function(selector, on_text, off_text){
+		initButton : function(selector, on_text, off_text){
 			var width = null;
 			if(basic_helper.empty(on_text)){
 				on_text = lang["activated"];
@@ -22,8 +17,10 @@ var bootstrap_toggle_controller = (function bootstrap_toggle_class(){
 			// ermittele die passende Breite
 			if(on_text.length <= off_text.length){
 				width = (off_text.length * 12);
-			}
-			
+			}else{
+				width = (on_text.length * 12);
+            }
+
 			// initialisiert einen Button
 			jQuery(selector).bootstrapToggle({
 				on: on_text

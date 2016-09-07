@@ -184,9 +184,9 @@
 	// TOGGLE DATA-API
 	// ===============
 
-	$(function() {
-		$('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
-	});
+//	$(function() {
+//		$('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
+//	});
 
 	$(document).on('click.bs.toggle', 'div[data-toggle^=toggle]', function(e) {
 		var $checkbox = $(this).find('input[type=checkbox]');
