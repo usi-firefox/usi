@@ -39,9 +39,14 @@ var backend_events_controller = (function backend_events_class() {
 						}
 					});
 	
-				// Speichert ein Userscript!
+				// Bietet das Userscript zur lokalen Speicherung an!
 				api.on("USI-BACKEND:export-userscript-done", function (result) {
 					createDownload(result.userscript, "text/plain", encodeURI(result.filename + ".user.js"));
+				});
+	
+                // Event Weiterleitung vom Backend
+				api.on("USI-BACKEND:To-Frontend-Document-Event-Forwarder", function (data) {
+                    jQuery(document).trigger(data.event_name, [data.action, data.param1]);
 				});
 	
 			}
