@@ -189,7 +189,7 @@ function userscript_list_entry_class(script, index) {
 				}
 				
                 // falls es bisher keine gespeicherten GM_Values gibt blende diesen Block aus
-                if(script.val_store !== null){
+                if(basic_helper.empty(script.val_store)){
                     jQuery(usi_list_entry_id_plus_class + "gm-values").hide();
                 }else{
                     // GM-Values holen

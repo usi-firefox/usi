@@ -40,7 +40,7 @@ function GM_getValue(name, default_value) {
 	if (typeof script_localstorage[name] !== "undefined") {
 		// Daten aus dem Localstorage beziehen...
 		return script_localstorage[name];
-	} else if (typeof self.options.storage !== "undefined" && typeof self.options.storage[name] !== "undefined") {
+	} else if (typeof self.options.storage !== "undefined" && self.options.storage !== null && typeof self.options.storage[name] !== "undefined") {
 		// Daten aus den übergebenen ScriptOptions
 		return self.options.storage[name];
 	} else { 

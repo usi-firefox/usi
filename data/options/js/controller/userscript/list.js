@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller, backend_events_controller */
+/* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller, backend_events_controller, lang */
 
 var userscript_list_controller = (function userscript_list_class(){
 	
