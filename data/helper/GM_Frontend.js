@@ -1,7 +1,5 @@
 /* global self,console,document */
 
-//window.localStorage.clear();
-
 // Initiere den Scriptstorage
 function get_123141482457923434792() {
 
