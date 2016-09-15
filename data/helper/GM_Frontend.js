@@ -262,8 +262,9 @@ function GM_getResourceURL(name) {
 		if(/^data:/.test(resource.data)){
 			return resource.data;
 		}else{
-			// keine Datauri
-			throw new Error("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
+            return resource.origUrl;
+            // ansonsten gib die "echte URL" zurück
+			GM_log("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
 		}
 	}else{
 		// Name nicht gefunden!
