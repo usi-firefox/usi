@@ -10,3 +10,7 @@ pre code {
 label{
     margin-right: 10px;
 }
+
+.usi-list-entry-view-userscript---output > pre{
+    padding: 0;
+}
