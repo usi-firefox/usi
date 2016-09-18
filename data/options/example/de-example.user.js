@@ -17,9 +17,6 @@
 // @version             1.0.0
 // ==/UserScript==
 
-// ACHTUNG: bitte beachte, dass ein neues Userscript sofort eingefügt wird.
-// Dies ist nur ein Beispiel damit du siehst, dass USI funktioniert.
-
 document.addEventListener("click", function(){
 	alert("Du hast soeben geklickt!");
 });
