@@ -102,7 +102,7 @@ var userscript_load_external_controller = (function userscript_load_external_cla
 				backend_events_controller.api.emit("USI-BACKEND:loadexternal-script_url",
 					{script_url: script_url,
 						charset: alternativeCharset,
-						moreinformations: {getFromUrl: true, url: script_url}}
+						moreinformations: {url: script_url}}
 				);
 
 				backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");

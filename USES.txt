@@ -4,7 +4,6 @@ Other Projects & Software used by USI
 * highlight.js 9.6.0 (https://github.com/isagalaev/highlight.js)
 * mobile-angular-ui 0.5 (https://github.com/mcasimir/mobile-angular-ui/)
 * Greasemonkey/modules/third-party/convert2RegExp.js 3.8 (https://github.com/greasemonkey/greasemonkey/blob/master/modules/third-party/convert2RegExp.js)
-* Gentelella 1.3.0 (https://github.com/puikinsh/gentelella)
 * Font-Awesome 4.6.3 (http://fontawesome.io/)
 * jquery.loadtemplate 1.5.10 (https://github.com/codepb/jquery-template)
 * Bootstrap Toggle v2.2.0 (https://github.com/minhur/bootstrap-toggle/)
