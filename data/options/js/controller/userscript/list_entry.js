@@ -238,7 +238,7 @@ function userscript_list_entry_class(script, index) {
 				jQuery(usi_list_entry_id_plus_class + "view-userscript---hide").hide();
 
 				// Required Scripts
-				if(!basic_helper.empty(script.require_scripts)){
+				if(!basic_helper.empty(script.require_scripts) && script.require_scripts.length > 0){
 					for(var i in script.require_scripts){
 						jQuery(usi_list_entry_id_plus_class + "required-scripts---output").append(
 							jQuery("<li>").html(script.require_scripts[i].url)

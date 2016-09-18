@@ -79,15 +79,14 @@ var highlightjs_controller = (function highlightjs_class(){
 			// Auswahl Buttons --- aktiven Style selektieren
 			private_functions.select_active_style_in_buttons(style);
 			
-			// CSS Datei tauschen
-			private_functions.change_css_file(style);
-
 			// Style speichern
 			backend_events_controller.api.emit("USI-BACKEND:highlightjs-style-change", style);
 		}
 		
 		,set_active_style : function(style){
 			active_style = style;
+			// CSS Datei tauschen
+			private_functions.change_css_file(style);
 		}
 		
 		,change_css_file : function(style){
