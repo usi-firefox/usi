@@ -1,5 +1,0 @@
-* 2016-08-11: jQuery.loadTemplate.js - Line 186 
-
-+++ dataType: "html",
-
-Da ansonten keine Templates geladen werden konnten ...
