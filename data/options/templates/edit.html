@@ -1,0 +1,67 @@
+<html>
+<!--Neues Userscript erstellen / bearbeiten-->
+<div id="usi-edit-script">
+	<h3 id="usi-edit-script-id---block" style="display: none;">
+		<span data-usi-lang="edit_userscript_with_id"> --- </span> : <span id="usi-edit-script-id"></span>
+	</h3>
+
+	<!--Userscript Eingabe-->
+	<textarea style="white-space: pre; height: 80%;" 
+			  class="col-xs-12" id="usi-edit-script-textarea" rows="30"
+			  cols="64" placeholder="// ==UserScript== ..."></textarea>
+
+	<!--Userscript Beispiel-->
+	<div class="container">
+		<div class="row">
+			<!--Userscript speichern-->
+			<button id="usi-edit-script-save" class="btn btn-primary btn-block" data-usi-lang="save">
+				<!--Userscript speichern-->
+			</button>
+		</div>
+		<hr />
+		<div class="row">
+			<!--Userscript überschreiben?-->
+			<div id="usi-edit-script-overwrite---block">
+				<label class=" ">Userscript <span data-usi-lang="overwrite_without_warning"></span>?</label>
+				<input id="usi-edit-script-overwrite" class="" data-toggle="toggle" type="checkbox" />
+				<hr />
+			</div>
+			
+			<!--Standard laden oder leeren-->
+			<button id="usi-edit-script-load-example" class="btn btn-default col-xs-6 " data-usi-lang="load_example" >
+				<!--Beispiel laden-->
+			</button>
+			<button id="usi-edit-script-textarea-clear" class="btn btn-warning col-xs-6 " data-usi-lang="clear" >
+				<!--Textfeld leeren-->
+			</button>
+		</div>
+		<div class="row">
+			<br />
+		</div>
+		<div class="row">
+			<!--Textarea Zoom einstellen-->
+			<div class="col-xs-2">
+				<label>Zoom:</label>
+			</div>
+			<button class="btn btn-default col-xs-1 " id="usi-edit-script-textarea-default-size" ><i class="fa fa-undo"></i></button>
+			<input type="range" class="col-xs-offset-1 col-xs-7"
+				   id="usi-edit-script-textarea-size" style="width: 280px" min="8" max="30" step="0.5" value="14" />
+		</div>
+		<div class="row">
+			<br />
+		</div>
+		<div class="row">
+			<!--Umwandlung bei Problemen mit dem Charset-->
+			<div class="">
+				<label>Convert : </label>
+			</div>
+			<div>
+				<button id="usi-edit-script-utf8-to-latin1" class="btn btn-default col-xs-4 " >UTF-8 -> Latin1</button>
+			</div>
+			<div>
+				<button id="usi-edit-script-latin1-to-utf8" class="btn btn-primary col-xs-4 col-xs-offset-2" >Latin1 -> UTF-8</button>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

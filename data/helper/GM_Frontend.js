@@ -1,7 +1,5 @@
 /* global self,console,document */
 
-//window.localStorage.clear();
-
 // Initiere den Scriptstorage
 function get_123141482457923434792() {
 
@@ -42,7 +40,7 @@ function GM_getValue(name, default_value) {
 	if (typeof script_localstorage[name] !== "undefined") {
 		// Daten aus dem Localstorage beziehen...
 		return script_localstorage[name];
-	} else if (typeof self.options.storage !== "undefined" && typeof self.options.storage[name] !== "undefined") {
+	} else if (typeof self.options.storage !== "undefined" && self.options.storage !== null && typeof self.options.storage[name] !== "undefined") {
 		// Daten aus den übergebenen ScriptOptions
 		return self.options.storage[name];
 	} else { 
@@ -264,8 +262,9 @@ function GM_getResourceURL(name) {
 		if(/^data:/.test(resource.data)){
 			return resource.data;
 		}else{
-			// keine Datauri
-			throw new Error("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
+            return resource.origUrl;
+            // ansonsten gib die "echte URL" zurück
+			GM_log("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
 		}
 	}else{
 		// Name nicht gefunden!

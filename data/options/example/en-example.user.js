@@ -17,8 +17,6 @@
 // @version             1.0.0
 // ==/UserScript==
 
-// WARNING: If you save this Userscript, it will be immediately active
-
 document.addEventListener("click", function(){
 	alert("You have clicked!");
 });

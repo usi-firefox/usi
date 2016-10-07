@@ -21,7 +21,7 @@ var basic_helper = {
 		}
 	},
 	empty: function (v) {
-		if (typeof v === "undefined" || v === "" || v === 0 || v === false) {
+		if (typeof v === "undefined" || v === "" || v === 0 || v === false || v === null) {
 			return true;
 		} else {
 			return false;
@@ -41,6 +41,19 @@ var basic_helper = {
 	},
 	escapeRegExp: function (str) {
 		return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+	},
+	getFilenameFromURL: function (url) {
+		
+		if(this.is_string(url) && !this.empty(url)){
+			// http://example.com/img/image.png => image.png
+			var url_suffix = url.split("/").pop();
+			
+			if(!this.empty(url_suffix)){
+				return url_suffix;
+			}
+		}
+		
+		return false;
 	},
 	arrayWrap: function (arr, wrapper_front, wrapper_back){
 		var result_arr = [];

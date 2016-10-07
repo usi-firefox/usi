@@ -1,0 +1,126 @@
+<html><!--USI Konfiguration bearbeiten-->
+
+<div class="container-fluid" >
+	<div class="container" >
+		<h3 data-usi-lang="delete_all_userscripts" >
+			<!--Alle Userscripts entfernen-->
+		</h3>
+		
+		<button class="btn btn-danger" id="usi-config-delete-all"
+				data-usi-lang="revert_all" >
+		</button>
+		<!--alles zurücksetzen-->
+	</div>
+	<hr />
+	<div class="container" >
+		<h3 data-usi-lang="check_updates_for_all_userscripts" >
+			<!--Alle Userscripts auf Updates überprüfen-->
+		</h3>
+		
+		<button id="usi-config-check-for-updates" 
+				class="btn btn-primary" data-usi-lang="check_now" >
+		</button>
+		<!--jetzt prüfen-->
+	</div>
+	<hr />
+	<div class="container" >
+		<div class="row">
+			<h3 data-usi-lang="OldUsiIncludeBehavior_title" >
+				<!--USI Include Verhalten-->
+			</h3>
+			<label>
+				<span data-usi-lang="OldUsiIncludeBehavior_description">
+	<!--				Hier kannst du das alte Verhalten von USI für die Einbindung der Include regeln wieder aktivieren,
+					ansonsten wird die Art und Weise wie GreaseMonkey Include Regeln behandelt verwendet.-->
+				</span>
+				<br />
+				<span style="display: none;">
+					(<span id="usi-config-change-old-usi-include-behavior---false" data-usi-lang="OldUsiIncludeBehavior_GMMethod"></span><span id="usi-config-change-old-usi-include-behavior---true" data-usi-lang="OldUsiIncludeBehavior_oldUsiMethod"></span>)
+				</span>
+			</label>
+		</div>
+		<div class="row">
+			<input data-toggle="toggle" type="checkbox" id="usi-config-change-old-usi-include-behavior" />
+		</div>
+	</div>
+	<hr />
+	<div class="container" >
+		<div class="row">
+			<h3 data-usi-lang="enableExternalScriptLoadQuestion_title" >
+				<!--Importiere externe Skripte-->
+			</h3>
+			<label>
+				<span data-usi-lang="enableExternalScriptLoadQuestion_description">
+					<!--Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)-->
+				</span>
+				<br />
+				<span style="display: none;">
+					(<span id="usi-config-change-enable-external-script-load-question---false" data-usi-lang="no"></span><span id="usi-config-change-enable-external-script-load-question---true" data-usi-lang="yes"></span>)
+				</span>
+			</label>
+		</div>
+		<div class="row">
+			<input data-toggle="toggle" type="checkbox" id="usi-config-change-enable-external-script-load-question"/>
+		</div>
+	</div>
+	<hr />
+	<div class="container" >
+		<div class="row">
+			<h3 data-usi-lang="options_activate_highlightjs_title" >
+				<!--HighlightJS aktiv-->
+			</h3>
+			<label>
+				<span style="display: none;">
+					(<span id="usi-config-change-options-activate-highlightjs---false" data-usi-lang="no"></span><span id="usi-config-change-options-activate-highlightjs---true" data-usi-lang="yes"></span>)
+				</span>
+			</label>
+		</div>
+					
+		<div class="row">
+			<input data-toggle="toggle" type="checkbox" id="usi-config-change-options-activate-highlightjs"/>
+		</div>
+	</div>	
+	<hr />
+	<div class="container" >
+		<div class="row">
+			<h3 data-usi-lang="options_always_activate_greasemonkey_title" >
+				<!--Greasemonkey immer aktivieren-->
+			</h3>
+			<label>
+				<span style="display: none;">
+					(<span id="usi-config-change-options-always-activate-greasemonkey---false" data-usi-lang="no"></span><span id="usi-config-change-options-always-activate-greasemonkey---true" data-usi-lang="yes"></span>)
+				</span>
+			</label>
+		</div>
+		<div class="row">
+			<input data-toggle="toggle" type="checkbox" id="usi-config-change-options-always-activate-greasemonkey"/>
+		</div>
+	</div>	
+	<hr />
+	<div class="container" >
+		<div class="row">
+			<h3 data-usi-lang="export_all_userscripts" >
+				<!--Alle Userscripts exportieren-->
+			</h3>
+			<label>
+				<span data-usi-lang="complete_export">
+					<!--Kompletter Export-->
+				</span>
+				<span style="display: none;">
+					(<span id="usi-config-change-complete-export---false" data-usi-lang="no"></span><span id="usi-config-change-complete-export---true" data-usi-lang="yes"></span>)
+				</span>
+			</label>
+		</div>
+		<div class="row">
+			<input data-toggle="toggle" type="checkbox" id="usi-config-change-complete-export" />
+		</div>
+		
+		<br />
+		
+		<button id="usi-config-export-all" 
+				class="btn btn-primary" data-usi-lang="export_all_now" >
+		</button>
+		<!--jetzt exportieren-->
+	</div>
+</div>
+</html>

@@ -18,7 +18,7 @@ self.port.on("USI-BACKEND:active", function (status) {
 			// sende die aktuelle URL an das ADD-ON
 			self.port.emit("USI-BACKEND:new-usi-script_url---call",
 				{script_url: window.location.href,
-					moreinformations: {getFromUrl: true, url: window.location.href}
+					moreinformations: {url: window.location.href}
 				}
 			);
 		}
