@@ -19,7 +19,7 @@
   },
   "author": "usi-dev",
   "license": "LGPL-2.1",
-  "version": "0.4.3-a-alpha",
+  "version": "0.4.3",
   "main" : "lib/main.js",
   "engines": {
     "firefox": ">=39.0",
