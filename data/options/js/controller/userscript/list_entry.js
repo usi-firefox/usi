@@ -85,6 +85,21 @@ function userscript_list_entry_class(script, index) {
 				backend_events_controller.api.emit("USI-BACKEND:list-GMValues", script.id);
 			}
 
+			, toggleOverview: function (){
+				jQuery(usi_list_entry_id_plus_class + "toggle-options").toggleClass("fa-angle-double-down fa-angle-double-up");
+				// Ein und Ausblenden
+				var is_hidden = jQuery("#" + usi_list_entry_id + " .panel-body")
+					.toggleClass("hide-element")
+					.hasClass("hide-element");
+				if(is_hidden === true){
+					jQuery("#" + usi_list_entry_id + " .panel-body").hide();
+				}else{
+					jQuery("#" + usi_list_entry_id + " .panel-body").show();
+					
+				}
+					
+			}
+
 			/**
 			 * Userscript entfernen
 			 * @returns {void}
@@ -178,6 +193,9 @@ function userscript_list_entry_class(script, index) {
 				event_manager_controller.register_once(usi_list_entry_id_plus_class + "edit" ,"click", private_functions.edit);
 				// delete
 				event_manager_controller.register_once(usi_list_entry_id_plus_class + "delete" ,"click", private_functions.delete);
+				
+				// Userscript ein und Ausblenden
+				event_manager_controller.register_once("#" + usi_list_entry_id + " .panel-heading" ,"click", private_functions.toggleOverview);
 
 				// Wenn das Userscript von einer URL geladen wurde
 				if(!basic_helper.empty(script.moreinformations) && !basic_helper.empty(script.moreinformations.url)){

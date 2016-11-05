@@ -14,3 +14,20 @@ label{
 .usi-list-entry-view-userscript---output > pre{
     padding: 0;
 }
+
+#usi-list-userscript-expandOrCompress,
+#usi-list-userscript-entries .panel-heading{
+	cursor: pointer;
+}
+
+.fade-in-animation{
+	opacity: 1;
+	transition: opacity 1s;
+}
+.hide-element{
+	opacity: 0;
+	height: 0;
+	width: 0;
+	padding: 0;
+	margin: 0;
+}

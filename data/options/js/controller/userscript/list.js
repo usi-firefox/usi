@@ -4,11 +4,11 @@
 
 var userscript_list_controller = (function userscript_list_class(){
 	
-	var currentMemoryUsage;
+	var currentMemoryUsage,
 	// Anzahl der Userscripts - zählen mittels Object.keys
-	var userscript_count	=	0;
-	var all_userscripts		=	[];
-	
+	userscript_count	=	0,
+	all_userscripts		=	[],
+	is_expanded		=	false;
 	
 	var private_functions = {
 		// fragt die Userscripte ab
@@ -29,6 +29,33 @@ var userscript_list_controller = (function userscript_list_class(){
 				jQuery("#usi-list-userscript-count-positive").hide();
 				jQuery("#usi-list-userscript-count-negative").show();
 			}
+		}
+		
+		, expand_or_compress : function(){
+			if(is_expanded === false){
+				// Pfeilrichtungen anpassen
+				jQuery("#usi-list-userscript-entries .usi-list-entry-toggle-options")
+					.addClass("fa-angle-double-up")
+					.removeClass("fa-angle-double-down");
+				
+				// Einblenden
+				jQuery("#usi-list-userscript-entries .panel-body").removeClass("hide-element");
+				jQuery("#usi-list-userscript-entries .panel-body").show();
+			}else{
+				// Pfeilrichtungen anpassen
+				jQuery("#usi-list-userscript-entries .usi-list-entry-toggle-options")
+					.removeClass("fa-angle-double-up")
+					.addClass("fa-angle-double-down");
+				
+				// Ausblenden
+				jQuery("#usi-list-userscript-entries .panel-body").addClass("hide-element");
+				jQuery("#usi-list-userscript-entries .panel-body").hide();
+			}
+			
+			// Wert tauschen
+			is_expanded = !is_expanded;
+			// Icon anpassen
+			jQuery("#usi-list-userscript-expandOrCompress").toggleClass("fa-expand fa-compress");
 		}
 	};
 	
@@ -113,6 +140,8 @@ var userscript_list_controller = (function userscript_list_class(){
 			private_functions.set_userscript_counter();
 			
 			event_manager_controller.register_once("#usi-list-refresh","click", private_functions.refresh);
+			
+			event_manager_controller.register_once("#usi-list-userscript-expandOrCompress","click", private_functions.expand_or_compress);
 			
 			// Direkt danach die Userscripteinträge einfordern
 			private_functions.refresh();
