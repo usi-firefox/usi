@@ -30,7 +30,17 @@ var userscript_list_controller = (function userscript_list_class(){
 				jQuery("#usi-list-userscript-count-negative").show();
 			}
 		}
-		
+        /**
+         * 
+         * @param {boolean} setTo
+         * @returns {void}
+         */
+		, set_expand_status : function(setTo){
+            // muss ein bool sein
+            if(setTo === true || setTo === false){
+                is_expanded = setTo;
+            }
+        }
 		, expand_or_compress : function(){
 			if(is_expanded === false){
 				// Pfeilrichtungen anpassen
@@ -53,7 +63,8 @@ var userscript_list_controller = (function userscript_list_class(){
 			}
 			
 			// Wert tauschen
-			is_expanded = !is_expanded;
+			private_functions.set_expand_status(!is_expanded);
+            
 			// Icon anpassen
 			jQuery("#usi-list-userscript-expandOrCompress").toggleClass("fa-expand fa-compress");
 		}
@@ -90,46 +101,45 @@ var userscript_list_controller = (function userscript_list_class(){
 		// leeren 
 		jQuery("#usi-list-userscript-entries").html("");
 		
-		if(userscript_count > 0) {
-			// Daten für alle Userscripts setzen
-			for (var id in userscripts) {
-				userscript_entries.push(
-					// Instanziere das Userscript
-					new userscript_list_entry_class(userscripts[id], index)
-					);
-
-				// falls ein Fehler auftreten sollte, ist der userscript_entry === false
-				if (userscript_entries[index] !== false) {
-					// führe die Funktion direkt aus
-					(function (userscript_entry, idx) {
-						// template laden und Variablen ersetzen
-						jQuery("#usi-list-userscript-entries").
-							loadTemplate("options/templates/list_entry.html",
-								userscript_entry.deliver_vars(),
-								{append: true, complete: function () {
-
-										// after_rendering ausführen
-										userscript_entry.after_rendering();
-
-										// Preload Image ausblenden, sobald alle Userscripts geladen wurden
-										if ((idx + 1) === userscript_count) {
-											jQuery("#usi-list-preload-image").hide();
-										}
-									}});
-
-					}(userscript_entries[index], index));
-
-					// index hochzählen
-					++index;
-				}
-
-			} // for (var id in userscripts) 
-			
-		} else {
-			// es gibt keine Userscripts
-			jQuery("#usi-list-preload-image").hide();
-		}
+        // es gibt keine Userscripts
+		if(userscript_count <= 0) {
+            jQuery("#usi-list-preload-image").hide();
+            return false;
+        }
 		
+        // Daten für alle Userscripts setzen
+        for (var id in userscripts) {
+            userscript_entries.push(
+                // Instanziere das Userscript
+                new userscript_list_entry_class(userscripts[id], index)
+                );
+
+            // falls ein Fehler auftreten sollte, ist der userscript_entry === false
+            if (userscript_entries[index] !== false) {
+                // führe die Funktion direkt aus
+                (function (userscript_entry, idx) {
+                    // template laden und Variablen ersetzen
+                    jQuery("#usi-list-userscript-entries").
+                        loadTemplate("options/templates/list_entry.html",
+                            userscript_entry.deliver_vars(),
+                            {append: true, complete: function () {
+
+                                    // after_rendering ausführen
+                                    userscript_entry.after_rendering();
+
+                                    // Preload Image ausblenden, sobald alle Userscripts geladen wurden
+                                    if ((idx + 1) === userscript_count) {
+                                        jQuery("#usi-list-preload-image").hide();
+                                    }
+                                }});
+
+                }(userscript_entries[index], index));
+
+                // index hochzählen
+                ++index;
+            }
+
+        } // for (var id in userscripts) 
 	});
 
 	return {

@@ -44,9 +44,9 @@ var userscript_config_controller = (function userscript_config_class (){
 			 */
 			backend_events_controller.api.on("USI-BACKEND:get-all-userscripts-for-export-done", function (result_export_data) {
 				if (jQuery("#usi-config-change-complete-export").prop("checked") === true) {
-					createDownload(result_export_data, "text/plain", "usi-export.usi.json");
+					download_controller.download(result_export_data, "text/plain", "usi-export.usi.json");
 				} else {
-					createDownload(result_export_data, "application/octet-stream", "usi-export.usi.js");
+					download_controller.download(result_export_data, "application/octet-stream", "usi-export.usi.js");
 				}
 			});
 

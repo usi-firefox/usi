@@ -1,6 +1,6 @@
 "use strict";
 
-/* global language_controller, self, lang */
+/* global language_controller, self, lang, download_controller */
 
 var backend_events_controller = (function backend_events_class() {
 
@@ -41,7 +41,7 @@ var backend_events_controller = (function backend_events_class() {
 	
 				// Bietet das Userscript zur lokalen Speicherung an!
 				api.on("USI-BACKEND:export-userscript-done", function (result) {
-					createDownload(result.userscript, "text/plain", encodeURI(result.filename + ".user.js"));
+					download_controller.download(result.userscript, "text/plain", encodeURI(result.filename + ".user.js"));
 				});
 	
                 // Event Weiterleitung vom Backend
