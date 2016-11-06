@@ -130,6 +130,11 @@ var userscript_list_controller = (function userscript_list_class(){
                                     // Preload Image ausblenden, sobald alle Userscripts geladen wurden
                                     if ((idx + 1) === userscript_count) {
                                         jQuery("#usi-list-preload-image").hide();
+
+                                        // initialisiere die eingeklappten Userscript Übersicht
+                                        private_functions.set_expand_status(true);
+                                        private_functions.expand_or_compress();
+                                        
                                     }
                                 }});
 
