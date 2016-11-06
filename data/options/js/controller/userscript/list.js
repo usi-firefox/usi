@@ -1,14 +1,10 @@
 "use strict";
 
-/* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller, backend_events_controller, lang */
+/* global self, highlightjs_controller, event_manager_controller, language_controller, switchery_controller, backend_events_controller, lang, Promise */
 
 var userscript_list_controller = (function userscript_list_class(){
 	
-	var currentMemoryUsage,
-	// Anzahl der Userscripts - zählen mittels Object.keys
-	userscript_count	=	0,
-	all_userscripts		=	[],
-	is_expanded		=	false;
+	var is_expanded = false;
 	
 	var private_functions = {
 		// fragt die Userscripte ab
@@ -51,6 +47,9 @@ var userscript_list_controller = (function userscript_list_class(){
 				// Einblenden
 				jQuery("#usi-list-userscript-entries .panel-body").removeClass("hide-element");
 				jQuery("#usi-list-userscript-entries .panel-body").show();
+                
+                jQuery("#usi-list-userscript-expandOrCompress").removeClass("fa-expand").addClass("fa-compress");
+
 			}else{
 				// Pfeilrichtungen anpassen
 				jQuery("#usi-list-userscript-entries .usi-list-entry-toggle-options")
@@ -60,13 +59,14 @@ var userscript_list_controller = (function userscript_list_class(){
 				// Ausblenden
 				jQuery("#usi-list-userscript-entries .panel-body").addClass("hide-element");
 				jQuery("#usi-list-userscript-entries .panel-body").hide();
+                
+                // Icon anpassen
+                jQuery("#usi-list-userscript-expandOrCompress").addClass("fa-expand").removeClass("fa-compress");
 			}
 			
 			// Wert tauschen
 			private_functions.set_expand_status(!is_expanded);
             
-			// Icon anpassen
-			jQuery("#usi-list-userscript-expandOrCompress").toggleClass("fa-expand fa-compress");
 		}
 	};
 	
@@ -77,10 +77,9 @@ var userscript_list_controller = (function userscript_list_class(){
 
 	// Speicherverbrauch anzeigen
 	backend_events_controller.api.on("USI-BACKEND:storage-quota", function (quota) {
-		var rounded_quota = Math.round(quota * 100) / 100 + "";
-
+        
 		// falls ein Komma enthalten sein sollte ...
-		rounded_quota = rounded_quota.replace(".", ",");
+		var rounded_quota = (Math.round(quota * 100) / 100 + "").replace(".", ","),
 
 		currentMemoryUsage = lang["actual_used_quota"] + " : " + rounded_quota + "%";
 		
@@ -89,63 +88,58 @@ var userscript_list_controller = (function userscript_list_class(){
 
 	// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
 	backend_events_controller.api.on("USI-BACKEND:list-all-scripts", function (userscripts) {
-		
-		var index = 0
-		,userscript_entries = []
-		// Anzahl der Userscripts - zählen mittels Object.keys
-		,userscript_count = Object.keys(userscripts).length;
 
 		// setze die Anzahl der Userscripts
-		private_functions.set_userscript_counter(userscript_count);
+		private_functions.set_userscript_counter(userscripts.length);
 		
 		// leeren 
 		jQuery("#usi-list-userscript-entries").html("");
 		
         // es gibt keine Userscripts
-		if(userscript_count <= 0) {
+		if(userscripts.length <= 0) {
             jQuery("#usi-list-preload-image").hide();
             return false;
         }
-		
-        // Daten für alle Userscripts setzen
-        for (var id in userscripts) {
-            userscript_entries.push(
-                // Instanziere das Userscript
-                new userscript_list_entry_class(userscripts[id], index)
-                );
 
+        var promises_store = [];
+        // durchlaufe alle userscripts
+        userscripts.forEach(function(userscript, index){
+            // Instanziere das Userscript
+            var userscript_entry = new userscript_list_entry_class(userscript, index);
+            
             // falls ein Fehler auftreten sollte, ist der userscript_entry === false
-            if (userscript_entries[index] !== false) {
-                // führe die Funktion direkt aus
-                (function (userscript_entry, idx) {
-                    // template laden und Variablen ersetzen
-                    jQuery("#usi-list-userscript-entries").
-                        loadTemplate("options/templates/list_entry.html",
-                            userscript_entry.deliver_vars(),
-                            {append: true, complete: function () {
-
-                                    // after_rendering ausführen
-                                    userscript_entry.after_rendering();
-
-                                    // Preload Image ausblenden, sobald alle Userscripts geladen wurden
-                                    if ((idx + 1) === userscript_count) {
-                                        jQuery("#usi-list-preload-image").hide();
-
-                                        // initialisiere die eingeklappten Userscript Übersicht
-                                        private_functions.set_expand_status(true);
-                                        private_functions.expand_or_compress();
-                                        
-                                    }
-                                }});
-
-                }(userscript_entries[index], index));
-
-                // index hochzählen
-                ++index;
+            if(userscript_entry === false){
+                return false;
             }
+            
+            // Promise Array füllen
+            promises_store.push(new Promise(function (resolve, reject) {
+                // template laden und Variablen ersetzen
+                jQuery("#usi-list-userscript-entries").
+                    loadTemplate("options/templates/list_entry.html",
+                        userscript_entry.deliver_vars(),
+                        {append: true, complete: function () {
+                                // after_rendering ausführen
+                                userscript_entry.after_rendering();
+                                resolve();
+                    }
+                });
 
-        } // for (var id in userscripts) 
-	});
+            }));
+            
+        });
+        
+        // Ausführen nachdem alle Promises erfüllt wurden
+        Promise.all(promises_store).then(function(){
+
+            // Nachlade Image entfernen
+            jQuery("#usi-list-preload-image").hide();
+
+            // initialisiere die eingeklappten Userscript Übersicht
+            private_functions.set_expand_status(true);
+            private_functions.expand_or_compress();
+        });
+    });
 
 	return {
 		before_rendering : function(){
