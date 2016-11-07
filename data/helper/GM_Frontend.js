@@ -1,5 +1,6 @@
 /* global self,console,document */
 
+(function(win){
 // Initiere den Scriptstorage
 function get_123141482457923434792() {
 
@@ -299,3 +300,21 @@ var unsafeWindow = {};
 /**
  * GREASEMONKEY Funtkionen --- STOP
  */
+
+// EXPORT to window
+win.GM_addStyle = GM_addStyle;
+win.GM_deleteValue = GM_deleteValue;
+win.GM_getResourceText = GM_getResourceText;
+win.GM_getResourceURL = GM_getResourceURL;
+win.GM_getValue = GM_getValue;
+win.GM_listValues = GM_listValues;
+win.GM_log = GM_log;
+win.GM_openInTab = GM_openInTab;
+win.GM_registerMenuCommand = GM_registerMenuCommand;
+win.GM_setClipboard = GM_setClipboard;
+win.GM_setValue = GM_setValue;
+win.GM_xmlhttpRequest = GM_xmlhttpRequest;
+win.GM_info = GM_info;
+win.unsafeWindow = unsafeWindow;
+
+}(window));
