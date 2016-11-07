@@ -1,6 +1,23 @@
 /* global self,console,document */
 
 (function(win){
+    
+// Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
+var GM_xmlhttpRequest_counter = 0,    
+/*
+ *  damit keine Fehler geworfen werden
+ *  jedoch ist es praktisch nicht nutzbar
+ */
+unsafeWindow = {},
+GM_info = {
+	script : JSON.parse(self.options.scriptsettings)
+	, uuid : self.options.id
+	, scriptSource : self.options.scriptSource
+	, scriptMetaStr : self.options.scriptMetaStr
+	, scriptWillUpdate : false
+	, version : self.options.usiversion
+};
+
 // Initiere den Scriptstorage
 function get_123141482457923434792() {
 
@@ -143,9 +160,6 @@ function GM_addStyle(css) {
 	document.getElementsByTagName("head")[0].appendChild(elem);
 } 
 
-// Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
-var GM_xmlhttpRequest_counter = 0; 
-
 /**
  * 
  * @param {object} details
@@ -273,15 +287,6 @@ function GM_getResourceURL(name) {
 	}
 }
 
-var GM_info = {
-	script : JSON.parse(self.options.scriptsettings)
-	, uuid : self.options.id
-	, scriptSource : self.options.scriptSource
-	, scriptMetaStr : self.options.scriptMetaStr
-	, scriptWillUpdate : false
-	, version : self.options.usiversion
-};
-
 // Schreibt Fehlermeldungen vom Backend
 self.port.on("GM-FRONTEND-ERROR", function (err) {
 	console.error("USI: In function -> " + err.func);
@@ -290,12 +295,6 @@ self.port.on("GM-FRONTEND-ERROR", function (err) {
 	console.error(err.object);
 	console.error("############");
 });
-
-/*
- *  damit keine Fehler geworfen werden
- *  jedoch ist es praktisch nicht nutzbar
- */
-var unsafeWindow = {};
 
 /**
  * GREASEMONKEY Funtkionen --- STOP
