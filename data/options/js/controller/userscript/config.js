@@ -119,8 +119,8 @@ var userscript_config_controller = (function userscript_config_class (){
 			bootstrap_toggle_controller.initButton(id, on_text, off_text);
 
 			// Text ausblenden
-			jQuery(id + "---false").hide();
-			jQuery(id + "---true").hide();
+			jQuery(id + "---false").addClass("hidden");
+			jQuery(id + "---true").addClass("hidden");
 			
 		}
 			
