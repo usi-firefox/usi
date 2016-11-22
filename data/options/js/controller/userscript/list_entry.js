@@ -80,6 +80,11 @@ function userscript_list_entry_class(script, index) {
 				
 			}
 
+            , syntax_test: function(){
+                // teste das Userscript auf grobe Syntax Fehler
+				backend_events_controller.api.emit("USI-BACKEND:syntax-error-test", script.id);
+            }
+
 			// fragt nach den gesetzten Greasemonkey Variablen
 			, getGMValues: function () {
 				backend_events_controller.api.emit("USI-BACKEND:list-GMValues", script.id);
@@ -193,6 +198,9 @@ function userscript_list_entry_class(script, index) {
 				event_manager_controller.register_once(usi_list_entry_id_plus_class + "edit" ,"click", private_functions.edit);
 				// delete
 				event_manager_controller.register_once(usi_list_entry_id_plus_class + "delete" ,"click", private_functions.delete);
+				
+                // syntax test
+                event_manager_controller.register_once(usi_list_entry_id_plus_class + "syntax-test" ,"click", private_functions.syntax_test);
 				
 				// Userscript ein und Ausblenden
 				event_manager_controller.register_once("#" + usi_list_entry_id + " .panel-heading" ,"click", private_functions.toggleOverview);
