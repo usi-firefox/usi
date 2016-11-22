@@ -16,6 +16,8 @@ GM_info = {
 	, scriptMetaStr : self.options.scriptMetaStr
 	, scriptWillUpdate : false
 	, version : self.options.usiversion
+	, scriptHandler : "USI"
+	, isUsi : true
 };
 
 // Initiere den Scriptstorage
