@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head><title>sync</title></head>
+    <body>
+        <div class="container-fluid" >
+            <div class="container" >
+                <h3 data-usi-lang="sync_config" >
+                    <!--Sync Konfiguration-->
+                </h3>
+
+				<div id="sync-not-logged-in">
+
+					<label for="usi---sync-server-url" data-usi-lang="sync_server_url">
+						<!--Server URL-->
+					</label>
+					<input type="url" name="sync-server-url" id="usi---sync-server-url" />
+					
+					<br />
+					
+					<label for="usi---sync-server-user" data-usi-lang="sync_server_user">
+						<!--Server Username-->
+					</label>
+					<input type="text" name="sync-server-user" id="usi---sync-server-user" />
+
+					<br />
+					
+					<label for="usi---sync-server-pass" data-usi-lang="sync_server_pass">
+						<!--Server Password-->
+					</label>
+					<input type="text" name="sync-server-pass" id="usi---sync-server-pass" />
+
+					<br />
+
+
+					<button class="hidden" id="usi---sync-server---test-login" name="usi---sync-server---test-login" data-usi-lang="sync_server___test_login">
+						<!--Teste ob du bereits auf dem Server registriert bist-->
+					</button>
+
+					<button id="usi---sync-server---create-new-account" name="usi---sync-server---create-new-account" data-usi-lang="sync_server___create_new_account">
+						<!--Erzeugt einen Account auf dem Server, dieser liefert dir im Erfolgsfall einen neuen Benutzer Namen inklusive Passwort-->
+					</button>
+					
+
+				</div>
+				
+				<div id="sync-logged-in">
+					
+					<button id="usi---sync-server---check-for-updates" name="usi---sync-server---check-for-updates" data-usi-lang="sync_server___check_for_updates">
+						<!--Prüft Manuell ob es irgendwelche Updates für die Userscripte gibt-->
+					</button>
+				</div>
+
+				<hr />
+				<div id="sync-messages-log">
+
+				</div>
+            </div>
+        </div>
+    </body>
+</html>
