@@ -94,12 +94,12 @@ function userscript_list_entry_class(script, index) {
 				jQuery(usi_list_entry_id_plus_class + "toggle-options").toggleClass("fa-angle-double-down fa-angle-double-up");
 				// Ein und Ausblenden
 				var is_hidden = jQuery("#" + usi_list_entry_id + " .panel-body")
-					.toggleClass("hide-element")
-					.hasClass("hide-element");
+					.toggleClass("not-visible")
+					.hasClass("not-visible");
 				if(is_hidden === true){
-					jQuery("#" + usi_list_entry_id + " .panel-body").hide();
+					jQuery("#" + usi_list_entry_id + " .panel-body").addClass("hidden");
 				}else{
-					jQuery("#" + usi_list_entry_id + " .panel-body").show();
+					jQuery("#" + usi_list_entry_id + " .panel-body").removeClass("hidden");
 					
 				}
 					
@@ -211,12 +211,12 @@ function userscript_list_entry_class(script, index) {
 					event_manager_controller.register_once(usi_list_entry_id_plus_class + "load-again" ,"click", private_functions.loadAgain);
 				}else{
 					// Nicht vorhanden daher ausblenden
-					jQuery(usi_list_entry_id_plus_class + "load-again---block").hide();
+					jQuery(usi_list_entry_id_plus_class + "load-again---block").addClass("hidden");
 				}
 				
                 // falls es bisher keine gespeicherten GM_Values gibt blende diesen Block aus
                 if(basic_helper.empty(script.val_store) || Object.keys(script.val_store).length === 0){
-                    jQuery(usi_list_entry_id_plus_class + "gm-values").hide();
+                    jQuery(usi_list_entry_id_plus_class + "gm-values").addClass("hidden");
                 }else{
                     // GM-Values holen
                     event_manager_controller.register_once(usi_list_entry_id_plus_class + "get-gm-values" ,"click", private_functions.getGMValues);
@@ -260,8 +260,8 @@ function userscript_list_entry_class(script, index) {
 				
 				
 				// Ausgabe jedoch zunächst ausblenden
-				jQuery(usi_list_entry_id_plus_class + "view-userscript---output").hide();
-				jQuery(usi_list_entry_id_plus_class + "view-userscript---hide").hide();
+				jQuery(usi_list_entry_id_plus_class + "view-userscript---output").addClass("hidden");
+				jQuery(usi_list_entry_id_plus_class + "view-userscript---hide").addClass("hidden");
 
 				// Required Scripts
 				if(!basic_helper.empty(script.require_scripts) && script.require_scripts.length > 0){
@@ -271,7 +271,7 @@ function userscript_list_entry_class(script, index) {
 						);
 					}
 				}else{
-					jQuery(usi_list_entry_id_plus_class + "required-scripts").hide();
+					jQuery(usi_list_entry_id_plus_class + "required-scripts").addClass("hidden");
 				}
 				
 				// Include Regeln

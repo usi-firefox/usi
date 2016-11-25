@@ -24,7 +24,7 @@ label{
 	opacity: 1;
 	transition: opacity 1s;
 }
-.hide-element{
+.not-visible{
 	opacity: 0;
 	height: 0;
 	width: 0;

@@ -88,14 +88,14 @@ var userscript_edit_controller = (function userscript_edit_class(){
 			// Script ID überschreiben
 			script_id = userscrpt_id;
 			if(script_id){
-				jQuery("#usi-edit-script-id---block").show();
+				jQuery("#usi-edit-script-id---block").removeClass("hidden");
 				jQuery("#usi-edit-script-id").html(script_id);
 				// Möglichkeit anzugeben, dass ein Userscript überschrieben werden soll
-				jQuery("#usi-edit-script-overwrite---block").show();
+				jQuery("#usi-edit-script-overwrite---block").removeClass("hidden");
 			}else{
-				jQuery("#usi-edit-script-id---block").hide();
+				jQuery("#usi-edit-script-id---block").addClass("hidden");
 				jQuery("#usi-edit-script-id").html("");
-				jQuery("#usi-edit-script-overwrite---block").hide();
+				jQuery("#usi-edit-script-overwrite---block").addClass("hidden");
 			}
 		}
 		

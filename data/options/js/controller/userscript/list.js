@@ -10,20 +10,20 @@ var userscript_list_controller = (function userscript_list_class(){
 		// fragt die Userscripte ab
 		refresh : function(){
 			// Zeige das Preload Image
-			jQuery("#usi-list-preload-image").show();
+			jQuery("#usi-list-preload-image").removeClass("hidden");
 			
 			backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts", false);
 		}
 		
 		,set_userscript_counter : function(counter){
 			if(counter && counter > 0){
-				jQuery("#usi-list-userscript-count-negative").hide();
-				jQuery("#usi-list-userscript-count-positive").show();
+				jQuery("#usi-list-userscript-count-negative").addClass("hidden");
+				jQuery("#usi-list-userscript-count-positive").removeClass("hidden");
 				
 				jQuery("#usi-list-userscript-count").html(counter);
 			}else{
-				jQuery("#usi-list-userscript-count-positive").hide();
-				jQuery("#usi-list-userscript-count-negative").show();
+				jQuery("#usi-list-userscript-count-positive").addClass("hidden");
+				jQuery("#usi-list-userscript-count-negative").removeClass("hidden");
 			}
 		}
         /**
@@ -45,8 +45,7 @@ var userscript_list_controller = (function userscript_list_class(){
 					.removeClass("fa-angle-double-down");
 				
 				// Einblenden
-				jQuery("#usi-list-userscript-entries .panel-body").removeClass("hide-element");
-				jQuery("#usi-list-userscript-entries .panel-body").show();
+				jQuery("#usi-list-userscript-entries .panel-body").removeClass("not-visible hidden");
                 
                 jQuery("#usi-list-userscript-expandOrCompress").removeClass("fa-expand").addClass("fa-compress");
 
@@ -57,8 +56,7 @@ var userscript_list_controller = (function userscript_list_class(){
 					.addClass("fa-angle-double-down");
 				
 				// Ausblenden
-				jQuery("#usi-list-userscript-entries .panel-body").addClass("hide-element");
-				jQuery("#usi-list-userscript-entries .panel-body").hide();
+				jQuery("#usi-list-userscript-entries .panel-body").addClass("not-visible hidden");
                 
                 // Icon anpassen
                 jQuery("#usi-list-userscript-expandOrCompress").addClass("fa-expand").removeClass("fa-compress");
@@ -97,7 +95,7 @@ var userscript_list_controller = (function userscript_list_class(){
 		
         // es gibt keine Userscripts
 		if(userscripts.length <= 0) {
-            jQuery("#usi-list-preload-image").hide();
+            jQuery("#usi-list-preload-image").addClass("hidden");
             return false;
         }
 
@@ -133,7 +131,7 @@ var userscript_list_controller = (function userscript_list_class(){
         Promise.all(promises_store).then(function(){
 
             // Nachlade Image entfernen
-            jQuery("#usi-list-preload-image").hide();
+            jQuery("#usi-list-preload-image").addClass("hidden");
 
             // initialisiere die eingeklappten Userscript Übersicht
             private_functions.set_expand_status(true);

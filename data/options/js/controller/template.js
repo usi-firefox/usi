@@ -59,13 +59,13 @@ var template_controller = (function template_class(){
 				last_used_controller = actual_controller;
 			}
 			if(last_used_controller_container_id !== false){
-				jQuery(".usi-controller-container").hide();
+				jQuery(".usi-controller-container").addClass("hidden");
 			}
 			
 			if(controller_already_started === false){
 				// Controller Container hinzufügen
 				jQuery("#app-body-content").append(
-					jQuery("<div>").attr("id", actual_controller_container_id).attr("class", "usi-controller-container").hide()
+					jQuery("<div>").attr("id", actual_controller_container_id).attr("class", "usi-controller-container").addClass("hidden")
 				);
 			
 				// Lade das Template und ersetze die Variablen
@@ -91,7 +91,7 @@ var template_controller = (function template_class(){
 						}
 						
 						// Sobald alles abgearbeitet wurde, kann der gesamte Container angezeigt werden
-						jQuery("#" + actual_controller_container_id).show();
+						jQuery("#" + actual_controller_container_id).removeClass("hidden");
 					}
 				});
 				
@@ -103,7 +103,7 @@ var template_controller = (function template_class(){
 				}
 				
 				// Controller wurde bereits geladen, daher wird dieser nun wieder eingeblendet!
-				jQuery("#" + actual_controller_container_id).show();
+				jQuery("#" + actual_controller_container_id).removeClass("hidden");
 			}
 		}
 		

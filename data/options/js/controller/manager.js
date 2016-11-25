@@ -1,6 +1,6 @@
 "use strict";
 
-/* global userscript_overview_controller, userscript_list_controller, userscript_load_external_controller, userscript_edit_controller, userscript_config_controller, lang, userscript_help_controller */
+/* global userscript_overview_controller, userscript_list_controller, userscript_load_external_controller, userscript_edit_controller, userscript_config_controller, lang, userscript_help_controller, userscript_sync_controller */
 
 /**
  * Liefert für den angfragten Namen den passenden Controller zurück
@@ -26,6 +26,8 @@ var manager_controller = (function manager_class(){
 						return userscript_load_external_controller;
 					case "config":
 						return userscript_config_controller;
+					case "sync":
+						return userscript_sync_controller;
 					case "help":
 						return userscript_help_controller;
 					default:
@@ -60,6 +62,9 @@ var manager_controller = (function manager_class(){
 					break;
 				case "config":
 					key = "loadOptions_title";
+					break;
+				case "sync":
+					key = "sync";
 					break;
 				case "help":
 					key = "help";
