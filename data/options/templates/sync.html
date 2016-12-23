@@ -9,37 +9,22 @@
                 </h3>
 
 				<div id="sync-not-logged-in">
-
+					
+					<h3 data-usi-lang="sync_server_create_new_user">
+					<!--Der Sync Server von USI wird automatisch eine User_id und einen Auth_Key für dich erstellen,
+						nachdem das erledigt, musst du diese Einstellungen nur auf die anderen Geräte übertragen-->
+					</h3>
+					
 					<label for="usi---sync-server-url" data-usi-lang="sync_server_url">
 						<!--Server URL-->
 					</label>
-					<input type="url" name="sync-server-url" id="usi---sync-server-url" />
+					<input type="url" name="sync-server-url" id="usi---sync-server-url" size="100" />
 					
 					<br />
-					
-					<label for="usi---sync-server-user" data-usi-lang="sync_server_user">
-						<!--Server Username-->
-					</label>
-					<input type="text" name="sync-server-user" id="usi---sync-server-user" />
-
-					<br />
-					
-					<label for="usi---sync-server-pass" data-usi-lang="sync_server_pass">
-						<!--Server Password-->
-					</label>
-					<input type="text" name="sync-server-pass" id="usi---sync-server-pass" />
-
-					<br />
-
-
-					<button class="hidden" id="usi---sync-server---test-login" name="usi---sync-server---test-login" data-usi-lang="sync_server___test_login">
-						<!--Teste ob du bereits auf dem Server registriert bist-->
-					</button>
 
 					<button id="usi---sync-server---create-new-account" name="usi---sync-server---create-new-account" data-usi-lang="sync_server___create_new_account">
 						<!--Erzeugt einen Account auf dem Server, dieser liefert dir im Erfolgsfall einen neuen Benutzer Namen inklusive Passwort-->
 					</button>
-					
 
 				</div>
 				
