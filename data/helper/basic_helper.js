@@ -3,11 +3,11 @@
  ************************* Basic Funktionen! *************************
  ************************************************************************/
 
-/* global exports */
+/* global exports, NaN */
 
 var basic_helper = {
 	isset: function (v) {
-		if (typeof v !== "undefined") {
+		if (typeof v !== "undefined" && v !== "undefined") {
 			return true;
 		} else {
 			return false;
@@ -15,6 +15,34 @@ var basic_helper = {
 	},
 	is_string: function (v) {
 		if (typeof v === "string") {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	is_obj: function (v) {
+		if (typeof v === "object") {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	is_func: function (v) {
+		if (typeof v === "function") {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	is_number: function (v) {
+		if (typeof v === "number" && v !== NaN) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+	is_null: function (v) {
+		if (typeof v === "object" && v === null) {
 			return true;
 		} else {
 			return false;

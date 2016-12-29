@@ -41,10 +41,6 @@ var userscript_sync_controller = (function userscript_sync_class() {
 			event_manager_controller.register_once("#usi---sync-server---create-new-account", "click", private_functions.createNewAccount);
 			event_manager_controller.register_once("#usi---sync-server---check-for-updates", "click", private_functions.checkForUpdates);
 
-			backend_events_controller.api.on("USI-BACKEND:sync-test-login-done", function (result) {
-				// Log schreiben
-				private_functions.__logMessage("Status: " + result.status + ", Nachricht: " + result.text);
-			});
 
 			// Sync Einstellungen erhalten
 			backend_events_controller.api.on("USI-BACKEND:sync-is-user-registered-done", function (isRegistered) {
