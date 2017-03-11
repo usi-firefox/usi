@@ -78,6 +78,7 @@ function userscript_list_entry_class(script, index) {
 				// aktiviere oder deaktiviere dieses Userscript!
 				backend_events_controller.api.emit("USI-BACKEND:toggle-userscript-state", script.id);
 				
+                jQuery("#" + usi_list_entry_id).toggleClass("grey");
 			}
 
             , syntax_test: function(){
@@ -180,6 +181,10 @@ function userscript_list_entry_class(script, index) {
 								
 				// Userscript de/-aktivieren
 				jQuery(usi_list_entry_id_plus_class + "deactivated").prop("checked",script.deactivated);
+
+                if(script.deactivated === true){
+                    jQuery("#" + usi_list_entry_id).addClass("grey");
+                }
 
 				// ACHTUNG hierbei müssen Aktiviert und Deaktiviert getauscht werden
 				// Da -> script.deactivated === true , bedeutet dass das Skript deaktiviert ist!
