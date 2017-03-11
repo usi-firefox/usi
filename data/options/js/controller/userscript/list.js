@@ -140,10 +140,7 @@ var userscript_list_controller = (function userscript_list_class(){
     });
 
 	return {
-		before_rendering : function(){
-		}
-		
-		,after_rendering : function(){
+		after_rendering : function(){
 			private_functions.set_userscript_counter();
 			
 			event_manager_controller.register_once("#usi-list-refresh","click", private_functions.refresh);

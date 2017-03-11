@@ -13,7 +13,7 @@ var template_controller = (function template_class(){
 		load : function(name, additional){
 		
 			var controller_already_started = false,
-            actual_controller,replaceValues;
+            replaceValues = {} , actual_controller;
 		
 			// Ruft die Destroy Funktion des letzten Controllers auf
 			if(last_used_controller !== false && typeof last_used_controller.destroy === "function"){
@@ -36,23 +36,9 @@ var template_controller = (function template_class(){
 			// ersetze die Überschrift
 			jQuery("#nav_title").html(manager_controller.getControllerTitle(name));
 			
-			// führt die before_rendering() Funktion aus, falls diese existiert
-			if(actual_controller !== false && typeof actual_controller.before_rendering === "function" && controller_already_started === false){
-				// falls ein gültiger Controller gerufen wurde, wird nun seine before_rendering_data() augeführt
-				if(additional && typeof additional.before_rendering_data !== "undefined"){
-					// Extra Übergabe Daten
-					actual_controller.before_rendering(additional.before_rendering_data);
-				}else{
-					// Ohne zusätzliche Parameter before_rendering aufrufen
-					actual_controller.before_rendering();
-				}
-			}
-			
 			if(actual_controller !== false && typeof actual_controller.deliver_vars === "function"){
 				// falls ein gültiger Controller gerufen wurde, wird nun seine deliver_vars() augeführt
 				replaceValues = actual_controller.deliver_vars();
-			}else{
-				replaceValues = {};
 			}
 
 			if(actual_controller !== false){
@@ -65,11 +51,15 @@ var template_controller = (function template_class(){
 			if(controller_already_started === false){
 				// Controller Container hinzufügen
 				jQuery("#app-body-content").append(
-					jQuery("<div>").attr("id", actual_controller_container_id).attr("class", "usi-controller-container").addClass("hidden")
+					jQuery("<div>").
+                    attr("id", actual_controller_container_id).
+                    attr("class", "usi-controller-container").
+                    addClass("hidden")
 				);
 			
 				// Lade das Template und ersetze die Variablen
-				jQuery("#" + actual_controller_container_id).loadTemplate("options/templates/" + name + ".html", replaceValues, {
+				jQuery("#" + actual_controller_container_id).
+                        loadTemplate("options/templates/" + name + ".html", replaceValues, {
 
 					complete: function(){
 						// nach Abschluss des Nachladens ...

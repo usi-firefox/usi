@@ -7,12 +7,7 @@ var userscript_load_external_controller = (function userscript_load_external_cla
 	var id_prefix = "#usi-load-external-";
 	
 	var private_functions = {
-		
-		before_rendering: function(){
-			
-		}
-	
-		,after_rendering : function(){
+		after_rendering : function(){
 			
 			event_manager_controller.register_once(document, "USI-FRONTEND:loadExternal-reload-from-url", function(event, reload_from_url){
 				// URL eintragen!
@@ -126,10 +121,7 @@ var userscript_load_external_controller = (function userscript_load_external_cla
 	
 	return {
 		// Wrapper
-		before_rendering: private_functions.before_rendering
-	
-		// Wrapper
-		,after_rendering : private_functions.after_rendering
+		after_rendering : private_functions.after_rendering
 	};
 	
 }());

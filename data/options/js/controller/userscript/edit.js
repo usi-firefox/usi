@@ -15,14 +15,8 @@ var userscript_edit_controller = (function userscript_edit_class(){
 	textarea_id = "#usi-edit-script-textarea";
 	
 	var private_functions = {
-	
-		// Führe dies aus wenn der Controller zum ersten Mal geladen wurde
-		before_rendering : function(){
-			
-		}
-		
 		// liefert die benötigten Variablen für jQuery.loadTemplate zurück
-		,deliver_vars : function(){
+		deliver_vars : function(){
 			return {
 				script_id : script_id
 			};

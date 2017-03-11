@@ -3,6 +3,9 @@
 batch
 nbproject
 .hg
+.idea
+.settings
+.project
 .jpmignore
 .eslintrc.json
 *.xpi

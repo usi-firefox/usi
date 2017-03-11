@@ -7,14 +7,11 @@ var userscript_config_controller = (function userscript_config_class (){
 	
 	// init
 	var private_functions = {
-	
-		before_rendering : function(){
-		}
 
-		/**
+        /**
 		 * Registriert einen Button für sein Backend Event
 		 */
-		, init_button_with_data : function (event_name, id){
+		init_button_with_data : function (event_name, id){
 			backend_events_controller.api.on(event_name, function(state){
 				jQuery("#" + id).prop("checked", state);
 				private_functions.__change_switch_option(id);
