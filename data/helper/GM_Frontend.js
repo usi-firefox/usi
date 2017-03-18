@@ -280,8 +280,6 @@ function GM_getResourceURL(name) {
 			return resource.data;
 		}else{
             return resource.origUrl;
-            // ansonsten gib die "echte URL" zurück
-			GM_log("USI-Function GM_getResourceURL: name -> " + name + " has not a datauri!");
 		}
 	}else{
 		// Name nicht gefunden!
