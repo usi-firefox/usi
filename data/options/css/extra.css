@@ -12,6 +12,10 @@ pre code {
     color: grey;
 }
 
+.hljs{
+    display: inline-block;
+}
+
 label{
     margin-right: 10px;
 }
