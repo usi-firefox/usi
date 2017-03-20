@@ -12,7 +12,7 @@ var userscript_list_controller = (function userscript_list_class(){
 			// Zeige das Preload Image
 			jQuery("#usi-list-preload-image").removeClass("hidden");
 			
-			backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts", false);
+			backend_events_controller.request.userscript.all();
 		}
 		
 		,set_userscript_counter : function(counter){
@@ -69,12 +69,12 @@ var userscript_list_controller = (function userscript_list_class(){
 	};
 	
 	// Active Style festlegen
-	backend_events_controller.api.on("USI-BACKEND:highlightjs-style", function(style){
+	backend_events_controller.register.highlightjs.style(function(style){
 		highlightjs_controller.set_active_style(style);
 	});
 
 	// Speicherverbrauch anzeigen
-	backend_events_controller.api.on("USI-BACKEND:storage-quota", function (quota) {
+	backend_events_controller.register.userscript.quota(function (quota) {
         
 		// falls ein Komma enthalten sein sollte ...
 		var rounded_quota = (Math.round(quota * 100) / 100 + "").replace(".", ","),
@@ -85,7 +85,7 @@ var userscript_list_controller = (function userscript_list_class(){
 	});
 
 	// Wenn Userscripts gesendet werden, packe sie in die Variable --- all_userscripts
-	backend_events_controller.api.on("USI-BACKEND:list-all-scripts", function (userscripts) {
+	backend_events_controller.register.userscript.list( function (userscripts) {
 
 		// setze die Anzahl der Userscripts
 		private_functions.set_userscript_counter(userscripts.length);

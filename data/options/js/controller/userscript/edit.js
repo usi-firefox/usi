@@ -137,9 +137,9 @@ var userscript_edit_controller = (function userscript_edit_class(){
 		,load_example : function(){
 			// Beispiel Datei laden  
 			// Anfrage für das Userscript Beispiel
-			backend_events_controller.api.emit("USI-BACKEND:get-userscript-example", load_example_by_prefered_locale);
+			backend_events_controller.get.userscript.example(load_example_by_prefered_locale);
 			// Rückantwort sichern
-			backend_events_controller.api.once("USI-BACKEND:get-userscript-example-done", function(data){
+			backend_events_controller.register.userscript.example.ready(function(data){
 				private_functions.textarea_clear();
 				jQuery(textarea_id).val(data);
 			});
@@ -156,10 +156,10 @@ var userscript_edit_controller = (function userscript_edit_class(){
 				// Falls eine Userscript ID existiert und es überschrieben werden soll
 				if(script_id && jQuery("#usi-edit-script-overwrite").prop("checked")){
 					// Vorhandes Userscript überschreiben
-					backend_events_controller.api.emit("USI-BACKEND:override-same-userscript", {userscript: jQuery(textarea_id).val(), id: script_id});
+					backend_events_controller.set.userscript.override({userscript: jQuery(textarea_id).val(), id: script_id});
 				}else{
 					// Keine Script ID gegeben
-					backend_events_controller.api.emit("USI-BACKEND:new-usi-script_content", {script: jQuery(textarea_id).val()});
+					backend_events_controller.set.userscript.create({script: jQuery(textarea_id).val()});
 				}
 			}
 		}

@@ -5,8 +5,8 @@
 // verwaltet die Übersetzungen
 var language_controller = (function language_class(){
 	var lang	=	self.options.language;
-	
-	var private_functions = {
+
+	return  {
         // für direkten Zugriff
 		lang: function(){
 			return lang;
@@ -22,7 +22,6 @@ var language_controller = (function language_class(){
 			});
 		}
 	};
-	
-	return private_functions;
+
 }()),
 lang = language_controller.lang();

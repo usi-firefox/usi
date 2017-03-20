@@ -1,11 +1,15 @@
 "use strict";
 
+/* global backend_events_controller, event_manager_controller, hljs, self */
+
 var highlightjs_controller = (function highlightjs_class(){
 	
-	var is_active = true;
-	
-	// enthält alle möglich highlight js styles
-	var hightlightjsstyles = [
+	var is_active = true,
+	active_style,
+    highlight_styles_path = self.options.baseurl + "libs/highlight/styles/",
+    
+	// enthält alle verfügbaren highlight js styles
+	hightlightjsstyles = [
             "agate"
             , "androidstudio"
             , "arduino-light"
@@ -85,23 +89,19 @@ var highlightjs_controller = (function highlightjs_class(){
             , "zenburn"
     ];
 
-	var active_style;
-	
 	// holt den festgelegten Style
-	backend_events_controller.api.on("USI-BACKEND:highlightjs-style", function(style){
+	backend_events_controller.register.highlightjs.style(function(style){
 		private_functions.set_active_style(style);
 	});
 	
 	// legt fest ob HighlightJS aktiviert sein soll
-	backend_events_controller.api.on("USI-BACKEND:highlightjs-activation-state", function(state){
+	backend_events_controller.register.highlightjs.activation_state(function(state){
 		is_active = state;
 	});
 	
 	// lass dir alle Events States nochmal schicken 
-	backend_events_controller.api.emit("USI-BACKEND:get-all-changeable-states");
-	
-	var highlight_styles_path = self.options.baseurl + "libs/highlight/styles/";
-	
+	backend_events_controller.request.config.all();
+		
 	var private_functions = {
 		
 		fill_in_options: function(id){
@@ -158,7 +158,7 @@ var highlightjs_controller = (function highlightjs_class(){
 			private_functions.select_active_style_in_buttons(style);
 			
 			// Style speichern
-			backend_events_controller.api.emit("USI-BACKEND:highlightjs-style-change", style);
+			backend_events_controller.set.highlightjs.style(style);
 		}
 		
 		,set_active_style : function(style){
@@ -187,6 +187,8 @@ var highlightjs_controller = (function highlightjs_class(){
 				return is_active;
 			}
 		}
+        
+        ,is_active : is_active
 
 		// Wrapper
 		,fill_in_options: private_functions.fill_in_options

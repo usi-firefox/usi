@@ -28,9 +28,9 @@ function userscript_list_entry_class(script, index) {
 		 * erstellt die Variablen die im Template ersetzt werden sollen
 		 * START
 		 */
-		var deliver_vars = flatten_keys(script, "userscript");
-		var usi_list_entry_id = "usi-list-entry-id---" + script.id;
-		var usi_list_entry_id_plus_class = "#" + usi_list_entry_id + " .usi-list-entry-";
+		var deliver_vars = flatten_keys(script, "userscript"),
+		usi_list_entry_id = "usi-list-entry-id---" + script.id,
+		usi_list_entry_id_plus_class = "#" + usi_list_entry_id + " .usi-list-entry-";
 				
 		// Index hinzufügen
 		deliver_vars["index"] = index;
@@ -46,12 +46,11 @@ function userscript_list_entry_class(script, index) {
 		 * END
 		 */
 
-		 var highlightjs_already_done = false;
+		var highlightjs_already_done = false;
 
 		var private_functions = {
 			export: function () {
-				// aktiviere oder deaktiviere dieses Userscript!
-				backend_events_controller.api.emit("USI-BACKEND:export-userscript", script.id);
+				backend_events_controller.get.userscript.export.single(script.id);
 			}
 			, add_icon: function () {
 				// Icon mit usi logo füllen, falls leer
@@ -76,31 +75,26 @@ function userscript_list_entry_class(script, index) {
 			 */
 			, toggleActivation: function () {
 				// aktiviere oder deaktiviere dieses Userscript!
-				backend_events_controller.api.emit("USI-BACKEND:toggle-userscript-state", script.id);
+				backend_events_controller.set.userscript.toogle_state(script.id);
 				
                 jQuery("#" + usi_list_entry_id).toggleClass("grey");
 			}
 
             , syntax_test: function(){
                 // teste das Userscript auf grobe Syntax Fehler
-				backend_events_controller.api.emit("USI-BACKEND:syntax-error-test", script.id);
+				backend_events_controller.request.userscript.syntax_test(script.id);
             }
 
 			// fragt nach den gesetzten Greasemonkey Variablen
 			, getGMValues: function () {
-				backend_events_controller.api.emit("USI-BACKEND:list-GMValues", script.id);
+				backend_events_controller.request.userscript.gm_values(script.id);
 			}
 
 			, toggleOverview: function (){
 				jQuery(usi_list_entry_id_plus_class + "toggle-options").toggleClass("fa-angle-double-down fa-angle-double-up");
 				// Ein und Ausblenden
-				var is_hidden = jQuery("#" + usi_list_entry_id + " .panel-body")
-					.toggleClass("not-visible")
-					.hasClass("not-visible");
-				
-					jQuery("#" + usi_list_entry_id + " .panel-body").toggleClass("hidden");
-				
-					
+				jQuery("#" + usi_list_entry_id + " .panel-body").toggleClass("not-visible hidden");
+
 			}
 
 			/**
@@ -112,11 +106,8 @@ function userscript_list_entry_class(script, index) {
 				if (!basic_helper.empty(script.id)) {
 					//zusätzliche Abfrage
 					if (window.confirm(lang["want_to_delete_this_userscript_1"] + script.id + lang["want_to_delete_this_userscript_2"])) {
-
-						// @todo erstmal abschalten!!!
-						backend_events_controller.api.emit("USI-BACKEND:delete-script-by-id", script.id);
-
-						backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");
+						backend_events_controller.request.userscript.delete(script.id);
+						backend_events_controller.request.userscript.all();
 					}
 				}
 			}
@@ -125,7 +116,7 @@ function userscript_list_entry_class(script, index) {
             , delete_GM_Values: function(){
                 // Frage den Benutzer nochmals ob er wirklich alle gesetzten Werte entfernen möchte
                 if(window.confirm(lang["confirm_delete_all_GMValues"])){
-                    backend_events_controller.api.emit("USI-BACKEND:delete-reset-GM-Values-userscript", script.id);
+                    backend_events_controller.set.userscript.gm_values.delete_all(script.id);
                 }
             }
 
@@ -146,13 +137,13 @@ function userscript_list_entry_class(script, index) {
 				var url = jQuery(usi_list_entry_id_plus_class + "includes-testurl").val();
 				
 				// Backend anfragen
-				backend_events_controller.api.emit("USI-BACKEND:test-url-match", {url: url, id: script.id});
+				backend_events_controller.request.userscript.url_test({url: url, id: script.id});
 			}
 
 			// Code highlight
 			, highlightCode: function () {
 
-				if(highlightjs_already_done === false){
+				if(highlightjs_controller.is_active && highlightjs_already_done === false){
 					highlightjs_controller.fill_in_options("#" + usi_list_entry_id);
 
 					highlightjs_controller.run("#" + usi_list_entry_id);
@@ -166,11 +157,9 @@ function userscript_list_entry_class(script, index) {
 			, showUserscript : function(){
 				// highlightCode
 				private_functions.highlightCode();
-				
-				jQuery(usi_list_entry_id_plus_class + "view-userscript---output").toggleClass("hidden");
-				
-				jQuery(usi_list_entry_id_plus_class + "view-userscript---show").toggleClass("hidden");
-				jQuery(usi_list_entry_id_plus_class + "view-userscript---hide").toggleClass("hidden");
+				// shortcut
+                var sel = usi_list_entry_id_plus_class + "view-userscript---";
+                jQuery(sel + "output," + sel + "show," + sel + "hide").toggleClass("hidden");
 			}
 			
 			// register Button Events
@@ -227,7 +216,7 @@ function userscript_list_entry_class(script, index) {
                     event_manager_controller.register_once(usi_list_entry_id_plus_class + "delete-gm-values" ,"click", private_functions.delete_GM_Values);
 
                     // Event zum Daten erhalten einmalig registrieren
-                    backend_events_controller.api.on("USI-BACKEND:list-GMValues-done-" + script.id, function (GMValues) {
+                    backend_events_controller.register.userscript.gm_values(script.id, function (GMValues) {
                         jQuery(usi_list_entry_id_plus_class + "get-gm-values---output").
                             html(""). // leeren
                             html(GMValues);
@@ -246,7 +235,7 @@ function userscript_list_entry_class(script, index) {
 				// Ergebnis des URL Tests empfangen --- START
 				var last_state = false;
 
-				backend_events_controller.api.on("USI-BACKEND:test-url-match-" + script.id, function (state) {
+				backend_events_controller.register.userscript.url_test( script.id, function (state) {
 					// Treffer => true
 					if (last_state !== state) {
 						// sichern

@@ -11,11 +11,11 @@ var userscript_load_external_controller = (function userscript_load_external_cla
 			
 			event_manager_controller.register_once(document, "USI-FRONTEND:loadExternal-reload-from-url", function(event, reload_from_url){
 				// URL eintragen!
-				jQuery(id_prefix + "script-url").text(reload_from_url);
-				jQuery(id_prefix + "script-url").val(reload_from_url);
-				
+				jQuery(id_prefix + "script-url")
+                    .text(reload_from_url)
+                    .val(reload_from_url)
 				// kurz aufblinken
-				jQuery(id_prefix + "script-url").animate({opacity:0},500,"linear",function(){
+				.animate({opacity:0},500,"linear",function(){
 					$(this).animate({opacity:1},500);
 				});
 				
@@ -89,20 +89,20 @@ var userscript_load_external_controller = (function userscript_load_external_cla
 			// Fehlertext entfernen
 			jQuery(id_prefix + "has-error").html("");
 			
-			var script_url = jQuery(id_prefix + "script-url").val();
-			var alternativeCharset = jQuery(id_prefix + "alternativeCharsets").val();
+			var script_url = jQuery(id_prefix + "script-url").val(),
+                alternativeCharset = jQuery(id_prefix + "alternativeCharsets").val();
 			
 			if (script_url !== "undefined" && script_url.length > 0) {
 				// sende die URL an das Backend Skript...
-				backend_events_controller.api.emit("USI-BACKEND:loadexternal-script_url",
-					{script_url: script_url,
-						charset: alternativeCharset,
-						moreinformations: {url: script_url}}
-				);
+				backend_events_controller.set.userscript.load_external(
+                    {script_url: script_url,
+                        charset: alternativeCharset,
+                        moreinformations: {url: script_url}}
+                );
 
-				backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");
+				backend_events_controller.request.userscript.all();
 				
-				backend_events_controller.api.once("USI-BACKEND:external-script-is-now-loaded", function(status){
+				backend_events_controller.register.userscript.external_load.ready(function(status){
 					if(status === true){
 						// Nachgeladenes Userscript ist geladen
 						alert(lang["external_script_is_now_loaded"] + " -> " + script_url);

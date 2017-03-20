@@ -1,6 +1,7 @@
 syntax: glob
 *.xpi
 *.7z
+.idea/
 nbproject/
 batch/
 test/

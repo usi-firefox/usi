@@ -28,7 +28,7 @@ var userscript_config_controller = (function userscript_config_class (){
 			private_functions.init_button_with_data("USI-BACKEND:highlightjs-activation-state", "usi-config-change-options-activate-highlightjs");
 
 			// liefere alle Daten für die States
-			backend_events_controller.api.emit("USI-BACKEND:get-all-changeable-states");
+			backend_events_controller.request.config.all();
 
 			private_functions.__change_switch_option("usi-config-change-complete-export");
 			
@@ -39,7 +39,7 @@ var userscript_config_controller = (function userscript_config_class (){
 			/** 
 			 * Erzeugt ein Download Fenster für den Fertigen Export
 			 */
-			backend_events_controller.api.on("USI-BACKEND:get-all-userscripts-for-export-done", function (result_export_data) {
+			backend_events_controller.register.userscript.export.ready(function (result_export_data) {
 				if (jQuery("#usi-config-change-complete-export").prop("checked") === true) {
 					download_controller.download(result_export_data, "text/plain", "usi-export.usi.json");
 				} else {
@@ -48,17 +48,17 @@ var userscript_config_controller = (function userscript_config_class (){
 			});
 
 			// Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
-			backend_events_controller.api.on("USI-BACKEND:update-for-userscript-available", function (userscript_infos) {
+			backend_events_controller.register.userscript.update.available(function (userscript_infos) {
 				if (window.confirm(lang["userscript_update_was_found_1"] + userscript_infos.id + lang["userscript_update_was_found_2"])) {
 					// Nun das Skript aktualisieren!
-					backend_events_controller.api.emit("USI-BACKEND:override-same-userscript", userscript_infos);
+					backend_events_controller.set.userscript.override(userscript_infos);
 
-					backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");
+					backend_events_controller.request.userscript.all();
 				}
 			});
 
 			// Wenn das Skript gelöscht wurde
-			backend_events_controller.api.on("USI-BACKEND:delete-script-is-now-deleted", function (script_was_deleted) {
+			backend_events_controller.register.userscript.deleted(function (script_was_deleted) {
 				if (script_was_deleted === true) { // script wurde erfolgreich gelöscht
 					window.alert(lang["userscript_was_successful_deleted"]);
 				} else { // script konnte nicht gelöscht werden
@@ -82,21 +82,22 @@ var userscript_config_controller = (function userscript_config_class (){
 					// Switch Events behandeln
 					event_manager_controller.register_once("#usi-config-change-old-usi-include-behavior", "change", function(event){
 //						private_functions.__change_switch_option(event.target.id);
-						backend_events_controller.api.emit("USI-BACKEND:OldUsiIncludeBehavior-change", jQuery("#" + event.target.id).prop("checked"));
+						backend_events_controller.set.config.usi_include(jQuery("#" + event.target.id).prop("checked"));
+                        
 					});
 					event_manager_controller.register_once("#usi-config-change-enable-external-script-load-question", "change", function(event){
 //						private_functions.__change_switch_option(event.target.id);
-						backend_events_controller.api.emit("USI-BACKEND:ExternalScriptLoadQuestion-change",  jQuery("#" + event.target.id).prop("checked"));
+						backend_events_controller.set.config.load_external_script(jQuery("#" + event.target.id).prop("checked"));
 					});
 					event_manager_controller.register_once("#usi-config-change-options-activate-highlightjs", "change", function(event){
 						// ändert den Aktivierungs Status
 //						private_functions.__change_switch_option(event.target.id);
-						backend_events_controller.api.emit("USI-BACKEND:highlightjs-activation-state-change",  jQuery("#" + event.target.id).prop("checked"));
+						backend_events_controller.set.config.highlightjs_state(jQuery("#" + event.target.id).prop("checked"));
 					});
 					event_manager_controller.register_once("#usi-config-change-options-always-activate-greasemonkey", "change", function(event){
 						// Aktiviert Greasemonkey Funktionen immer, egal ob @use-greasemonkey gesetzt wurde oder nicht
 //						private_functions.__change_switch_option(event.target.id);
-						backend_events_controller.api.emit("USI-BACKEND:options_always_activate_greasemonkey-change",  jQuery("#" + event.target.id).prop("checked"));
+						backend_events_controller.set.config.gm_funcs_always_on(jQuery("#" + event.target.id).prop("checked"));
 					});
 				}
 								
@@ -109,16 +110,14 @@ var userscript_config_controller = (function userscript_config_class (){
 		, __change_switch_option : function(id){
 			id = "#" + id; // für jQuery
 			
-			var off_text = jQuery(id + "---false").text();
-			var on_text = jQuery(id + "---true").text();
+			var off_text = jQuery(id + "---false").text(),
+			on_text = jQuery(id + "---true").text();
 			
 			// init bootstrap toggle
 			bootstrap_toggle_controller.initButton(id, on_text, off_text);
 
 			// Text ausblenden
-			jQuery(id + "---false").addClass("hidden");
-			jQuery(id + "---true").addClass("hidden");
-			
+			jQuery(id + "---false," + id + "---true").addClass("hidden");
 		}
 			
 		/**
@@ -129,24 +128,22 @@ var userscript_config_controller = (function userscript_config_class (){
 			// Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
 			if (window.confirm(lang["really_reset_all_settings"])) {
 				if (window.confirm(lang["really_really_reset_all_settings"])) {
-					backend_events_controller.api.emit("USI-BACKEND:delete-everything");
-					backend_events_controller.api.emit("USI-BACKEND:request-for---list-all-scripts");
+					backend_events_controller.request.userscript.delete_all();
+					backend_events_controller.request.userscript.all();
 				}
 			}
 		}
 		
 		// Prüfe ob für die Skripte Updates gefunden wurden!
-		,checkForUpdates : function () {
-			backend_events_controller.api.emit("USI-BACKEND:check-for-userscript-updates");
-		}
+		, checkForUpdates: backend_events_controller.request.userscript.update_check
 		
 		
 		// exportiere die Skripte
 		,exportAll : function () {
 			if (jQuery("#usi-config-change-complete-export").prop("checked") === true) {
-				backend_events_controller.api.emit("USI-BACKEND:get-all-userscripts-for-export", "TRUE");
+				backend_events_controller.get.userscript.export.all("TRUE");
 			} else {
-				backend_events_controller.api.emit("USI-BACKEND:get-all-userscripts-for-export", "FALSE");
+				backend_events_controller.get.userscript.export.all("FALSE");
 			}
 
 		}
