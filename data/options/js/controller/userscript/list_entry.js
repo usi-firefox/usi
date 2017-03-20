@@ -1,6 +1,6 @@
 "use strict";
 
-/* global self,basic_helper, language_controller, highlightjs_controller, backend_events_controller, bootstrap_toggle_controller, event_manager_controller, lang */
+/* global self,basic_helper, language_controller, highlightjs_controller, backend_events_controller, bootstrap_toggle_controller, event_manager_controller, lang, global_settings */
 
 
 function flatten_keys(obj, prepend_key, result) {
@@ -143,15 +143,23 @@ function userscript_list_entry_class(script, index) {
 			// Code highlight
 			, highlightCode: function () {
 
-				if(highlightjs_controller.is_active && highlightjs_already_done === false){
+				if(global_settings.hljs_active && highlightjs_already_done === false){
 					highlightjs_controller.fill_in_options("#" + usi_list_entry_id);
-
+                    
+                    // lass das userscript von hljs verarbeiten und in jQuery("#" + usi_list_entry_id) eintragen
 					highlightjs_controller.run("#" + usi_list_entry_id);
 					
 					// damit es nicht ein weiteres mal durchgeführt werden muss
 					highlightjs_already_done = true;
-				}
-
+                    
+                    jQuery("#" + usi_list_entry_id + " .selectHighlightJSStyleLabel, #" + usi_list_entry_id + " .selectHighlightJSStyle").removeClass("not-visible hidden");
+                    jQuery("#" + usi_list_entry_id + " pre code").addClass("jscode hljs lang-javascript");
+				}else if(global_settings.hljs_active === false){
+                    // Unverändertes Userscript
+                    jQuery("#" + usi_list_entry_id + " pre code").text(script.userscript).removeClass("jscode hljs lang-javascript");
+                    jQuery("#" + usi_list_entry_id + " .selectHighlightJSStyleLabel, #" + usi_list_entry_id + " .selectHighlightJSStyle").addClass("not-visible hidden");
+                }
+                
 			}
 			
 			, showUserscript : function(){

@@ -2,6 +2,8 @@
 
 /* global backend_events_controller, frontend_events_controller, template_controller, language_controller, event_manager_controller, self */
 
+var global_settings = {};
+
 jQuery().ready(function () {
 	// INIT
 
@@ -13,6 +15,11 @@ jQuery().ready(function () {
 			jQuery("head").append(jQuery("<link>").attr("href", css_files[i]).attr("type", "text/css").attr("rel", "stylesheet"));
 		}
 	}());
+
+    // HighlightJS Default CSS
+    jQuery("head").append(
+        jQuery("<link>").attr("id", "HighlightJSStyle" ).attr("href", self.options.baseurl + "libs/highlight/styles/default.css").attr("type", "text/css").attr("rel", "stylesheet")
+    );
 
 	// initialisiere die globalen Events für die Kommunikation mit dem Backend
 	backend_events_controller.register_global_events();

@@ -1,11 +1,10 @@
 "use strict";
 
-/* global backend_events_controller, event_manager_controller, hljs, self */
+/* global backend_events_controller, event_manager_controller, hljs, self, global_settings */
 
 var highlightjs_controller = (function highlightjs_class(){
 	
-	var is_active = true,
-	active_style,
+	var	active_style,
     highlight_styles_path = self.options.baseurl + "libs/highlight/styles/",
     
 	// enthält alle verfügbaren highlight js styles
@@ -96,7 +95,7 @@ var highlightjs_controller = (function highlightjs_class(){
 	
 	// legt fest ob HighlightJS aktiviert sein soll
 	backend_events_controller.register.highlightjs.activation_state(function(state){
-		is_active = state;
+		global_settings.hljs_active = state;
 	});
 	
 	// lass dir alle Events States nochmal schicken 
@@ -120,7 +119,7 @@ var highlightjs_controller = (function highlightjs_class(){
 				);
 			}
 
-			if(is_active === true){
+			if(global_settings.hljs_active === true){
 				// register Event
 				// übergib die aufgerufene ID
 				jQuery(id + " .selectHighlightJSStyle").prop("disabled", false);
@@ -135,7 +134,7 @@ var highlightjs_controller = (function highlightjs_class(){
 		
 		, run : function(id){
 			// HighlightJS ausführen
-			if(is_active === true){
+			if(global_settings.hljs_active === true){
 				jQuery(id + " pre code").each(function(i, html){
 					hljs.highlightBlock(html);
 				});
@@ -182,14 +181,11 @@ var highlightjs_controller = (function highlightjs_class(){
 		
 		activate : function(change){
 			if(typeof change === "boolean"){
-				is_active = change;
-			}else{
-				return is_active;
+				global_settings.hljs_active = change;
+                return global_settings.hljs_active;
 			}
 		}
         
-        ,is_active : is_active
-
 		// Wrapper
 		,fill_in_options: private_functions.fill_in_options
 		

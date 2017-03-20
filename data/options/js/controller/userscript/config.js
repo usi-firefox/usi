@@ -93,6 +93,8 @@ var userscript_config_controller = (function userscript_config_class (){
 						// ändert den Aktivierungs Status
 //						private_functions.__change_switch_option(event.target.id);
 						backend_events_controller.set.config.highlightjs_state(jQuery("#" + event.target.id).prop("checked"));
+                        
+                        highlightjs_controller.activate(jQuery("#" + event.target.id).prop("checked"));
 					});
 					event_manager_controller.register_once("#usi-config-change-options-always-activate-greasemonkey", "change", function(event){
 						// Aktiviert Greasemonkey Funktionen immer, egal ob @use-greasemonkey gesetzt wurde oder nicht
