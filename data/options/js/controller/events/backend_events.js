@@ -118,10 +118,7 @@ var backend_events_controller = (function backend_events_class () {
                 // Daten zum Backend senden
                 , set: {
                     config: {
-                        usi_include: function (bool) {
-                            api.emit("USI-BACKEND:OldUsiIncludeBehavior-change", bool);
-                        }
-                        , load_external_script: function (bool) {
+                        load_external_script: function (bool) {
                             api.emit("USI-BACKEND:ExternalScriptLoadQuestion-change", bool);
                         }
                         , highlightjs_state: function (bool) {

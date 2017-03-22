@@ -6,9 +6,6 @@
 // @include         *
 //		https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/util_match-pattern
 //
-// @clean-include       (true || false)
-// Wenn es > true < ist, bleiben deine @includes von USI unangetastet
-// 
 // @info                {weitere Informationen ...}
 // @updateURL           {wenn die Versionsnummer verschieden ist,kann USI dein Userscript aktualisieren}
 // @run-at              (document-end || document-start || document-ready)

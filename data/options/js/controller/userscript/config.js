@@ -3,7 +3,7 @@
 var userscript_config_controller = (function userscript_config_class () {
 
     // 4 Buttons --- Zusätzlich wird jedoch noch das Event "USI-BACKEND:highlightjs-style" behandelt
-    var initial_requests_done = 4,
+    var initial_requests_done = 3,
 
     last_css = "",
 
@@ -45,7 +45,6 @@ var userscript_config_controller = (function userscript_config_class () {
             // Setze die gesetzen Einstellungen für die Buttons --- START
             private_functions.init_button_with_data("USI-BACKEND:options_always_activate_greasemonkey", "usi-config-change-options-always-activate-greasemonkey");
             private_functions.init_button_with_data("USI-BACKEND:ExternalScriptLoadQuestion", "usi-config-change-enable-external-script-load-question");
-            private_functions.init_button_with_data("USI-BACKEND:OldUsiIncludeBehavior", "usi-config-change-old-usi-include-behavior");
             private_functions.init_button_with_data("USI-BACKEND:highlightjs-activation-state", "usi-config-change-options-activate-highlightjs");
 
             // liefere alle Daten für die States
@@ -103,11 +102,6 @@ var userscript_config_controller = (function userscript_config_class () {
                 if (counter === 0) {
 
                     // Switch Events behandeln
-                    event_manager_controller.register_once("#usi-config-change-old-usi-include-behavior", "change", function (event) {
-//						private_functions.__change_switch_option(event.target.id);
-                        backend_events_controller.set.config.usi_include(jQuery("#" + event.target.id).prop("checked"));
-
-                    });
                     event_manager_controller.register_once("#usi-config-change-enable-external-script-load-question", "change", function (event) {
 //						private_functions.__change_switch_option(event.target.id);
                         backend_events_controller.set.config.load_external_script(jQuery("#" + event.target.id).prop("checked"));
