@@ -5,7 +5,7 @@ var userscript_config_controller = (function userscript_config_class () {
     // 4 Buttons --- Zusätzlich wird jedoch noch das Event "USI-BACKEND:highlightjs-style" behandelt
     var initial_requests_done = 3,
 
-    last_css = "",
+    last_css = [], 
 
     // init
     private_functions = {
@@ -21,24 +21,40 @@ var userscript_config_controller = (function userscript_config_class () {
             });
         }
 
-        , css_refresh: function (no_reset) {
+        , css_undo: function () {
+            if(last_css.length > 0){
+                // Letzten Wert wieder eintragen
+                jQuery("#usi-config-add-css").val(last_css.pop());
+                
+            }else{
+                // leeren
+                jQuery("#usi-config-add-css").val("");
+            }
+            
+            // danach den Refresh Prozess antriggern
+            private_functions.css_refresh(true, true);
+        }
+        , css_refresh: function (no_reset, no_undo) {
             if(jQuery("#usi-config-add-css").val().length > 0){
                 var new_css = jQuery("#usi-config-add-css").val().replace(/<\/?[^>]+>/gi, '');
                 // CSS eintragen
                 jQuery("#usi-additional-css").html(new_css);
 
+                // Speichern
+                backend_events_controller.set.config.own_css(new_css);
+                
+                if(no_undo !== true){
+                    // in die historie packen
+                    last_css.push(new_css);
+                }
+                
+                // Reset anbieten, für den fall das etwas schief gegangen ist
                 if (no_reset !== true) {
                     window.setTimeout(function () {
-                        if (window.confirm("Reset CSS?")) {
-                            // reset
-                            jQuery("#usi-additional-css").html(last_css);
-                        } else {
-                            // überschreiben
-                            last_css = new_css;
-                        }
-
-                        // Speichern
-                        backend_events_controller.set.config.own_css(last_css);
+                        if (window.confirm("Reset all CSS settings? \n(OK) => reset | (Cancel) => keep")) {
+                            // reset 
+                            jQuery("#usi-additional-css").html("");
+                        } 
                     }, 5000);
                 }
             }
@@ -51,8 +67,7 @@ var userscript_config_controller = (function userscript_config_class () {
             private_functions.init_button_with_data("USI-BACKEND:ExternalScriptLoadQuestion", "usi-config-change-enable-external-script-load-question");
             private_functions.init_button_with_data("USI-BACKEND:highlightjs-activation-state", "usi-config-change-options-activate-highlightjs");
 
-
-            backend_events_controller.api.on("USI-BACKEND:config_add_css", function (data) {
+            backend_events_controller.register.config.own_css(function (data) {
                 jQuery("#usi-config-add-css").val(data);
                 private_functions.css_refresh(true);
             });
@@ -103,8 +118,10 @@ var userscript_config_controller = (function userscript_config_class () {
             event_manager_controller.register_once("#usi-config-delete-all", "click", private_functions.deleteAll);
             event_manager_controller.register_once("#usi-config-check-for-updates", "click", private_functions.checkForUpdates);
             event_manager_controller.register_once("#usi-config-export-all", "click", private_functions.exportAll);
+            
 
             event_manager_controller.register_once("#usi-config-add-css-refresh", "click", private_functions.css_refresh);
+            event_manager_controller.register_once("#usi-config-add-css-undo", "click", private_functions.css_undo);
 
             // Sobald der Counter auf 0 steht, 
             event_manager_controller.register_once(document, "all-intial-requests-done", function (evt, counter) {

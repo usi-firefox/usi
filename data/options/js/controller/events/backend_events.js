@@ -41,6 +41,11 @@ var backend_events_controller = (function backend_events_class () {
                             api.on("USI-BACKEND:highlightjs-activation-state", c);
                         }
                     }
+                    , config: {
+                        own_css: function (c) {
+                            api.on("USI-BACKEND:config_add_css", c);
+                        }
+                    }
                     , userscript: {
                         quota: function (c) {
                             api.on("USI-BACKEND:storage-quota", c);
