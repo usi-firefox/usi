@@ -126,7 +126,9 @@ var backend_events_controller = (function backend_events_class () {
                         }
                         , gm_funcs_always_on: function (bool) {
                             api.emit("USI-BACKEND:options_always_activate_greasemonkey-change", bool);
-
+                        }
+                        , own_css: function (bool) {
+                            api.emit("USI-BACKEND:config_add_css-change", bool);
                         }
                     }
                     // highlightjs

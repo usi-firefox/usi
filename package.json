@@ -19,7 +19,7 @@
   },
   "author": "usi-dev",
   "license": "LGPL-2.1",
-  "version": "0.4.12-a-alpha",
+  "version": "0.4.12-b-alpha",
   "main" : "lib/main.js",
   "engines": {
     "firefox": ">=39.0",
@@ -142,5 +142,12 @@
 			"title": "Greasemonkey Funktionen immer aktivieren",
 			"description": "Aktiviert immer die Greasemonkey Funktionen, so dass die Angabe von '// @use-greasemonkey true' im Userscript nicht notwendig ist"
 		}
+        , {
+           "type": "string", 
+           "name": "config_add_css", 
+           "value": "", 
+           "title": "Eigenes CSS",
+           "description": "Hier kannst du eigene CSS Angaben eintragen, um die Konfigurations Oberfläche für USI anzupassen"
+        }
 	]
 }

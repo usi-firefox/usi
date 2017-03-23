@@ -21,23 +21,28 @@ var userscript_config_controller = (function userscript_config_class () {
             });
         }
 
-        , css_refresh: function () {
+        , css_refresh: function (no_reset) {
             if (jQuery("#usi-additional-css").length === 0) {
                 jQuery("head").append(
                     jQuery("<style>").attr("id", "usi-additional-css").attr("type", "text/css")
-                    );
+                );
             }
             // CSS eintragen
             jQuery("#usi-additional-css").html(jQuery("#usi-config-add-css").val());
 
-            window.setTimeout(function () {
-                if (window.confirm("Reset CSS?")) {
-                    // reset
-                    jQuery("#usi-additional-css").html(last_css);
-                } else {
-                    last_css = jQuery("#usi-config-add-css").val();
-                }
-            }, 3000);
+            if(no_reset !== true){
+                window.setTimeout(function () {
+                    if (window.confirm("Reset CSS?")) {
+                        // reset
+                        jQuery("#usi-additional-css").html(last_css);
+                    } else {
+                        // überschreiben
+                        last_css = jQuery("#usi-config-add-css").val();
+                        
+                        backend_events_controller.set.config.own_css(last_css);
+                    }
+                }, 3000);
+            }
         }
 
         , after_rendering: function () {
@@ -47,6 +52,12 @@ var userscript_config_controller = (function userscript_config_class () {
             private_functions.init_button_with_data("USI-BACKEND:ExternalScriptLoadQuestion", "usi-config-change-enable-external-script-load-question");
             private_functions.init_button_with_data("USI-BACKEND:highlightjs-activation-state", "usi-config-change-options-activate-highlightjs");
 
+
+            backend_events_controller.api.on("USI-BACKEND:config_add_css", function (data) {
+                jQuery("#usi-config-add-css").val(data);
+                private_functions.css_refresh(true);
+            });
+            
             // liefere alle Daten für die States
             backend_events_controller.request.config.all();
 
