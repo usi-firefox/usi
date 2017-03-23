@@ -159,7 +159,13 @@ var backend_events_controller = (function backend_events_class () {
                 }
                 // Registiert die globalen Events
                 , register_global_events: function () {
-
+                    // Eigenes CSS
+                    api.on("USI-BACKEND:config_add_css", function (css) {
+                        if(typeof css === "string"){
+                            jQuery("#usi-additional-css").text(css.replace(/<\/?[^>]+>/gi, ''));
+                        }
+                    });
+                    
                     api.on("USI-BACKEND:get-alert", function (text) {
                         window.alert(text);
                     });

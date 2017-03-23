@@ -21,8 +21,15 @@ jQuery().ready(function () {
         jQuery("<link>").attr("id", "HighlightJSStyle" ).attr("href", self.options.baseurl + "libs/highlight/styles/default.css").attr("type", "text/css").attr("rel", "stylesheet")
     );
 
+    // Eigenes CSS hinzufügen
+    jQuery("head").append(
+        jQuery("<style>").attr("id", "usi-additional-css").attr("type", "text/css")
+    );
+
 	// initialisiere die globalen Events für die Kommunikation mit dem Backend
 	backend_events_controller.register_global_events();
+	
+    backend_events_controller.request.config.all();
 
 	// suche nach der Klasse load_template, diese benötigt das data Attribut "usiurl" darin wird der Name des Templates angegeben
 	event_manager_controller.register_once(".load_template" ,"click", function () {

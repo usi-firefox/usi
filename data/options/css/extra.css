@@ -30,6 +30,10 @@ label{
 	cursor: pointer;
 }
 
+#usi-edit-script-textarea-size{
+    width: 280px;
+}
+
 .fade-in-animation{
 	opacity: 1;
 	transition: opacity 1s;
@@ -40,4 +44,9 @@ label{
 	width: 0;
 	padding: 0;
 	margin: 0;
+}
+
+textarea {
+    white-space: pre;
+    height: 80%;
 }

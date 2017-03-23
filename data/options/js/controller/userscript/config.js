@@ -22,26 +22,25 @@ var userscript_config_controller = (function userscript_config_class () {
         }
 
         , css_refresh: function (no_reset) {
-            if (jQuery("#usi-additional-css").length === 0) {
-                jQuery("head").append(
-                    jQuery("<style>").attr("id", "usi-additional-css").attr("type", "text/css")
-                );
-            }
-            // CSS eintragen
-            jQuery("#usi-additional-css").html(jQuery("#usi-config-add-css").val());
+            if(jQuery("#usi-config-add-css").val().length > 0){
+                var new_css = jQuery("#usi-config-add-css").val().replace(/<\/?[^>]+>/gi, '');
+                // CSS eintragen
+                jQuery("#usi-additional-css").html(new_css);
 
-            if(no_reset !== true){
-                window.setTimeout(function () {
-                    if (window.confirm("Reset CSS?")) {
-                        // reset
-                        jQuery("#usi-additional-css").html(last_css);
-                    } else {
-                        // überschreiben
-                        last_css = jQuery("#usi-config-add-css").val();
-                        
+                if (no_reset !== true) {
+                    window.setTimeout(function () {
+                        if (window.confirm("Reset CSS?")) {
+                            // reset
+                            jQuery("#usi-additional-css").html(last_css);
+                        } else {
+                            // überschreiben
+                            last_css = new_css;
+                        }
+
+                        // Speichern
                         backend_events_controller.set.config.own_css(last_css);
-                    }
-                }, 3000);
+                    }, 5000);
+                }
             }
         }
 
