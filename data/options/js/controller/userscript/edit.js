@@ -9,6 +9,8 @@ var userscript_edit_controller = (function userscript_edit_class(){
 	,textarea_default_size
 	,load_example_by_prefered_locale
 	,textarea_id
+	,last_userscript_interval_id = null
+	,last_userscript_text = []
 	,script_id;
 	
 	// Die ID der Textarea
@@ -46,6 +48,22 @@ var userscript_edit_controller = (function userscript_edit_class(){
 			
 			event_manager_controller.register_once("#usi-edit-script-utf8-to-latin1", "click", private_functions.utf8_to_latin1 );
 			event_manager_controller.register_once("#usi-edit-script-latin1-to-utf8", "click", private_functions.latin1_to_utf8 );
+			
+            // automatische sicherung wiederherstellen
+            event_manager_controller.register_once("#usi-edit-script-undo", "click", private_functions.undo );
+            
+            if(last_userscript_interval_id === null){
+                last_userscript_interval_id = window.setInterval(function(){
+                    // falls der letzte Wert in der Historie verschieden sein sollte
+                    if(last_userscript_text[last_userscript_text.length - 1] !== jQuery(textarea_id).val()){
+                        last_userscript_text.push(jQuery(textarea_id).val());
+                        
+                        private_functions.undo_length();
+                    }
+                    
+                    // alle 10 Sekunden durchführen
+                },10000);
+            }
 
 			// Schalter richtig positionieren lassen ...
 			private_functions.defaultSize();
@@ -131,9 +149,31 @@ var userscript_edit_controller = (function userscript_edit_class(){
 		
 		,textarea_clear : function(){
 			private_functions.change_userscript_id();
-			jQuery(textarea_id).val("");
+            jQuery(textarea_id).val("");
 		}
 		
+		,undo : function(){
+            if(last_userscript_text.length > 0){
+                var undo_value = last_userscript_text.pop();
+                
+                if(undo_value === jQuery(textarea_id).val()){
+                    // Falls es der gleiche Wert sein sollte, kannst du es 1x überspringen
+                    undo_value = last_userscript_text.pop();
+                }
+                
+                // zuletzt gesicherten Wert wieder eintragen
+                if(typeof undo_value === "string"){
+                    jQuery(textarea_id).val(undo_value);
+                }
+                
+                private_functions.undo_length();
+            }
+        }
+        
+        ,undo_length : function(){
+            jQuery("#usi-edit-script-undo-length").html(last_userscript_text.length);
+        }
+        
 		,load_example : function(){
 			// Beispiel Datei laden  
 			// Anfrage für das Userscript Beispiel
@@ -161,6 +201,10 @@ var userscript_edit_controller = (function userscript_edit_class(){
 					// Keine Script ID gegeben
 					backend_events_controller.set.userscript.create({script: jQuery(textarea_id).val()});
 				}
+                
+                // den Wert der Historie hinzufügen
+                last_userscript_text.push(jQuery(textarea_id).val());
+                private_functions.undo_length();
 			}
 		}
 
