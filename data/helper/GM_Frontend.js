@@ -10,39 +10,75 @@ var GM_xmlhttpRequest_counter = 0,
  */
 unsafeWindow = {},
 GM_info = {
-	script : JSON.parse(self.options.scriptsettings)
+	script : JSON.parse(self.options.scriptSettings)
 	, uuid : self.options.id
 	, scriptSource : self.options.scriptSource
 	, scriptMetaStr : self.options.scriptMetaStr
 	, scriptWillUpdate : false
-	, version : self.options.usiversion
+	, version : self.options.usiVersion
 	, scriptHandler : "USI"
 	, isUsi : true
+},
+
+storage = {
+    // Initiere den Scriptstorage
+    initialized : false,
+    data : false,
+    identifier : "usi+" + self.options.id,
+    init : function(){
+        var script_localstorage = window.localStorage.getItem(storage.identifier);
+        if (typeof script_localstorage === "string") {
+            storage.initialized = true;
+            // window.localStorage existiert bereits
+            storage.data = JSON.parse(script_localstorage);
+            return true;
+        }else if(script_localstorage === null){
+            // bisher nicht initialisiert
+            if(typeof self.options.storage === "object"){
+                storage.initialized = true;
+                storage.data = self.options.storage;
+                return true;
+            }else{
+                // sollte eigentlich nicht auftreten
+                throw "self.options.storage is no object";
+            }
+        }else{
+            throw "script_localstorage neither 'string' or 'null'";
+        }
+    }
+    , get : function (name) {
+        return storage.data[name];
+    }
+    , getStorage : function () {
+        return storage.data;
+    }
+    , saveStorage: function(){
+        // neuen Wert in den localStorage schreiben
+        window.localStorage.setItem(storage.identifier, JSON.stringify(storage.data));
+    }
+    , set: function(name, value){
+        // neuen Wert setzen
+        storage.data[name] = value;
+        storage.saveStorage();        
+        return true;
+    }
+    , delete: function(name){
+        // Wert löschen
+        delete storage.data[name];
+        storage.saveStorage();
+        return true;
+    }
 };
 
-// Initiere den Scriptstorage
-function get_123141482457923434792() {
-
-	var script_localstorage = window.localStorage.getItem("usi+" + self.options.id);
-
-	if (script_localstorage !== "" && script_localstorage !== null) {
-		// in ein JSON umwandeln
-		script_localstorage = JSON.parse(script_localstorage);
-	} else {
-		// initial erzeugen!
-		script_localstorage = {};
-	}
-
-	return script_localstorage;
-}
-// In den LocalStorage schreiben
-function set_123141482457923434792(script_localstorage) {
-	// Wrapper Funktion
-	window.localStorage.setItem("usi+" + self.options.id, JSON.stringify(script_localstorage));
+try {
+    // Storage initialisiere
+    storage.init();
+}catch(error_message){
+   GM_log(error_message);
 }
 
 /**
- * GREASEMONKEY Funtkionen --- START
+ * GREASEMONKEY Funktionen --- START
  */
 
 /**
@@ -53,18 +89,12 @@ function set_123141482457923434792(script_localstorage) {
  */
 
 function GM_getValue(name, default_value) {
-	// holt aus dem Localstorage, den Speicher für das USI Skript
-	var script_localstorage = get_123141482457923434792();
-
-	// Prüft ob im Localstorage etwas zu finden ist...
-	if (typeof script_localstorage[name] !== "undefined") {
+	var value = storage.get(name);
+	if (typeof value === "undefined") {
 		// Daten aus dem Localstorage beziehen...
-		return script_localstorage[name];
-	} else if (typeof self.options.storage !== "undefined" && self.options.storage !== null && typeof self.options.storage[name] !== "undefined") {
-		// Daten aus den übergebenen ScriptOptions
-		return self.options.storage[name];
-	} else { 
 		return default_value;
+	} else { 
+		return value;
 	}
 }
 
@@ -75,17 +105,10 @@ function GM_getValue(name, default_value) {
  * @returns {void}
  */
 function GM_setValue(name, value) {
-	// holt aus dem Localstorage, den Speicher für das USI Skript
-	var script_localstorage = get_123141482457923434792();
-
-	// Variable setzen
-	script_localstorage[name] = value;
-
-	// Localstorage schreiben
-	set_123141482457923434792(script_localstorage);
-
-	// Im Extension Speichern sichern!
-	self.port.emit("USI-BACKEND:GM_setValue", {name: name, value: value});
+    storage.set(name, value);
+    
+    // Daten im Extension Speicher sichern
+    self.port.emit("USI-BACKEND:GM_setValue", {name: name, value: value});
 }
 
 /**
@@ -94,12 +117,8 @@ function GM_setValue(name, value) {
  * @returns {void}
  */
 function GM_deleteValue(name) {
-	var script_localstorage = get_123141482457923434792();
-	// Variable entfernen
-	delete script_localstorage[name];
-
 	// Localstorage schreiben
-	set_123141482457923434792(script_localstorage);
+	storage.delete(name);
 
 	// Variable löschen
 	self.port.emit("USI-BACKEND:GM_deleteValue", {name: name});
@@ -111,7 +130,7 @@ function GM_deleteValue(name) {
  */
 function GM_listValues() {
 	// Alle Variablen namen zurück liefern
-	var script_storage = get_123141482457923434792();
+	var script_storage = storage.getStorage();
 	var result = [];
 	for (var key in script_storage) {
 		result.push(key);
@@ -297,7 +316,7 @@ self.port.on("GM-FRONTEND-ERROR", function (err) {
 });
 
 /**
- * GREASEMONKEY Funtkionen --- STOP
+ * GREASEMONKEY Funktionen --- STOP
  */
 
 // EXPORT to window
