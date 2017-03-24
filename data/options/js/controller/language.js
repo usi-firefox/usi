@@ -4,13 +4,9 @@
 
 // verwaltet die Übersetzungen
 var language_controller = (function language_class(){
-	var lang	=	self.options.language;
-
 	return  {
         // für direkten Zugriff
-		lang: function(){
-			return lang;
-		}
+		lang: self.options.language
 		,replace_in_DOM: function(){
 			jQuery("[data-usi-lang]").each(function(idx, element){
 				// füge die Übersetzung als ersten Textknoten ein
@@ -24,4 +20,4 @@ var language_controller = (function language_class(){
 	};
 
 }()),
-lang = language_controller.lang();
+lang = language_controller.lang;
