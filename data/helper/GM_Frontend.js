@@ -18,6 +18,7 @@ GM_info = {
 	, version : self.options.usiVersion
 	, scriptHandler : "USI"
 	, isUsi : true
+	, systemPlatform : self.options.systemPlatform
 },
 
 storage = {

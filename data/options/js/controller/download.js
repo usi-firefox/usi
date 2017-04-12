@@ -15,7 +15,8 @@ var download_controller = (function download_controller_class() {
             var link = document.createElement("a");
             // Dateinamen angeben
             if (!basic_helper.empty(filename)) {
-                link.download = filename;
+                // z.B. %20 durch Leerzeichen ersetzen
+                link.download = window.decodeURIComponent(filename);
             }
 
             // data type festlegen
