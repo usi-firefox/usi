@@ -100,6 +100,25 @@ function GM_getValue(name, default_value) {
 }
 
 /**
+ * Experimental
+ * 
+ * Liefert den Inhalt der gespeicherten Variable asynchron zurück
+ * 
+ * @param {string} name
+ * @param {any} default_value
+ * @returns {Promise}
+ */
+function GM_getValue_async(name, default_value){
+    return new Promise(function (resolve) {
+        self.port.once("USI-BACKEND:GM_getValue_done_" + window.btoa(name), (response) => {
+            resolve(response.value);
+        });
+         
+        self.port.emit("USI-BACKEND:GM_getValue", {name: name, value: default_value, base64: window.btoa(name)});
+    });
+}
+
+/**
  * 
  * @param {string} name
  * @param {any} value
@@ -326,6 +345,7 @@ win.GM_deleteValue = GM_deleteValue;
 win.GM_getResourceText = GM_getResourceText;
 win.GM_getResourceURL = GM_getResourceURL;
 win.GM_getValue = GM_getValue;
+win.GM_getValue_async = GM_getValue_async;
 win.GM_listValues = GM_listValues;
 win.GM_log = GM_log;
 win.GM_openInTab = GM_openInTab;
