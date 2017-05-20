@@ -19,7 +19,7 @@
   },
   "author": "usi-dev",
   "license": "LGPL-2.1",
-  "version": "0.4.14-b",
+  "version": "0.4.15-a",
   "main" : "lib/main.js",
   "engines": {
     "firefox": ">=39.0",
@@ -29,7 +29,8 @@
     "multiprocess": true,
     "systemXHR":{},
     "private-browsing": true
-  },
+  }, 
+  "hasEmbeddedWebExtension": true,
   "preferences": [
 		{
 			"type": "control",
