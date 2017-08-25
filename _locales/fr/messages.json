@@ -1,0 +1,299 @@
+{
+    "loadOptions_title": {
+        "message": "options"
+    },
+    "loadOptions_label": {
+        "message": "configurer"
+    },
+    "enableExternalScriptLoadQuestion_title": {
+        "message": "importer un script externe"
+    },
+    "enableExternalScriptLoadQuestion_description": {
+        "message": "Voulez vous que USI vous demande d'importer les Userscript? (quand vous appelez une source dont l'URL finit par `.user.js`)"
+    },
+    "required_script_one_include": {
+        "message": "Vous devez indique au moins -une- expression d'inclusion -> \\n\\n @include *website.com*"
+    },
+    "required_script_name": {
+        "message": "Vous devriez indiquer un nom pour votre script, pas n\\u00e9cessairement unique -> \\n\\n @name my_userscript"
+    },
+    "exception_100": {
+        "message": "ERREUR script_settings.include PAS BON"
+    },
+    "error_userscript_settings": {
+        "message": "La configuration ne peut pas \\u00eatre lu correctement ... \\n"
+    },
+    "found_bad_encoding": {
+        "message": "un faux caract\\u00e8re a \\u00e9t\\u00e9 trouv\\u00e9, peu \\u00eatre \\u00e0 cause d'un mauvais encodage, merci d'essayer un autre encodage"
+    },
+    "usi_options": {
+        "message": "options d'USI"
+    },
+    "description": {
+        "message": "description"
+    },
+    "deactivated_userscript": {
+        "message": "d\\u00e9sactiver Userscript"
+    },
+    "add_new_userscript": {
+        "message": "Ajouter un nouveau Userscript!"
+    },
+    "load_userscript_by_url": {
+        "message": "1. Charger un script depuis une url"
+    },
+    "after_load": {
+        "message": "charger"
+    },
+    "userscript_after_load": {
+        "message": "charger le Userscript"
+    },
+    "load_userscript_by_url_label": {
+        "message": "nouveau Userscript (URL):"
+    },
+    "load_userscript_by_textarea": {
+        "message": "2. charger un Userscript depuis une zone de texte"
+    },
+    "load_example": {
+        "message": "charger l'exemple"
+    },
+    "clear_textarea": {
+        "message": "vider la zone de texte"
+    },
+    "save_userscript": {
+        "message": "sauvegarder le script"
+    },
+    "save": {
+        "message": "sauvegarder"
+    },
+    "overwrite_without_warning": {
+        "message": "\u00c9craser sans avertissement"
+    },
+    "clear": {
+        "message": "Nettoyer"
+    },
+    "delete_all_userscripts": {
+        "message": "effacer tous les scripts"
+    },
+    "all_userscripts": {
+        "message": "tous les Userscripts"
+    },
+    "create_new_userscript": {
+        "message": "cr\\u00e9er un nouveau Userscript"
+    },
+    "revert_all": {
+        "message": "- tout effacer -"
+    },
+    "check_updates_for_all_userscripts": {
+        "message": "v\\u00e9rifier les mises \\u00e0 jour (Userscripts)"
+    },
+    "check_now": {
+        "message": "-v\\u00e9rifier maintenant-"
+    },
+    "reset": {
+        "message": "annuler"
+    },
+    "start": {
+        "message": "lancer"
+    },
+    "alternativeCharset_default": {
+        "message": "d\\u00e9faut"
+    },
+    "empty_userscript_url": {
+        "message": "Vous devez sp\\u00e9cifier une URL o\\u00f9 votre Userscript peut \\u00eatre trouver, sinon vous ne pouvez pas continuer."
+    },
+    "same_userscript_was_found_ask_update_it_1": {
+        "message": "Un Userscript avec les m\\u00eame r\\u00e9glages a \\u00e9t\\u00e9 trouv\\u00e9 (usi-id: '"
+    },
+    "same_userscript_was_found_ask_update_it_2": {
+        "message": "') \\n\\, voulez vous mettre \\u00e0 jour ?"
+    },
+    "yes": {
+        "message": "oui"
+    },
+    "no": {
+        "message": "non"
+    },
+    "not_set": {
+        "message": "--non configur\\u00e9--"
+    },
+    "want_to_delete_this_userscript_1": {
+        "message": "Voulez vous effacer ce Userscript (usi-id: '"
+    },
+    "want_to_delete_this_userscript_2": {
+        "message": "') ?"
+    },
+    "delete_x": {
+        "message": "effacer (X)"
+    },
+    "change": {
+        "message": "\\u00e9diter"
+    },
+    "show_hide": {
+        "message": "montrer\/cacher"
+    },
+    "show": {
+        "message": "montrer"
+    },
+    "hide": {
+        "message": "cacher"
+    },
+    "activate_deactivate": {
+        "message": "activer\/d\\u00e9sactiver"
+    },
+    "activated": {
+        "message": "activer"
+    },
+    "deactivated": {
+        "message": "d\\u00e9sactiver"
+    },
+    "actual_used_quota": {
+        "message": "m\\u00e9moire utilisateur actuelle (quota)"
+    },
+    "userscript_was_successful_deleted": {
+        "message": "Le Userscript a \\u00e9t\\u00e9 effac\\u00e9 avec succ\\u00e9s"
+    },
+    "userscript_could_not_deleted": {
+        "message": "Le Userscript n'a pas pu \\u00eatre effac\\u00e9"
+    },
+    "really_reset_all_settings": {
+        "message": "Voulez-vous vraiment effacer toutes les r\\u00e9glages, vraiment vraiment?"
+    },
+    "really_really_reset_all_settings": {
+        "message": "\\u00cates-vous absoluement s\\u00fbr? C'est votre derni\\u00e8re chance"
+    },
+    "userscript_update_was_found_1": {
+        "message": "Pour le script (usi-id: '"
+    },
+    "userscript_update_was_found_2": {
+        "message": "' ) une m-\\u00e0-j a \\u00e9t\\u00e9 trouv\\u00e9e\\nVoulez vous la mettre \\u00e0 jour?"
+    },
+    "should_usi_import_this_userscript": {
+        "message": "USI doit-il charger et activer ce Userscript?"
+    },
+    "language": {
+        "message": "langage"
+    },
+    "menu": {
+        "message": "Menu"
+    },
+    "overview": {
+        "message": "Aper\\u00e7u"
+    },
+    "overview_description": {
+        "message": "Les options sont maintenant s\\u00e9par\\u00e9e, \\n\\si vous voulez voir vos Userscipts, allez \\u00e0 \"Tous les Userscripts\""
+    },
+    "edit_userscript_with_id": {
+        "message": "\\u00c9diter le Userscript avec ID"
+    },
+    "no_userscript_there": {
+        "message": "Vous n'avez aucun Userscript pour le moment"
+    },
+    "external_script_is_now_loaded": {
+        "message": "Le Userscript externe a \\u00e9t\\u00e9 charg\\u00e9"
+    },
+    "userscript_was_saved": {
+        "message": "Le Userscript a \\u00e9t\\u00e9 sauvegard\\u00e9 et est maintenant actif!"
+    },
+    "userscript_couldnt_saved": {
+        "message": "ERREUR: Le Userscript n'a pas \u00e9t\u00e9 sauvegard\u00e9"
+    },
+    "error_couldnt_load_url": {
+        "message": "ERREUR: l'URL ne peut pas \u00eatre charg\u00e9e"
+    },
+    "export_all_userscripts": {
+        "message": "exporter tous les Userscripts"
+    },
+    "export_all_now": {
+        "message": "-exporter maintenant-"
+    },
+    "complete_export": {
+        "message": "achever l'export?"
+    },
+    "hightlightjsstyle": {
+        "message": "style par d\\u00e9faut pour hightlight.js"
+    },
+    "options_activate_highlightjs_title": {
+        "message": "HighlightJS active"
+    },
+    "options_always_activate_greasemonkey_title": {
+        "message": "Les Fonctions Greasemonkey toujours activ\\u00e9es"
+    },
+    "options_always_activate_greasemonkey_description": {
+        "message": "Si les Fonctions Greasemonkey sont toujours activ\\u00e9es, vous n'avez pas besoin de '\/\/ @use-greasemonkey true' dans votre userscript pour utiliser les fonction comme GM_getValue() ..."
+    },
+    "reload_from_source": {
+        "message": "recharger depuis la source"
+    },
+    "add_new_custom_charset": {
+        "message": "Ajouter un jeu de caract\\u00e8re personnalis\\u00e9"
+    },
+    "charset_already_exist": {
+        "message": "Le jeu de caract\\u00e8re existe d\\u00e9j\\u00e0"
+    },
+    "alternative_charset_description": {
+        "message": "Si vous avez des probl\\u00e8mes avec l'encodage des fichiers, vous pouvez en sp\\u00e9cifier un autre ici"
+    },
+    "alternative_charset": {
+        "message": "jeu de caract\\u00e8re alternatif"
+    },
+    "direct_userscript_upload": {
+        "message": "envoi direct de Userscript"
+    },
+    "OldUsiIncludeBehavior_title": {
+        "message": "Comportement d'incusion d'USI"
+    },
+    "OldUsiIncludeBehavior_description": {
+        "message": "Vous pouvez changer les r\\u00e8gles de comportement du processus d'inclusion, l'ancienne mani\\u00e8re d'USI, autrement le comportement de Greasemonkey devrait \\u00eatre utilis\\u00e9."
+    },
+    "OldUsiIncludeBehavior_oldUsiMethod": {
+        "message": "ancien comportement d'USI"
+    },
+    "OldUsiIncludeBehavior_GMMethod": {
+        "message": "comportement de Greasemonkey"
+    },
+    "changelog": {
+        "message": "Changelog"
+    },
+    "changelog_2": {
+        "message": "Avec la version 0.4.1-a-alpha et sup\u00e9rieure d'USI, les nouveau scripts utilisateurs seront actifs apr\u00e8s que l'onglet soit recharg\u00e9 (si les r\u00e8gles d'inclusion correspondent \u00e0 cet onglet)"
+    },
+    "userscript_was_modified_by_usi___reason_missing_name": {
+        "message": "Votre Userscript a \u00e9t\u00e9 modifi\u00e9 par USI, il a ajout\u00e9 @name <Nom du fichier>!"
+    },
+    "show_GMValues": {
+        "message": "montrer les valeurs GM sauvegard\u00e9es"
+    },
+    "GMValues": {
+        "message": "valeurs GM"
+    },
+    "confirm_delete_all_GMValues": {
+        "message": "Vous effacer toutes les valeurs GM de ce Userscript, \u00eates-vous s\u00fbr?"
+    },
+    "override_run_at": {
+        "message": "Forcer l'option @run-at"
+    },
+    "userscript_fixes": {
+        "message": "correctifs Userscript"
+    },
+    "help": {
+        "message": "Aide\/FAQ"
+    },
+    "help_1_title": {
+        "message": "Pourquoi le Userscript ne fonctionne pas, qui f\u00fbt \u00e9crit pour Greasemonkey ?"
+    },
+    "help_1_description": {
+        "message": "De toute mani\u00e8re, le Userscript ne fonctionnera pas directement dans USI, parse qu'USI et GM utilise la directive @run-at un peu diff\u00e9remment, \\n\\souvent il suffit juste de la modifier, c'est \u00e0 dire si le Userscript de GM a \"@run-at document-start\" de d\u00e9fini, alors vous devez le changer pour \"@run-at document-ready\" pour USI"
+    },
+    "help_2_title": {
+        "message": "Pourquoi n'ai-je pas acc\u00e8s au \"document\"?"
+    },
+    "help_2_description": {
+        "message": "Comme dans l'autre cas, la raison est la directive \"@run-at\", \\n\\si elle est d\u00e9finie comme \"document-start\", il n'y a pas de \"document\" \u00e0 l'instant votre Userscript fonctionne, Il sera disponible avec \"document-ready\". \\n\\Pour de plus amples informations visitez la page \\n\\\"page-mod\" (https:\/\/developer.mozilla.org\/en-US\/Add-ons\/SDK\/High-Level_APIs\/page-mod) dans le chap\u00eetre \"contentScriptWhen\""
+    },
+    "config_add_css": {
+        "message": "CSS individuel"
+    },
+    "config_add_css_refresh": {
+        "message": "rafraichir"
+    }
+}

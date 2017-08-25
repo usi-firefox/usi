@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Load JS Files for the background scripts</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <!-- unabhängig -->
+        <script type="text/javascript" src="lib/helper/basic_helper.js"></script>
+        <script type="text/javascript" src="lib/update/sdk_to_webext.js"></script>
+        <script type="text/javascript" src="lib/parse/convert2RegExp.js"></script>
+        <!-- unabhängig -->
+
+        <!-- nur abhängig von basic_helper.js -->
+        <script type="text/javascript" src="lib/testing/type_guess.js"></script>
+        <script type="text/javascript" src="lib/GM/GM_xhrHandler.js"></script>
+        <script type="text/javascript" src="lib/load/load_resource.js"></script>
+        <!-- nur abhängig von basic_helper.js -->
+        
+        
+        <script type="text/javascript" src="lib/parse/parse_userscript.js"></script>
+        <script type="text/javascript" src="lib/storage/config.js"></script>
+        <script type="text/javascript" src="lib/storage/userscript.js"></script>
+        <script type="text/javascript" src="lib/inject/page_injection_helper.js"></script>
+        <script type="text/javascript" src="lib/storage/add_userscript.js"></script>
+        <script type="text/javascript" src="lib/gui/options_backend.js"></script>
+        <script type="text/javascript" src="lib/get_userscript_from_page/backend.js"></script>
+        
+        <script type="text/javascript" src="lib/GM/GM_Backend.js"></script>
+        
+        <script type="text/javascript" src="lib/main.js"></script>
+    </body>
+</html>
