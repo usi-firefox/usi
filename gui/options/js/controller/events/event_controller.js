@@ -186,15 +186,15 @@ var event_controller = (function event_controller_class() {
                         // lösche dieses Element
                         await userscript_handle.deleteUserscript();
 
-                        window.alert(lang.getMessage("userscript_was_successful_deleted"));
-
+                        basic_helper.notify(lang.getMessage("userscript_was_successful_deleted") + " (ID " + id + ")");
+                        
                         let page_injection_helper_port = browser.runtime.connect(basic_helper.getExtId(), {name: "page-injection-helper"});
                         page_injection_helper_port.postMessage({name: "remove_userscript", data: {"userscript_handle": userscript_handle}});
                         
                         self.request.userscript.refresh();
                     } else {
                         // konnte nicht gefunden und daher auch nicht gelöscht werden
-                        window.alert(lang.getMessage("userscript_could_not_deleted"));
+                        basic_helper.notify(lang.getMessage("userscript_could_not_deleted"));
                     }
                 }
                 , update_check: function () {
@@ -298,21 +298,21 @@ var event_controller = (function event_controller_class() {
         , register_global_events: function () {
 
 
-            port.on("userscript-is-created", function (text) {
+            port.on("userscript-is-created", function (data) {
                 // Neues Userscript wurde erstellt
-                window.alert(lang.getMessage("userscript_was_created"));
+                basic_helper.notify(lang.getMessage("userscript_was_created")  + " (ID " + data.id + ")");
             });
-            port.on("userscript-was-overwritten", function (text) {
+            port.on("userscript-was-overwritten", function (data) {
                 // Userscript wurde überschrieben
-                window.alert(lang.getMessage("userscript_was_overwritten"));
+                basic_helper.notify(lang.getMessage("userscript_was_overwritten")  + " (ID " + data.id + ")");
             });
-            port.on("userscript-already-exist", function (text) {
+            port.on("userscript-already-exist", function (data) {
                 // Userscript existiert bereits
-                window.alert(lang.getMessage("userscript_already_exist"));
+                basic_helper.notify(lang.getMessage("userscript_already_exist")  + " (ID " + data.id + ")");
             });
             
             port.on("USI-BACKEND:get-alert", function (text) {
-                window.alert(text);
+                basic_helper.notify(text);
             });
 
             /**
