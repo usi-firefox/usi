@@ -138,7 +138,7 @@ function GM_setValue(name, value) {
     storage.set(name, value);
     
     // Daten im Extension Speicher sichern
-    backend_port.postMessage({name : "GM_setValue", data: {val_name: name, value: value}});
+    backend_port.postMessage({name : "GM_setValue", data: {val_name: name, value: value}, counter: message_counter++});
 }
 
 /**
@@ -151,7 +151,7 @@ function GM_deleteValue(name) {
 	storage.delete(name);
 
 	// Variable löschen
-	backend_port.postMessage({name : "GM_deleteValue", data: {val_name: name}});
+	backend_port.postMessage({name : "GM_deleteValue", data: {val_name: name}, counter: message_counter++});
 } 
 
 /**
@@ -175,9 +175,10 @@ function GM_listValues() {
  */
 function GM_setClipboard(text) {
     
-   // Element erzeugen und darin den Text festlegen
-    let temp_a = document.createElement("a");
-    temp_a.appendChild(document.createTextNode(text));
+    // Element erzeugen und darin den Text festlegen
+    let temp_a = document.createElement("textarea");
+    temp_a.value = text;
+    
     document.body.appendChild(temp_a);
     temp_a.select();
     
@@ -194,7 +195,7 @@ function GM_setClipboard(text) {
  * @returns {void}
  */
 function GM_openInTab(url, open_in_background) {
-    backend_port.postMessage({name: "GM_openInTab", data: {url: url, open_in_background: open_in_background}});
+    backend_port.postMessage({name: "GM_openInTab", data: {url: url, open_in_background: open_in_background}, counter: message_counter++});
 }
 
 /**
@@ -282,7 +283,7 @@ function GM_registerMenuCommand(caption, commandFunc, accessKey) {
     backend_port.postMessage({name: "GM_registerMenuCommand", data: {caption: caption,
             // Wandelt die Funktion in einen String um, ansonsten wird Sie einfach weggeworfen :/ ... 
             commandFunc: commandFunc.toString(),
-            accessKey: accessKey}});
+            accessKey: accessKey}, counter: message_counter++});
 }
 
 /**
