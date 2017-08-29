@@ -351,6 +351,22 @@ function GM_getResourceURL(name) {
 }
 
 
+/**
+ * Basic Error Handling
+ */
+
+backend_port.onMessage.addListener(function(message){
+    if(message.name === "GM_Backend:error"){
+        let error_message = "Error in " + message.func_name + "() \n with message:" + message.text;
+        // Fehlermeldung als Notification darstellen
+        browser.notifications.create({
+                type: "basic",
+                title: "USI",
+                iconUrl: browser.extension.getURL("/gui/icon/usi.png"),
+                message: error_message
+        });
+    }
+});
 
 /**
  * GREASEMONKEY Funktionen --- STOP
