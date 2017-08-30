@@ -106,13 +106,6 @@ var event_controller = (function event_controller_class() {
                                 }
                             });
                             break;
-                        case "load_external":
-                            template_controller.load(action, {
-                                callback_on_complete: function () {
-                                    jQuery(document).trigger("USI-FRONTEND:loadExternal-reload-from-url", param1);
-                                }
-                            });
-                            break;
                     }
                 });
             }
@@ -256,9 +249,6 @@ var event_controller = (function event_controller_class() {
                 }
                 , override: function (data) {
                     port.postMessage({name: "USI-BACKEND:override-same-userscript", data});
-                }
-                , load_external: function (data) {
-                    port.postMessage({name: "USI-BACKEND:loadexternal-script_url", data});
                 }
                 , toogle_state: async function (id) {
                     var script_storage = await userscript_storage;
