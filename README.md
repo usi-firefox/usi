@@ -3,24 +3,24 @@ usi
 
 ## Installation
 
-to install usi you need **Mozilla Firefox in version 39+**, 
+to install usi (Version **0.5 and above**) you need **Mozilla Firefox in version 55+**, 
 the versions of usi are available at [addons.mozilla.org](https://addons.mozilla.org/de/firefox/addon/userunified-script-injector/)
 
 ## run from source
 if you want to run usi from source, you will need to install 
 * [NodeJS](https://nodejs.org)
-* [jpm Module](https://github.com/mozilla-jetpack/jpm/)
+* [web-ext Module](https://github.com/mozilla/web-ext)
+* [Firefox Unbranded Build](https://wiki.mozilla.org/Add-ons/Extension_Signing#Latest_Builds) (only a suggestion)
 
 and then you can run usi (from it's root directory) with this short command in your commandline/shell
 ```
-jpm run
+web-ext run
 ```
 
-Also, you can use the **jpm watchpost**,
+If you want to **debug usi**, please use the Firefox "Debug" Button for "usi" at the page about:debugging 
 ```
-jpm watchpost --post-url http://localhost:8888/
+about:debugging
 ```
-for more informations about this, take a look at the [MDN docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/jpm#jpm_watchpost) and this awesome add-on [Extension Auto-Installer](https://github.com/palant/autoinstaller)!
 
 ## Contributors
 
