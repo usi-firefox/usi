@@ -3,7 +3,7 @@
 (function(win, given_data){    
     
 // Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
-var message_counter = 0,    
+var message_counter = 1,    
 backend_port = browser.runtime.connect({name: "usi-gm-backend---" + given_data.id}),
 /*
  *  damit keine Fehler geworfen werden
