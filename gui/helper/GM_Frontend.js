@@ -162,7 +162,7 @@ function GM_listValues() {
 	// Alle Variablen namen zurück liefern
 	var script_storage = storage.getStorage();
 	var result = [];
-	for (var key in script_storage) {
+	for (var key of script_storage) {
 		result.push(key);
 	}
 	return result;
@@ -298,10 +298,10 @@ function GM_helper___search_for_resource(name){
 		// die Resource Daten werden in den Script Settings gesichert
 		var resources = GM_info.script.resources_data;
 		if(typeof resources === "object" && resources.length > 0){
-			for (var i in resources){
-				if(name === resources[i].name){
+			for (var resource of resources){
+				if(name === resource.name){
 					// Rückgabe der gefundenen Resource
-					return resources[i];
+					return resource;
 				}
 			}
 		}

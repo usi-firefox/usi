@@ -107,8 +107,10 @@ function userscript_list_entry_class(script, index) {
                     //zusätzliche Abfrage
                     if (window.confirm(lang.getMessage("want_to_delete_this_userscript_1") + script.id + lang.getMessage("want_to_delete_this_userscript_2"))) {
                         event_controller.request.userscript.delete(script.id);
-                        event_controller.request.userscript.refresh();
-                    }
+                        
+                        // Text nur durchstreichen, nicht direkt neuladen
+                        jQuery("#"+usi_list_entry_id).css("text-decoration", "line-through");
+                   }
                 }
             }
 
