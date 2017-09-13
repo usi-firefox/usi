@@ -44,7 +44,7 @@ var event_controller = (function event_controller_class() {
 
                         let infos = ["USI-EXPORT", "VERSION:0.2", "DATE:" + export_date, "COMPLETE:" + complete_export];
                         // infos hinzufügen
-                        for (let i in infos) {
+                        for (var i in infos) {
                             result_export += "//" + infos[i] + "\n";
                         }
 
@@ -52,11 +52,11 @@ var event_controller = (function event_controller_class() {
                         result_export += separator + separator + separator;
                         let all_userscripts = script_storage.getAll();
                         // Userscript aus dem script_storage holen
-                        for (let i in all_userscripts) {
+                        for (var j in all_userscripts) {
                             if (complete_export === false) {
-                                result_export_tmp.push(all_userscripts[i].userscript);
+                                result_export_tmp.push(all_userscripts[j].userscript);
                             } else {
-                                result_export_tmp.push(all_userscripts[i]);
+                                result_export_tmp.push(all_userscripts[j]);
                             }
                         }
 

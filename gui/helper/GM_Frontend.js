@@ -235,7 +235,7 @@ function GM_xmlhttpRequest(gm_details) {
     (function (counter) {
 
         let supported_events = ["onabort", "onerror", "onload", "onloadstart", "loadend", "onprogress", "onreadystatechange", "ontimeout"];
-        for (let evt of supported_events) {
+        for (var evt of supported_events) {
             if (typeof gm_details[evt] === "function") {
                 backend_port.onMessage.addListener((response) => {
                     let event_name_for_backend = evt;
@@ -357,7 +357,7 @@ function GM_getResourceURL(name) {
 
 backend_port.onMessage.addListener(function(message){
     if(message.name === "GM_Backend:error"){
-        let error_message = "Error in " + message.func_name + "() \n with message:" + message.text;
+        var error_message = "Error in " + message.func_name + "() \n with message:" + message.text;
         // Fehlermeldung als Notification darstellen
         browser.notifications.create({
                 type: "basic",
