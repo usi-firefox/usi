@@ -329,7 +329,7 @@ function GM_getResourceText(name) {
 }
 
 /**
- * Liefert die Datauri der Resource zurück
+ * Liefert die Datauri, oder die Original URL der Resource zurück
  * @param {string} name
  * @returns {string}
  */
@@ -347,6 +347,23 @@ function GM_getResourceURL(name) {
 	}else{
 		// Name nicht gefunden!
 		throw new Error("USI-Function GM_getResourceURL: name -> " + name + " was not found!");
+	}
+}
+
+/**
+ * Liefert die Original URL der Resource zurück
+ * @param {string} name
+ * @returns {string}
+ */
+function GM_getResourceOrigURL(name) {
+	// Resource suchen
+	var resource = GM_helper___search_for_resource(name);
+
+	if(resource !== null){
+        return resource.origUrl;
+	}else{
+		// Name nicht gefunden!
+		throw new Error("USI-Function GM_getResourceOrigURL: name -> " + name + " was not found!");
 	}
 }
 
@@ -377,6 +394,7 @@ win.GM_addStyle = GM_addStyle;
 win.GM_deleteValue = GM_deleteValue;
 win.GM_getResourceText = GM_getResourceText;
 win.GM_getResourceURL = GM_getResourceURL;
+win.GM_getResourceOrigURL = GM_getResourceOrigURL;
 win.GM_getValue = GM_getValue;
 win.GM_getValue_async = GM_getValue_async;
 win.GM_listValues = GM_listValues;
