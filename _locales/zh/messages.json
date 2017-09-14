@@ -1,0 +1,311 @@
+{
+    "loadOptions_title": {
+        "message": "\u9009\u9879"
+    },
+    "loadOptions_label": {
+        "message": "\u914d\u7f6e"
+    },
+    "enableExternalScriptLoadQuestion_title": {
+        "message": "\u5bfc\u5165\u5916\u90e8\u811a\u672c"
+    },
+    "enableExternalScriptLoadQuestion_description": {
+        "message": "\u4f60\u60f3\u8981\u77e5\u9053USI\u5bfc\u5165\u811a\u672c\u53d1\u751f\u4e86\u4ec0\u4e48\u95ee\u9898\u5417\uff1f\uff08\u5f53\u5b89\u88c5\u94fe\u63a5\u7ed3\u5c3e\u4e3a\u201cuser.js\u201d\u7684\u7528\u6237\u811a\u672c\u6e90\u65f6\uff09"
+    },
+    "required_script_one_include": {
+        "message": "\u60a8\u5fc5\u987b\u81f3\u5c11\u8bbe\u7f6e\u4e00\u4e2ainclude\u8868\u8fbe\u5f0f -> \n\n @include *website.com*"
+    },
+    "required_script_name": {
+        "message": "\u60a8\u5e94\u8be5\u4e3a\u811a\u672c\u8bbe\u7f6e\u4e00\u4e2aname\uff0c\u5b83\u4e0d\u7528\u662f\u552f\u4e00\u7684\u3002 -> \n\n @name my_userscript"
+    },
+    "exception_100": {
+        "message": "\u9519\u8bef script_settings.include \u672a\u8bbe\u7f6e"
+    },
+    "error_userscript_settings": {
+        "message": "\u8bbe\u7f6e\u4e0d\u80fd\u6b63\u786e\u8bfb\u53d6\u2026 \n"
+    },
+    "found_bad_encoding": {
+        "message": "\u53d1\u73b0\u4e00\u4e2a\u9519\u8bef\u7684\u5b57\u7b26\uff0c\u4e5f\u8bb8\u662f\u56e0\u4e3a\u7f16\u7801\u9519\u8bef\uff0c \u8bf7\u5c1d\u8bd5\u4f7f\u7528\u5176\u4ed6\u7f16\u7801"
+    },
+    "usi_options": {
+        "message": "USI\u9009\u9879"
+    },
+    "description": {
+        "message": "\u63cf\u8ff0"
+    },
+    "deactivated_userscript": {
+        "message": "\u5df2\u505c\u7528\u7684\u811a\u672c"
+    },
+    "add_new_userscript": {
+        "message": "\u6dfb\u52a0\u65b0\u7684\u811a\u672c \uff01"
+    },
+    "load_userscript_by_url": {
+        "message": "1. \u901a\u8fc7\u94fe\u63a5\u52a0\u8f7d\u65b0\u811a\u672c"
+    },
+    "after_load": {
+        "message": "\u52a0\u8f7d"
+    },
+    "userscript_after_load": {
+        "message": "\u52a0\u8f7d\u811a\u672c"
+    },
+    "load_userscript_by_url_label": {
+        "message": "\u65b0\u811a\u672c\uff08\u901a\u8fc7\u94fe\u63a5\uff09\uff1a"
+    },
+    "load_userscript_by_textarea": {
+        "message": "2. \u901a\u8fc7\u6587\u672c\u6846\u52a0\u8f7d\u811a\u672c"
+    },
+    "load_example": {
+        "message": "\u52a0\u8f7d\u793a\u4f8b"
+    },
+    "clear_textarea": {
+        "message": "\u6e05\u9664\u6587\u672c\u6846"
+    },
+    "save_userscript": {
+        "message": "\u4fdd\u5b58\u811a\u672c"
+    },
+    "save": {
+        "message": "\u4fdd\u5b58"
+    },
+    "overwrite_without_warning": {
+        "message": "\u65e0\u9519\u8bef\u8986\u76d6"
+    },
+    "clear": {
+        "message": "\u6e05\u9664"
+    },
+    "delete_all_userscripts": {
+        "message": "\u5220\u9664\u5168\u90e8\u811a\u672c"
+    },
+    "all_userscripts": {
+        "message": "\u5168\u90e8\u811a\u672c"
+    },
+    "create_new_userscript": {
+        "message": "\u521b\u5efa\u65b0\u811a\u672c"
+    },
+    "revert_all": {
+        "message": "\u91cd\u7f6e\u5168\u90e8"
+    },
+    "check_updates_for_all_userscripts": {
+        "message": "\u68c0\u67e5\u66f4\u65b0\uff08\u811a\u672c\uff09"
+    },
+    "check_now": {
+        "message": "\u7acb\u523b\u68c0\u67e5"
+    },
+    "reset": {
+        "message": "\u6e05\u9664"
+    },
+    "start": {
+        "message": "\u5f00\u59cb"
+    },
+    "alternativeCharset_default": {
+        "message": "\u9ed8\u8ba4"
+    },
+    "empty_userscript_url": {
+        "message": "\u60a8\u5fc5\u987b\u6307\u5b9a\u53ef\u4ee5\u521b\u5efa\u811a\u672c\u7684\u94fe\u63a5\uff0c\u5426\u5219\u4e0d\u80fd\u7ee7\u7eed\u3002"
+    },
+    "same_userscript_was_found_ask_update_it_1": {
+        "message": "\u627e\u5230\u76f8\u540c\u8bbe\u7f6e\u7684\u811a\u672c\uff08usi-id\uff1a \u201c"
+    },
+    "same_userscript_was_found_ask_update_it_2": {
+        "message": "\uff0c\u60a8\u60f3\u8981\u66f4\u65b0\u5417\uff1f"
+    },
+    "yes": {
+        "message": "\u662f"
+    },
+    "no": {
+        "message": "\u5426"
+    },
+    "not_set": {
+        "message": "--\u65e0\u8bbe\u7f6e--"
+    },
+    "want_to_delete_this_userscript_1": {
+        "message": "\u60a8\u8981\u5220\u9664\u6b64\u811a\u672c (usi-id:\uff1a\u201c"
+    },
+    "want_to_delete_this_userscript_2": {
+        "message": "\u201d\uff09 \u5417\uff1f"
+    },
+    "delete_x": {
+        "message": "\u5220\u9664 (X)"
+    },
+    "change": {
+        "message": "\u7f16\u8f91"
+    },
+    "show_hide": {
+        "message": "\u663e\u793a\/\u9690\u85cf"
+    },
+    "show": {
+        "message": "\u663e\u793a"
+    },
+    "hide": {
+        "message": "\u9690\u85cf"
+    },
+    "activate_deactivate": {
+        "message": "\u542f\u7528\/\u505c\u7528"
+    },
+    "activated": {
+        "message": "\u542f\u7528"
+    },
+    "deactivated": {
+        "message": "\u505c\u7528"
+    },
+    "actual_used_quota": {
+        "message": "\u5b9e\u9645\u4f7f\u7528\u5185\u5b58\uff08\u914d\u989d\uff09"
+    },
+    "userscript_was_successful_deleted": {
+        "message": "\u811a\u672c\u5df2\u6210\u529f\u5220\u9664"
+    },
+    "userscript_could_not_deleted": {
+        "message": "\u7528\u6237\u811a\u672c\u65e0\u6cd5\u5220\u9664"
+    },
+    "really_reset_all_settings": {
+        "message": "\u60a8\u60f3\u8981\u91cd\u7f6e\u6240\u6709\u8bbe\u7f6e\uff0c\u771f\u7684\u5417\uff1f"
+    },
+    "really_really_reset_all_settings": {
+        "message": "\u60a8\u7edd\u5bf9\u786e\u5b9a\uff1f\u8fd9\u662f\u6700\u540e\u7684\u673a\u4f1a \uff01"
+    },
+    "userscript_update_was_found_1": {
+        "message": "\u627e\u5230\u6b64\u811a\u672c\uff08usi-id\uff1a \u201c"
+    },
+    "userscript_update_was_found_2": {
+        "message": "\u201d\uff09\u7684\u66f4\u65b0\n\u60a8\u60f3\u66f4\u65b0\u5417\uff1f"
+    },
+    "should_usi_import_this_userscript": {
+        "message": "USI\u5e94\u8be5\u52a0\u8f7d\u5e76\u542f\u7528\u6b64\u811a\u672c\u5417\uff1f"
+    },
+    "language": {
+        "message": "\u8bed\u8a00"
+    },
+    "menu": {
+        "message": "\u83dc\u5355"
+    },
+    "overview": {
+        "message": "\u603b\u89c8"
+    },
+    "overview_description": {
+        "message": "\u5982\u679c\u9886\u60f3\u67e5\u770b\u811a\u672c\u8bf7\u8f6c\u5230\u201c\u5168\u90e8\u811a\u672c"
+    },
+    "edit_userscript_with_id": {
+        "message": "\u7f16\u8f91\u6b64\u811a\u672c\uff0cID\u4e3a"
+    },
+    "no_userscript_there": {
+        "message": "\u60a8\u8fd8\u6ca1\u6709\u4efb\u4f55\u811a\u672c"
+    },
+    "external_script_is_now_loaded": {
+        "message": "\u5916\u90e8\u811a\u672c\u5df2\u52a0\u8f7d"
+    },
+    "userscript_was_saved": {
+        "message": "\u6b64\u811a\u672c\u5df2\u4fdd\u5b58\u5e76\u542f\u7528\u3002"
+    },
+    "userscript_couldnt_saved": {
+        "message": "\u9519\u8bef\uff1a\u6b64\u811a\u672c\u672a\u4fdd\u5b58\uff01"
+    },
+    "error_couldnt_load_url": {
+        "message": "\u9519\u8bef\uff1a\u65e0\u6cd5\u52a0\u8f7d\u6b64\u94fe\u63a5"
+    },
+    "export_all_userscripts": {
+        "message": "\u5bfc\u51fa\u6240\u6709\u811a\u672c"
+    },
+    "export_all_now": {
+        "message": "-\u73b0\u5728\u5bfc\u51fa-"
+    },
+    "complete_export": {
+        "message": "\u5b8c\u6574\u7684\u5bfc\u51fa\uff1f"
+    },
+    "hightlightjsstyle": {
+        "message": "hightlight.js\u9ed8\u8ba4\u6837\u5f0f"
+    },
+    "options_activate_highlightjs_title": {
+        "message": "HighlightJS\u542f\u7528"
+    },
+    "options_always_activate_greasemonkey_title": {
+        "message": "Greasemonkey\u51fd\u6570\u6c38\u8fdc\u542f\u7528"
+    },
+    "options_always_activate_greasemonkey_description": {
+        "message": ""
+    },
+    "reload_from_source": {
+        "message": "\u4ece\u4e0b\u8f7d\u6e90\u91cd\u65b0\u52a0\u8f7d"
+    },
+    "add_new_custom_charset": {
+        "message": "\u6dfb\u52a0\u65b0\u7684\u81ea\u5b9a\u4e49\u5b57\u7b26\u96c6"
+    },
+    "charset_already_exist": {
+        "message": "\u5b57\u7b26\u96c6\u5df2\u5b58\u5728"
+    },
+    "alternative_charset_description": {
+        "message": "\u5982\u679c\u662f\u6587\u4ef6\u7f16\u7801\u6709\u95ee\u9898\uff0c\u60a8\u53ef\u4ee5\u5728\u8fd9\u91cc\u91cd\u65b0\u6307\u5b9a\u4e00\u4e2a\u7f16\u7801"
+    },
+    "alternative_charset": {
+        "message": "\u9009\u62e9\u5b57\u7b26\u96c6"
+    },
+    "direct_userscript_upload": {
+        "message": "\u76f4\u63a5\u4e0a\u4f20\u811a\u672c"
+    },
+    "OldUsiIncludeBehavior_title": {
+        "message": "USI Include\u884c\u4e3a"
+    },
+    "OldUsiIncludeBehavior_description": {
+        "message": "\u60a8\u53ef\u4ee5\u6539\u53d8include\u89c4\u5219\u7684\u5904\u7406\uff0c\u4f7f\u7528USI\u65e7\u884c\u4e3a, \u5426\u5219\u5e94\u8be5\u4f7f\u7528Greasemonkey\u884c\u4e3a\u3002"
+    },
+    "OldUsiIncludeBehavior_oldUsiMethod": {
+        "message": "\u65e7\u7248USI\u884c\u4e3a"
+    },
+    "OldUsiIncludeBehavior_GMMethod": {
+        "message": "Greasemonkey\u884c\u4e3a"
+    },
+    "changelog": {
+        "message": "\u66f4\u65b0\u65e5\u5fd7"
+    },
+    "changelog_1": {
+        "message": "if you encounter any problems and your Userscripts won't load\/work anymore, \\n\\then you can change this behavior to the previous one in the options."
+    },
+    "changelog_2": {
+        "message": "Since USI version 0.4.1-a-alpha and above, new userscripts will be active after the tab was reloaded (if the include rule will match this tab)"
+    },
+    "userscript_was_modified_by_usi___reason_missing_name": {
+        "message": "\u60a8\u7684\u811a\u672c\u5df2\u88abUSI\u4fee\u6539\uff0c \u5b83\u589e\u52a0\u4e86@name <Filename>\uff01"
+    },
+    "show_GMValues": {
+        "message": "\u663e\u793a\u4fdd\u5b58\u7684GM\u503c"
+    },
+    "GMValues": {
+        "message": "GM\u503c"
+    },
+    "confirm_delete_all_GMValues": {
+        "message": "\u5220\u9664\u6b64\u811a\u672c\u5b9a\u4e49\u7684\u5168\u90e8GM\u503c\uff0c\u60a8\u786e\u5b9a\uff1f"
+    },
+    "override_run_at": {
+        "message": "\u8986\u76d6@run-at\u8bbe\u7f6e"
+    },
+    "userscript_fixes": {
+        "message": "\u4fee\u590d\u811a\u672c"
+    },
+    "help": {
+        "message": "\u5e2e\u52a9\/\u5e38\u89c1\u95ee\u9898"
+    },
+    "help_1_title": {
+        "message": "Why doesn't the Userscript work, which was written for Greasemonkey?"
+    },
+    "help_1_description": {
+        "message": "often it is enough to switch this, that means if the GM Userscript has \"@run-at document-start\" defined, then you have to switch it to \"@run-at document-ready\" for USI"
+    },
+    "help_2_title": {
+        "message": ""
+    },
+    "help_2_description": {
+        "message": "if it is defined as \"document-start\", there is no complete \"document\" at the time your Userscript runs, this will be available with \"document-ready\". \\n\\For futher informations take a look at this page \\n\\\"page-mod\" (https:\/\/developer.mozilla.org\/en-US\/Add-ons\/SDK\/High-Level_APIs\/page-mod) in the chapter \"contentScriptWhen\""
+    },
+    "config_add_css": {
+        "message": "\u4e2a\u4ebaCSS"
+    },
+    "config_add_css_title": {
+        "message": "\u4e2a\u4ebaCSS"
+    },
+    "config_add_css_description": {
+        "message": "\u60a8\u53ef\u4ee5\u5728\u8fd9\u91cc\u8f93\u5165\u81ea\u5df1\u7684CSS\u6765\u66f4\u6539USI\u7684\u914d\u7f6e\u754c\u9762"
+    },
+    "config_add_css_refresh": {
+        "message": "\u5237\u65b0"
+    },
+    "edit_last_changes": {
+        "message": "\u811a\u672c\u4e0a\u6b21\u4fee\u6539"
+    }
+}
