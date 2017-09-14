@@ -32,6 +32,9 @@
         },
         "default_title": "USI"
     },
+    "options_ui": {
+        "page": "options_addon_details.html"
+    },
     "applications": {
         "gecko": {
             "id": "firefox-addon-usi@jetpack", 
