@@ -255,7 +255,7 @@
         "message": "\u66f4\u65b0\u65e5\u5fd7"
     },
     "changelog_1": {
-        "message": "if you encounter any problems and your Userscripts won't load\/work anymore, \\n\\then you can change this behavior to the previous one in the options."
+        "message": "if you encounter any problems and your Userscripts won't load\/work anymore, \n\then you can change this behavior to the previous one in the options."
     },
     "changelog_2": {
         "message": "Since USI version 0.4.1-a-alpha and above, new userscripts will be active after the tab was reloaded (if the include rule will match this tab)"
@@ -291,7 +291,7 @@
         "message": ""
     },
     "help_2_description": {
-        "message": "if it is defined as \"document-start\", there is no complete \"document\" at the time your Userscript runs, this will be available with \"document-ready\". \\n\\For futher informations take a look at this page \\n\\\"page-mod\" (https:\/\/developer.mozilla.org\/en-US\/Add-ons\/SDK\/High-Level_APIs\/page-mod) in the chapter \"contentScriptWhen\""
+        "message": "if it is defined as \"document-start\", there is no complete \"document\" at the time your Userscript runs, this will be available with \"document-ready\". \nFor futher informations take a look at this page \n\"page-mod\" (https:\/\/developer.mozilla.org\/en-US\/Add-ons\/SDK\/High-Level_APIs\/page-mod) in the chapter \"contentScriptWhen\""
     },
     "config_add_css": {
         "message": "\u4e2a\u4ebaCSS"

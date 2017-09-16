@@ -12,16 +12,16 @@
         "message": "Do you want to get a question by USI to import a Userscript? (When calling Userscript sources whose URL end is `user.js`)"
     },
     "required_script_one_include": {
-        "message": "You must set at least -one- include expression -> \\n\\n @include *website.com*"
+        "message": "You must set at least -one- include expression -> \n\n @include *website.com*"
     },
     "required_script_name": {
-        "message": "You should set a name for your script, it is not necessary to be unique -> \\n\\n @name my_userscript"
+        "message": "You should set a name for your script, it is not necessary to be unique -> \n\n @name my_userscript"
     },
     "exception_100": {
         "message": "ERROR script_settings.include not OK"
     },
     "error_userscript_settings": {
-        "message": "Settings couldn't be read properly ... \\n"
+        "message": "Settings couldn't be read properly ... \n"
     },
     "found_bad_encoding": {
         "message": "a false character was found, perhaps through an false encoding, please try to use another encoding"
@@ -114,7 +114,7 @@
         "message": "A Userscript with same settings was found (usi-id: '"
     },
     "same_userscript_was_found_ask_update_it_2": {
-        "message": "') \\n\\, do you want to update?"
+        "message": "') \n, do you want to update?"
     },
     "yes": {
         "message": "yes"
@@ -174,7 +174,7 @@
         "message": "For the script (usi-id: '"
     },
     "userscript_update_was_found_2": {
-        "message": "' ) an upgrade is found\\ndo you want to update it?"
+        "message": "' ) an upgrade is found\ndo you want to update it?"
     },
     "should_usi_import_this_userscript": {
         "message": "Should USI load and activate this UserScript?"
@@ -189,7 +189,7 @@
         "message": "Overview"
     },
     "overview_description": {
-        "message": "The options are now seperated, \\n\\if you want to see your Userscipts go to \"all Userscripts\""
+        "message": "The options are now seperated, \nif you want to see your Userscipts go to \"all Userscripts\""
     },
     "edit_userscript_with_id": {
         "message": "Edit the Userscript with ID"
@@ -264,7 +264,7 @@
         "message": "Changelog"
     },
     "changelog_1": {
-        "message": "USI version 0.3.2-a-alpha and above are using the methods from Greasemonkey to process the \"Include rules\", \\n\\if you encounter any problems and your Userscripts won't load\/work anymore, \\n\\then you can change this behavior to the previous one in the options."
+        "message": "USI version 0.3.2-a-alpha and above are using the methods from Greasemonkey to process the \"Include rules\", \n if you encounter any problems and your Userscripts won't load\/work anymore, \n then you can change this behavior to the previous one in the options."
     },
     "changelog_2": {
         "message": "Since USI version 0.4.1-a-alpha and above, new userscripts will be active after the tab was reloaded (if the include rule will match this tab)"
@@ -294,13 +294,13 @@
         "message": "Why doesn't the Userscript work, which was written for Greasemonkey?"
     },
     "help_1_description": {
-        "message": "In many cases, the Userscript won't run directly in USI, bacause USI and GM are handling the @run-at statement slightly different \\n\\often it is enough to switch this, that means if the GM Userscript has \"@run-at document-start\" defined, then you have to switch it to \"@run-at document-ready\" for USI"
+        "message": "In many cases, the Userscript won't run directly in USI, bacause USI and GM are handling the @run-at statement slightly different \n often it is enough to switch this, that means if the GM Userscript has \"@run-at document-start\" defined, then you have to switch it to \"@run-at document-ready\" for USI"
     },
     "help_2_title": {
         "message": "Why did I not have access to the \"document\"?"
     },
     "help_2_description": {
-        "message": "Like in the other case, the reason is the \"@run-at\" statement, \\n\\if it is defined as \"document-start\", there is no complete \"document\" at the time your Userscript runs, this will be available with \"document-ready\". \\n\\For futher informations take a look at this page \\n\\\"page-mod\" (https:\/\/developer.mozilla.org\/en-US\/Add-ons\/SDK\/High-Level_APIs\/page-mod) in the chapter \"contentScriptWhen\""
+        "message": "Like in the other case, the reason is the \"@run-at\" statement, \n if it is defined as \"document-start\", there is no complete \"document\" at the time your Userscript runs, this will be available with \"document-ready\". \n For futher informations take a look at this page \n\"page-mod\" (https:\/\/developer.mozilla.org\/en-US\/Add-ons\/SDK\/High-Level_APIs\/page-mod) in the chapter \"contentScriptWhen\""
     },
     "config_add_css": {
         "message": "individual CSS"
