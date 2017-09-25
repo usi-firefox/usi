@@ -3,17 +3,13 @@ ss = require("sdk/simple-storage");
 
 exports.setSyncLegacyDataPort = function(port) {
   
-  let sdk_prefs = sp.prefs;
-  let sdk_userscript_storage = ss.storage;
-  
-  let data_dump = {
-    prefs: {
-      sdk_prefs
-    },
-    storage: {
-      sdk_userscript_storage
-    }
-  };
+    var prefs = Object.assign({}, sp.prefs); 
+    var storage = Object.assign({}, ss.storage); 
+   
+    let data_dump = {
+        prefs: prefs
+        ,storage: storage
+    }; 
   // Send the initial data dump.
   port.postMessage(data_dump);
 
