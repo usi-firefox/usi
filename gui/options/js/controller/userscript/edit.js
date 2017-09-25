@@ -56,10 +56,12 @@ var userscript_edit_controller = (function userscript_edit_class() {
             if (last_userscript_interval_id === null) {
                 last_userscript_interval_id = window.setInterval(function () {
                     // falls der letzte Wert in der Historie verschieden sein sollte
-                    if (last_userscript_text.length > 0) {
-                        if (last_userscript_text[last_userscript_text.length - 1] !== jQuery(textarea_id).val()) {
+                    if (jQuery(textarea_id).val().length > 0) {
+                            // Kein Wert enthalten ODER der Letzte Wert ist verschieden
+                        if(last_userscript_text.length === 0 || 
+                            (last_userscript_text[last_userscript_text.length -1 ] !== jQuery(textarea_id).val())){
+                            // 
                             last_userscript_text.push(jQuery(textarea_id).val());
-
                             self.undo_length();
                         }
                     }

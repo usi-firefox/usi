@@ -132,9 +132,6 @@ var event_controller = (function event_controller_class() {
                         port.on("USI-BACKEND:update-for-userscript-available", c);
                     }
                 }
-                , url_test: function (id, c) {
-                    port.on("USI-BACKEND:test-url-match-" + id, c);
-                }
                 , gm_values: function (id, c) {
                     port.on("USI-BACKEND:list-GMValues-done-" + id, c);
                 }
@@ -204,9 +201,6 @@ var event_controller = (function event_controller_class() {
                         result.push({key: name, value: completeValStore[name]});
                     }
                     return basic_helper.convertToText(result);
-                }
-                , url_test: function (data) {
-                    port.postMessage({name: "USI-BACKEND:test-url-match", data});
                 }
             }
 

@@ -133,13 +133,6 @@ function userscript_list_entry_class(script, index) {
                 // veranlasse den Tab Wechsel!
                 jQuery(document).trigger("USI-FRONTEND:changeTab", ["load_external", script.moreinformations.url]);
             }
-            // testet die eingebene URL ob ein Include darauf greifen(matchen) würde
-            , testUrlMatch: function () {
-                var url = jQuery(usi_list_entry_id_plus_class + "includes-testurl").val();
-
-                // Backend anfragen
-                event_controller.request.userscript.url_test({url: url, id: script.id});
-            }
             // Code highlight
             , highlightCode: function () {
 
@@ -231,10 +224,6 @@ function userscript_list_entry_class(script, index) {
 
                 // Userscript Inhalt anzeigen/ausblenden
                 event_manager_controller.register_once(usi_list_entry_id_plus_class + "view-userscript", "change", self.showUserscript);
-
-                // URL Test gegen die Includes
-                event_manager_controller.register_once(usi_list_entry_id_plus_class + "includes-testurl", "keyup", self.testUrlMatch);
-
 
                 // Ausgabe jedoch zunächst ausblenden
                 jQuery(usi_list_entry_id_plus_class + "view-userscript---output").toggleClass("hidden");
