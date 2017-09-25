@@ -311,6 +311,9 @@
     "config_add_css_description": {
         "message": "Here you can enter your own CSS to change the configuration interface of USI"
     },
+    "config_add_css_reset_question": {
+        "message": "Reset all CSS settings? \n(OK) => reset | (Cancel) => keep"
+    },
     "config_add_css_refresh": {
         "message": "refresh"
     },

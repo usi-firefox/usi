@@ -314,6 +314,9 @@
     "config_add_css_description": {
         "message": "Hier kannst du eigene CSS Angaben eintragen, um die Konfigurations Oberfl\u00e4che f\u00fcr USI anzupassen"
     },
+    "config_add_css_reset_question": {
+        "message": "Alle CSS Einstellungen zurücksetzen? \n(OK) => zurücksetzen | (Abbrechen) => CSS behalten"
+    },
     "config_add_css_refresh": {
         "message": "aktualisieren"
     },

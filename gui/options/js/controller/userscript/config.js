@@ -40,12 +40,15 @@ var userscript_config_controller = (function userscript_config_class() {
                     // Reset anbieten, für den fall das etwas schief gegangen ist
                     if (no_reset !== true) {
                         window.setTimeout(function () {
-                            if (window.confirm("Reset all CSS settings? \n(OK) => reset | (Cancel) => keep")) {
+                            if (window.confirm(lang.getMessage("config_add_css_reset_question"))) {
                                 // reset 
-                                jQuery("#usi-additional-css").html("");
+                                self.activate_css("");
                             }
                         }, 5000);
                     }
+                }else{
+                    // CSS zurücksetzen
+                    self.activate_css("");
                 }
             }
 

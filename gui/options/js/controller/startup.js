@@ -7,11 +7,6 @@ var global_settings = {};
 jQuery().ready(function () {
     // INIT
 
-    // Eigenes CSS hinzufügen
-    jQuery("head").append(
-        jQuery("<style>").attr("id", "usi-additional-css").attr("type", "text/css")
-        );
-
     // initialisiere die globalen Events für die Kommunikation mit dem Backend
     event_controller.register_global_events();
 
