@@ -190,6 +190,9 @@ var event_controller = (function event_controller_class() {
                 , update_check: function () {
                     port.postMessage({name: "USI-BACKEND:check-for-userscript-updates"});
                 }
+                , reload_from_source: function (source_path) {
+                    port.postMessage({name: "USI-BACKEND:reload-from-source", data: {url: source_path}});
+                }
                 , gm_values: async function (id) {
                     let script_storage = await userscript_storage;
 

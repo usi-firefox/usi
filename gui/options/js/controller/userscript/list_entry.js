@@ -130,8 +130,14 @@ function userscript_list_entry_class(script, index) {
 
             // Übergibt die URL an die Nachlade Funktion
             , loadAgain: function () {
-                // veranlasse den Tab Wechsel!
-                jQuery(document).trigger("USI-FRONTEND:changeTab", ["load_external", script.moreinformations.url]);
+                
+                if(/^http/.test(script.moreinformations.url)){
+                    // URL muss mit http beginnen
+                    event_controller.request.userscript.reload_from_source(script.moreinformations.url);
+                }else{
+                     basic_helper.notify("only source from http:// or https:// are allowed at the moment");
+                }
+                
             }
             // Code highlight
             , highlightCode: function () {
