@@ -7,7 +7,7 @@
     "developer": {
         "name": "usi-dev"
     },
-    "version": "0.5.0.12a",
+    "version": "0.5.1.0a",
     "background": {
         "page": "loadjs.html"
     },
@@ -50,6 +50,7 @@
         "storage",
         "unlimitedStorage",
         "tabs",
-        "webRequest"
+        "webRequest",
+        "webNavigation"
     ]
 }
