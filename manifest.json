@@ -7,7 +7,7 @@
     "developer": {
         "name": "usi-dev"
     },
-    "version": "0.5.1.3a",
+    "version": "0.5.1.4a",
     "background": {
         "page": "loadjs.html"
     },
