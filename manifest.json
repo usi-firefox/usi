@@ -7,7 +7,7 @@
     "developer": {
         "name": "usi-dev"
     },
-    "version": "0.5.1.4a",
+    "version": "0.5.1.4b",
     "background": {
         "page": "loadjs.html"
     },
@@ -38,7 +38,7 @@
     "applications": {
         "gecko": {
             "id": "firefox-addon-usi@jetpack", 
-            "strict_min_version": "56.0"
+            "strict_min_version": "57.0"
         }
     },
     "permissions": [
