@@ -234,39 +234,41 @@ function GM_xmlhttpRequest(gm_details) {
     // Wrapper für counter
     (function (counter) {
 
-        let supported_events = ["onabort", "onerror", "onload", "onloadstart", "loadend", "onprogress", "onreadystatechange", "ontimeout"];
-        for (var evt of supported_events) {
+        const supported_events = ["onabort", "onerror", "onload", "onloadstart", "loadend", "onprogress", "onreadystatechange", "ontimeout"];
+        supported_events.forEach((evt) => {
+            // beispiel gm_details.onload === "function"
             if (typeof gm_details[evt] === "function") {
+                let event_name_for_backend = evt;
+                // entferne das Präfix "on"
+                if (/^on/.test(event_name_for_backend)) {
+                    event_name_for_backend = event_name_for_backend.replace(/^on/, "");
+                }
+
                 backend_port.onMessage.addListener((response) => {
-                    let event_name_for_backend = evt;
-                    // entferne das Präfix "on"
-                    if(/^on/.test(event_name_for_backend)){
-                        event_name_for_backend = event_name_for_backend.replace(/^on/,"");
-                    }
-                    
                     if (response.name === "GM_xmlhttpRequest---" + event_name_for_backend + "-" + counter) {
                         gm_details[evt](response.data);
                     }
                 });
             }
-        }
 
-        // Übergabe an die Backend Funktion!
-        backend_port.postMessage({name: "GM_xmlhttpRequest", data: {
-                details: {
-                    url: gm_details.url
-                        // OriginUrl hinzufügen, für den Fall einer relativen URL
-                    , originUrl: window.location.origin
-                    , timeout: gm_details.timeout
-                    , ignoreCache: gm_details.ignoreCache
-                    , synchronous: gm_details.synchronous
-                    , user: gm_details.user
-                    , password: gm_details.password
-                    , headers: gm_details.headers
-                    , binary: gm_details.binary
-                    , data: gm_details.data
-                    , method: gm_details.method
-                    , overrideMimeType: gm_details.overrideMimeType
+        });
+
+    // Übergabe an die Backend Funktion!
+    backend_port.postMessage({name: "GM_xmlhttpRequest", data: {
+            details: {
+                url: gm_details.url
+                    // OriginUrl hinzufügen, für den Fall einer relativen URL
+                , originUrl: window.location.origin
+                , timeout: gm_details.timeout
+                , ignoreCache: gm_details.ignoreCache
+                , synchronous: gm_details.synchronous
+                , user: gm_details.user
+                , password: gm_details.password
+                , headers: gm_details.headers
+                , binary: gm_details.binary
+                , data: gm_details.data
+                , method: gm_details.method
+                , overrideMimeType: gm_details.overrideMimeType
                 }}, counter: counter});
 
     })(message_counter);
