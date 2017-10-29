@@ -2,24 +2,34 @@
 
 ## Installation
 
-to install usi (Version **0.5 and above**) you need **Mozilla Firefox in version 55+**, 
+to install usi (Version **0.5 and above**) you need **Mozilla Firefox in version 57+**, 
 the versions of usi are available at [addons.mozilla.org](https://addons.mozilla.org/de/firefox/addon/userunified-script-injector/)
 
-## run from source
-if you want to run usi from source, you will need to install 
+## run on computer
+If you want to run usi from source, go to page **about:debugging** in Firefox
+there should be a button called **Load Temporary Add-on**
+Now you can select the **manifest.json** file in the **usi source directory**.
+```
+about:debugging
+```
+
+## debug on computer
+If you want to **debug usi**, go to page about:debugging in Firefox
+and activate the checkbox **Enable add-on debugging**
+then you can click on the **Debug** button
+```
+about:debugging
+```
+
+## build
+if you want to build usi from source, you will need to install 
 * [NodeJS](https://nodejs.org)
 * [web-ext Module](https://github.com/mozilla/web-ext)
 * [Firefox Unbranded Build](https://wiki.mozilla.org/Add-ons/Extension_Signing#Latest_Builds) (only a suggestion)
 
-and then you can run usi (from it's root directory) with this short command in your commandline/shell
+and then you can build usi (from it's root directory) with this short command in your commandline/shell
 ```
-web-ext run
-```
-
-## debug on computer
-If you want to **debug usi**, please use the Firefox "Debug" Button for "usi" at the page about:debugging 
-```
-about:debugging
+web-ext build
 ```
 
 ## running/debug on Firefox for Android
@@ -28,10 +38,10 @@ For running on Firefox for Android, you have to build usi with
 web-ext build
 ```
 1. you have to rename the file ending from .zip to .xpi
-2. transfer the xpi file to your phone/emulator (e.g. `adb push /home/user/usi/web-ext-artifacts/firefox-addon-usi_jetpack-0.5.0.6.xpi /sdcard/.`)
+2. transfer the xpi file to your phone/emulator (e.g. `adb push /home/user/usi/web-ext-artifacts/firefox-addon-usi_jetpack-0.5.1.9.xpi /sdcard/.`)
 3. start your Firefox for Android
 4. go to `about:config` and change 'xpinstall.signatures.required' to **false**
-5. enter the file url (e.g. `file:///sdcard/firefox-addon-usi_jetpack-0.5.0.6.xpi` )
+5. enter the file url (e.g. `file:///sdcard/firefox-addon-usi_jetpack-0.5.1.9.xpi` )
 6. allow install, and then you will find a new menu entry called "USI Options"
 
 If you need more informations about this, please take a look at [Developing_WebExtensions_for_Firefox_for_Android](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Developing_WebExtensions_for_Firefox_for_Android)
