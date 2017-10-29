@@ -1,0 +1,56 @@
+{
+    "manifest_version": 2,
+    "name": "firefox-addon-usi@jetpack",
+    "description": "__MSG_extShortDesc__",
+    "default_locale": "de",
+    "author": "usi-dev",
+    "developer": {
+        "name": "usi-dev"
+    },
+    "version": "0.5.1.9",
+    "background": {
+        "page": "loadjs.html"
+    },
+    "content_scripts": [{
+            "matches": [
+                "*://*/*.user.js"
+                , "file:///*.user.js"
+            ]
+            ,"js": [
+                "lib/helper/basic_helper.js" 
+                ,"lib/update/sdk_to_webext.js" 
+                ,"lib/storage/config.js" 
+                ,"lib/get_userscript_from_page/content.js" 
+            ]
+            , "run_at": "document_end"
+        }],
+    
+    "browser_action": {
+        "browser_style": true,
+        "default_icon": {
+            "38": "gui/icon/usi.png"
+        },
+        "default_title": "USI"
+    },
+    "options_ui": {
+        "page": "options_addon_details.html"
+    },
+    "applications": {
+        "gecko": {
+            "id": "firefox-addon-usi@jetpack", 
+            "strict_min_version": "57.0"
+        }
+    },
+    "permissions": [
+        "<all_urls>",
+        "clipboardRead",
+        "clipboardWrite",
+        "downloads",
+        "notifications",
+        "storage",
+        "unlimitedStorage",
+        "tabs",
+        "webRequest",
+        "webNavigation"
+    ]
+}

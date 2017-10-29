@@ -1,26 +1,40 @@
-usi
-===
+# usi
 
 ## Installation
 
-to install usi you need **Mozilla Firefox in version 39+**, 
+to install usi (Version **0.5 and above**) you need **Mozilla Firefox in version 55+**, 
 the versions of usi are available at [addons.mozilla.org](https://addons.mozilla.org/de/firefox/addon/userunified-script-injector/)
 
 ## run from source
 if you want to run usi from source, you will need to install 
 * [NodeJS](https://nodejs.org)
-* [jpm Module](https://github.com/mozilla-jetpack/jpm/)
+* [web-ext Module](https://github.com/mozilla/web-ext)
+* [Firefox Unbranded Build](https://wiki.mozilla.org/Add-ons/Extension_Signing#Latest_Builds) (only a suggestion)
 
 and then you can run usi (from it's root directory) with this short command in your commandline/shell
 ```
-jpm run
+web-ext run
 ```
 
-Also, you can use the **jpm watchpost**,
+## debug on computer
+If you want to **debug usi**, please use the Firefox "Debug" Button for "usi" at the page about:debugging 
 ```
-jpm watchpost --post-url http://localhost:8888/
+about:debugging
 ```
-for more informations about this, take a look at the [MDN docs](https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/jpm#jpm_watchpost) and this awesome add-on [Extension Auto-Installer](https://github.com/palant/autoinstaller)!
+
+## running/debug on Firefox for Android
+For running on Firefox for Android, you have to build usi with
+```
+web-ext build
+```
+1. you have to rename the file ending from .zip to .xpi
+2. transfer the xpi file to your phone/emulator (e.g. `adb push /home/user/usi/web-ext-artifacts/firefox-addon-usi_jetpack-0.5.0.6.xpi /sdcard/.`)
+3. start your Firefox for Android
+4. go to `about:config` and change 'xpinstall.signatures.required' to **false**
+5. enter the file url (e.g. `file:///sdcard/firefox-addon-usi_jetpack-0.5.0.6.xpi` )
+6. allow install, and then you will find a new menu entry called "USI Options"
+
+If you need more informations about this, please take a look at [Developing_WebExtensions_for_Firefox_for_Android](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Developing_WebExtensions_for_Firefox_for_Android)
 
 ## Contributors
 
