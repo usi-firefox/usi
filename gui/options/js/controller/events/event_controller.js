@@ -165,7 +165,7 @@ var event_controller = (function event_controller_class() {
                     
                     self.request.userscript.refresh();
                     // lade Page Mod neu!
-//                            page_injection_helper.re_init_page_injection();
+                    port.postMessage({name: "USI-BACKEND:pageinjection-refresh"});
 
                 }
                 , delete: async function (id) {
@@ -178,9 +178,9 @@ var event_controller = (function event_controller_class() {
 
                         basic_helper.notify(lang.getMessage("userscript_was_successful_deleted") + " (ID " + id + ")");
                         
-                        let page_injection_helper_port = browser.runtime.connect(basic_helper.getExtId(), {name: "page-injection-helper"});
-                        page_injection_helper_port.postMessage({name: "remove_userscript", data: {"userscript_handle": userscript_handle}});
-                        
+                        // Userscript entfernen lassen
+                        port.postMessage({name: "USI-BACKEND:pageinjection-remove", data:{ id: id }});
+
                         self.request.userscript.refresh();
                     } else {
                         // konnte nicht gefunden und daher auch nicht gelöscht werden
