@@ -10,7 +10,13 @@ pipelines:
     - step:
         caches:
           - node
+          - webext
         script: # Modify the commands below to build your repository.
           - npm install -g web-ext
           - web-ext build --overwrite-dest --ignore-files locale --ignore-files CHANGELOG.txt --ignore-files USES.txt
           - curl -X POST --user "${BB_AUTH_STRING}" "https://api.bitbucket.org/2.0/repositories/${BITBUCKET_REPO_OWNER}/${BITBUCKET_REPO_SLUG}/downloads" --form files=@"/opt/atlassian/pipelines/agent/build/web-ext-artifacts/firefox-addon-usi_jetpack-*.zip"
+          
+
+definitions:
+  caches:
+    webext: /usr/local/bin/web-ext
