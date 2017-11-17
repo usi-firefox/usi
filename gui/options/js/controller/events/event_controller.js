@@ -193,6 +193,9 @@ var event_controller = (function event_controller_class() {
                 , reload_from_source: function (source_path) {
                     port.postMessage({name: "USI-BACKEND:reload-from-source", data: {url: source_path}});
                 }
+                , start_spa: function (userscript) {
+                    port.postMessage({name: "USI-BACKEND:start-spa", data: {userscript}});
+                }
                 , gm_values: async function (id) {
                     let script_storage = await userscript_storage;
 

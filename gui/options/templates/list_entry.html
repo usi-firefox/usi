@@ -8,7 +8,7 @@
 				<div class="panel-heading">
 					<h4 class="panel-title">
 						<span data-id="icon_data_id"></span>
-						Index: <span data-content="index"></span> | <span data-content="userscript-settings-name"></span> | <span data-content="userscript-settings-author"></span> | <span data-content="userscript-settings-version"></span>
+						Index: <span data-content="index"></span> <span class="usi-list-entry-is-spa hidden" style="color: red;">| SPA</span> | <span data-content="userscript-settings-name"></span> | <span data-content="userscript-settings-author"></span> | <span data-content="userscript-settings-version"></span>
 						
 						<i class="usi-list-entry-toggle-options fa fa-angle-double-down" title="expand or compress overview"></i>
 					</h4>
@@ -34,6 +34,10 @@
 					<input type="checkbox" class="usi-list-entry-deactivated" data-toggle="toggle" />
 
 					<hr />
+                    
+                    <div class="usi-list-entry-start-spa-div hidden row">
+                        <button class="btn btn-info usi-list-entry-start-spa-button col-xs-push-2 col-xs-8" >START SPA</button>
+                    </div>
 
 					<!--Require Skripte-->
 					<div class="usi-list-entry-required-scripts">

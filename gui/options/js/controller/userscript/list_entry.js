@@ -128,6 +128,10 @@ function userscript_list_entry_class(script, index) {
                 jQuery(document).trigger("USI-FRONTEND:changeTab", ["edit", script]);
             }
 
+            , start_spa: function () {
+                event_controller.request.userscript.start_spa(script);
+            }
+
             // Übergibt die URL an die Nachlade Funktion
             , loadAgain: function () {
                 
@@ -246,15 +250,24 @@ function userscript_list_entry_class(script, index) {
                     jQuery(usi_list_entry_id_plus_class + "required-scripts").addClass("hidden");
                 }
 
-                // Include Regeln
-                if (!basic_helper.empty(script.settings.include)) {
-                    for (var i in script.settings.include) {
-                        jQuery(usi_list_entry_id_plus_class + "includes---output").append(
-                            jQuery("<li>").html(script.settings.include[i])
-                            );
-                    }
+                // SPA Button
+                if (script.settings.spa) {
+                    event_manager_controller.register_once(usi_list_entry_id_plus_class + "start-spa-button", "click", self.start_spa);
+                    jQuery(usi_list_entry_id_plus_class + "start-spa-div").removeClass("hidden");
+                    jQuery(usi_list_entry_id_plus_class + "is-spa").removeClass("hidden");
+                    
+                    jQuery(usi_list_entry_id_plus_class + "includes").addClass("hidden");
                 } else {
-                    // Das darf eigentlich nicht passieren ...
+                    // Include Regeln
+                    if (!basic_helper.empty(script.settings.include)) {
+                        for (var i in script.settings.include) {
+                            jQuery(usi_list_entry_id_plus_class + "includes---output").append(
+                                jQuery("<li>").html(script.settings.include[i])
+                                );
+                        }
+                    } else {
+                        // Das darf eigentlich nicht passieren ...
+                    }
                 }
             }
         };
