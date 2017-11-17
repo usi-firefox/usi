@@ -1,13 +1,13 @@
 {
     "manifest_version": 2,
-    "name": "firefox-addon-usi@jetpack",
+    "name": "USI",
     "description": "__MSG_extShortDesc__",
     "default_locale": "de",
     "author": "usi-dev",
     "developer": {
         "name": "usi-dev"
     },
-    "version": "0.5.1.11",
+    "version": "0.5.1.12",
     "background": {
         "page": "loadjs.html"
     },
@@ -45,12 +45,12 @@
         "<all_urls>",
         "clipboardRead",
         "clipboardWrite",
+        "contextMenus",
         "downloads",
         "notifications",
         "storage",
         "unlimitedStorage",
         "tabs",
-        "webRequest",
         "webNavigation"
     ]
 }

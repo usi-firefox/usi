@@ -117,7 +117,7 @@
         "message": "Ein Userscript mit den gleichen Einstellungen (usi-id: '"
     },
     "same_userscript_was_found_ask_update_it_2": {
-        "message": "wurde gefunden, m\u00f6chtest du es aktualisieren?"
+        "message": "') wurde gefunden, m\u00f6chtest du es aktualisieren?"
     },
     "yes": {
         "message": "Ja"
