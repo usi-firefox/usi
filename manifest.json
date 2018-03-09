@@ -11,7 +11,8 @@
     "background": {
         "page": "loadjs.html"
     },
-    "content_scripts": [{
+    "content_scripts": [
+        {
             "matches": [
                 "*://*/*.user.js"
                 , "file:///*.user.js"
@@ -23,8 +24,8 @@
                 ,"lib/get_userscript_from_page/content.js" 
             ]
             , "run_at": "document_end"
-        }],
-    
+        }
+    ],
     "browser_action": {
         "browser_style": true,
         "default_icon": {
