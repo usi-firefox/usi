@@ -9,7 +9,7 @@
     },
     "version": "0.5.2.2a",
     "background": {
-        "page": "loadjs.html"
+        "page": "background.html"
     },
     "content_scripts": [
         {
