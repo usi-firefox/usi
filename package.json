@@ -1,0 +1,21 @@
+{
+  "name": "usi",
+  "version": "1.0.0",
+  "description": "usi, userscript injector for Mozilla Firefox",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack --watch --mode development",
+    "webpack-prod": "webpack --watch --mode production"
+  },
+  "author": "usi <>",
+  "license": "LGPL",
+  "devDependencies": {
+    "@types/jquery": "^3.3.1",
+    "copy-webpack-plugin": "^4.5.1",
+    "ts-loader": "^4.0.1",
+    "typescript": "^2.7.2",
+    "web-ext-types": "^2.0.1",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12"
+  }
+}

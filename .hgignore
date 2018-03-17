@@ -6,3 +6,5 @@ nbproject/
 batch/
 test/
 web-ext-artifacts/*
+dist/*
+node_modules/*

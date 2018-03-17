@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--USI Optionen-->
+		<title data-usi-lang="usi_options" data-usi-lang-replace="true">USI</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!-- External librarys -->
+        <script type="text/javascript" src="libs/jquery/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="libs/jquery.loadtemplate/jquery.loadTemplate.js"></script>
+        <script type="text/javascript" src="libs/bootstrap-toggle/bootstrap-toggle.js"></script>
+		<script type="text/javascript" src="libs/highlight/highlight.pack.js"></script>
+		
+        <!--default CSS-->
+        <link href="libs/angularjs-mobile/css/font-awesome.css" type="text/css" rel="stylesheet" />
+        <link href="libs/angularjs-mobile/css/mobile-angular-ui-base.min.css" type="text/css" rel="stylesheet" />
+        <link href="libs/angularjs-mobile/css/mobile-angular-ui-desktop.min.css" type="text/css" rel="stylesheet" />
+        <link href="libs/bootstrap-toggle/bootstrap-toggle.css" type="text/css" rel="stylesheet" />
+        <link href="options/css/extra.css" type="text/css" rel="stylesheet" />
+        
+        <!--Highlight JS Style-->
+        <link id="HighlightJSStyle" href="libs/highlight/styles/default.css" type="text/css" rel="stylesheet" />
+
+        <style id="usi-additional-css" type="text/css"></style>
+	</head>
+	<body class="has-sidebar-left has-navbar-top">
+		<div class="sidebar sidebar-left">
+			<!--<div class="clearfix"></div>-->
+
+			<!-- Sidebar -->
+			<div id="sidebar-menu" class="scrollable">
+				<h1 class="scrollable-header app-name">USI - (<span id="usi-version"></span>)</h1>
+				<div class="scrollable-content">
+					<a class="list-group-item load_template" data-usi-templateurl="overview" data-usi-lang="overview">
+						<!--Überblick-->
+					</a>
+					<a class="list-group-item load_template" data-usi-templateurl="list" data-usi-lang="all_userscripts">
+						<!--Alle Userscripts-->
+					</a>
+					<a class="list-group-item load_template" data-usi-templateurl="edit" data-usi-lang="create_new_userscript">
+						<!--Neues Userscript erstellen-->
+					</a>
+					<a class="list-group-item load_template" data-usi-templateurl="load_external" data-usi-lang="userscript_after_load">
+						<!--Userscript nachladen-->
+					</a>
+					<span> </span>
+					<!--Trennzeichen-->
+					<a class="list-group-item load_template" data-usi-templateurl="config" data-usi-lang="loadOptions_title">
+						<!--Optionen-->
+					</a>
+					<a class="list-group-item load_template" data-usi-templateurl="help" data-usi-lang="help">
+						<!--Hilfe-->
+					</a>
+				</div>
+			</div>
+		</div>
+		<!-- Sidebar -->
+		<!-- Top Navbar -->
+		<div class="app">
+			<div id="menu_toggle" class="navbar navbar-app navbar-absolute-top">
+				<div class="navbar-brand navbar-brand-center" id="nav_title">
+				</div>
+				<div class="btn-group pull-left">
+					<div class="btn sidebar-toggle">
+						<i class="fa fa-bars" ></i>
+					</div>
+				</div>
+			</div>
+		<!-- Top Navbar -->
+
+		<!-- App body -->
+		<div class="right_col" id="right_col" >
+		</div>
+		<!-- App body -->
+		<!-- ~ .app -->
+
+			<!-- App body -->
+			<div class='app-body'>
+				<div class='app-content'>
+					<div class="scrollable-content section" id="app-body-content">
+						
+					</div>
+				</div>
+			</div>
+					
+		</div>
+		<div class="jquery-template-container hidden">
+			<span id="usi-version-template" data-content="version"></span>
+		</div>
+
+		<script type="text/javascript" src="options.js"></script>
+	</body>
+</html>
