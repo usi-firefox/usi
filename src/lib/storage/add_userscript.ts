@@ -3,11 +3,52 @@
 import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
-import type_guess from "lib/testing/type_guess";
 
-/* global basic_helper, parse_userscript, userscript_storage, type_guess, Promise, browser */
+/* global basic_helper, parse_userscript, userscript_storage, Promise, browser */
 
 export default function add_userscript() {
+
+    function type_guess(val: string, allowed_types: string[]): string | null {
+        const known_types_priotity = ["datauri", "url"];
+
+        if (val.length === 0) {
+            return null;
+        }
+
+        // Leerzeichen entfernen
+        val = val.trim();
+
+        // Prüfe die nutzbaren Datentypen
+        for (var actual_type of known_types_priotity) {
+
+            /**
+             *  wenn der Aktuelle Wert von "known_types_priotity" in "allowed_types"
+             *  zu finden ist, versuche damit ALS ERSTES den Datentyp zu testen
+             */
+            if (allowed_types.indexOf(actual_type) !== -1) {
+                // Prüfe nun die Variable ob der Datentyp übereinstimmt
+                switch (actual_type) {
+                    case "datauri":
+                        // wenn zu beginn, data: steht -> dann sollte es sich auch um eine DataURI handeln?!
+                        if (basic_helper().is_datauri(val)) {
+                            return val;
+                        }
+                    case "url":
+                        // Sollte es eine gültige URL sein, gib sie direkt zurück
+                        // Falls es nur ein * ist -> gib auch dies zurück
+                        if (basic_helper().valid_url(val) === true || val === "*") {
+                            return val;
+                        }
+                }
+
+            }
+
+        }
+
+        return null;
+
+    }
+
 
     var self = {
         /**
@@ -169,10 +210,13 @@ export default function add_userscript() {
                     // resource überschreiben! und setzt es auf Null falls nicht genutzt werden kann
                     resource_url = type_guess(resource_url, resource_allowed_types.types);
 
-                    // Resource nachladen!
-                    running_promises.push(new Promise(function (resolve) {
-                        userscript_handle.loadAndAddExternals("resource", resource_url, resource_name, resource_charset, resolve, error_function);
-                    }));
+                    if (resource_url) {
+
+                        // Resource nachladen!
+                        running_promises.push(new Promise(function (resolve) {
+                            userscript_handle.loadAndAddExternals("resource", resource_url, resource_name, resource_charset, resolve, error_function);
+                        }));
+                    }
                 }
             }
 
@@ -183,10 +227,13 @@ export default function add_userscript() {
                 // icon URL
                 let icon_url = type_guess(settings.icon, icon_allowed_types.types);
 
-                // icon nachladen
-                running_promises.push(new Promise(function (resolve) {
-                    userscript_handle.loadAndAddExternals("icon", icon_url, null, null, resolve, error_function);
-                }));
+                if (icon_url) {
+
+                    // icon nachladen
+                    running_promises.push(new Promise(function (resolve) {
+                        userscript_handle.loadAndAddExternals("icon", icon_url, null, null, resolve, error_function);
+                    }));
+                }
             }
 
             // Lade externe Skripte nach, falls vorhanden
@@ -202,9 +249,13 @@ export default function add_userscript() {
                     require_url = type_guess(one_require, require_allowed_types.types);
 
                     // Nachladen des benötigten Skripts
-                    running_promises.push(new Promise(function (resolve) {
-                        userscript_handle.loadAndAddExternals("require", require_url, null, null, resolve, error_function);
-                    }));
+                    if (require_url) {
+
+                        running_promises.push(new Promise(function (resolve) {
+                            userscript_handle.loadAndAddExternals("require", require_url, null, null, resolve, error_function);
+                        }));
+
+                    }
 
                 }
             }

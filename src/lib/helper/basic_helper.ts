@@ -93,6 +93,13 @@ export default function basic_helper() {
                 return false;
             }
         },
+        is_datauri: function(v: string):boolean{
+            // wenn zu beginn, data: steht -> dann sollte es sich auch um eine DataURI handeln?!
+            if (/^data:(.*)/.test(v)) {
+                return true;
+            }
+            return false;
+        },
         is_object: function (v: any): boolean {
             if (typeof v === "object") {
                 return true;
