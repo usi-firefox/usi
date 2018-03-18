@@ -2,33 +2,14 @@
 
 import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
-import userscript_handle  from "lib/storage/userscript";
+import userscript_handle from "lib/storage/userscript";
 import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 import load_resource from "lib/load/load_resource";
 
 /* global browser, userscript_storage, parse_userscript, basic_helper, userscript_handle, config_storage,  load_resource */
 
-export interface tabExecData {
-    filter_urls: {
-        include: Array<RegExp | string>,
-        exclude: Array<RegExp | string>
-    }
-    , gm?: {
-        prefilled_data: {
-            storage: any,
-            id: number,
-            scriptSettings: any,
-            scriptMetaStr: string,
-            usiVersion: string,
-            systemPlatform: string,
-            scriptSource: string
-        }
-        , preparedScript: string
-    }
-    , exec_details: browser.extensionTypes.InjectDetails
-    , userscript_id: number
-}
+
 
 export default class page_injection_helper {
 
@@ -513,7 +494,7 @@ export default class page_injection_helper {
      * @param {object} userscript_handle
      * @returns {object}
      */
-    async add_GM_Functions(userscript_handle: any): Promise<tabExecData> {
+    async add_GM_Functions(userscript_handle: any): Promise<usi.tabExecData> {
 
         // init JSON
         let gm: any = {};
@@ -547,7 +528,7 @@ export default class page_injection_helper {
         gm.preparedScript = script_extra_data + gm_content_script;
 
         // Stellt sicher, dass der Inhalt vom Typ 'tabExecData' ist
-        const gm_result: tabExecData = gm;
+        const gm_result: usi.tabExecData = gm;
         return gm_result;
 
     }

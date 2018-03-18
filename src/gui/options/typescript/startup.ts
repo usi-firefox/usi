@@ -46,7 +46,7 @@ event_manager_controller().register_once(".load_template", "click", function (th
 // ersetze das Versionslabel
 var manifest = browser.runtime.getManifest();
 
-/* jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template"), {version: manifest.version}); */
+jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template"), {version: manifest.version});
 
 // Initialisiere die Frontend Events
 event_controller().register.frontend_events();

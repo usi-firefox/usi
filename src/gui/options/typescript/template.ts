@@ -1,6 +1,6 @@
 "use strict";
 
-declare var jQuery :any;
+declare var jQuery: any;
 
 import language_controller from "language";
 import manager_controller from "manager";
@@ -10,7 +10,7 @@ import manager_controller from "manager";
 export default function template_controller() {
 
     var last_used_controller: any = false
-        , last_used_controller_container_id = false
+        , last_used_controller_container_id :any = false
         , actual_controller_container_id: any = false
         , controllers_already_started: any = [];
 
@@ -49,9 +49,13 @@ export default function template_controller() {
             if (actual_controller !== false) {
                 last_used_controller = actual_controller;
             }
-            if (last_used_controller_container_id !== false) {
+
+            /* if (last_used_controller_container_id !== false) {
                 jQuery(".usi-controller-container").addClass("hidden");
-            }
+            } */
+            
+            jQuery(".usi-controller-container").addClass("hidden");
+            
 
             if (controller_already_started === false) {
                 // Controller Container hinzufügen
