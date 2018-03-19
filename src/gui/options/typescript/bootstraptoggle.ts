@@ -4,7 +4,7 @@ declare var jQuery :any;
 
 import basic_helper from "lib/helper/basic_helper";
 
-/* global  basic_helper, lang */
+
 
 // Bootstrap Toggle
 export default function bootstrap_toggle_controller() {

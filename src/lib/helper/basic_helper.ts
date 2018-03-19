@@ -3,7 +3,7 @@
  ************************* Basic Funktionen! *************************
  ************************************************************************/
 
-/* global exports, browser */
+
 
 export default function basic_helper() {
 
@@ -53,20 +53,17 @@ export default function basic_helper() {
         },
 
         isset: function (v: any): boolean {
-            if (typeof v !== "undefined") {
-                return true;
-            } else {
-                return false;
-            }
+            return (typeof v !== "undefined");
         },
-        notify: function (text: any): any {
-            /*  browser.notifications.create({
-                 id: null,
-                 type: "basic",
-                 title: "USI",
-                 iconUrl: browser.extension.getURL("/gui/icon/usi.png"),
-                 message: text
-             });   */
+        notify: function (text: string): Promise<string> {
+            return browser.notifications.create(
+                null,
+                {
+                    type: "basic",
+                    title: "USI",
+                    iconUrl: browser.extension.getURL("/gui/icon/usi.png"),
+                    message: text
+                });
         },
         addScriptLink: function (srcLink: string): string {
             if (srcLink) {
@@ -76,64 +73,26 @@ export default function basic_helper() {
             }
         },
         getExtId: function (): string {
-            var manifest = <any>browser.runtime.getManifest(),
-                // default
-                extId = "firefox-addon-usi@jetpack";
-
+            const manifest = <any>browser.runtime.getManifest();
             if (typeof manifest === "object" && typeof manifest.applications.gecko.id === "string") {
-                extId = manifest.applications.gecko.id;
-            }
-
-            return extId;
-        },
-        is_string: function (v: any): boolean {
-            if (typeof v === "string") {
-                return true;
+                return manifest.applications.gecko.id;
             } else {
-                return false;
+                // default
+                return "firefox-addon-usi@jetpack";
             }
         },
-        is_datauri: function(v: string):boolean{
+        is_datauri: function (v: string): boolean {
             // wenn zu beginn, data: steht -> dann sollte es sich auch um eine DataURI handeln?!
-            if (/^data:(.*)/.test(v)) {
-                return true;
-            }
-            return false;
-        },
-        is_object: function (v: any): boolean {
-            if (typeof v === "object") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        is_boolean: function (v: any): boolean {
-            if (typeof v === "boolean") {
-                return true;
-            } else {
-                return false;
-            }
+            return (/^data:(.*)/.test(v));
         },
         is_function: function (v: any): boolean {
-            if (typeof v === "function") {
-                return true;
-            } else {
-                return false;
-            }
+            return (typeof v === "function");
         },
-        valid_url: function (v: any): boolean {
-            if (self.is_string(v) && /^(https?|file):\/\//.test(v)) {
-                return true;
-            } else {
-                return false;
-            }
+        valid_url: function (v: string): boolean {
+            return /^(https?|file):\/\//.test(v);
         },
-        url_ends_with_user_js: function (v: any): boolean {
-            if (self.is_string(v) && /.*\.user([()\d]*)\.js$/.test(v)) {
-                return true;
-            } else {
-                return false;
-            }
+        url_ends_with_user_js: function (v: string): boolean {
+            return /.*\.user([()\d]*)\.js$/.test(v);
         },
         empty: function (v: any): boolean {
             if (typeof v === "undefined" || v === "" || v === 0 || v === false || v === null) {
@@ -159,7 +118,7 @@ export default function basic_helper() {
         },
         getFilenameFromURL: function (url: string): string {
 
-            if (this.is_string(url) && !this.empty(url)) {
+            if (!this.empty(url)) {
                 // http://example.com/img/image.png => image.png
                 var url_suffix = String(url.split("/").pop());
 
@@ -169,16 +128,6 @@ export default function basic_helper() {
             }
 
             return "";
-        },
-        arrayWrap: function (arr: Array<string>, wrapper_front: string, wrapper_back: string): string {
-            var result_arr = [];
-            arr = arr || []; // default Value => []
-            wrapper_front = wrapper_front || ""; // wenn nichts übergeben wurde, ist es leer ... 
-            wrapper_back = wrapper_back || wrapper_front; // wenn der "wrapper_back" nicht gesetzt wurde ist es der gleiche wie "wrapper_front"
-            for (var i in arr) {
-                result_arr.push(wrapper_front + arr[i] + wrapper_back);
-            }
-            return result_arr.join("");
         }
     };
     return self;

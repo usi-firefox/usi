@@ -1,7 +1,7 @@
 "use strict";
 
-declare var jQuery :any;
-declare var document:any;
+declare var jQuery: any;
+declare var document: any;
 
 import basic_helper from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
@@ -12,7 +12,7 @@ import download_controller from "download";
 import event_manager_controller from "events/event_manager";
 import bootstrap_toggle_controller from "bootstraptoggle";
 
-/* global language_controller, self, lang, download_controller, browser, basic_helper, userscript_storage, event_manager_controller, template_controller, config_storage, page_injection_helper */
+
 
 export default function event_controller() {
 
@@ -264,7 +264,7 @@ export default function event_controller() {
                 }
                 , toogle_state: async function (id: number) {
                     var script_storage = await userscript_storage();
-                    var userscript_handle = <any> script_storage.getById(id);
+                    var userscript_handle = <any>script_storage.getById(id);
                     if (userscript_handle !== false) {
                         // wechsele den Status ob das Userscript aktiviert oder deaktiviert ist
                         userscript_handle.switchActiveState();
@@ -326,7 +326,7 @@ export default function event_controller() {
                  * @param {object} userscript_infos
                  * @returns {void}
                  */
-                function (userscript_infos:any) {
+                function (userscript_infos: any) {
 
                     //wurde gefunden, möchtest du es aktualisieren?")){
                     if (window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_infos.id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"))) {
@@ -337,7 +337,7 @@ export default function event_controller() {
                 });
 
             // Event Weiterleitung vom Backend
-            port.on("USI-BACKEND:To-Frontend-Document-Event-Forwarder", function (data:any) {
+            port.on("USI-BACKEND:To-Frontend-Document-Event-Forwarder", function (data: any) {
                 jQuery(document).trigger(data.event_name, [data.action, data.param1]);
             });
 

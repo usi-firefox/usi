@@ -2,7 +2,7 @@
 
 import basic_helper from "lib/helper/basic_helper";
 
-/* global browser, basic_helper, Promise */
+
 
 export default class sdk_to_webext {
 

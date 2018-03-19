@@ -2,7 +2,7 @@
 
 import basic_helper from "lib/helper/basic_helper";
 
-/* global basic_helper */
+
 
 export default function download_controller() {
     var self = {

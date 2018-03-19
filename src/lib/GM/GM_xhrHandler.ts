@@ -5,12 +5,12 @@
 
 import basic_helper from "lib/helper/basic_helper";
 
-/* global exports, basic_helper */
+
 
 export default function GM_xhrHandler() {
 
     var self = {
-        init: function (details: any, counter: number, port: browser.runtime.Port) {
+        init: function (details: usi.GM_Backend.GM_xhr, counter: number, port: browser.runtime.Port) {
             // Init der XMLHttpRequest Funktion
             var xhr = new XMLHttpRequest();
 
@@ -68,11 +68,7 @@ export default function GM_xhrHandler() {
             // Wenn method gesetzt wurde
             if (details.method && typeof details.method === "string") {
                 // immer Großschreiben! Wenn möglich
-                if (typeof details.method.toUpperCase === "function") {
-                    method = details.method.toUpperCase();
-                } else {
-                    method = details.method;
-                }
+                method = details.method.toUpperCase();
             } else {
                 // Falls keine Methode angegeben wurde!
                 method = "GET";
@@ -85,7 +81,7 @@ export default function GM_xhrHandler() {
                 url = self.checkUrl(details.url, details.originUrl);
 
                 // Fügt einen extra Parameter der URL hinzu, um das Cache zu umgehen
-                if (typeof details.ignoreCache !== "undefined" && (details.ignoreCache === true || details.ignoreCache === "true")) {
+                if (details.ignoreCache) {
                     url = url + ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime();
                 }
 
@@ -95,26 +91,10 @@ export default function GM_xhrHandler() {
 
             // Username, Passwort setzen
             var user = (typeof details.user === "string") ? details.user : "";
-            var asynchronous = (typeof details.synchronous === "boolean") ? !details.synchronous : true;
             var pass = (typeof details.password === "string") ? details.password : "";
 
-            if (asynchronous !== true) {
-                /**
-                 * Falls ein syncroner Abruf verlangt wurde, setze ihn wieder zurück auf einen asyncronen
-                 * Da dies momentan nicht unterstützt wird!
-                 * 
-                 *  Sende zusätzlich einen Fehlertext zurück! 
-                 */
-
-                // Error-Code senden
-                throw "only asyncronous calls are permitted";
-
-                // zurücksetzen auf async
-                /* asynchronous = true; */
-            }
-
             // Xhr Optionen setzen
-            xhr.open(method, url, asynchronous, user, pass);
+            xhr.open(method, url, true , user, pass);
 
             // Header
             if (details.headers && typeof details.headers === "object") {

@@ -13,7 +13,7 @@ import SPA from "lib/spa/handler";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import load_resource from "lib/load/load_resource";
 
-/* global browser, SPA, load_resource, page_injection_helper, add_userscript, userscript_storage, basic_helper, parse_userscript, userscript_handle */
+
 
 // zunächste den Userscript storage initialisieren
 
@@ -138,7 +138,7 @@ export default class options_backend {
 
                                     try {
                                         // UpdateURL gefunden, lade es nach!
-                                        let loaded_userscript = await <any>load_resource().load_userscript_by_url_promise(userscript_settings["updateURL"]);
+                                        let loaded_userscript = await <any>load_resource().load_userscript_by_url(userscript_settings["updateURL"]);
                                         if (!loaded_userscript.target.responseText) {
                                             // keine antwort
                                             continue;

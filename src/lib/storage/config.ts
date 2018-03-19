@@ -1,6 +1,6 @@
 "use strict";
 
-/* global browser, load_resource, userscript_handle */
+
 
 import load_resource from "lib/load/load_resource";
 import sdk_to_webext from "lib/update/sdk_to_webext";

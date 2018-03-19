@@ -13,7 +13,7 @@ export interface getUserscriptFromPageMessage {
     }
 };
 
-/* global browser, basic_helper, config_storage */
+
 
 config_storage().get().then((config: any) => {
 

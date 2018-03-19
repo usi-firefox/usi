@@ -5,7 +5,7 @@ declare var jQuery: any;
 import language_controller from "language";
 import manager_controller from "manager";
 
-/* global language_controller,manager_controller */
+
 
 export default function template_controller() {
 

@@ -10,7 +10,7 @@ import language_controller from "language";
 import config_storage from "lib/storage/config";
 import userscript_config_controller from "userscript/config";
 
-/* global event_controller, basic_helper, template_controller, language_controller, event_manager_controller, self, browser, config_storage, userscript_config_controller */
+
 
 /**
  * @todo !!!! in highlight.js prüfen!

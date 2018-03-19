@@ -3,7 +3,7 @@
 declare var jQuery :any;
 declare var browser :any;
 
-/* global browser */
+
 
 // verwaltet die Übersetzungen
 export default function language_controller() {

@@ -5,7 +5,7 @@ declare var jQuery :any;
 import event_manager_controller from "events/event_manager";
 import event_controller from "events/event_controller";
 
-/* global event_manager_controller, event_controller, lang */
+
 
 export default function userscript_load_external_controller () {
 

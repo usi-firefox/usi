@@ -7,7 +7,7 @@ import event_controller from "events/event_controller";
 import userscript_list_entry_class from "userscript/list_entry";
 import event_manager_controller from "events/event_manager";
 
-/* global self, event_manager_controller, event_controller, lang, Promise */
+
 
 export default function userscript_list_controller() {
 

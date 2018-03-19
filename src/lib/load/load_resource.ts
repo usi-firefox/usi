@@ -2,7 +2,7 @@
 
 import basic_helper from "lib/helper/basic_helper";
 
-/* global basic_helper, browser */
+
 
 export default function load_resource() {
 
@@ -25,7 +25,7 @@ export default function load_resource() {
             xhr.responseType = 'arraybuffer';
 
             // ändere das angeforderte Charset, falls es gesetzt wurde
-            if (!basic_helper().empty(charset) && basic_helper().is_string(charset)) {
+            if (!basic_helper().empty(charset)) {
                 xhr.setRequestHeader("Content-Type", "text/plain; charset=" + charset);
             }
 
@@ -91,20 +91,43 @@ export default function load_resource() {
             return the_promise;
         }
 
-        , load_userscript_by_url_promise: function (url_str: string, charset?: string) {
-            return new Promise((resolve, reject) => {
-                self.load_userscript_by_url(url_str, charset, resolve, reject);
-            });
-        }
-
         /**
          * Lädt den Inhalt einer Datei (dieser Extension) nach
          * @param {string} abs_file_url
          * @returns {string} Dateiinhalt
          */
         , load_internal_file: async function (file_url: string) {
-            let response = await self.load_by_url(browser.extension.getURL(file_url));
-            return response.target.responseText;
+
+            const internal_file_url = browser.extension.getURL(file_url);
+            const xhr = new XMLHttpRequest();
+            const file = new Promise((resolve, reject) => {
+                try {
+                    xhr.open("GET", internal_file_url, true);
+                    xhr.overrideMimeType("text/plain; charset=utf-8");
+                    xhr.addEventListener("load", resolve);
+                    xhr.addEventListener("error", reject);
+                    // Request mit den zuvor definierten Optionen ausführen
+                    xhr.send();
+
+                    return;
+                } catch (e) {
+                    // Fehler ist aufgetreten
+                    reject("Unbekannter Fehler in load_internal_file()");
+                    return;
+                }
+            });
+
+            try {
+                const response = await <any>file;
+                if(!response.target.responseText){
+                    throw "kein response.target.responseText in load_internal_file()";
+                }
+
+                return response.target.responseText;
+
+            } catch (err) {
+                throw err;
+            }
         }
         /**
          * lädt etwas per XMLHttpRequest()
@@ -112,14 +135,9 @@ export default function load_resource() {
          * @param {string} charset
          * @returns {Promise}
          */
-        , load_by_url: function (url_str: string, charset?: string): Promise<any> | boolean {
+        , load_by_url: function (url_str: string, charset: string = "utf-8"): Promise<any> | boolean {
 
             var xhr = new XMLHttpRequest();
-            // Falls kein Charset gesetzt wurde
-            if (typeof charset === "undefined" || charset === null) {
-                charset = "utf-8";
-                //charset = "cp1252";
-            }
             try {
                 xhr.open("GET", url_str, true);
                 xhr.overrideMimeType("text/plain; charset=" + charset);
@@ -140,48 +158,46 @@ export default function load_resource() {
          * Holt externe Skripte, und gibt bei Erfolg ein Promise zurück
          * @param {string} url_str
          * @param {string} charset
-         * @param {function} success_callback
-         * @param {function} error_callback
          * @returns {Boolean}
          */
-        , load_userscript_by_url: function (url_str: string, charset?: string, success_callback?: any, error_callback?: any): boolean {
+        , load_userscript_by_url: function (url_str: string, charset: string = "utf-8"): Promise<any> {
 
-            // Nur wenn am Ende der URL ein .user.js steht!
-            if (!basic_helper().url_ends_with_user_js(url_str)) {
-                // keine .user.js Endung
-                return false;
-            }
+            return new Promise((resolve, reject) => {
 
-            if (!basic_helper().valid_url(url_str)) {
-                // keine gültige URL übergeben
-                return false;
-            }
+                if (!basic_helper().url_ends_with_user_js(url_str)) {
+                    // Nur URL erlaubt die mit .user.js endet
+                    reject("keine .user.js Endung");
+                    return false;
+                }
 
-            var xhr = new XMLHttpRequest();
-            // Falls kein Charset gesetzt wurde
-            if (typeof charset === "undefined" || charset === null) {
-                charset = "utf-8";
-                //charset = "cp1252";
-            }
-            try {
+                if (!basic_helper().valid_url(url_str)) {
+                    reject("keine gültige URL übergeben");
+                    return false;
+                }
 
-                xhr.open("GET", url_str, true);
-                // Damit der Request immer "frisch" ist
-                xhr.setRequestHeader("Cache-control", "no-cache");
+                var xhr = new XMLHttpRequest();
+                try {
 
-                xhr.overrideMimeType("text/plain; charset=" + charset);
+                    xhr.open("GET", url_str, true);
+                    // Damit der Request immer "frisch" ist
+                    xhr.setRequestHeader("Cache-control", "no-cache");
 
-                xhr.addEventListener("load", success_callback);
-                xhr.addEventListener("error", error_callback);
+                    xhr.overrideMimeType("text/plain; charset=" + charset);
 
-                // Request mit den zuvor definierten Optionen ausführen
-                xhr.send();
+                    xhr.addEventListener("load", resolve);
+                    xhr.addEventListener("error", reject);
 
-                return true;
-            } catch (e) {
-                // Fehler ist aufgetreten
-                return false;
-            }
+                    // Request mit den zuvor definierten Optionen ausführen
+                    xhr.send();
+
+                    return true;
+                } catch (e) {
+                    // Fehler ist aufgetreten
+                    reject("Unbekannter Fehler ist aufgetreten in load_userscript_by_url()");
+                    return false;
+                }
+
+            });
         }
     };
 

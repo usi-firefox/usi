@@ -9,7 +9,7 @@ import event_manager_controller from "events/event_manager";
 
 import config_storage from "lib/storage/config";
 
-/* global event_controller, event_manager_controller, hljs, global_settings, config_storage */
+
 
 export default function highlightjs_controller() {
 

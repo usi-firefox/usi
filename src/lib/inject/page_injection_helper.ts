@@ -7,14 +7,10 @@ import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 import load_resource from "lib/load/load_resource";
 
-/* global browser, userscript_storage, parse_userscript, basic_helper, userscript_handle, config_storage,  load_resource */
-
-
-
 export default class page_injection_helper {
 
     // Sammel Objekt
-    private all_page_injections: Array<any> = [];
+    private static all_page_injections: Array<any> = [];
 
     /**
      * Listener Funktion
@@ -27,8 +23,10 @@ export default class page_injection_helper {
         }
 
         if (details.url) {
+            let what = new page_injection_helper;
+
             // falls der Status = loading ist, und eine URL verfügbar ist kann checkUserscriptInjection() aufgerufen werden
-            return this.checkUserscriptInjection(details.tabId, details.url, details.transitionType);
+            return what.checkUserscriptInjection(details.tabId, details.url, details.transitionType);
         } else {
             // nichts zu tun
             return false;
@@ -44,8 +42,8 @@ export default class page_injection_helper {
      * @returns {Boolean}
      */
     checkUserscriptInjection(tabId: number, tabUrl: string, transitionType?: string) {
-        if (this.all_page_injections.length > 0) {
-            this.all_page_injections.forEach((ele) => {
+        if (page_injection_helper.all_page_injections.length > 0) {
+            page_injection_helper.all_page_injections.forEach((ele) => {
                 if (!ele || ele.spa || !ele.filter_urls) {
                     return false;
                 }
@@ -178,7 +176,7 @@ export default class page_injection_helper {
     re_init_page_injection() {
 
         // zurücksetzen vom Sammler Objekt!
-        this.all_page_injections = [];
+        page_injection_helper.all_page_injections = [];
 
         if (!userscript_storage || !userscript_handle) {
             return false;
@@ -201,7 +199,7 @@ export default class page_injection_helper {
                     let userscript_init = userscript_handle().initWithData(userscript);
                     let page_injection = await this.get_rules_and_exec_object(userscript_init);
                     if (page_injection) {
-                        this.all_page_injections.push(page_injection);
+                        page_injection_helper.all_page_injections.push(page_injection);
                     }
                 }
 
@@ -293,7 +291,7 @@ export default class page_injection_helper {
         }
 
         // die Includes könnten auch nur aus einem Aufruf bestehen
-        if (basic_helper().is_string(script_settings["include"])) {
+        if (typeof script_settings["include"] === "string") {
             //Wandle den String in ein einfaches Array um....
             script_settings["include"] = [script_settings["include"]];
         }
@@ -341,33 +339,17 @@ export default class page_injection_helper {
 
             // Entscheide wann das Userscript geladen werden soll, anhand von @run-at
             switch (script_settings["run-at"]) {
-
+                /**
+                 * "document_start": corresponds to loading. The DOM is still loading.
+                 * "document_end": corresponds to 'interactive'. The DOM has finished loading, but resources such as scripts and images may still be loading.
+                 * "document_idle": corresponds to complete. The document and all its resources have finished loading.
+                */
                 case "document-start":
                 case "start":
-                    /**
-                     * SDK:
-                     * "start": load content scripts immediately after the document element for the page is inserted into the DOM, but before the DOM content itself has been loaded
-                     */
-
-                    /**
-                     * WEBEXT:
-                     * "document_start": corresponds to loading. The DOM is still loading.
-                     */
                     runAt = "document_start";
                     break;
-
-                //
                 case "document-ready":
                 case "ready":
-                    /**
-                     * SDK:
-                     * "ready": load content scripts once DOM content has been loaded, corresponding to the DOMContentLoaded event
-                     */
-
-                    /**
-                     * WEBEXT:
-                     * "document_end": corresponds to 'interactive'. The DOM has finished loading, but resources such as scripts and images may still be loading.
-                     */
                     runAt = "document_end";
                     break;
 
@@ -375,15 +357,6 @@ export default class page_injection_helper {
                 case "document-idle":
                 case "end":
                 default:
-                    /**
-                     * SDK:
-                     * "end": load content scripts once all the content (DOM, JS, CSS, images) for the page has been loaded, at the time the window.onload event fires
-                     */
-
-                    /**
-                     * WEBEXT:
-                     * "document_idle": corresponds to complete. The document and all its resources have finished loading.
-                     */
                     runAt = "document_idle";
                     break;
 

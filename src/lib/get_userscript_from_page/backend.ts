@@ -6,7 +6,7 @@ import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import { getUserscriptFromPageMessage } from "lib/get_userscript_from_page/content";
 
-/* global browser, load_resource, add_userscript, basic_helper, page_injection_helper */
+
 
 // init
 browser.runtime.onConnect.addListener(function (port: any) {

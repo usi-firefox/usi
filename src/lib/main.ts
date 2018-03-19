@@ -6,7 +6,7 @@ import sdk_to_webext from "lib/update/sdk_to_webext";
 import GM_Backend from "lib/GM/GM_Backend";
 import basic_helper from "lib/helper/basic_helper";
 
-/* global browser, page_injection_helper, options_backend, sdk_to_webext, GM_Backend, basic_helper */
+
 
 /************************************************************************
  ************************* Options Bereich! *****************************

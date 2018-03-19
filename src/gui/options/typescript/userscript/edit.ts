@@ -9,8 +9,6 @@ import event_manager_controller from "events/event_manager";
 import bootstrap_toggle_controller from "bootstraptoggle";
 import language_controller from "language";
 
-/* global event_manager_controller, event_controller, bootstrap_toggle_controller, lang, browser */
-
 // Userscript bearbeiten
 export default function userscript_edit_controller() {
 
@@ -255,7 +253,7 @@ export default function userscript_edit_controller() {
         , utf8_to_latin1: function () {
             try {
                 jQuery(textarea_id).val(
-                    unescape(
+                    window.unescape(
                         encodeURIComponent(
                             jQuery(textarea_id).val())));
             } catch (e) {
@@ -265,7 +263,7 @@ export default function userscript_edit_controller() {
             try {
                 jQuery(textarea_id).val(
                     decodeURIComponent(
-                        escape(
+                        window.escape(
                             jQuery(textarea_id).val())));
             } catch (e) {
             }

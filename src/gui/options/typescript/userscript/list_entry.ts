@@ -10,7 +10,7 @@ import event_manager_controller from "events/event_manager";
 import bootstrap_toggle_controller from "bootstraptoggle";
 import language_controller from "language";
 
-/* global basic_helper, language_controller, highlightjs_controller, event_controller, bootstrap_toggle_controller, event_manager_controller, lang, global_settings */
+
 
 
 function flatten_keys(obj: any, prepend_key: any, result?: any) {

@@ -3,8 +3,6 @@
 import userscript_storage from "lib/storage/storage";
 import load_resource from "lib/load/load_resource";
 
-/* global browser, load_resource, userscript_handle */
-
 // stellt Funktionen für die Verarbeitung des Userscripts zur Verfügung
 export default function userscript_handle() {
 
@@ -162,7 +160,7 @@ export default function userscript_handle() {
                     }
                     , loadAndAddExternals: function (type: any, url: any, name: any, charset: any, resolve: any, reject: any) {
                         // Lade die Resource
-                        var loaded_image_or_text = <any> load_resource().load_image_or_text(url, charset);
+                        var loaded_image_or_text = <any>load_resource().load_image_or_text(url, charset);
 
                         loaded_image_or_text.then(function (response_data: any, response_contenttype: any) {
 

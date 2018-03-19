@@ -7,7 +7,7 @@ import userscript_edit_controller from "userscript/edit";
 import userscript_config_controller from "userscript/config";
 import userscript_help_controller from "userscript/help";
 
-/* global userscript_overview_controller, userscript_list_controller, userscript_load_external_controller, userscript_edit_controller, userscript_config_controller, lang, userscript_help_controller */
+
 
 /**
  * Liefert für den angfragten Namen den passenden Controller zurück

@@ -4,7 +4,7 @@ import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
 
-/* global basic_helper, parse_userscript, userscript_storage, Promise, browser */
+
 
 export default function add_userscript() {
 

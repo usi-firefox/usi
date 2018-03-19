@@ -1,4 +1,4 @@
-/* global self, console, document, browser, prefilled_data */
+
 
 (function(win, given_data){    
     

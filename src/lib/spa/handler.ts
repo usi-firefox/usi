@@ -4,7 +4,7 @@ import basic_helper from "lib/helper/basic_helper";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import userscript_storage from "lib/storage/storage";
 
-/* global browser,basic_helper, page_injection_helper */
+
 
 export default class SPA {
 
