@@ -1,4 +1,4 @@
-"use strict";
+
 
 import basic_helper from "lib/helper/basic_helper";
 

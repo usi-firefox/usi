@@ -1,4 +1,4 @@
-"use strict";
+
 
 import userscript_overview_controller from "userscript/overview";
 import userscript_list_controller from "userscript/list";

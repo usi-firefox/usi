@@ -21,6 +21,18 @@ declare namespace usi {
     }
 }
 
+declare namespace usi.fromPageWithUserscriptFile {
+    interface message {
+        name: string,
+        data: {
+            id?: number,
+            userscript: string,
+            moreinformations?: {
+                url: string
+            }
+        }
+    }
+}
 declare namespace usi.GM_Backend {
     interface GM_openInTab {
         open_in_background: boolean,

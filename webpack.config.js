@@ -28,7 +28,6 @@ module.exports = [
     plugins: [
       new CopyWebpackPlugin([
         { from: '_locales', to: "_locales" },
-        { from: 'background.html' },
         { from: 'manifest.json' },
         { from: 'options_addon_details.html' },
         { from: 'spa.html' }

@@ -1,4 +1,4 @@
-"use strict";
+
 
 import userscript_storage from "lib/storage/storage";
 import load_resource from "lib/load/load_resource";

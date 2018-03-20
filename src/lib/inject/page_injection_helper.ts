@@ -1,4 +1,4 @@
-"use strict"; // Strict Mode aktivieren!
+ // Strict Mode aktivieren!
 
 import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";

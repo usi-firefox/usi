@@ -1,4 +1,4 @@
-"use strict";
+
 
 declare var jQuery: any;
 declare var document: any;

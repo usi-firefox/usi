@@ -1,4 +1,4 @@
-"use strict"; // Strict Mode aktivieren!
+ // Strict Mode aktivieren!
 
 /************************************************************************
  ************************* Page Injection Funktionen! *******************

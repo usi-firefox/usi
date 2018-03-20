@@ -1,12 +1,9 @@
-"use strict"; // Strict Mode aktivieren!
+ // Strict Mode aktivieren!
 
 import load_resource from "lib/load/load_resource";
 import basic_helper from "lib/helper/basic_helper";
 import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
-import { getUserscriptFromPageMessage } from "lib/get_userscript_from_page/content";
-
-
 
 // init
 browser.runtime.onConnect.addListener(function (port: any) {
@@ -16,11 +13,9 @@ browser.runtime.onConnect.addListener(function (port: any) {
     }
 
     // für Nachrichten vom Content Script
-    port.onMessage.addListener(async function (message: getUserscriptFromPageMessage) {
+    port.onMessage.addListener(async function (message: usi.fromPageWithUserscriptFile.message) {
 
         try {
-            let lang = browser.i18n;
-
             switch (message.name) {
                 case "USI-BACKEND:new-userscript":
                     let userscript = message.data.userscript,
@@ -47,7 +42,7 @@ browser.runtime.onConnect.addListener(function (port: any) {
                     } else {
                         // bzgl. update fragen
                         // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
-                        port.postMessage(<getUserscriptFromPageMessage>{ name: "USI-BACKEND:same-userscript-was-found", data: { id: userscript_id, userscript: userscript } });
+                        port.postMessage(<usi.fromPageWithUserscriptFile.message>{ name: "USI-BACKEND:same-userscript-was-found", data: { id: userscript_id, userscript: userscript } });
                     }
 
                     break;

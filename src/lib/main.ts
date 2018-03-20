@@ -1,4 +1,4 @@
-"use strict"; // Strict Mode aktivieren!
+ // Strict Mode aktivieren!
 
 import page_injection_helper from "lib/inject/page_injection_helper";
 import options_backend from "lib/gui/options_backend";
@@ -14,63 +14,66 @@ import basic_helper from "lib/helper/basic_helper";
 
 export default class usi_main {
 
-    private active_tab: number = 0;
+    private static active_tab: number = 0;
 
-    private page_injection_helper: page_injection_helper;
-    private options_backend: options_backend;
+    private static page_injection_helper: page_injection_helper;
+    private static options_backend: options_backend;
 
     constructor() {
-        this.page_injection_helper = new page_injection_helper();
-        this.options_backend = new options_backend();
+        usi_main.page_injection_helper = new page_injection_helper();
+        usi_main.options_backend = new options_backend();
     }
 
-    createGui() {
+    createGuiListener() {
         try {
-            browser.browserAction.onClicked.addListener(() => {
-
-                if (this.active_tab !== 0) {
-                    let possible_tab = browser.tabs.update(this.active_tab, { active: true });
-
-                    possible_tab.then((ok) => {
-                        if (ok.url !== browser.extension.getURL("/gui/options.html")) {
-                            this._create_new_options_tab();
-                        }
-                    },
-                        (error) => {
-                            // Aktiven Tab entfernen
-                            this.active_tab = 0;
-                            this._create_new_options_tab();
-                        }
-                    );
-                } else {
-                    this._create_new_options_tab();
-                }
-
-            });
+            // USI Button
+            if(!browser.browserAction.onClicked.hasListener(this._create_or_update_options_tab)){
+                browser.browserAction.onClicked.addListener(this._create_or_update_options_tab);
+            }
         } catch (exception) {
         }
     }
 
-    _create_new_options_tab() {
+    _create_or_update_options_tab(){
+        if (usi_main.active_tab !== 0) {
+            let possible_tab = browser.tabs.update(usi_main.active_tab, { active: true });
+
+            possible_tab.then((ok) => {
+                if (ok.url !== browser.extension.getURL("/gui/options.html")) {
+                    usi_main._create_new_options_tab();
+                }
+            },
+                (error) => {
+                    // Aktiven Tab entfernen
+                    usi_main.active_tab = 0;
+                    usi_main._create_new_options_tab();
+                }
+            );
+        } else {
+            usi_main._create_new_options_tab();
+        }
+    }
+
+     static _create_new_options_tab() {
         // optionen gui starten ...
         let creating_options_tab = browser.tabs.create({
             url: "/gui/options.html"
         });
         creating_options_tab.then((success: any) => {
             // Damit nicht unnötig viele Tabs geöffnet werden
-            this.active_tab = success.id;
+            usi_main.active_tab = success.id;
         });
     }
 
     startPageInjection() {
-        this.page_injection_helper.re_init_page_injection();
-        this.page_injection_helper.register_re_init_page_injection_event();
+        usi_main.page_injection_helper.re_init_page_injection();
+        usi_main.page_injection_helper.register_re_init_page_injection_event();
     }
     startOptionsBackend() {
-        this.options_backend.start();
+        usi_main.options_backend.start();
     }
     startGMBackend() {
-        GM_Backend().register_listener();
+        new GM_Backend().register_listener();
     }
     doUpdateFromSDKToWebext(details: any) {
         switch (details.reason) {
@@ -80,7 +83,7 @@ export default class usi_main {
                 after_update.then(() => {
                     if (details.reason === "install") {
                         // Fehler beim ersten Start m(
-                            this.page_injection_helper.re_init_page_injection();
+                            usi_main.page_injection_helper.re_init_page_injection();
                     }
                 });
                 break;
@@ -97,7 +100,7 @@ if (!browser.runtime.onInstalled.hasListener(usi_main_instance.doUpdateFromSDKTo
 }
 
 // Konfigurations Button erstellen
-usi_main_instance.createGui();
+usi_main_instance.createGuiListener();
 usi_main_instance.startOptionsBackend();
 
 // GM Backend Listener starten
