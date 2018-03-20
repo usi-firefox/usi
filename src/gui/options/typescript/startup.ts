@@ -1,12 +1,9 @@
-
-
 declare var jQuery: any;
-declare var browser: any;
 
 import event_controller from "events/event_controller";
 import event_manager_controller from "events/event_manager";
 import template_controller from "template";
-import language_controller from "language";
+import language_replace_in_DOM from "language";
 import config_storage from "lib/storage/config";
 import userscript_config_controller from "userscript/config";
 
@@ -44,15 +41,15 @@ event_manager_controller().register_once(".load_template", "click", function (th
 });
 
 // ersetze das Versionslabel
-var manifest = browser.runtime.getManifest();
+var manifest = <any> browser.runtime.getManifest();
 
-jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template"), {version: manifest.version});
+jQuery("#usi-version").loadTemplate(jQuery("#usi-version-template"), { version: manifest.version });
 
 // Initialisiere die Frontend Events
 event_controller().register.frontend_events();
 
 // ersetze alle Language Keys!
-language_controller().replace_in_DOM();
+language_replace_in_DOM();
 
 // Initial die Übersicht laden
 template_controller().load("overview");

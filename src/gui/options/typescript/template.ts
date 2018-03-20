@@ -1,11 +1,7 @@
-
-
 declare var jQuery: any;
 
-import language_controller from "language";
+import language_replace_in_DOM from "language";
 import manager_controller from "manager";
-
-
 
 export default function template_controller() {
 
@@ -74,7 +70,7 @@ export default function template_controller() {
                             // nach Abschluss des Nachladens ...
                             // 
                             // suche nun alle Tags mit data-usi-lang
-                            language_controller().replace_in_DOM();
+                            language_replace_in_DOM();
 
                             // Wenn der Controller eine after_rendering Funktion hat, führe diese nach dem Laden aus
                             if (actual_controller !== false && typeof actual_controller.after_rendering === "function") {

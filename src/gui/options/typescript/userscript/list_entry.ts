@@ -8,7 +8,7 @@ import highlightjs_controller from "highlightjs";
 import event_controller from "events/event_controller";
 import event_manager_controller from "events/event_manager";
 import bootstrap_toggle_controller from "bootstraptoggle";
-import language_controller from "language";
+import language_replace_in_DOM from "language";
 
 
 
@@ -297,7 +297,7 @@ export default function userscript_list_entry_class(script: any, index: any) {
                 self.register_buttons();
 
                 // Sprachspezifische Variablen ersetzen
-                language_controller().replace_in_DOM();
+                language_replace_in_DOM();
             }
 
         };

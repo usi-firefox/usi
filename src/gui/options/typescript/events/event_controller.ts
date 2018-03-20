@@ -80,9 +80,9 @@ export default function event_controller() {
                             }
 
                             if (jQuery("#usi-config-change-complete-export").prop("checked") === true) {
-                                download_controller().download(result_export, "text/plain", "usi-export.usi.json");
+                                download_controller(result_export, "text/plain", "usi-export.usi.json");
                             } else {
-                                download_controller().download(result_export, "application/octet-stream", "usi-export.usi.js");
+                                download_controller(result_export, "application/octet-stream", "usi-export.usi.js");
                             }
                         } else {
                             // Kein Userscript für den Export vorhanden
@@ -95,7 +95,7 @@ export default function event_controller() {
 
                         if (userscript_handler !== false) {
                             // Bietet das Userscript zur lokalen Speicherung an!
-                            download_controller().download(userscript_handler.getUserscriptContent(), "text/plain", encodeURI(userscript_handler.getSettings()["name"] + ".user.js"));
+                            download_controller(userscript_handler.getUserscriptContent(), "text/plain", encodeURI(userscript_handler.getSettings()["name"] + ".user.js"));
                         }
 
                     }

@@ -7,7 +7,7 @@ declare var document :any;
 import event_controller from "events/event_controller";
 import event_manager_controller from "events/event_manager";
 import bootstrap_toggle_controller from "bootstraptoggle";
-import language_controller from "language";
+import language_replace_in_DOM from "language";
 
 // Userscript bearbeiten
 export default function userscript_edit_controller() {
