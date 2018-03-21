@@ -19,7 +19,7 @@ export default function add_userscript() {
         val = val.trim();
 
         // Prüfe die nutzbaren Datentypen
-        for (var actual_type of known_types_priotity) {
+        for (let actual_type of known_types_priotity) {
 
             /**
              *  wenn der Aktuelle Wert von "known_types_priotity" in "allowed_types"
@@ -50,7 +50,7 @@ export default function add_userscript() {
     }
 
 
-    var self = {
+    const self = {
         /**
          * Prüft ob es für das Userscript Konfiguration korrekt ist
          * @param {string} userscript
@@ -70,7 +70,7 @@ export default function add_userscript() {
             // Rückgabe eines Promise Objects
             if (typeof userscript_settings.error_code === "number" && userscript_settings.error_code === 101 && !basic_helper().empty(alternative_name)) {
                 // setze den @name in den Metablock des Userscripts ein
-                var modified_userscript = parse_userscript().add_option_to_userscript_metablock(userscript, ["// @name     " + alternative_name]);
+                let modified_userscript = parse_userscript().add_option_to_userscript_metablock(userscript, ["// @name     " + alternative_name]);
                 // Benachrichtige den Nutzer, dass das Userscript verändert wurde
                 return { valid: false, reason: "userscript_configuration_error___no_name", possible_solution: alternative_name };
 
@@ -135,7 +135,7 @@ export default function add_userscript() {
             let as = storage.getAll();
 
             // Prüfe ob das Skript bereits existiert, und wenn ja frage ob es aktualisiert werden soll!
-            for (var userscript_1 of as) {
+            for (let userscript_1 of as) {
                 let possible_id = <number>self.compare2Userscripts(userscript_1.settings, userscript_settings, userscript_1.id);
 
                 if (possible_id) {
@@ -151,7 +151,7 @@ export default function add_userscript() {
         , compare2Userscripts: function (u_1: any, u_2: any, id: any) {
             let test_userscript_settings = ["name", "namespace", "author", "updateURL", "downloadURL"];
 
-            for (var set of test_userscript_settings) {
+            for (let set of test_userscript_settings) {
                 if (typeof u_1[set] === "undefined" && typeof u_2[set] === "undefined") {
                     continue;
                 }
@@ -172,7 +172,7 @@ export default function add_userscript() {
          * @returns {void}
          */
         , _save_userscript: async function (userscript_handle: any, userscript: any, settings: any, moreinformations: any) {
-            var running_promises = [],
+            let running_promises = [],
                 // Diese Funktion wird genutzt, falls beim Nachladen ein Fehler auftritt
                 error_function = function (message: any) {
                     // Default Text
@@ -197,7 +197,7 @@ export default function add_userscript() {
                 let one_resource, resource_name: any, resource_url: any, resource_charset: any,
                     resource_allowed_types = <any>parse_userscript().get_userscript_keyword_config_by_name("resource");
 
-                for (var j in settings.resource) {
+                for (let j in settings.resource) {
                     // in [0] => name , [1] => url
                     one_resource = settings.resource[j].split(/\s+/);
                     resource_name = one_resource[0].trim();
@@ -242,7 +242,7 @@ export default function add_userscript() {
                     require_allowed_types = <any>parse_userscript().get_userscript_keyword_config_by_name("require");
 
                 // da mehrere require Anweisungen erhalten sein können
-                for (var require_index in settings.require) {
+                for (let require_index in settings.require) {
                     one_require = settings.require[require_index];
 
                     // Überprüfe die URL

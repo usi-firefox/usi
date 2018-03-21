@@ -1,4 +1,4 @@
- // Strict Mode aktivieren!
+// Strict Mode aktivieren!
 
 import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
@@ -17,7 +17,7 @@ export default class page_injection_helper {
      * @param {object} details
      * @returns {Boolean}
      */
-    userscriptInjection_onUpdate(details: any) {
+    userscriptInjection_onUpdate(details: any): boolean {
         if (parseInt(details.tabId) < 0) {
             return false;
         }
@@ -41,7 +41,7 @@ export default class page_injection_helper {
      * @param {string} transitionType
      * @returns {Boolean}
      */
-    checkUserscriptInjection(tabId: number, tabUrl: string, transitionType?: string) {
+    checkUserscriptInjection(tabId: number, tabUrl: string, transitionType?: string): boolean {
         if (page_injection_helper.all_page_injections.length > 0) {
             page_injection_helper.all_page_injections.forEach((ele) => {
                 if (!ele || ele.spa || !ele.filter_urls) {
@@ -52,7 +52,7 @@ export default class page_injection_helper {
                  * Exclude Regeln prüfen
                  */
                 const excludes = ele.filter_urls.exclude;
-                for (var i in excludes) {
+                for (let i in excludes) {
                     if (typeof excludes[i].test === "function" && excludes[i].test(tabUrl)) {
                         // Script NICHT ausführen
                         return false;
@@ -77,14 +77,16 @@ export default class page_injection_helper {
                 }
 
                 // restlichen Include Regeln prüfen
-                for (var j in includes) {
-                    if (typeof includes[j].test === "function" && includes[j].test(tabUrl)) {
+                for (let i in includes) {
+                    if (typeof includes[i].test === "function" && includes[i].test(tabUrl)) {
                         // Script ausführen
                         this._startTabExecution(tabId, ele);
                         return true;
                     }
                 }
             });
+
+            return true;
         } else {
             return false;
         }
@@ -97,7 +99,7 @@ export default class page_injection_helper {
      * @param {object} page_injection
      * @returns {boolean}
      */
-    async _startTabExecution(tabId: number, page_injection: any) {
+    async _startTabExecution(tabId: number, page_injection: any): Promise<boolean> {
         if (typeof page_injection.gm.preparedScript === "string") {
             // GM Funktionen hinzufügen
             try {
@@ -124,7 +126,7 @@ export default class page_injection_helper {
      * @param {type} userscript_handle
      * @returns {undefined}
      */
-    async add_userscript(userscript_id: number) {
+    async add_userscript(userscript_id: number) : Promise<void>{
         // @todo
         this.re_init_page_injection();
     }
@@ -133,7 +135,7 @@ export default class page_injection_helper {
      * @param {type} userscript_handle
      * @returns {undefined}
      */
-    async remove_userscript(userscript_id: number) {
+    async remove_userscript(userscript_id: number): Promise<void> {
         // @todo
         this.re_init_page_injection();
     }
@@ -142,7 +144,7 @@ export default class page_injection_helper {
      * Öffnet einen Port, damit Skripte zur Laufzeit (de-)aktiviert werden können
      * @returns {undefined}
      */
-    register_re_init_page_injection_event() {
+    register_re_init_page_injection_event() : void {
 
         browser.runtime.onConnect.addListener((port) => {
             if (port.name !== "page-injection-helper") {
@@ -194,7 +196,7 @@ export default class page_injection_helper {
             // durchlaufe alle Einträge im Storage
             if (all_userscripts.length > 0) {
 
-                for (var userscript of all_userscripts) {
+                for (let userscript of all_userscripts) {
                     // baue aus dem Userscript ein Objekt für tabs.executeScript
                     let userscript_init = userscript_handle().initWithData(userscript);
                     let page_injection = await this.get_rules_and_exec_object(userscript_init);
@@ -296,7 +298,7 @@ export default class page_injection_helper {
             script_settings["include"] = [script_settings["include"]];
         }
 
-        var result_includes = [];
+        let result_includes = [];
         // Prüfung ob es ein Array ist
         if (script_settings["include"].length > 0) {
             // ausgelagert, für Wiederverwendung
@@ -315,14 +317,14 @@ export default class page_injection_helper {
         }
 
         // Wichtig damit die Konfigurations Oberfläche von USI nicht unbrauchbar gemacht werden kann
-        var result_excludes = [/resource:\/\/firefox-addon-usi-at-jetpack\/.*/, new RegExp("moz-extension://.*")];
+        let result_excludes = [/resource:\/\/firefox-addon-usi-at-jetpack\/.*/, new RegExp("moz-extension://.*")];
 
         /**
          *  Zusätzliche Exclude Regeln
          */
         if (typeof script_settings["exclude"] !== "undefined" && script_settings["exclude"].length > 0) {
             // Exclude Regeln hinzufügen
-            var prepared_result_excludes = parse_userscript().prepare_includes_and_excludes(script_settings["exclude"]);
+            let prepared_result_excludes = parse_userscript().prepare_includes_and_excludes(script_settings["exclude"]);
 
             // Sicherheitscheck
             if (typeof prepared_result_excludes !== "undefined" && prepared_result_excludes.length > 0) {
@@ -333,7 +335,7 @@ export default class page_injection_helper {
         }
 
         // Default ist nun "document_idle", da es zu oft zu Problemen kam, dass das "document" nicht verfügbar war
-        var runAt = "document_idle";
+        let runAt = "document_idle";
 
         if (typeof script_settings["run-at"] === "string") {
 

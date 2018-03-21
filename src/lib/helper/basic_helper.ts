@@ -7,7 +7,7 @@
 
 export default function basic_helper() {
 
-    var self = {
+    const self = {
         /**
          * Funktion zum umwandeln von Objekten in Strings
          * 
@@ -19,7 +19,7 @@ export default function basic_helper() {
          */
         convertToText: function (obj: any): string {
             //create an array that will later be joined into a string.
-            var string = [];
+            let string = [];
             //is object
             //    Both arrays and objects seem to return "object"
             //    when typeof(obj) is applied to them. So instead
@@ -29,7 +29,7 @@ export default function basic_helper() {
             if (obj === "undefined") {
                 return String(obj);
             } else if (typeof (obj) === "object" && (obj.join === "undefined")) {
-                for (var prop in obj) {
+                for (let prop in obj) {
                     if (obj.hasOwnProperty(prop)) {
                         string.push(prop + ": " + self.convertToText(obj[prop]));
                     }
@@ -37,7 +37,7 @@ export default function basic_helper() {
                 return "{" + string.join(",") + "}";
                 //is array
             } else if (typeof (obj) === "object" && !(obj.join === "undefined")) {
-                for (var prop in obj) {
+                for (let prop in obj) {
                     string.push(self.convertToText(obj[prop]));
                 }
                 return "[" + string.join(",") + "]";
@@ -120,7 +120,7 @@ export default function basic_helper() {
 
             if (!this.empty(url)) {
                 // http://example.com/img/image.png => image.png
-                var url_suffix = String(url.split("/").pop());
+                const url_suffix = String(url.split("/").pop());
 
                 if (!this.empty(url_suffix)) {
                     return url_suffix;

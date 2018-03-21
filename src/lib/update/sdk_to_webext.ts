@@ -6,25 +6,27 @@ import basic_helper from "lib/helper/basic_helper";
 
 export default class sdk_to_webext {
 
-    private default_settings = {
-        config: {
-            own_css: ""
-            , load_script_with_js_end: true
-            , hightlightjs: {
-                active: true
-                , style: "default"
-            }
-            , greasemonkey: {
-                global_active: true
-            }
+    private config_default: usi.Config.Data = {
+        own_css: ""
+        , load_script_with_js_end: true
+        , hightlightjs: {
+            active: true
+            , style: "default"
+        }
+        , greasemonkey: {
+            global_active: true
         }
     };
 
     create_defaults() {
         // ACHTUNG, setzt alle "settings" auf ihre Standard Werte
         // neue Struktur speichern
-        return browser.storage.local.set({ settings: this.default_settings });
-    } 
+        return browser.storage.local.set({
+            settings: <any>{
+                config: this.config_default
+            }
+        });
+    }
 
     prefs_update(complete_storage: any) {
         // Alte Einstellungen anpassen
@@ -33,7 +35,9 @@ export default class sdk_to_webext {
             let old_sdk_prefs = complete_storage.prefs;
 
             // Alte Optionsnamen anpassen - START
-            let new_sdk_prefs = this.default_settings;
+            let new_sdk_prefs = {
+                config: this.config_default
+            };
 
             if (typeof old_sdk_prefs.config_add_css === "string") {
                 new_sdk_prefs.config.own_css = old_sdk_prefs.config_add_css;
@@ -57,7 +61,7 @@ export default class sdk_to_webext {
 
 
             // neue Struktur speichern
-            return browser.storage.local.set({ settings: new_sdk_prefs });
+            return browser.storage.local.set({ settings: <any>new_sdk_prefs });
 
         } else if (typeof complete_storage.settings !== "object") {
             // Falls keine Einstellungen gesetzt wurden, setze die Standard Werte
@@ -65,7 +69,7 @@ export default class sdk_to_webext {
         }
     }
 
-    async userscripts_update(complete_storage: any, callback : any) {
+    async userscripts_update(complete_storage: any, callback: any) {
         if (typeof complete_storage.storage === "object") {
 
             // alte SDK Daten vorhanden
@@ -73,7 +77,7 @@ export default class sdk_to_webext {
 
             let userscript_ids = Object.keys(old_sdk_userscript_storage);
 
-            for (var i in userscript_ids) {
+            for (let i in userscript_ids) {
 
                 let userscript_id = userscript_ids[i];
 
@@ -100,7 +104,7 @@ export default class sdk_to_webext {
             let prefs_updated = await this.prefs_update(complete_storage);
 
             // Wenn die Einstellungen fertig sind, müssen die Userscripte angepasst 
-            let userscripts_updated = await this.userscripts_update(complete_storage, () => {});
+            let userscripts_updated = await this.userscripts_update(complete_storage, () => { });
 
             // jetzt den neuen Inhalt zurückgeben
             let refreshed_data = await browser.storage.local.get(null);

@@ -2,9 +2,9 @@ import userscript_handle from "lib/storage/userscript";
 
 // Holt die Userscripte aus dem Speicher (simple-storage)
 export default async function userscript_storage () {
-    var all_userscripts : Array<any> = [];
-    var storage;
-    var storage_keys: any;
+    let all_userscripts : Array<any> = [];
+    let storage;
+    let storage_keys: any;
 
     let self = {
         // simple
@@ -19,7 +19,7 @@ export default async function userscript_storage () {
 
             all_userscripts = [];
 
-            for (var storage_key of storage_keys) {
+            for (let storage_key of storage_keys) {
                 // Beispiel für einen passenden Key userscript_1241841403424
                 if (/userscript_(\d+)/.test(storage_key)) {
                     // OK dies ist ein Userscript Eintrag
@@ -34,7 +34,7 @@ export default async function userscript_storage () {
             return all_userscripts;
         }
         , deleteAll: async function () {
-            for (var storage_key of storage_keys) {
+            for (let storage_key of storage_keys) {
                 await browser.storage.local.remove(storage_key);
             }
             return true;
@@ -60,8 +60,8 @@ export default async function userscript_storage () {
             id = Number(id);
 
             // holt alle Userscripte, und mittels find() wird jedes Element übergeben, falls die ele.id mit der ID übereinstimmt gib diese zurück
-            var found_userscript = self.getAll().find(function (ele) {
-                var element_id = parseInt(ele.id);
+            let found_userscript = self.getAll().find(function (ele) {
+                let element_id = parseInt(ele.id);
                 if (element_id === id) {
                     return true;
                 } else {
@@ -80,7 +80,7 @@ export default async function userscript_storage () {
         , createNew: function () {
             let new_id, userscript_found;
             // probiere es 3 Mal eine neue ID zu erzeugen
-            for (var i = 0; i < 3; i++) {
+            for (let i = 0; i < 3; i++) {
                 new_id = new Date().getTime();
                 // prüfe ob die ID, nicht doch schon existiert
                 userscript_found = self.getById(new_id);

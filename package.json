@@ -4,8 +4,10 @@
   "description": "usi, userscript injector for Mozilla Firefox",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack --watch --mode development",
-    "webpack-prod": "webpack --watch --mode production"
+    "webpack": "webpack --watch --mode development"
+    ,"webpack-prod": "webpack --watch --mode production"
+    ,"build-prepare": "webpack --mode production"
+    ,"build-web-ext": "web-ext build -s dist"
   },
   "author": "usi <>",
   "license": "LGPL",

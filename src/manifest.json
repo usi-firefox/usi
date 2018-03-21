@@ -36,7 +36,7 @@
     "applications": {
         "gecko": {
             "id": "firefox-addon-usi@jetpack", 
-            "strict_min_version": "57.0"
+            "strict_min_version": "59.0"
         }
     },
     "permissions": [

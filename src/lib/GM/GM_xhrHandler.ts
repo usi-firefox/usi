@@ -9,10 +9,10 @@ import basic_helper from "lib/helper/basic_helper";
 
 export default function GM_xhrHandler() {
 
-    var self = {
+    const self = {
         init: function (details: usi.GM_Backend.GM_xhr, counter: number, port: browser.runtime.Port) {
             // Init der XMLHttpRequest Funktion
-            var xhr = new XMLHttpRequest();
+            const xhr = new XMLHttpRequest();
 
             /**
              * (2016-02-11)		https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
@@ -34,7 +34,7 @@ export default function GM_xhrHandler() {
             //					xhr.mozSystem = true;
 
             // Nicht unterstützte Optionen
-            var unsupported_options = ["context", "upload", "synchronous"];
+            const unsupported_options = ["context", "upload", "synchronous"];
 
             // Wenn timeout angegeben ist, ansonsten 0
             if (typeof details.timeout === "number") {
@@ -90,8 +90,8 @@ export default function GM_xhrHandler() {
             }
 
             // Username, Passwort setzen
-            var user = (typeof details.user === "string") ? details.user : "";
-            var pass = (typeof details.password === "string") ? details.password : "";
+            const user = (typeof details.user === "string") ? details.user : "";
+            const pass = (typeof details.password === "string") ? details.password : "";
 
             // Xhr Optionen setzen
             xhr.open(method, url, true , user, pass);
@@ -99,7 +99,7 @@ export default function GM_xhrHandler() {
             // Header
             if (details.headers && typeof details.headers === "object") {
                 // Keys auslesen
-                var header_keys = Object.keys(details.headers);
+                const header_keys = Object.keys(details.headers);
 
                 for (let i in header_keys) {
                     // Headers bei Bedarf setzen
@@ -111,11 +111,11 @@ export default function GM_xhrHandler() {
              * Senden, normal oder als binär Variante *
              ******************************************/
             // Wenn Daten mit übergeben falls vorhanden
-            var data = details.data ? details.data : null;
+            const data = details.data ? details.data : null;
 
             // als Binary senden, wenn data gesetzt ist
             if (details.binary && (data !== null)) {
-                var dataData = new Uint8Array(data.length);
+                let dataData = new Uint8Array(data.length);
                 for (let i: number = 0; i < data.length; i++) {
                     dataData[i] = data.charCodeAt(i) & 0xff;
                 }

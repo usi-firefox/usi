@@ -20,7 +20,7 @@ export default function parse_userscript() {
         , end_s: "// ==/UserScript=="
     };
 
-    var self = {
+    const self = {
 
         /**
          * Dem übergebenen Userscript (string) werden weitere Werte in den Metablock geschrieben
@@ -75,7 +75,7 @@ export default function parse_userscript() {
          */
         find_lines_with_settings: function (userscript: string, getRestOfUserscript?: any): string[] | boolean {
             // Teile Anhand von Zeilenumbrüchen ...
-            var userscript_lines = userscript.split("\n"),
+            let userscript_lines = userscript.split("\n"),
                 // Start und Ende der Userscript Konfiguration
                 start_regex = metablock.start,
                 end_regex = metablock.end,
@@ -88,7 +88,7 @@ export default function parse_userscript() {
              */
 
             // Durchlaufe jede Zeile!
-            for (var i in userscript_lines) {
+            for (let i in userscript_lines) {
 
                 // Suche den Beginn der Konfiguration
                 if ((start_line === false) && (start_regex.test(userscript_lines[i]))) {
@@ -122,9 +122,9 @@ export default function parse_userscript() {
         },
 
         get_userscript_keyword_config_by_name: function (keyword: any) {
-            var userscript_keyword_config = self.userscript_keyword_config();
+            let userscript_keyword_config = self.userscript_keyword_config();
 
-            for (var i in userscript_keyword_config) {
+            for (let i in userscript_keyword_config) {
                 if (userscript_keyword_config[i].keyword === keyword) {
                     return userscript_keyword_config[i];
                 }
@@ -185,19 +185,19 @@ export default function parse_userscript() {
         // Suche nach Einstellungen für das UserScript
         find_settings: function (userscript: string) {
             // setze die Zeilen die die Konfiguration beinhalten!
-            var userscript_settings = <any>self.find_lines_with_settings(userscript);
+            let userscript_settings = <any>self.find_lines_with_settings(userscript);
 
             // Konfigurations-Varianten die gefunden werden können
-            var possible_entries = self.userscript_keyword_config();
+            let possible_entries = self.userscript_keyword_config();
 
             //init
-            var options = <any>{},
+            let options = <any>{},
                 option_found: any = false;
 
             // Prüfe für jeden Eintrag, ob du etwas brauchbares im Userscript vorfindest
-            for (var i in possible_entries) {
+            for (let i in possible_entries) {
                 // lege den aktuellen Key fest
-                var key = possible_entries[i].keyword,
+                let key = possible_entries[i].keyword,
                     // Wenn dies true ist, dürfen die Keys mehrfach vorkommen, ansonsten wird einfach nur der Erste verwendet!
                     m = possible_entries[i].m,
                     // der Key muss immer am Anfang zu finden sein, in der Klammer wird der Wert dann gesucht!
@@ -217,7 +217,7 @@ export default function parse_userscript() {
 
 
                 // Durchlaufe für jeden Key alle userscript_settings
-                for (var j in userscript_settings) {
+                for (let j in userscript_settings) {
 
                     //Prüfe ob der Key in der Zeile enthalten ist
                     option_found = search_for_key.exec(userscript_settings[j]);
@@ -226,7 +226,7 @@ export default function parse_userscript() {
                     if (option_found !== null) {
 
                         // Wert festlegen
-                        var value = option_found[1];
+                        let value = option_found[1];
 
                         // Überflüssige Leerzeichen entfernen, wenn möglich
                         if (typeof value.trim === "function") {
@@ -275,7 +275,7 @@ export default function parse_userscript() {
         prepare_includes_and_excludes: function (rules: string[]) {
 
             // für die Übergabe an den PageMod aufruf
-            var result = <any>[]
+            let result = <any>[]
                 , url_rule: string
                 , result_rule;
 
@@ -284,7 +284,7 @@ export default function parse_userscript() {
             }
 
             // Durchlaufe alle Einträge
-            for (var j in rules) {
+            for (let j in rules) {
                 // Reset
                 result_rule = null;
                 url_rule = rules[j];

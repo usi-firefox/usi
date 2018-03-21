@@ -134,9 +134,9 @@ export default class GM_Backend {
             let userscript_handle = <any>script_storage.getById(userscript_id);
 
             // Prüf-Variable damit es nicht zu einer "unendlichen" Rekursion kommt
-            var not_wildcard_pagemod = true,
+            let not_wildcard_pagemod = true,
                 includes = userscript_handle.getSettings()["include"];
-            for (var i in includes) {
+            for (let i in includes) {
                 if (includes[i] === "*") {
                     // Wildcard Eintrag gefunden, open in Tab ist nicht möglich!
                     not_wildcard_pagemod = false;

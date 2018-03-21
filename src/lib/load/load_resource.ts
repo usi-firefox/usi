@@ -17,7 +17,7 @@ export default function load_resource() {
             if (!basic_helper().valid_url(url)) {
                 return false;
             }
-            var xhr = new XMLHttpRequest();
+            const xhr = new XMLHttpRequest();
 
             xhr.open('GET', url, true);
 
@@ -29,7 +29,7 @@ export default function load_resource() {
                 xhr.setRequestHeader("Content-Type", "text/plain; charset=" + charset);
             }
 
-            var the_promise = new Promise((resolve: any, reject: any) => {
+            const the_promise = new Promise((resolve: any, reject: any) => {
 
                 xhr.onload = function () {
                     try {
@@ -39,26 +39,26 @@ export default function load_resource() {
                              * oder als es als Text behandelt wird, andere Datei Typen werden bisher
                              * nicht unterstützt!
                              */
-                            var response_contenttype = xhr.getResponseHeader("Content-Type");
+                            let response_contenttype = xhr.getResponseHeader("Content-Type");
 
                             if (response_contenttype === null || basic_helper().empty(response_contenttype)) {
                                 // Falls er leer sein sollte, setzte einfach => image/png
                                 response_contenttype = "text/plain";
                             }
 
-                            var arr = new Uint8Array(xhr.response);
+                            const arr = new Uint8Array(xhr.response);
 
                             // Convert the int array to a binary string
                             // We have to use apply() as we are converting an *array*
                             // and String.fromCharCode() takes one or more single values, not
                             // an array.
-                            var raw = String.fromCharCode.apply(null, arr);
+                            const raw = String.fromCharCode.apply(null, arr);
 
                             // Falls der Content-Type mit "image" beginnt, wird dieses als base64 encodierter String zurückgegeben
                             if (/^image/.test(response_contenttype)) {
                                 if (!basic_helper().empty(raw)) {
                                     // Arrow Funktion ohne geschweifete Klammer, gibt das Ergebnis wie "return" zurück
-                                    var base64_encoded = window.btoa(raw);
+                                    const base64_encoded = window.btoa(raw);
 
                                     // die Data URI an die Callback Funktion übergeben!
                                     resolve("data:" + response_contenttype + ";base64," + base64_encoded, response_contenttype);
@@ -137,7 +137,7 @@ export default function load_resource() {
          */
         , load_by_url: function (url_str: string, charset: string = "utf-8"): Promise<any> | boolean {
 
-            var xhr = new XMLHttpRequest();
+            const xhr = new XMLHttpRequest();
             try {
                 xhr.open("GET", url_str, true);
                 xhr.overrideMimeType("text/plain; charset=" + charset);
@@ -175,7 +175,7 @@ export default function load_resource() {
                     return false;
                 }
 
-                var xhr = new XMLHttpRequest();
+                const xhr = new XMLHttpRequest();
                 try {
 
                     xhr.open("GET", url_str, true);

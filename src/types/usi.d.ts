@@ -21,6 +21,19 @@ declare namespace usi {
     }
 }
 
+declare namespace usi.Config {
+    interface Data {
+        own_css: string
+        , load_script_with_js_end: boolean
+        , hightlightjs: {
+            active: boolean
+            , style: string
+        }
+        , greasemonkey: {
+            global_active: boolean
+        }
+    }
+}
 declare namespace usi.fromPageWithUserscriptFile {
     interface message {
         name: string,

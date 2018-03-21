@@ -8,7 +8,7 @@ import sdk_to_webext from "lib/update/sdk_to_webext";
 // Holt die Userscripte aus dem Speicher (simple-storage)
 export default function config_storage () {
 
-    var self = {
+    const self = {
         get: async function () {
             /**
              * the_storage.settings -> settings.config

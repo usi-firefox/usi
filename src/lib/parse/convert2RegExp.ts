@@ -26,7 +26,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-export var tldRegExp = /^([^:]+:\/\/[^\/]+)\.tld(\/.*)?$/;
+export const tldRegExp = /^([^:]+:\/\/[^\/]+)\.tld(\/.*)?$/;
 
 // Exposed outer method takes regex as string, and handles the magic TLD.
 // (Can't memoize a URI object, yet we want to do URL->URI outside this method,
@@ -39,7 +39,7 @@ export var tldRegExp = /^([^:]+:\/\/[^\/]+)\.tld(\/.*)?$/;
  */
 export function GM_convert2RegExp(pattern: string, forceGlob?: boolean): RegExp | null {
 	try {
-		var reStr = <any>GM_convert2RegExpInner(pattern, forceGlob);
+		let reStr = <RegExp | string>GM_convert2RegExpInner(pattern, forceGlob);
 
 		// Inner returns a RegExp, not str, for input regex (not glob) patterns.
 		// Use those directly without magic TLD modifications.
@@ -63,19 +63,19 @@ export function GM_convert2RegExp(pattern: string, forceGlob?: boolean): RegExp 
  * 
  * @param {string} pattern
  * @param {bool} forceGlob
- * @returns {RegExp|String}
+ * @returns {RegExp|string}
  */
-function GM_convert2RegExpInner(pattern: string, forceGlob?: boolean): RegExp | String {
-	var s = new String(pattern);
+function GM_convert2RegExpInner(pattern: string, forceGlob?: boolean): RegExp | string {
+	let s = new String(pattern);
 
 	if (!forceGlob && '/' == s.substr(0, 1) && '/' == s.substr(-1, 1)) {
 		// Leading and trailing slash means raw regex.
 		return new RegExp(s.substring(1, s.length - 1), 'i');
 	}
 
-	var res = "^";
+	let res = "^";
 
-	for (var i = 0; i < s.length; i++) {
+	for (let i = 0; i < s.length; i++) {
 		switch (s[i]) {
 			case "*":
 				res += ".*";

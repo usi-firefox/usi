@@ -1,4 +1,4 @@
- // Strict Mode aktivieren!
+// Strict Mode aktivieren!
 
 import page_injection_helper from "lib/inject/page_injection_helper";
 import options_backend from "lib/gui/options_backend";
@@ -24,17 +24,17 @@ export default class usi_main {
         usi_main.options_backend = new options_backend();
     }
 
-    createGuiListener() {
+    createGuiListener(): void {
         try {
             // USI Button
-            if(!browser.browserAction.onClicked.hasListener(this._create_or_update_options_tab)){
+            if (!browser.browserAction.onClicked.hasListener(this._create_or_update_options_tab)) {
                 browser.browserAction.onClicked.addListener(this._create_or_update_options_tab);
             }
         } catch (exception) {
         }
     }
 
-    _create_or_update_options_tab(){
+    _create_or_update_options_tab(): void {
         if (usi_main.active_tab !== 0) {
             let possible_tab = browser.tabs.update(usi_main.active_tab, { active: true });
 
@@ -54,7 +54,7 @@ export default class usi_main {
         }
     }
 
-     static _create_new_options_tab() {
+    static _create_new_options_tab(): void {
         // optionen gui starten ...
         let creating_options_tab = browser.tabs.create({
             url: "/gui/options.html"
@@ -65,17 +65,17 @@ export default class usi_main {
         });
     }
 
-    startPageInjection() {
+    startPageInjection(): void {
         usi_main.page_injection_helper.re_init_page_injection();
         usi_main.page_injection_helper.register_re_init_page_injection_event();
     }
-    startOptionsBackend() {
+    startOptionsBackend(): void {
         usi_main.options_backend.start();
     }
-    startGMBackend() {
+    startGMBackend(): void {
         new GM_Backend().register_listener();
     }
-    doUpdateFromSDKToWebext(details: any) {
+    doUpdateFromSDKToWebext(details: any): void {
         switch (details.reason) {
             case "install":
             case "update":
@@ -83,7 +83,7 @@ export default class usi_main {
                 after_update.then(() => {
                     if (details.reason === "install") {
                         // Fehler beim ersten Start m(
-                            usi_main.page_injection_helper.re_init_page_injection();
+                        usi_main.page_injection_helper.re_init_page_injection();
                     }
                 });
                 break;

@@ -22,10 +22,10 @@ export default function userscript_handle() {
         , initWithData: function (userscript_initial_data: any) {
             if (typeof userscript_initial_data === "object") {
                 // speichert die Daten des Userscripts
-                var userscript_data = userscript_initial_data;
+                let userscript_data = userscript_initial_data;
 
                 // wichtig für Chaining
-                var self = {
+                const self = {
                     getData: function () {
                         return userscript_data;
                     }
@@ -160,7 +160,7 @@ export default function userscript_handle() {
                     }
                     , loadAndAddExternals: function (type: any, url: any, name: any, charset: any, resolve: any, reject: any) {
                         // Lade die Resource
-                        var loaded_image_or_text = <any>load_resource().load_image_or_text(url, charset);
+                        const loaded_image_or_text = <any>load_resource().load_image_or_text(url, charset);
 
                         loaded_image_or_text.then(function (response_data: any, response_contenttype: any) {
 

@@ -4,7 +4,7 @@
  * das passende Skript anhand der ID
  */
 
-(async () => {
+(async (): Promise<void> => {
 
     if (!window.location.hash) {
         // keine ID vorhanden
@@ -13,7 +13,7 @@
 
     // "#" entfernen, und in integer wandeln
     const possible_spa_id = Number(window.location.hash.replace("#", ""));
-    
+
     if (possible_spa_id === 0) {
         // keine ID vorhanden
         return;
