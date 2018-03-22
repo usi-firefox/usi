@@ -1,5 +1,3 @@
-
-
 import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
@@ -11,12 +9,12 @@ export default function add_userscript() {
     function type_guess(val: string, allowed_types: string[]): string | null {
         const known_types_priotity = ["datauri", "url"];
 
+        // Leerzeichen entfernen
+        val = val.trim();
+        
         if (val.length === 0) {
             return null;
         }
-
-        // Leerzeichen entfernen
-        val = val.trim();
 
         // Prüfe die nutzbaren Datentypen
         for (let actual_type of known_types_priotity) {
@@ -36,7 +34,7 @@ export default function add_userscript() {
                     case "url":
                         // Sollte es eine gültige URL sein, gib sie direkt zurück
                         // Falls es nur ein * ist -> gib auch dies zurück
-                        if (basic_helper().valid_url(val) === true || val === "*") {
+                        if (val === "*" || basic_helper().valid_url(val) === true) {
                             return val;
                         }
                 }

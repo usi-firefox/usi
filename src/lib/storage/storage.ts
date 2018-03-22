@@ -1,8 +1,8 @@
 import userscript_handle from "lib/storage/userscript";
 
 // Holt die Userscripte aus dem Speicher (simple-storage)
-export default async function userscript_storage () {
-    let all_userscripts : Array<any> = [];
+export default async function userscript_storage() {
+    let all_userscripts: Array<any> = [];
     let storage;
     let storage_keys: any;
 
@@ -86,10 +86,9 @@ export default async function userscript_storage () {
                 userscript_found = self.getById(new_id);
                 if (userscript_found === false) {
                     // kein Userscript mit dieser ID gefunden, gibt ein neues Handle zurück
-                    return userscript_handle().initWithData(
-                        // übergib ein neues Userscript
-                        userscript_handle().getSkeleton(new_id)
-                    );
+                    return userscript_handle().initWithData(<usi.Storage.Userscript>{
+                            id: new_id
+                        });
                 }
             }
             // das sollte eigentlich nicht passieren!

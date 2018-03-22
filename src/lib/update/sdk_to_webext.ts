@@ -6,7 +6,7 @@ import basic_helper from "lib/helper/basic_helper";
 
 export default class sdk_to_webext {
 
-    private config_default: usi.Config.Data = {
+    private config_default: usi.Storage.Config = {
         own_css: ""
         , load_script_with_js_end: true
         , hightlightjs: {

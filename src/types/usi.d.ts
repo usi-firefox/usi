@@ -21,8 +21,8 @@ declare namespace usi {
     }
 }
 
-declare namespace usi.Config {
-    interface Data {
+declare namespace usi.Storage {
+    interface Config {
         own_css: string
         , load_script_with_js_end: boolean
         , hightlightjs: {
@@ -32,6 +32,14 @@ declare namespace usi.Config {
         , greasemonkey: {
             global_active: boolean
         }
+    }
+    interface Userscript {
+        id: number,
+        userscript?: string,
+        settings?: Object,
+        deactivated?: boolean,
+        moreinformations?: Object,
+        val_store?: Object
     }
 }
 declare namespace usi.fromPageWithUserscriptFile {
