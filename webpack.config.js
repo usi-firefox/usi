@@ -79,6 +79,7 @@ module.exports = [
       modules: [
         path.resolve('./src'),
         path.resolve('./src/gui/options/typescript'),
+        "node_modules"
       ]
     },
     externals: {
