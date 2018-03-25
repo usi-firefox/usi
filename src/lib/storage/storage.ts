@@ -71,7 +71,7 @@ export default async function userscript_storage() {
 
             // wenn ein Userscript gefunden wurde, initialisiere es
             if (typeof found_userscript === "object") {
-                return userscript_handle().initWithData(found_userscript);
+                return userscript_handle(found_userscript);
             } else {
                 return false;
             }
@@ -86,9 +86,7 @@ export default async function userscript_storage() {
                 userscript_found = self.getById(new_id);
                 if (userscript_found === false) {
                     // kein Userscript mit dieser ID gefunden, gibt ein neues Handle zurück
-                    return userscript_handle().initWithData(<usi.Storage.Userscript>{
-                            id: new_id
-                        });
+                    return userscript_handle(<usi.Storage.Userscript>{ id: new_id });
                 }
             }
             // das sollte eigentlich nicht passieren!

@@ -9,8 +9,8 @@ module.exports = [
       filename: 'background.js',
       path: path.resolve(__dirname, './dist')
     },
-    module:{
-      rules:[
+    module: {
+      rules: [
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
@@ -19,7 +19,7 @@ module.exports = [
       ]
     },
     resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ],
+      extensions: ['.tsx', '.ts', '.js'],
       modules: [
         path.resolve('./src')
       ]
@@ -34,15 +34,15 @@ module.exports = [
       ])
     ]
   }
-  ,{
+  , {
     entry: './lib/get_userscript_from_page/content.ts',
     context: path.join(__dirname, './src'),
     output: {
       filename: 'get_userscript_from_page.js',
       path: path.resolve(__dirname, './dist')
     },
-    module:{
-      rules:[
+    module: {
+      rules: [
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
@@ -51,7 +51,7 @@ module.exports = [
       ]
     },
     resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ],
+      extensions: ['.tsx', '.ts', '.js'],
       modules: [
         path.resolve('./src')
       ]
@@ -65,8 +65,8 @@ module.exports = [
       filename: 'gui/options.js',
       path: path.resolve(__dirname, './dist')
     },
-    module:{
-      rules:[
+    module: {
+      rules: [
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
@@ -75,7 +75,11 @@ module.exports = [
       ]
     },
     resolve: {
-      extensions: [ '.tsx', '.ts', '.js' ],
+      extensions: ['.tsx', '.ts', '.js'],
+      alias: {
+        vue: 'vue/dist/vue.js'
+      }
+      ,
       modules: [
         path.resolve('./src'),
         path.resolve('./src/gui/options/typescript'),

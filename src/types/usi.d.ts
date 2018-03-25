@@ -1,5 +1,5 @@
-declare namespace usi {
-    interface tabExecData {
+declare namespace usi.Tabs {
+    interface execData {
         filter_urls: {
             include: Array<RegExp | string>,
             exclude?: Array<RegExp | string>
@@ -36,10 +36,11 @@ declare namespace usi.Storage {
     interface Userscript {
         id: number,
         userscript?: string,
-        settings?: Object,
+        settings?: any,
         deactivated?: boolean,
         moreinformations?: Object,
-        val_store?: Object
+        val_store?: any,
+        require_scripts?: any,
     }
 }
 declare namespace usi.fromPageWithUserscriptFile {

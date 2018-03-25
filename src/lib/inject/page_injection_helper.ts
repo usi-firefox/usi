@@ -198,7 +198,7 @@ export default class page_injection_helper {
 
                 for (let userscript of all_userscripts) {
                     // baue aus dem Userscript ein Objekt für tabs.executeScript
-                    let userscript_init = userscript_handle().initWithData(userscript);
+                    let userscript_init = userscript_handle(userscript);
                     let page_injection = await this.get_rules_and_exec_object(userscript_init);
                     if (page_injection) {
                         page_injection_helper.all_page_injections.push(page_injection);
@@ -469,7 +469,7 @@ export default class page_injection_helper {
      * @param {object} userscript_handle
      * @returns {object}
      */
-    async add_GM_Functions(userscript_handle: any): Promise<usi.tabExecData> {
+    async add_GM_Functions(userscript_handle: any): Promise<usi.Tabs.execData> {
 
         // init JSON
         let gm: any = {};
@@ -502,8 +502,8 @@ export default class page_injection_helper {
          */
         gm.preparedScript = script_extra_data + gm_content_script;
 
-        // Stellt sicher, dass der Inhalt vom Typ 'tabExecData' ist
-        const gm_result: usi.tabExecData = gm;
+        // Stellt sicher, dass der Inhalt vom Typ 'usi.Tabs.execData' ist
+        const gm_result: usi.Tabs.execData = gm;
         return gm_result;
 
     }
