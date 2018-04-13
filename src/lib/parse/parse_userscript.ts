@@ -1,12 +1,9 @@
- // Strict Mode aktivieren!
 /************************************************************************
  ********* Parse-Userscript-Konfiguration Funktionen ********************
  ************************************************************************/
 
 import basic_helper from "lib/helper/basic_helper";
 import { GM_convert2RegExp, tldRegExp } from "lib/parse/convert2RegExp";
-
-
 
 export default function parse_userscript() {
 
@@ -32,12 +29,12 @@ export default function parse_userscript() {
         add_option_to_userscript_metablock: function (userscript: string, new_entries: any) {
 
             let userscript_metablock = self.find_lines_with_settings(userscript);
-            if (userscript_metablock === false) {
+            if (!userscript_metablock) {
                 return false;
             }
 
             let userscript_rest = <any>self.find_lines_with_settings(userscript, true);
-            if (userscript_rest === false) {
+            if (!userscript_rest) {
                 return false;
             }
 
@@ -71,9 +68,8 @@ export default function parse_userscript() {
          * 
          * @param {string} userscript
          * @param {Boolean} getRestOfUserscript
-         * @returns {Boolean,Array}
          */
-        find_lines_with_settings: function (userscript: string, getRestOfUserscript?: any): string[] | boolean {
+        find_lines_with_settings: function (userscript: string, getRestOfUserscript?: boolean): string[] | null {
             // Teile Anhand von Zeilenumbrüchen ...
             let userscript_lines = userscript.split("\n"),
                 // Start und Ende der Userscript Konfiguration
@@ -100,7 +96,7 @@ export default function parse_userscript() {
                     end_line = parseInt(i);
 
                     // Ermöglicht es nur den Inhalt des Userscripts zu erhalten ohne den Metablock
-                    if (basic_helper().isset(getRestOfUserscript) && getRestOfUserscript === true) {
+                    if (getRestOfUserscript === true) {
                         return userscript_lines.slice(end_line + 1);
                     }
 
@@ -117,11 +113,11 @@ export default function parse_userscript() {
                 return userscript_lines.slice(start_line + 1, end_line);
             } else {
                 // Keine gültige Konfiguration gefunden
-                return false;
+                return null;
             }
         },
 
-        get_userscript_keyword_config_by_name: function (keyword: any) {
+        get_userscript_keyword_config_by_name: function (keyword: string): usi.Userscript.MetaBlock.Keyword | null {
             let userscript_keyword_config = self.userscript_keyword_config();
 
             for (let i in userscript_keyword_config) {
@@ -131,14 +127,14 @@ export default function parse_userscript() {
             }
 
             // Falls das Keyword nicht gefunden werden konnte!
-            return false;
+            return null;
         },
 
         /**
          * Ausgelagert für mehrfache Verwendung
          * @returns {Array}
          */
-        userscript_keyword_config: function () {
+        userscript_keyword_config: function (): usi.Userscript.MetaBlock.Keyword[] {
 
             // Konfigurations-Varianten die gefunden werden können
             return [
@@ -183,16 +179,21 @@ export default function parse_userscript() {
         },
 
         // Suche nach Einstellungen für das UserScript
-        find_settings: function (userscript: string) {
+        // @todo
+        find_settings: function (userscript: string): null | Object {
             // setze die Zeilen die die Konfiguration beinhalten!
-            let userscript_settings = <any>self.find_lines_with_settings(userscript);
+            let userscript_settings = self.find_lines_with_settings(userscript);
+
+            if (!userscript_settings) {
+                return null;
+            }
 
             // Konfigurations-Varianten die gefunden werden können
             let possible_entries = self.userscript_keyword_config();
 
             //init
             let options = <any>{},
-                option_found: any = false;
+                option_found: RegExpExecArray | null = null;
 
             // Prüfe für jeden Eintrag, ob du etwas brauchbares im Userscript vorfindest
             for (let i in possible_entries) {
@@ -215,55 +216,54 @@ export default function parse_userscript() {
                  *****************************	ACHTUNG *********************************
                  ************************************************************************/
 
-
                 // Durchlaufe für jeden Key alle userscript_settings
-                for (let j in userscript_settings) {
-
+                userscript_settings.forEach((userscript_setting) => {
                     //Prüfe ob der Key in der Zeile enthalten ist
-                    option_found = search_for_key.exec(userscript_settings[j]);
+                    option_found = search_for_key.exec(userscript_setting);
 
                     // Der Key ist enthalten
-                    if (option_found !== null) {
-
-                        // Wert festlegen
-                        let value = option_found[1];
-
-                        // Überflüssige Leerzeichen entfernen, wenn möglich
-                        if (typeof value.trim === "function") {
-                            value = value.trim();
-                        }
-
-                        // Setze einfach nur den Wert ...
-                        if (m === false) {
-                            options[key] = value;
-                        } else {
-
-                            // "object" wird auch bei einem Array geliefert, und darauf prüfen wir nur ...
-                            if (typeof options[key] !== "object") {
-                                //es ist noch kein Array,deswegen erzeugen wir jetzt eins!
-                                options[key] = [];
-                            }
-
-                            // füge den Wert hinzu
-                            options[key].push(value);
-                        }
+                    if (option_found === null) {
+                        return;
                     }
-                }
+
+                    // Wert festlegen
+                    let value = option_found[1];
+
+                    // Überflüssige Leerzeichen entfernen, wenn möglich
+                    if (typeof value.trim === "function") {
+                        value = value.trim();
+                    }
+
+                    // Setze einfach nur den Wert ...
+                    if (m === false) {
+                        options[key] = value;
+                    } else {
+
+                        // "object" wird auch bei einem Array geliefert, und darauf prüfen wir nur ...
+                        if (typeof options[key] !== "object") {
+                            //es ist noch kein Array,deswegen erzeugen wir jetzt eins!
+                            options[key] = [];
+                        }
+
+                        // füge den Wert hinzu
+                        options[key].push(value);
+                    }
+                });
+
             }
 
 
             // Prüfe den Inhalt des options Array
             switch (true) {
-
-                // --- Mindestens ein Include Eintrag muss vorhanden sein! ---
                 case !basic_helper().isset(options.include) && !basic_helper().isset(options.spa):
-                    // keine gültige Konfiguration!
-                    return { error_message: "required_script_one_include", error_code: 100 };
+                    // Mindestens ein Include Eintrag muss vorhanden sein!
+                    basic_helper().notify(browser.i18n.getMessage("required_script_one_include"));
+                    return null;
 
-                // Du solltest schon einen Namen vergeben
                 case !basic_helper().isset(options.name):
-                    // keine gültige Konfiguration!
-                    return { error_message: "required_script_name", error_code: 101 };
+                    // Du solltest schon einen Namen vergeben
+                    basic_helper().notify(browser.i18n.getMessage("required_script_name"));
+                    return null;
 
                 default:
                     // Konfiguration schein in Ordnung zu sein, gib sie zurück!
@@ -272,42 +272,33 @@ export default function parse_userscript() {
 
         },
 
-        prepare_includes_and_excludes: function (rules: string[]) {
+        prepare_includes_and_excludes: function (rules?: string[]): RegExp[] | string[] {
 
-            // für die Übergabe an den PageMod aufruf
-            let result = <any>[]
-                , url_rule: string
-                , result_rule;
-
-            if (typeof rules !== "object" || rules.length < 1) {
-                return result;
+            if (!rules) {
+                return [] as string[];
             }
+
+            let result: any = [];
 
             // Durchlaufe alle Einträge
-            for (let j in rules) {
-                // Reset
-                result_rule = null;
-                url_rule = rules[j];
-
-                if (typeof url_rule === "string" && typeof url_rule.trim === "function") {
-                    url_rule = url_rule.trim();
-                } else {
-                    // url_rule muss ein String sein
-                    continue;
+            rules.forEach(function (rule: string) {
+                if (typeof rule !== "string") {
+                    return;
                 }
 
-                if (url_rule === "*") {
-                    result_rule = url_rule;
-                } else {
-                    // es gibt anscheinend einen Bug in Android, daher werden die Regeln für Android direkt an die GM_convert2RegExp() übergeben
-                    result_rule = GM_convert2RegExp(url_rule);
+                rule = rule.trim();
+                if (rule === "*") {
+                    result.push("*");
+                    return;
                 }
 
-                // Die Regel wird nur übernommen, wenn sie String oder ein regulärer Ausdruck ist
-                if (result_rule instanceof RegExp || typeof result_rule === "string") {
-                    result.push(result_rule);
+                // es gibt anscheinend einen Bug in Android, daher werden die Regeln für Android direkt an die GM_convert2RegExp() übergeben
+                let reg = GM_convert2RegExp(rule);
+                if (reg instanceof RegExp) {
+                    result.push(reg);
+                    return;
                 }
-            }
+            });
 
             return result;
         }

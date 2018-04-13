@@ -1,13 +1,9 @@
-
-
 import userscript_overview_controller from "userscript/overview";
 import userscript_list_controller from "userscript/list";
-import userscript_load_external_controller from "userscript/load_external";
 import userscript_edit_controller from "userscript/edit";
+import userscript_load_external_controller from "userscript/load_external";
 import userscript_config_controller from "userscript/config";
 import userscript_help_controller from "userscript/help";
-
-
 
 /**
  * Liefert für den angfragten Namen den passenden Controller zurück

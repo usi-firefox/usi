@@ -1,5 +1,3 @@
-
-
 declare var jQuery: any;
 declare var document: any;
 
@@ -8,11 +6,41 @@ import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 
 import template_controller from "template";
-import download_controller from "download";
 import event_manager_controller from "events/event_manager";
 import bootstrap_toggle_controller from "bootstraptoggle";
 
+declare function unescape(s: string): string;
 
+/**
+ * erzeugt einen Download (Datei Speichern Dialog)
+ * @param {string} data
+ * @param {string} type
+ * @param {string} filename
+ * @returns {void}
+ */
+export function download_file(data: string, type?: string, filename?: string): void {
+    var link = document.createElement("a");
+    // Dateinamen angeben
+    if (filename) {
+        // z.B. %20 durch Leerzeichen ersetzen
+        link.download = decodeURIComponent(filename);
+    }
+
+    // data type festlegen
+    if (type) {
+        link.href = "data:" + type;
+    } else {
+        link.href = "data:text/plain";
+    }
+
+    // Datenanhängen
+    link.href += ";base64," + btoa(unescape(encodeURIComponent(data)));
+
+    // Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
 
 export default function event_controller() {
 
@@ -80,9 +108,9 @@ export default function event_controller() {
                             }
 
                             if (jQuery("#usi-config-change-complete-export").prop("checked") === true) {
-                                download_controller(result_export, "text/plain", "usi-export.usi.json");
+                                download_file(result_export, "text/plain", "usi-export.usi.json");
                             } else {
-                                download_controller(result_export, "application/octet-stream", "usi-export.usi.js");
+                                download_file(result_export, "application/octet-stream", "usi-export.usi.js");
                             }
                         } else {
                             // Kein Userscript für den Export vorhanden
@@ -91,11 +119,11 @@ export default function event_controller() {
                     }
                     , single: async function (id: number) {
                         let script_storage = await userscript_storage();
-                        let userscript_handler = script_storage.getById(id);
+                        let userscript_handler = <any>script_storage.getById(id);
 
                         if (userscript_handler !== false) {
                             // Bietet das Userscript zur lokalen Speicherung an!
-                            download_controller(userscript_handler.getUserscriptContent(), "text/plain", encodeURI(userscript_handler.getSettings()["name"] + ".user.js"));
+                            download_file(userscript_handler.getUserscriptContent(), "text/plain", encodeURI(userscript_handler.getSettings()["name"] + ".user.js"));
                         }
 
                     }
@@ -112,11 +140,12 @@ export default function event_controller() {
                 event_manager_controller().register_once(document, "USI-FRONTEND:changeTab", function (event: any, action: string, param1?: any) {
                     switch (action) {
                         case "edit":
-                            template_controller().load(action, {
+                            // @todo
+                            /* template_controller().load(action, {
                                 callback_on_complete: function () {
                                     jQuery(document).trigger("USI-FRONTEND:editTab-get-userscript", param1);
                                 }
-                            });
+                            }); */
                             break;
                     }
                 });
@@ -227,7 +256,7 @@ export default function event_controller() {
         , set: {
             config: {
                 load_external_script: async function (bool: boolean) {
-                    let config = await config_storage().get();
+                    let config = await config_storage().get();                   
                     config.load_script_with_js_end = bool;
                     return await config_storage().set(config);
                 }

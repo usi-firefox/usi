@@ -1,5 +1,3 @@
- // Strict Mode aktivieren!
-
 import load_resource from "lib/load/load_resource";
 import basic_helper from "lib/helper/basic_helper";
 import add_userscript from "lib/storage/add_userscript";
@@ -55,7 +53,7 @@ browser.runtime.onConnect.addListener(function (port: any) {
                             more_informations = message.data.moreinformations;
                         }
 
-                        let userscript_handle = await <any>add_userscript().update_userscript(message.data.id, message.data.userscript, more_informations);
+                        let userscript_handle = await <any>add_userscript().update_userscript(message.data.id as any, message.data.userscript, more_informations as usi.Userscript.AddionalData.Moreinformations);
                         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
                         (new page_injection_helper()).add_userscript(userscript_handle);
 

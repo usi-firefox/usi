@@ -1,4 +1,3 @@
-
 /**
  * Prüft den Hash und lädt gegebenfalls 
  * das passende Skript anhand der ID

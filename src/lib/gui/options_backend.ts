@@ -1,5 +1,3 @@
- // Strict Mode aktivieren!
-
 /************************************************************************
  ************************* Page Injection Funktionen! *******************
  ************************************************************************/
@@ -12,10 +10,6 @@ import add_userscript from "lib/storage/add_userscript";
 import SPA from "lib/spa/handler";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import load_resource from "lib/load/load_resource";
-
-
-
-// zunächste den Userscript storage initialisieren
 
 export default class options_backend {
 
@@ -145,10 +139,10 @@ export default class options_backend {
                                         }
                                         let loaded_userscript_text = loaded_userscript.target.responseText;
 
-                                        // Konfig suchen und danach die Optionen Parsen...
-                                        let loaded_userscript_settings = parse_userscript().find_settings(loaded_userscript_text);
+                                        // @todo Konfig suchen und danach die Optionen Parsen...
+                                        let loaded_userscript_settings = <any> parse_userscript().find_settings(loaded_userscript_text);
                                         // Prüfe ob die Versionen verschieden sind!
-                                        if (loaded_userscript_settings.version !== userscript_settings["version"]) {
+                                        if (loaded_userscript_settings !== null && loaded_userscript_settings["version"] !== userscript_settings["version"]) {
 
                                             // Frage den Benutzer ob das Skript aktualisiert werden soll!
                                             port.postMessage({ name: "USI-BACKEND:update-for-userscript-available", data: { id: userscript_id, userscript: loaded_userscript_text } });
@@ -170,5 +164,3 @@ export default class options_backend {
 
     }
 }
-// Zeige den aktuellen Speicherverbauch an
-//port.postMessage({name: "USI-BACKEND:storage-quota", data: script_storage.getQuota()});

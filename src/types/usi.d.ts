@@ -38,9 +38,23 @@ declare namespace usi.Storage {
         userscript?: string,
         settings?: any,
         deactivated?: boolean,
-        moreinformations?: Object,
+        moreinformations?: usi.Userscript.AddionalData.Moreinformations,
         val_store?: any,
         require_scripts?: any,
+    }
+}
+
+declare namespace usi.Userscript.AddionalData {
+    interface Moreinformations {
+        url: string
+    }
+}
+
+declare namespace usi.Userscript.MetaBlock {
+    interface Keyword {
+        m: boolean,
+        keyword: string,
+        types: string[]
     }
 }
 declare namespace usi.fromPageWithUserscriptFile {

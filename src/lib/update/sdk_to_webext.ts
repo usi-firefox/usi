@@ -1,8 +1,4 @@
-
-
 import basic_helper from "lib/helper/basic_helper";
-
-
 
 export default class sdk_to_webext {
 

@@ -1,5 +1,3 @@
-// Strict Mode aktivieren!
-
 import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_handle from "lib/storage/userscript";
@@ -298,7 +296,7 @@ export default class page_injection_helper {
             script_settings["include"] = [script_settings["include"]];
         }
 
-        let result_includes = [];
+        let result_includes;
         // Prüfung ob es ein Array ist
         if (script_settings["include"].length > 0) {
             // ausgelagert, für Wiederverwendung
@@ -306,7 +304,7 @@ export default class page_injection_helper {
         }
 
         // Die include dürfen nicht leer sein
-        if (result_includes.length === 0) {
+        if (!result_includes || result_includes.length === 0) {
             return false;
         }
 
@@ -317,7 +315,7 @@ export default class page_injection_helper {
         }
 
         // Wichtig damit die Konfigurations Oberfläche von USI nicht unbrauchbar gemacht werden kann
-        let result_excludes = [/resource:\/\/firefox-addon-usi-at-jetpack\/.*/, new RegExp("moz-extension://.*")];
+        let result_excludes = [/resource:\/\/firefox-addon-usi-at-jetpack\/.*/, new RegExp("moz-extension://.*")] as string[] | RegExp[];
 
         /**
          *  Zusätzliche Exclude Regeln
@@ -327,10 +325,10 @@ export default class page_injection_helper {
             let prepared_result_excludes = parse_userscript().prepare_includes_and_excludes(script_settings["exclude"]);
 
             // Sicherheitscheck
-            if (typeof prepared_result_excludes !== "undefined" && prepared_result_excludes.length > 0) {
-                for (let i in prepared_result_excludes) {
-                    result_excludes.push(prepared_result_excludes[i]);
-                }
+            if (prepared_result_excludes && prepared_result_excludes.length > 0) {
+               /*  prepared_result_excludes.forEach((rule : RegExp[] | string[]) => {
+                    result_excludes.push(rule);
+                }); */
             }
         }
 
@@ -494,7 +492,8 @@ export default class page_injection_helper {
 
         // @todo Übler Workaround, da keine Dateien direkt gelesen werden können ...
         let script_extra_data = "var prefilled_data = " + JSON.stringify(gm.prefilled_data) + "; \n\n";
-        let gm_content_script = await load_resource().load_internal_file("/gui/helper/GM_Frontend.js");
+        // GM_Frontend wird auf die Root Ebene kopiert
+        let gm_content_script = await load_resource().load_internal_file("/GM_Frontend.js");
 
         /*
          *  dieses muss per browser.tabs.executeScript ausgeführt werden

@@ -34,9 +34,6 @@ export default function template_controller() {
             // lädt den passenden Controller
             actual_controller = manager_controller().getController(name);
 
-            // ersetze die Überschrift
-            jQuery("#nav_title").html(manager_controller().getControllerTitle(name));
-
             if (actual_controller !== false && typeof actual_controller.deliver_vars === "function") {
                 // falls ein gültiger Controller gerufen wurde, wird nun seine deliver_vars() augeführt
                 replaceValues = actual_controller.deliver_vars();

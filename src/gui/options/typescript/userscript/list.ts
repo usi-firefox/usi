@@ -1,7 +1,7 @@
 
 
-declare var jQuery :any;
-declare var document :any;
+declare var jQuery: any;
+declare var document: any;
 
 import event_controller from "events/event_controller";
 import userscript_list_entry_class from "userscript/list_entry";
@@ -41,7 +41,7 @@ export default function userscript_list_controller() {
             if (typeof userscripts.forEach === "function") {
                 userscripts.forEach(function (userscript: any, index: any) {
                     // Instanziere das Userscript
-                    var userscript_entry = <any> userscript_list_entry_class(userscript, index);
+                    var userscript_entry = <any>userscript_list_entry_class(userscript, index);
 
                     // falls ein Fehler auftreten sollte, ist der userscript_entry === false
                     if (userscript_entry === false) {
@@ -81,7 +81,7 @@ export default function userscript_list_controller() {
             });
 
         }
-        , set_userscript_counter: function (counter? : any) {
+        , set_userscript_counter: function (counter?: any) {
             if (counter && counter > 0) {
                 jQuery("#usi-list-userscript-count-negative").addClass("hidden");
                 jQuery("#usi-list-userscript-count-positive").removeClass("hidden");
@@ -97,7 +97,7 @@ export default function userscript_list_controller() {
          * @param {boolean} setTo
          * @returns {void}
          */
-        , set_expand_status: function (setTo : boolean) {
+        , set_expand_status: function (setTo: boolean) {
             // muss ein bool sein
             if (setTo === true || setTo === false) {
                 is_expanded = setTo;
@@ -135,7 +135,7 @@ export default function userscript_list_controller() {
     };
 
     // Registriere das Event zum Neuladen der Userscripte
-    event_manager_controller().register_once(document, "USI-FRONTEND:refresh-userscripts", function (event:any, action:any, param1:any) {
+    event_manager_controller().register_once(document, "USI-FRONTEND:refresh-userscripts", function (event: any, action: any, param1: any) {
         event_controller().request.userscript.all(self.refresh_userscript_list);
     });
 
@@ -148,7 +148,7 @@ export default function userscript_list_controller() {
              }); */
 
             // Speicherverbrauch anzeigen
-            event_controller().register.userscript.quota(function (quota:any) {
+            event_controller().register.userscript.quota(function (quota: any) {
 
                 // falls ein Komma enthalten sein sollte ...
                 var rounded_quota = (Math.round(quota * 100) / 100 + "").replace(".", ","),

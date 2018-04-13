@@ -1,7 +1,6 @@
-
-
 (function(win, given_data){    
-    
+"use strict";
+
 // Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
 var message_counter = 1,    
 backend_port = browser.runtime.connect({name: "usi-gm-backend---" + given_data.id}),

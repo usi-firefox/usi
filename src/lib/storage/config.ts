@@ -1,30 +1,28 @@
-
-
-
-
 import load_resource from "lib/load/load_resource";
 import sdk_to_webext from "lib/update/sdk_to_webext";
 
 // Holt die Userscripte aus dem Speicher (simple-storage)
-export default function config_storage () {
+export default function config_storage() {
 
     const self = {
-        get: async function () {
+        get: async function (): Promise<usi.Storage.Config> {
             /**
              * the_storage.settings -> settings.config
              */
-            let the_storage = <any> await browser.storage.local.get("settings");
-            if (!the_storage.settings) {
-                // Update nötig
-                the_storage = await (new sdk_to_webext()).do_update();
+            try {
+                let the_storage = <any>await browser.storage.local.get("settings");
+                if (!the_storage.settings) {
+                    // Update nötig
+                    the_storage = await (new sdk_to_webext()).do_update();
+                }
+                return the_storage.settings.config;
+            } catch (ex) {
+                throw ex;
             }
-
-            return the_storage.settings.config;
-
         }
 
-        , set: async function (newConfig : any) {
-            let the_storage = <any> await browser.storage.local.get("settings");
+        , set: async function (newConfig: usi.Storage.Config): Promise<boolean> {
+            let the_storage = <any>await browser.storage.local.get("settings");
 
             // neue Config setzen
             the_storage.settings.config = newConfig;

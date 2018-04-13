@@ -2,8 +2,6 @@ import basic_helper from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
 
-
-
 export default function add_userscript() {
 
     function type_guess(val: string, allowed_types: string[]): string | null {
@@ -11,7 +9,7 @@ export default function add_userscript() {
 
         // Leerzeichen entfernen
         val = val.trim();
-        
+
         if (val.length === 0) {
             return null;
         }
@@ -55,13 +53,13 @@ export default function add_userscript() {
          * @param {object} moreinformations
          * @returns {object}
          */
-        check_for_valid_userscript_settings: function (userscript: any, moreinformations: any) {
+        check_for_valid_userscript_settings: function (userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
             let alternative_name,
                 // Konfig suchen und danach die Optionen Parsen...
                 userscript_settings = <any>parse_userscript().find_settings(userscript);
 
             // Falls im Userscript kein Name vorhanden ist, setze den Dateinamen als @name
-            if (moreinformations !== null && basic_helper().isset(moreinformations) && !basic_helper().empty(moreinformations.url)) {
+            if (moreinformations && !basic_helper().empty(moreinformations.url)) {
                 alternative_name = basic_helper().getFilenameFromURL(moreinformations.url);
             }
 
@@ -86,7 +84,7 @@ export default function add_userscript() {
          * @param {object} moreinformations
          * @returns {userscript_handle}
          */
-        , save_new_userscript: async function (userscript: any, moreinformations: any) {
+        , save_new_userscript: async function (userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
             // Erzeuge ein neues Userscript
             let userscript_settings = parse_userscript().find_settings(userscript),
                 userscripts = await userscript_storage();
@@ -106,7 +104,7 @@ export default function add_userscript() {
          * @param {object} moreinformations
          * @returns {userscript_handle}
          */
-        , update_userscript: async function (userscript_id: any, userscript: any, moreinformations: any) {
+        , update_userscript: async function (userscript_id: number, userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
             // aktualisiert ein vorhandenes Userscript
             let userscript_settings = parse_userscript().find_settings(userscript),
                 userscripts = await userscript_storage();
@@ -169,7 +167,7 @@ export default function add_userscript() {
          * @param {object} moreinformations
          * @returns {void}
          */
-        , _save_userscript: async function (userscript_handle: any, userscript: any, settings: any, moreinformations: any) {
+        , _save_userscript: async function (userscript_handle: any, userscript: any, settings: any, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
             let running_promises = [],
                 // Diese Funktion wird genutzt, falls beim Nachladen ein Fehler auftritt
                 error_function = function (message: any) {
@@ -193,7 +191,7 @@ export default function add_userscript() {
             // lade die @resource angaben
             if (typeof settings.resource !== "undefined") {
                 let one_resource, resource_name: any, resource_url: any, resource_charset: any,
-                    resource_allowed_types = <any>parse_userscript().get_userscript_keyword_config_by_name("resource");
+                    resource_allowed_types = parse_userscript().get_userscript_keyword_config_by_name("resource");
 
                 for (let j in settings.resource) {
                     // in [0] => name , [1] => url
@@ -206,55 +204,61 @@ export default function add_userscript() {
                     }
 
                     // resource überschreiben! und setzt es auf Null falls nicht genutzt werden kann
-                    resource_url = type_guess(resource_url, resource_allowed_types.types);
+                    if (resource_allowed_types !== null) {
 
-                    if (resource_url) {
+                        resource_url = type_guess(resource_url, resource_allowed_types.types);
 
-                        // Resource nachladen!
-                        running_promises.push(new Promise(function (resolve) {
-                            userscript_handle.loadAndAddExternals("resource", resource_url, resource_name, resource_charset, resolve, error_function);
-                        }));
+                        if (resource_url) {
+
+                            // Resource nachladen!
+                            running_promises.push(new Promise(function (resolve) {
+                                userscript_handle.loadAndAddExternals("resource", resource_url, resource_name, resource_charset, resolve, error_function);
+                            }));
+                        }
                     }
                 }
             }
 
             // Verarbeite das @icon
             if (typeof settings.icon !== "undefined") {
-                let icon_allowed_types = <any>parse_userscript().get_userscript_keyword_config_by_name("icon");
+                let icon_allowed_types = parse_userscript().get_userscript_keyword_config_by_name("icon");
 
                 // icon URL
-                let icon_url = type_guess(settings.icon, icon_allowed_types.types);
+                if (icon_allowed_types !== null) {
+                    let icon_url = type_guess(settings.icon, icon_allowed_types.types);
 
-                if (icon_url) {
+                    if (icon_url) {
 
-                    // icon nachladen
-                    running_promises.push(new Promise(function (resolve) {
-                        userscript_handle.loadAndAddExternals("icon", icon_url, null, null, resolve, error_function);
-                    }));
+                        // icon nachladen
+                        running_promises.push(new Promise(function (resolve) {
+                            userscript_handle.loadAndAddExternals("icon", icon_url, null, null, resolve, error_function);
+                        }));
+                    }
                 }
             }
 
             // Lade externe Skripte nach, falls vorhanden
             if (typeof settings.require !== "undefined") {
                 let one_require, require_url: any,
-                    require_allowed_types = <any>parse_userscript().get_userscript_keyword_config_by_name("require");
+                    require_allowed_types = parse_userscript().get_userscript_keyword_config_by_name("require");
 
                 // da mehrere require Anweisungen erhalten sein können
                 for (let require_index in settings.require) {
                     one_require = settings.require[require_index];
 
-                    // Überprüfe die URL
-                    require_url = type_guess(one_require, require_allowed_types.types);
+                    if (require_allowed_types !== null) {
+                        // Überprüfe die URL
+                        require_url = type_guess(one_require, require_allowed_types.types);
 
-                    // Nachladen des benötigten Skripts
-                    if (require_url) {
+                        // Nachladen des benötigten Skripts
+                        if (require_url) {
 
-                        running_promises.push(new Promise(function (resolve) {
-                            userscript_handle.loadAndAddExternals("require", require_url, null, null, resolve, error_function);
-                        }));
+                            running_promises.push(new Promise(function (resolve) {
+                                userscript_handle.loadAndAddExternals("require", require_url, null, null, resolve, error_function);
+                            }));
 
+                        }
                     }
-
                 }
             }
 

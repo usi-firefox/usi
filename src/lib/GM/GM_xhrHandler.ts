@@ -1,11 +1,8 @@
- // Strict Mode aktivieren!
 /************************************************************************
  ************************* Basic Funktionen! *************************
  ************************************************************************/
 
 import basic_helper from "lib/helper/basic_helper";
-
-
 
 export default function GM_xhrHandler() {
 

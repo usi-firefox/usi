@@ -9,10 +9,7 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
 
         // wichtig für Chaining
         const self = {
-            getData: function () {
-                return userscript_data;
-            }
-            , getId: function () {
+            getId: function () {
                 return userscript_data.id;
             }
             , getUserscriptContent: function () {
@@ -32,11 +29,11 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                 userscript_data.settings = values;
                 return self;
             }
-            , setMoreinformations: function (values: object) {
+            , setMoreinformations: function (values: usi.Userscript.AddionalData.Moreinformations) {
                 userscript_data.moreinformations = values;
                 return self;
             }
-            , getMoreinformations: function (values: object) {
+            , getMoreinformations: function (values: usi.Userscript.AddionalData.Moreinformations) {
                 return userscript_data.moreinformations;
             }
             , deleteUserscript: async function () {
