@@ -115,9 +115,10 @@ module.exports = [
         root: "hljs" // indicates global variable
       }
     },
+    devtool: 'inline-source-map',
     plugins: [
       new CopyWebpackPlugin([
-        { from: 'gui', to: "gui", ignore: ["*.ts"] },
+        { from: 'gui', to: "gui", ignore: ["*.ts", "*.vue"] },
       ])
     ]
   }

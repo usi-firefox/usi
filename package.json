@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "webpack": "webpack --watch --mode development",
-    "webpack-prod": "webpack --watch --mode production",
-    "build-prepare": "webpack --mode production",
+    "webpack-prod": "webpack --watch --mode production --devtool none",
+    "build-prepare": "webpack --mode production --devtool none",
+    "webpack-info": "webpack --help",
     "browser": "web-ext run -s dist",
     "build-web-ext": "web-ext build -s dist"
   },
