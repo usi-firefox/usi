@@ -69,6 +69,12 @@ declare namespace usi.fromPageWithUserscriptFile {
         }
     }
 }
+declare namespace usi.Backend {
+    interface Port extends browser.runtime.Port {
+        on: Function
+    }
+}
+
 declare namespace usi.GM_Backend {
     interface GM_openInTab {
         open_in_background: boolean,

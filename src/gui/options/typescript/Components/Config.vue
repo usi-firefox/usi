@@ -134,7 +134,6 @@
 declare var jQuery: any;
 
 import config_storage from "lib/storage/config";
-import highlightjs_controller from "highlightjs";
 import event_controller from "events/event_controller";
 import event_manager_controller from "events/event_manager";
 

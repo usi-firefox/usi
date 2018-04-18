@@ -29,7 +29,6 @@
 
 <script lang="ts">
 import event_controller from "events/event_controller";
-import userscript_list_entry_class from "userscript/list_entry";
 
 import Vue from "vue";
 import ListEntryComponent from "./List/ListEntry.vue";

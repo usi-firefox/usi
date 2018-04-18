@@ -7,20 +7,22 @@
     "developer": {
         "name": "usi-dev"
     },
-    "version": "0.5.2.2a",
+    "version": "0.5.3.0",
     "background": {
-        "scripts": ["background.js"]
+        "scripts": [
+            "background.js"
+        ]
     },
     "content_scripts": [
         {
             "matches": [
-                "*://*/*.user.js"
-                , "file:///*.user.js"
-            ]
-            ,"js": [
-                "get_userscript_from_page.js" 
-            ]
-            , "run_at": "document_end"
+                "*://*/*.user.js",
+                "file:///*.user.js"
+            ],
+            "js": [
+                "get_userscript_from_page.js"
+            ],
+            "run_at": "document_end"
         }
     ],
     "browser_action": {
@@ -35,7 +37,7 @@
     },
     "applications": {
         "gecko": {
-            "id": "firefox-addon-usi@jetpack", 
+            "id": "firefox-addon-usi@jetpack",
             "strict_min_version": "59.0"
         }
     },
@@ -50,6 +52,6 @@
         "unlimitedStorage",
         "tabs",
         "webNavigation"
-    ]
-    , "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
 }

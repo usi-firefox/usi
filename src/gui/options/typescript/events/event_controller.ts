@@ -5,10 +5,6 @@ import basic_helper from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 
-import template_controller from "template";
-import event_manager_controller from "events/event_manager";
-import bootstrap_toggle_controller from "bootstraptoggle";
-
 declare function unescape(s: string): string;
 
 /**
@@ -18,7 +14,7 @@ declare function unescape(s: string): string;
  * @param {string} filename
  * @returns {void}
  */
-export function download_file(data: string, type?: string, filename?: string): void {
+function download_file(data: string, type?: string, filename?: string): void {
     var link = document.createElement("a");
     // Dateinamen angeben
     if (filename) {
@@ -42,19 +38,26 @@ export function download_file(data: string, type?: string, filename?: string): v
     document.body.removeChild(link);
 }
 
-export default function event_controller() {
-
+function getBackendPort() : usi.Backend.Port{
     // Abstraktions Möglichkeit
-    var port = <any>browser.runtime.connect(basic_helper().getExtId(), { name: "options-backend" });
+    var backend_port = <usi.Backend.Port> browser.runtime.connect(basic_helper().getExtId(), { name: "options-backend" });
 
     // Workaround Wrapper
-    port.on = function (response_name: string, callback: Function) {
-        port.onMessage.addListener(function (response: any) {
+    backend_port.on = function (response_name: string, callback: Function) {
+        backend_port.onMessage.addListener(function (response: any) {
             if (response.name === response_name) {
                 callback(response.data);
             }
         });
     };
+
+    return backend_port;
+}
+
+// Instanziere den Backend Port
+var port = getBackendPort();
+
+export default function event_controller() {
 
     var self = {
         // Daten vom Backend erhalten
@@ -134,23 +137,7 @@ export default function event_controller() {
 
         // Registriert ein Event 
         , register: {
-            frontend_events: function () {
-                // Initialisiere die Tab übergreifenden Events im Frontend
-                // Tab Wechsel Event
-                event_manager_controller().register_once(document, "USI-FRONTEND:changeTab", function (event: any, action: string, param1?: any) {
-                    switch (action) {
-                        case "edit":
-                            // @todo
-                            /* template_controller().load(action, {
-                                callback_on_complete: function () {
-                                    jQuery(document).trigger("USI-FRONTEND:editTab-get-userscript", param1);
-                                }
-                            }); */
-                            break;
-                    }
-                });
-            }
-            , userscript: {
+            userscript: {
                 quota: function (c: Function) {
 
                     /**

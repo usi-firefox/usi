@@ -1,20 +1,18 @@
 declare var jQuery: any;
 
 import event_controller from "events/event_controller";
-import event_manager_controller from "events/event_manager";
-import template_controller from "template";
-import language_replace_in_DOM from "language";
+
+import language_replace_in_DOM from "Language";
 import config_storage from "lib/storage/config";
-import userscript_config_controller from "userscript/config";
 
 import Vue from "vue";
 
-import OverviewComponent from "components/Overview.vue";
-import EditComponent from "components/Edit.vue";
-import LoadExternalComponent from "components/LoadExternal.vue";
-import ConfigComponent from "components/Config.vue";
-import ListComponent from "components/List.vue";
-import HelpComponent from "components/Help.vue";
+import OverviewComponent from "Components/Overview.vue";
+import EditComponent from "Components/Edit.vue";
+import LoadExternalComponent from "Components/LoadExternal.vue";
+import ConfigComponent from "Components/Config.vue";
+import ListComponent from "Components/List.vue";
+import HelpComponent from "Components/Help.vue";
 
 /**
  * Zunächst die Konfiguration laden
