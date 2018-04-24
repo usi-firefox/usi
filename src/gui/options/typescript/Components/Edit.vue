@@ -123,8 +123,12 @@ export default Vue.component(componentName, {
      * Werden diese gesetzt
      */
     if (this.addional) {
-      if(this.addional.userscript){
-        // Falls ein Userscript zur Editierung 
+      if (this.addional.id) {
+        this.script_id = this.addional.id;
+      }
+
+      if (this.addional.userscript) {
+        // Falls ein Userscript zur Editierung
         // aus einem anderen Component übergeben wurde
         this.textarea.content = this.addional.userscript;
 

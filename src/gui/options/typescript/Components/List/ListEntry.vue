@@ -129,7 +129,7 @@
                     <br />
 
                     <span v-if="hightlightsjsActive">
-                        <highlightjs-component :code="this.localScript.userscript" />
+                        <highlightjs-component :code="this.localScript.userscript" :astyle="hightlightsjsStyle" />
                     </span>
                     <span v-else>
                         <!-- Es dürfen keine Leerzeichen dazwischen sein -->
@@ -197,6 +197,7 @@ export default Vue.component(componentName, {
       markedAsDeleted: false,
       localScript: this.$props.script,
       hightlightsjsActive: false,
+      hightlightsjsStyle: null,
       GMValuesFlat: "",
       lang: {
         deactivated: browser.i18n.getMessage("deactivated"),
@@ -208,6 +209,14 @@ export default Vue.component(componentName, {
   },
   created: function() {
     this.$parent.$parent.$emit("usi:lang");
+
+    // @todo Highlight JS aktiv?
+    let parent_data = <any>this.$parent.$parent;
+    this.hightlightsjsActive = <boolean>parent_data.configuration.hightlightjs.active;
+    if(parent_data.configuration.hightlightjs.style){
+      this.hightlightsjsStyle = <string>parent_data.configuration.hightlightjs.style;
+    }
+
   },
   methods: {
     export_script: function() {
@@ -288,7 +297,10 @@ export default Vue.component(componentName, {
       // veranlasse den Tab Wechsel!
       this.$parent.$emit("change-tab", {
         comp: "edit",
-        extraData: { userscript: this.localScript.userscript }
+        extraData: {
+          userscript: this.localScript.userscript,
+          id: this.localScript.id
+        }
       });
     },
 
@@ -312,8 +324,7 @@ export default Vue.component(componentName, {
 
     showUserscript: function() {
       this.showUserscriptContent = !this.showUserscriptContent;
-    },
-
+    }
   },
   components: {
     HighlightjsComponent

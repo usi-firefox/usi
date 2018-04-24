@@ -33,12 +33,16 @@ export default Vue.component(componentName, {
   props: {
     code: {
       required: true
+    },
+    // @todo rename
+    astyle: {
+      required: false
     }
   },
   data: function() {
     return {
       dataCode: this.$props.code,
-      active_style: "default",
+      active_style: this.$props.astyle || "default",
       highlight_styles_path: "libs/highlight/styles/",
       // enthält alle verfügbaren highlight js styles
       hightlightjsstyles: [
@@ -146,6 +150,7 @@ export default Vue.component(componentName, {
 
       // Style speichern
       event_controller().set.highlightjs.style(this.active_style);
+
     }
   }
 });

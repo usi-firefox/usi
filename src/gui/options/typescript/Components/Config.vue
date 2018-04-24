@@ -177,12 +177,15 @@ export default Vue.component(componentName, {
     // Schreibe die Neue Konfiguration
     load_script_with_js_end: function(newValue, oldValue) {
       event_controller().set.config.load_external_script(newValue);
+      this.$parent.$emit("usi:refresh-config");
     },
     greasemonkey_global_active: function(newValue, oldValue) {
       event_controller().set.config.gm_funcs_always_on(newValue);
+      this.$parent.$emit("usi:refresh-config");
     },
     hightlightjs_active: function(newValue, oldValue) {
       event_controller().set.config.highlightjs_state(newValue);
+      this.$parent.$emit("usi:refresh-config");
     }
   },
   methods: {

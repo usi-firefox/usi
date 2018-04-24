@@ -150,6 +150,15 @@ config_storage().get().then((config: usi.Storage.Config) => {
     AppBody.$on("usi:reset-extraData", function () {
         AppBody.extraData = {};
     });
+    
+    /**
+     * Lädt die Konfiguration neu, falls diese geändert wurde
+     */
+    AppBody.$on("usi:refresh-config", function () {
+        config_storage().get().then(function (config: usi.Storage.Config) {
+            AppBody.configuration = config;
+        });
+    });
 
     /**
      * Ändert das Zusätzliche CSS
