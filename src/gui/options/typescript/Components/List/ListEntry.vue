@@ -197,7 +197,7 @@ export default Vue.component(componentName, {
       markedAsDeleted: false,
       localScript: this.$props.script,
       hightlightsjsActive: false,
-      hightlightsjsStyle: null,
+      hightlightsjsStyle: "default",
       GMValuesFlat: "",
       lang: {
         deactivated: browser.i18n.getMessage("deactivated"),
