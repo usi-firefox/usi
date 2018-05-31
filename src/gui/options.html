@@ -29,52 +29,7 @@
 </head>
 
 <body class="has-sidebar-left has-navbar-top">
-	<div id="gui" class="scrollable-content">
-
-		<!-- Sidebar -->
-		<div class="sidebar sidebar-left">
-			<div id="sidebar-menu">
-				<h1 class="scrollable-header app-name">USI - ({{version}})</h1>
-					<!-- Sidebar Eintrag -->
-					<a v-once v-for="(entry,index) in menuEntries" class="list-group-item load_template" @click="hide_side_menu_and_load(index)"
-					    :data-usi-lang="entry.lang"></a>
-			</div>
-		</div>
-
-		<!-- Main -->
-		<div class="app">
-			<!-- Top Navbar -->
-			<div @click="toggle_side_menu" class="navbar navbar-app navbar-absolute-top">
-				<div class="navbar-brand navbar-brand-center">{{navTitle}}</div>
-				<div class="btn-group pull-left">
-					<div class="btn sidebar-toggle">
-						<i class="fa fa-bars"></i>
-					</div>
-				</div>
-			</div>
-			<!-- Top Navbar -->
-
-			<!-- App Content -->
-			<div class='app-body'>
-				<div class='app-content'>
-					<div class="scrollable-content section" id="app-body-content">
-						<!-- @todo  schaltet die aktive Componente um -->
-						<!-- <keep-alive> -->
-							<component 
-								v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
-								v-bind:addional="extraData"
-								v-bind:is="activeComponentGet">
-							</component>
-						<!-- </keep-alive> -->
-					</div>
-				</div>
-			</div>
-			<!-- App Content -->
-
-		</div>
-		<!-- Main -->
-		
-	</div>
+	<div id="gui" class="scrollable-content"></div>
 
 	<script type="text/javascript" src="usi-gui.js"></script>
 </body>

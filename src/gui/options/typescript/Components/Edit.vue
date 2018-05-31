@@ -132,7 +132,9 @@ export default Vue.component(componentName, {
         // aus einem anderen Component übergeben wurde
         this.textarea.content = this.addional.userscript;
 
-        this.$parent.$emit("usi:reset-extraData");
+        this.$emit("change-tab-additional", {
+          event_name: "usi:reset-extraData"
+        });
       }
     }
 
@@ -154,21 +156,23 @@ export default Vue.component(componentName, {
 
     if (last_userscript_interval_id === null) {
       last_userscript_interval_id = window.setInterval(() => {
+
+        const text = this.textarea.content;
         // falls der letzte Wert in der Historie verschieden sein sollte
-        if (this.textarea.content.length > 0) {
+        if (text.length > 0) {
+            const undo_length = this.last_userscript_text.length;
+            const b = this.last_userscript_text[undo_length -1 ];
+
           // Kein Wert enthalten ODER der Letzte Wert ist verschieden
-          if (
-            this.last_userscript_text.length === 0 ||
-            this.last_userscript_text[this.last_userscript_text.length - 1] !==
-              this.textarea.content
-          ) {
-            //
-            this.last_userscript_text.push();
+          if(undo_length === 0 || this.last_userscript_text[undo_length -1 ] !== text){
+            // den Wert der Historie hinzufügen
+            this.last_userscript_text.push(text);
           }
+          
         }
 
-        // alle 10 Sekunden durchführen
-      }, 10000);
+        // alle 7 Sekunden durchführen
+      }, 7000);
     }
 
     // Schalter richtig positionieren lassen ...
@@ -223,10 +227,10 @@ export default Vue.component(componentName, {
 
     load_example: function(
       event: any,
-      lang_key: any,
+      lang_key: string,
       error_count: number = 1
     ): void {
-      let lang_local = lang_key ? lang_key : browser.i18n.getUILanguage();
+      const lang_local = lang_key ? lang_key : browser.i18n.getUILanguage();
 
       if (error_count < 0) {
         // Kein weiteren Versuch unternehmen, unbekannter Fehler
@@ -312,5 +316,4 @@ export default Vue.component(componentName, {
 </script>
 
 <style>
-
 </style>

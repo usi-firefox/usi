@@ -7,7 +7,7 @@
     "developer": {
         "name": "usi-dev"
     },
-    "version": "0.5.3.1",
+    "version": "0.5.4.0",
     "background": {
         "scripts": [
             "background.js"
@@ -53,5 +53,5 @@
         "tabs",
         "webNavigation"
     ],
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';"
+    "content_security_policy": "script-src 'self'; object-src 'self';"
 }

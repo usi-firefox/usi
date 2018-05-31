@@ -177,15 +177,15 @@ export default Vue.component(componentName, {
     // Schreibe die Neue Konfiguration
     load_script_with_js_end: function(newValue, oldValue) {
       event_controller().set.config.load_external_script(newValue);
-      this.$parent.$emit("usi:refresh-config");
+      this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
     },
     greasemonkey_global_active: function(newValue, oldValue) {
-      event_controller().set.config.gm_funcs_always_on(newValue);
-      this.$parent.$emit("usi:refresh-config");
+        event_controller().set.config.gm_funcs_always_on(newValue);
+        this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
     },
     hightlightjs_active: function(newValue, oldValue) {
-      event_controller().set.config.highlightjs_state(newValue);
-      this.$parent.$emit("usi:refresh-config");
+        event_controller().set.config.highlightjs_state(newValue);
+        this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
     }
   },
   methods: {
@@ -204,7 +204,8 @@ export default Vue.component(componentName, {
     activate_css: function(new_css: string) {
       // CSS eintragen und aktivieren
       // @todo --- ruft die Haupt Vue Instanz
-      this.$parent.$emit("usi:change-additional-css", new_css);
+      this.$emit("change-tab-additional", {event_name : "usi:change-additional-css", data: new_css});
+      
     },
     css_refresh: function(no_reset?: boolean, no_undo?: boolean) {
       // CSS eintragen und aktivieren

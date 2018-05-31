@@ -14,17 +14,17 @@
   "author": "usi <>",
   "license": "LGPL",
   "devDependencies": {
-    "@types/jquery": "^3.3.1",
+    "@types/jquery": "^3.3.2",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
-    "ts-loader": "^4.2.0",
+    "ts-loader": "^4.3.0",
     "typescript": "^2.8.3",
     "vue": "^2.5.16",
-    "vue-loader": "^14.2.2",
+    "vue-loader": "^15.2.0",
     "vue-template-compiler": "^2.5.16",
-    "web-ext": "^2.6.0",
-    "web-ext-types": "^2.0.1",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15"
+    "web-ext": "^2.7.0",
+    "web-ext-types": "^2.1.0",
+    "webpack": "^4.8.3",
+    "webpack-cli": "^2.1.4"
   }
 }

@@ -1,4 +1,5 @@
 const path = require('path');
+var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = [
@@ -96,7 +97,7 @@ module.exports = [
       extensions: ['.tsx', '.ts', '.vue', '.js'],
       alias: {
         // Workaround für die Full Version inklusive "Compiler"
-        vue: 'vue/dist/vue.js'
+        "vue$": 'vue/dist/vue.esm.js'
       }
       ,
       modules: [
@@ -120,6 +121,12 @@ module.exports = [
       new CopyWebpackPlugin([
         { from: 'gui', to: "gui", ignore: ["*.ts", "*.vue"] },
       ])
+      ,
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"'
+        }
+      })
     ]
   }
 ];

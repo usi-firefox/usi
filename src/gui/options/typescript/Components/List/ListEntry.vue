@@ -152,7 +152,7 @@ import language_replace_in_DOM from "language";
 import HighlightjsComponent from "./Highlight.vue";
 
 import Vue from "vue";
-import { throws } from "assert";
+
 
 function flatten_keys(obj: any, prepend_key: string, result?: any) {
   var key;
@@ -216,6 +216,9 @@ export default Vue.component(componentName, {
     if(parent_data.configuration.hightlightjs.style){
       this.hightlightsjsStyle = <string>parent_data.configuration.hightlightjs.style;
     }
+
+    // @todo
+    this.$parent.$emit("change-tab-additional", {event_name : "usi:lang"});
 
   },
   methods: {
