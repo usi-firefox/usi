@@ -188,6 +188,10 @@ export default Vue.component(componentName, {
     },
     index: {
       required: true
+    },
+    expanded: {
+      required: false,
+      type: Boolean
     }
   },
   data: function() {
@@ -256,8 +260,13 @@ export default Vue.component(componentName, {
         });
     },
 
-    toggleOverview: function() {
-      this.showUserscriptEntry = !this.showUserscriptEntry;
+    toggleOverview: function(force: any) {
+      if (force === true || force === false) {
+        this.showUserscriptEntry = force;
+      } else {
+        // toggle
+        this.showUserscriptEntry = !this.showUserscriptEntry;
+      }
     },
 
     /**
@@ -327,6 +336,12 @@ export default Vue.component(componentName, {
 
     showUserscript: function() {
       this.showUserscriptContent = !this.showUserscriptContent;
+    }
+  },
+  watch: {
+    expanded: function() {
+      // auf oder zu klappen, definiert durch List.vue
+      this.toggleOverview(this.expanded);
     }
   },
   components: {

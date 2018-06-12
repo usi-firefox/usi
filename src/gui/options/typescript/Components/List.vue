@@ -6,9 +6,9 @@
                 <object data="icon/hourglass.svg" type="image/svg+xml"></object>
             </div>
             <h3 class="col-xs-6">
-                <span v-if="userscripts">
+                <span v-if="userscripts" @click="toggleExpanded">
                     Userscripts ({{userscripts.length}})
-                    <i id="usi-list-userscript-expandOrCompress" class="fa fa-expand"></i>
+                    <i class="fa" :class="is_expanded ? 'fa-expand' : 'fa-compress'" ></i>
                 </span>
                 <span v-else data-usi-lang="no_userscript_there">
                 </span>
@@ -20,7 +20,7 @@
         <div class="panel-group">
             <div v-if="userscripts">
                 <div v-for="(script,index) in userscripts" :key="index">
-                    <list-entry-component v-bind:script="script" v-bind:index="index" />
+                    <list-entry-component v-bind:expanded="is_expanded" v-bind:script="script" v-bind:index="index" />
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@ const componentName = "list-component";
 export default Vue.component(componentName, {
   data: function() {
     return {
-      is_expanded: false,
+      is_expanded: true,
       isLoading: false,
       userscripts: []
     };
@@ -57,6 +57,9 @@ export default Vue.component(componentName, {
     // fragt die Userscripte ab
     refresh: async function() {
       this.userscripts = <any>await event_controller().request.userscript.all();
+    }
+    ,toggleExpanded : function(){
+        this.is_expanded = !this.is_expanded;
     }
   },
   components: {
