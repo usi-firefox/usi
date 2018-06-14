@@ -3,7 +3,7 @@
  ************************************************************************/
 
 import basic_helper from "lib/helper/basic_helper";
-import { GM_convert2RegExp, tldRegExp } from "lib/parse/convert2RegExp";
+import { GM_convert2RegExp } from "lib/parse/convert2RegExp";
 
 export default function parse_userscript() {
 

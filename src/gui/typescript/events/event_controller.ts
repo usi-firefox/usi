@@ -38,9 +38,9 @@ function download_file(data: string, type?: string, filename?: string): void {
     document.body.removeChild(link);
 }
 
-function getBackendPort() : usi.Backend.Port{
+function getBackendPort(): usi.Backend.Port {
     // Abstraktions Möglichkeit
-    var backend_port = <usi.Backend.Port> browser.runtime.connect(basic_helper().getExtId(), { name: "options-backend" });
+    var backend_port = <usi.Backend.Port>browser.runtime.connect(basic_helper().getExtId(), { name: "options-backend" });
 
     // Workaround Wrapper
     backend_port.on = function (response_name: string, callback: Function) {
@@ -138,24 +138,7 @@ export default function event_controller() {
         // Registriert ein Event 
         , register: {
             userscript: {
-                quota: function (c: Function) {
-
-                    /**
-                     * Firefox Version 54.0
-                     * Aktuell nicht möglich, da angeblich .getBytesInUse() keine Funktion wäre
-                     */
-                    //                            let quota_pro = browser.storage.local.getBytesInUse(null);
-                    //                            if(typeof c === "function"){
-                    //                                quota_pro.then(c);
-                    //                            }
-                }
-
-                , external_load: {
-                    ready: function (c: Function) {
-                        port.on("USI-BACKEND:external-script-is-now-loaded", c);
-                    }
-                }
-                , update: {
+                update: {
                     available: function (c: Function) {
                         port.on("USI-BACKEND:update-for-userscript-available", c);
                     }
@@ -169,10 +152,7 @@ export default function event_controller() {
         // löst eine Aktion im Backend aus, ohne direkt Daten zurück zu erhalten
         , request: {
             userscript: {
-                refresh: function () {
-                    jQuery(document).trigger("USI-FRONTEND:refresh-userscripts");
-                }
-                , all: async function (c?: Function) {
+                 all: async function (c?: Function) {
                     let script_storage = await userscript_storage();
 
                     await script_storage.refresh();
@@ -191,7 +171,6 @@ export default function event_controller() {
                     // lösche jedes einzelene Userscript...
                     script_storage.deleteAll();
 
-                    self.request.userscript.refresh();
                     // lade Page Mod neu!
                     port.postMessage({ name: "USI-BACKEND:pageinjection-refresh" });
 
@@ -209,7 +188,6 @@ export default function event_controller() {
                         // Userscript entfernen lassen
                         port.postMessage({ name: "USI-BACKEND:pageinjection-remove", data: { id: id } });
 
-                        self.request.userscript.refresh();
                     } else {
                         // konnte nicht gefunden und daher auch nicht gelöscht werden
                         basic_helper().notify(browser.i18n.getMessage("userscript_could_not_deleted"));
@@ -243,7 +221,7 @@ export default function event_controller() {
         , set: {
             config: {
                 load_external_script: async function (bool: boolean) {
-                    let config = await config_storage().get();                   
+                    let config = await config_storage().get();
                     config.load_script_with_js_end = bool;
                     return await config_storage().set(config);
                 }
@@ -315,6 +293,23 @@ export default function event_controller() {
         // Registiert die globalen Events
         , register_global_events: function () {
 
+            /**
+            * Fragt ob ein Userscript aktualisiert werden soll
+            * 
+            * @param {object} userscript_infos
+            * @returns {void}
+            */
+            const confirmationUserscriptUpdate = function (userscript_infos: any): void {
+                //wurde gefunden, möchtest du es aktualisieren?")){
+                if (window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_infos.id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"))) {
+                    // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
+                    self.set.userscript.override(userscript_infos);
+                    self.request.userscript.all();
+                }
+            }
+
+            // falls ein aktualisiertes Userscript gefunden wurde
+            self.register.userscript.update.available(confirmationUserscriptUpdate);
 
             port.on("userscript-is-created", function (data: any) {
                 // Neues Userscript wurde erstellt
@@ -336,21 +331,7 @@ export default function event_controller() {
             /**
              * Wenn das Userscript schon existiert und überschrieben werden kann
              */
-            port.on("USI-BACKEND:same-userscript-was-found",
-                /**
-                 * 
-                 * @param {object} userscript_infos
-                 * @returns {void}
-                 */
-                function (userscript_infos: any) {
-
-                    //wurde gefunden, möchtest du es aktualisieren?")){
-                    if (window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_infos.id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"))) {
-                        // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
-                        self.set.userscript.override(userscript_infos);
-                        self.request.userscript.all();
-                    }
-                });
+            port.on("USI-BACKEND:same-userscript-was-found", confirmationUserscriptUpdate);
 
             // Event Weiterleitung vom Backend
             port.on("USI-BACKEND:To-Frontend-Document-Event-Forwarder", function (data: any) {

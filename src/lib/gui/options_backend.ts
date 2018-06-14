@@ -5,7 +5,6 @@
 import parse_userscript from "lib/parse/parse_userscript";
 import basic_helper from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
-import userscript_handle from "lib/storage/userscript";
 import add_userscript from "lib/storage/add_userscript";
 import SPA from "lib/spa/handler";
 import page_injection_helper from "lib/inject/page_injection_helper";

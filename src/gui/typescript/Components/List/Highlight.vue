@@ -14,8 +14,8 @@ declare var jQuery: any;
 declare var global_settings: any;
 declare var hljs: any;
 
-import event_controller from "events/event_controller";
-import event_manager_controller from "events/event_manager";
+import event_controller from "../../events/event_controller";
+import event_manager_controller from "../../events/event_manager";
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";

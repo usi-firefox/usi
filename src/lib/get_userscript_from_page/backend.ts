@@ -1,4 +1,3 @@
-import load_resource from "lib/load/load_resource";
 import basic_helper from "lib/helper/basic_helper";
 import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";

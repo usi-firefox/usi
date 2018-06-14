@@ -178,6 +178,9 @@ export default function add_userscript() {
                         // Datei Anfrage lieferte kein 200 -> Success und kein 304 -> Not Modified
                         alert_text += "\n\n" + browser.i18n.getMessage("error_couldnt_load_url") + " -> code:'" + message.code + "' url:'" + message.url + "'";
                     }
+
+                    // Fehlermeldung zeigen
+                    basic_helper().notify(alert_text);
                 };
 
             // setze und speichere die gefundenen Einstellungen

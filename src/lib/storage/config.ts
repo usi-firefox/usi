@@ -1,4 +1,3 @@
-import load_resource from "lib/load/load_resource";
 import sdk_to_webext from "lib/update/sdk_to_webext";
 
 // Holt die Userscripte aus dem Speicher (simple-storage)

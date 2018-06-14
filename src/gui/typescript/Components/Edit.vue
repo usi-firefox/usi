@@ -13,7 +13,6 @@
         <!--Userscript Beispiel-->
         <div class="container">
             <div class="row">
-                <!--Userscript speichern-->
                 <button @click="save" class="btn btn-primary btn-block" data-usi-lang="save">
                     <!--Userscript speichern-->
                 </button>
@@ -34,9 +33,8 @@
             <div class="row">
                 <!--Userscript überschreiben?-->
                 <div v-if="script_id">
-                    <label>Userscript
-                        <span data-usi-lang="overwrite_without_warning"></span>?</label>
-                    <input id="usi-edit-script-overwrite" class="" data-toggle="toggle" type="checkbox" />
+                    <label>Userscript <span data-usi-lang="overwrite_without_warning"></span>?</label>
+                    <input id="usi-edit-script-overwrite" data-toggle="toggle" type="checkbox" />
                     <hr />
                 </div>
 
@@ -85,8 +83,8 @@ declare var jQuery: any;
 declare var window: any;
 declare var document: any;
 
-import event_controller from "events/event_controller";
-import event_manager_controller from "events/event_manager";
+import event_controller from "../events/event_controller";
+import event_manager_controller from "../events/event_manager";
 import { throws } from "assert";
 
 // Die ID der Textarea
@@ -179,12 +177,6 @@ export default Vue.component(componentName, {
     this.defaultSize();
     this.setTextareaHeight();
 
-    // Overwrite Button stylen
-    /*     bootstrap_toggle_controller().initButton(
-      "#usi-edit-script-overwrite",
-      browser.i18n.getMessage("yes"),
-      browser.i18n.getMessage("no")
-    ); */
   },
 
   methods: {
@@ -241,7 +233,7 @@ export default Vue.component(componentName, {
       jQuery.ajax({
         url:
           window.location.origin +
-          "/gui/options/example/" +
+          "/gui/example/" +
           lang_local +
           "-example.user.js",
         dataType: "text",

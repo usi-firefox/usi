@@ -1,7 +1,6 @@
 import basic_helper from "lib/helper/basic_helper";
 import GM_xhrHandler from "lib/GM/GM_xhrHandler";
 import userscript_storage from "lib/storage/storage";
-import userscript_handle from "lib/storage/userscript";
 
 export default class GM_Backend {
 

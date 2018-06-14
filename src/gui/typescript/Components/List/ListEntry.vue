@@ -145,9 +145,9 @@ declare var jQuery: any;
 declare var global_settings: any;
 
 import basic_helper from "lib/helper/basic_helper";
-import event_controller from "events/event_controller";
-import event_manager_controller from "events/event_manager";
-import language_replace_in_DOM from "language";
+import event_controller from "../../events/event_controller";
+import event_manager_controller from "../../events/event_manager";
+import language_replace_in_DOM from "../../Language";
 
 import HighlightjsComponent from "./Highlight.vue";
 
@@ -212,8 +212,6 @@ export default Vue.component(componentName, {
     };
   },
   created: function() {
-    this.$parent.$parent.$emit("usi:lang");
-
     // @todo Highlight JS aktiv?
     let parent_data = <any>this.$parent.$parent;
     this.hightlightsjsActive = <boolean>parent_data.configuration.hightlightjs.active;

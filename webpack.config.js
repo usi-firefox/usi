@@ -1,6 +1,14 @@
 const path = require('path');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
+// Ausgelagert für ts-loader 4.3.1 und höher
+const tsLoaderConfig = {
+  loader: 'ts-loader',
+  options: {
+    appendTsSuffixTo: [/\.vue$/]
+  }
+};
+
 module.exports = [
   {
     entry: './lib/main.ts',
@@ -13,8 +21,8 @@ module.exports = [
       rules: [
         {
           test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/
+          exclude: /node_modules/,
+          use: tsLoaderConfig
         }
       ]
     },
@@ -46,8 +54,8 @@ module.exports = [
       rules: [
         {
           test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/
+          exclude: /node_modules/,
+          use: tsLoaderConfig
         }
       ]
     },
@@ -60,7 +68,7 @@ module.exports = [
     devtool: 'inline-source-map'
   }
   , {
-    entry: './gui/options/typescript/Startup.ts',
+    entry: './gui/typescript/Startup.ts',
     context: path.join(__dirname, './src'),
     output: {
       filename: 'gui/usi-gui.js',
@@ -78,17 +86,15 @@ module.exports = [
               // other preprocessors should work out of the box, no loader config like this necessary.
               'scss': 'vue-style-loader!css-loader!sass-loader',
               'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax',
+              'ts' : tsLoaderConfig
             }
             // other vue-loader options go here
           }
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
           exclude: /node_modules/,
-          options: {
-            appendTsSuffixTo: [/\.vue$/]
-          }
+          use: tsLoaderConfig
         }
       ]
     },
@@ -101,7 +107,7 @@ module.exports = [
       ,
       modules: [
         path.resolve('./src'),
-        path.resolve('./src/gui/options/typescript'),
+        path.resolve('./src/gui/typescript'),
         "node_modules"
       ]
     },

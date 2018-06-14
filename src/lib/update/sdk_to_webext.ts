@@ -1,5 +1,3 @@
-import basic_helper from "lib/helper/basic_helper";
-
 export default class sdk_to_webext {
 
     private config_default: usi.Storage.Config = {
@@ -65,7 +63,7 @@ export default class sdk_to_webext {
         }
     }
 
-    async userscripts_update(complete_storage: any, callback: any) {
+    async userscripts_update(complete_storage: any) {
         if (typeof complete_storage.storage === "object") {
 
             // alte SDK Daten vorhanden
@@ -100,7 +98,7 @@ export default class sdk_to_webext {
             let prefs_updated = await this.prefs_update(complete_storage);
 
             // Wenn die Einstellungen fertig sind, müssen die Userscripte angepasst 
-            let userscripts_updated = await this.userscripts_update(complete_storage, () => { });
+            let userscripts_updated = await this.userscripts_update(complete_storage);
 
             // jetzt den neuen Inhalt zurückgeben
             let refreshed_data = await browser.storage.local.get(null);

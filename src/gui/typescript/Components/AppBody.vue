@@ -64,9 +64,9 @@
 <script lang="ts">
 declare var jQuery: any;
 
-import event_controller from "events/event_controller";
+import event_controller from "../events/event_controller";
 
-import language_replace_in_DOM from "Language";
+import language_replace_in_DOM from "../Language";
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";
