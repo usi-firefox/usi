@@ -84,12 +84,10 @@ declare var window: any;
 declare var document: any;
 
 import event_controller from "../events/event_controller";
-import event_manager_controller from "../events/event_manager";
 import { throws } from "assert";
 
 // Die ID der Textarea
-var textarea_id = "#usi-edit-script-textarea",
-  last_userscript_interval_id: any = null;
+var last_userscript_interval_id : number = 0;
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -114,6 +112,10 @@ export default Vue.component(componentName, {
       last_userscript_text: <any>[],
       load_example_by_prefered_locale: "de"
     };
+  },
+  beforeDestroy : function(){
+    // Event für Text Area Anpassung entfernen
+    jQuery(window).off("resize",this.setTextareaHeight);
   },
   created: function() {
     /**
@@ -146,13 +148,9 @@ export default Vue.component(componentName, {
     }
 
     // Text Area anpassen bei Größen Änderung
-    event_manager_controller().register_once(
-      window,
-      "resize",
-      this.setTextareaHeight
-    );
+    jQuery(window).on("resize",this.setTextareaHeight);
 
-    if (last_userscript_interval_id === null) {
+    if (last_userscript_interval_id === 0) {
       last_userscript_interval_id = window.setInterval(() => {
 
         const text = this.textarea.content;

@@ -146,7 +146,6 @@ declare var global_settings: any;
 
 import basic_helper from "lib/helper/basic_helper";
 import event_controller from "../../events/event_controller";
-import event_manager_controller from "../../events/event_manager";
 import language_replace_in_DOM from "../../Language";
 
 import HighlightjsComponent from "./Highlight.vue";

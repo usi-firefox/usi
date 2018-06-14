@@ -40,7 +40,6 @@
 <script lang="ts">
 declare var jQuery: any;
 
-import event_manager_controller from "../events/event_manager";
 import event_controller from "../events/event_controller";
 
 import Vue from "vue";

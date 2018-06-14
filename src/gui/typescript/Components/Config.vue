@@ -135,7 +135,6 @@ declare var jQuery: any;
 
 import config_storage from "lib/storage/config";
 import event_controller from "../events/event_controller";
-import event_manager_controller from "../events/event_manager";
 
 import Vue from "vue";
 import basic_helper from "lib/helper/basic_helper";

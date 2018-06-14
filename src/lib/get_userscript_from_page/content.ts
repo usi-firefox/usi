@@ -10,8 +10,7 @@ config_storage().get().then((config: any) => {
     }
 
     // Port zum Backend Skript öffnen
-    let port = browser.runtime.connect(basic_helper().getExtId(), { name: "get-userscript-from-page" }),
-        lang = browser.i18n;
+    let port = browser.runtime.connect(basic_helper().getExtId(), { name: "get-userscript-from-page" });
 
     let userscript_content = document.body.innerText;
 

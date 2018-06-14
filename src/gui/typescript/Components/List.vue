@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import event_controller from "events/event_controller";
+import event_controller from "../events/event_controller";
 
 import Vue from "vue";
 import ListEntryComponent from "./List/ListEntry.vue";
