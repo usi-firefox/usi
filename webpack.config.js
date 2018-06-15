@@ -44,6 +44,30 @@ module.exports = [
     ]
   }
   , {
+    entry: './lib//spa/watcher.ts',
+    context: path.join(__dirname, './src'),
+    output: {
+      filename: 'spa_watcher.js',
+      path: path.resolve(__dirname, './dist')
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: tsLoaderConfig
+        }
+      ]
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+      modules: [
+        path.resolve('./src')
+      ]
+    },
+    devtool: 'inline-source-map'
+  }
+  , {
     entry: './lib/get_userscript_from_page/content.ts',
     context: path.join(__dirname, './src'),
     output: {

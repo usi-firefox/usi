@@ -213,14 +213,19 @@ export default Vue.component(componentName, {
   created: function() {
     // @todo Highlight JS aktiv?
     let parent_data = <any>this.$parent.$parent;
-    this.hightlightsjsActive = <boolean>parent_data.configuration.hightlightjs.active;
-    if(parent_data.configuration.hightlightjs.style){
-      this.hightlightsjsStyle = <string>parent_data.configuration.hightlightjs.style;
+    this.hightlightsjsActive = <boolean>parent_data.configuration.hightlightjs
+      .active;
+    if (parent_data.configuration.hightlightjs.style) {
+      this.hightlightsjsStyle = <string>parent_data.configuration.hightlightjs
+        .style;
+    }
+
+    if (typeof this.localScript.settings.spa !== "undefined") {
+      this.localScript.isSpa = true;
     }
 
     // @todo
-    this.$parent.$emit("change-tab-additional", {event_name : "usi:lang"});
-
+    this.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
   },
   methods: {
     export_script: function() {
