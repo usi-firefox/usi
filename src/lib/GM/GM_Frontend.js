@@ -22,51 +22,32 @@ GM_info = {
 },
 
 storage = {
-    // Initiere den Scriptstorage
-    initialized : false,
-    data : false,
-    identifier : "usi+" + given_data.id,
-    init : function(){
-        var script_localstorage = window.localStorage.getItem(storage.identifier);
-        if (typeof script_localstorage === "string") {
-            storage.initialized = true;
-            // window.localStorage existiert bereits
-            storage.data = JSON.parse(script_localstorage);
+    data: {},
+    identifier: "usi+" + given_data.id,
+    init: function () {
+        if (typeof given_data.storage === "object") {
+            // Gespeicherte Werte aus dem Userscript Storage übernehmen
+            storage.data = given_data.storage;
             return true;
-        }else if(script_localstorage === null){
-            // bisher nicht initialisiert
-            if(typeof given_data.storage === "object"){
-                storage.initialized = true;
-                storage.data = given_data.storage;
-                return true;
-            }else{
-                // sollte eigentlich nicht auftreten
-                throw "given_data.storage is no object";
-            }
-        }else{
-            throw "script_localstorage neither 'string' or 'null'";
+        } else {
+            // keine Werte im ValStorage gefunden
+            return false;
         }
     }
-    , get : function (name) {
+    , get: function (name) {
         return storage.data[name];
     }
-    , getStorage : function () {
+    , getStorage: function () {
         return storage.data;
     }
-    , saveStorage: function(){
-        // neuen Wert in den localStorage schreiben
-        window.localStorage.setItem(storage.identifier, JSON.stringify(storage.data));
-    }
-    , set: function(name, value){
+    , set: function (name, value) {
         // neuen Wert setzen
         storage.data[name] = value;
-        storage.saveStorage();        
         return true;
     }
-    , delete: function(name){
+    , delete: function (name) {
         // Wert löschen
         delete storage.data[name];
-        storage.saveStorage();
         return true;
     }
 };
