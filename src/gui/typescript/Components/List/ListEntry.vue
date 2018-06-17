@@ -83,21 +83,33 @@
                 <br />
 
                 <!--Greasemonkey Variablen-->
-                <div v-if="localScript.settings.val_store">
+                <div v-if="localScript.val_store">
                     <label data-usi-lang="GMValues">
                         <!--Zeige die gespeicherten GM Variablen-->
                     </label>
                     <br />
                     <button @click="GMValuesGet" class="btn btn-info col-xs-3" data-usi-lang="show">
                     </button>
-                    <button @click="GMValuesDelete" :class="{hidden : !localScript.GMValues}" class="btn btn-danger col-xs-offset-1 col-xs-3"
+                    <button @click="GMValuesDelete" :class="{hidden : (GMValues.length == 0)}" class="btn btn-danger col-xs-offset-1 col-xs-3"
                         data-usi-lang="delete_x">
                     </button>
                     <br />
                     <br />
-                    <div class="row">
-                        <div class="col-xs-2">
-                            {{localScript.GMValues}}
+                    <div class="row" v-if="GMValues.length > 0">
+                        <div class="col-xs-12">
+                          <table class="col-xs-12">
+                            <thead>
+                              <th>Name</th>
+                              <th>Value</th>
+                            </thead>
+                            <tbody>
+                              <tr v-for="(item,index) in GMValues" :key="index">
+                                <td>{{item.key}}</td>
+                                <td>{{item.value}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                            
                         </div>
                     </div>
                     <hr />
@@ -152,7 +164,6 @@ import HighlightjsComponent from "./Highlight.vue";
 
 import Vue from "vue";
 
-
 function flatten_keys(obj: any, prepend_key: string, result?: any) {
   var key;
   if (typeof result === "undefined") {
@@ -201,7 +212,7 @@ export default Vue.component(componentName, {
       localScript: this.$props.script,
       hightlightsjsActive: false,
       hightlightsjsStyle: "default",
-      GMValuesFlat: "",
+      GMValues: [],
       lang: {
         deactivated: browser.i18n.getMessage("deactivated"),
         activated: browser.i18n.getMessage("activated"),
@@ -257,8 +268,7 @@ export default Vue.component(componentName, {
       event_controller()
         .request.userscript.gm_values(this.localScript.id)
         .then((GMValues: any) => {
-          this.localScript.GMValues = GMValues;
-          this.GMValuesFlat = flatten_keys(GMValues, "V");
+            this.GMValues = GMValues;
         });
     },
 

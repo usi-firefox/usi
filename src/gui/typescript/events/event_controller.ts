@@ -212,7 +212,7 @@ export default function event_controller() {
                         // Key => value ...
                         result.push({ key: name, value: completeValStore[name] });
                     }
-                    return basic_helper().convertToText(result);
+                    return result;
                 }
             }
 
