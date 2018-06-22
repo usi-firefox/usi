@@ -14,7 +14,7 @@ module.exports = [
     entry: './lib/main.ts',
     context: path.join(__dirname, './src'),
     output: {
-      filename: 'background.js',
+      filename: 'js/background.js',
       path: path.resolve(__dirname, './dist')
     },
     module: {
@@ -35,11 +35,10 @@ module.exports = [
     devtool: 'inline-source-map',
     plugins: [
       new CopyWebpackPlugin([
-        { from: '_locales', to: "_locales" },
+        { from: '_locales' , to: '_locales'},
         { from: 'manifest.json' },
-        { from: 'lib/GM/GM_Frontend.js', to: 'GM_Frontend.js' },
-        { from: 'options_addon_details.html' },
-        { from: 'spa.html' }
+        { from: 'lib/GM/GM_Frontend.js', to: 'js/GM_Frontend.js' },
+        { from: 'html' , to: 'html'}
       ])
     ]
   }
@@ -47,7 +46,7 @@ module.exports = [
     entry: './lib//spa/watcher.ts',
     context: path.join(__dirname, './src'),
     output: {
-      filename: 'spa_watcher.js',
+      filename: 'js/spa_watcher.js',
       path: path.resolve(__dirname, './dist')
     },
     module: {
@@ -71,7 +70,7 @@ module.exports = [
     entry: './lib/get_userscript_from_page/content.ts',
     context: path.join(__dirname, './src'),
     output: {
-      filename: 'get_userscript_from_page.js',
+      filename: 'js/get_userscript_from_page.js',
       path: path.resolve(__dirname, './dist')
     },
     module: {
@@ -95,7 +94,7 @@ module.exports = [
     entry: './gui/typescript/Startup.ts',
     context: path.join(__dirname, './src'),
     output: {
-      filename: 'gui/usi-gui.js',
+      filename: 'js/usi-gui.js',
       path: path.resolve(__dirname, './dist')
     },
     module: {

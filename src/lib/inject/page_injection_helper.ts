@@ -493,7 +493,7 @@ export default class page_injection_helper {
         // @todo Übler Workaround, da keine Dateien direkt gelesen werden können ...
         let script_extra_data = "var prefilled_data = " + JSON.stringify(gm.prefilled_data) + "; \n\n";
         // GM_Frontend wird auf die Root Ebene kopiert
-        let gm_content_script = await load_resource().load_internal_file("/GM_Frontend.js");
+        let gm_content_script = await load_resource().load_internal_file("/js/GM_Frontend.js");
 
         /*
          *  dieses muss per browser.tabs.executeScript ausgeführt werden

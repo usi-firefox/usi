@@ -24,7 +24,7 @@ export default class SPA {
             try {
                 // neuen Tab öffnen
                 let spa_page = browser.tabs.create({
-                    url: "/spa.html#" + userscriptId
+                    url: "/html/spa.html#" + userscriptId
                 });
             } catch (error_tab) {
 

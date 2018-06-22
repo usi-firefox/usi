@@ -7,10 +7,10 @@
     "developer": {
         "name": "usi-dev"
     },
-    "version": "0.5.5.0",
+    "version": "0.5.5.1",
     "background": {
         "scripts": [
-            "background.js"
+            "js/background.js"
         ]
     },
     "content_scripts": [
@@ -20,7 +20,7 @@
                 "file:///*.user.js"
             ],
             "js": [
-                "get_userscript_from_page.js"
+                "js/get_userscript_from_page.js"
             ],
             "run_at": "document_end"
         }
@@ -33,7 +33,7 @@
         "default_title": "USI"
     },
     "options_ui": {
-        "page": "options_addon_details.html"
+        "page": "html/about_addons.html"
     },
     "applications": {
         "gecko": {
