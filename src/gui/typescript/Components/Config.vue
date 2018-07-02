@@ -174,16 +174,16 @@ export default Vue.component(componentName, {
   watch: {
     /** @todo */
     // Schreibe die Neue Konfiguration
-    load_script_with_js_end: function(newValue, oldValue) {
-      event_controller().set.config.load_external_script(newValue);
+    load_script_with_js_end: async function(newValue, oldValue) {
+      await event_controller().set.config.load_external_script(newValue);
       this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
     },
-    greasemonkey_global_active: function(newValue, oldValue) {
-        event_controller().set.config.gm_funcs_always_on(newValue);
+    greasemonkey_global_active: async function(newValue, oldValue) {
+        await event_controller().set.config.gm_funcs_always_on(newValue);
         this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
     },
-    hightlightjs_active: function(newValue, oldValue) {
-        event_controller().set.config.highlightjs_state(newValue);
+    hightlightjs_active: async function(newValue, oldValue) {
+        await event_controller().set.config.highlightjs_state(newValue);
         this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
     }
   },
