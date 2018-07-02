@@ -6,11 +6,10 @@ to install usi (Version **0.5 and above**) you need **Mozilla Firefox in version
 the versions of usi are available at [addons.mozilla.org](https://addons.mozilla.org/de/firefox/addon/userunified-script-injector/)
 
 ## run on computer
-If you want to run usi from source, go to page **about:debugging** in Firefox
-there should be a button called **Load Temporary Add-on**
-Now you can select the **manifest.json** file in the **usi source directory**.
 ```
-about:debugging
+1. npm i
+2. npm run webpack
+3. npm run browser
 ```
 
 ## debug on computer
@@ -29,13 +28,14 @@ if you want to build usi from source, you will need to install
 
 and then you can build usi (from it's root directory) with this short command in your commandline/shell
 ```
-web-ext build
+1. npm i
+2. npm run build-prepare
 ```
 
 ## running/debug on Firefox for Android
 For running on Firefox for Android, you have to build usi with
 ```
-web-ext build
+npm run build-prepare
 ```
 1. you have to rename the file ending from .zip to .xpi
 2. transfer the xpi file to your phone/emulator (e.g. `adb push /home/user/usi/web-ext-artifacts/firefox-addon-usi_jetpack-0.5.1.9.xpi /sdcard/.`)
