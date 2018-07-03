@@ -45,6 +45,7 @@
                   <config-component v-if="activeComponent == 'config'" 
                         v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
                         v-on:change-tab-additional="eventsFromOtherComponents"
+                        v-bind:initial-data="configuration"
                         v-bind:addional="extraData"></config-component>
                   <loadExternal-component v-if="activeComponent == 'loadExternal'" 
                         v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 

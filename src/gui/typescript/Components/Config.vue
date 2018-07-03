@@ -119,7 +119,7 @@
             </div>
             <br />
             <div class="row">
-                <button @click="css_refresh" class="btn btn-primary col-xs-6 col-md-2" data-usi-lang="config_add_css_refresh">
+                <button @click="css_refresh(false)" class="btn btn-primary col-xs-6 col-md-2" data-usi-lang="config_add_css_refresh">
                 </button>
                 <button @click="css_undo" class="btn btn-default col-xs-6 col-md-push-1 col-md-2">
                     <i class="fa fa-undo fa-2x" aria-hidden="true"></i>
@@ -150,15 +150,18 @@ import basic_helper from "lib/helper/basic_helper";
 const componentName = "config-component";
 
 export default Vue.component(componentName, {
+  props: {
+    initialData: {
+      type: Object as () => usi.Storage.Config
+    }
+  },
   data: function() {
     return {
       LastCSS: [],
-      load_script_with_js_end: this.$parent.$data.configuration
-        .load_script_with_js_end,
-      greasemonkey_global_active: this.$parent.$data.configuration.greasemonkey
-        .global_active,
-      hightlightjs_active: this.$parent.$data.configuration.hightlightjs.active,
-      AddCSS: "",
+      load_script_with_js_end: this.initialData.load_script_with_js_end,
+      greasemonkey_global_active: this.initialData.greasemonkey.global_active,
+      hightlightjs_active: this.initialData.hightlightjs.active,
+      AddCSS: this.initialData.own_css,
       completeExport: false,
       lang: {
         deactivated: browser.i18n.getMessage("deactivated"),
@@ -176,15 +179,15 @@ export default Vue.component(componentName, {
     // Schreibe die Neue Konfiguration
     load_script_with_js_end: async function(newValue, oldValue) {
       await event_controller().set.config.load_external_script(newValue);
-      this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
+      this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     },
     greasemonkey_global_active: async function(newValue, oldValue) {
-        await event_controller().set.config.gm_funcs_always_on(newValue);
-        this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
+      await event_controller().set.config.gm_funcs_always_on(newValue);
+      this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     },
     hightlightjs_active: async function(newValue, oldValue) {
-        await event_controller().set.config.highlightjs_state(newValue);
-        this.$emit("change-tab-additional", {event_name : "usi:refresh-config"});
+      await event_controller().set.config.highlightjs_state(newValue);
+      this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     }
   },
   methods: {
@@ -198,29 +201,27 @@ export default Vue.component(componentName, {
       }
 
       // danach den Refresh Prozess antriggern
-      this.css_refresh(true, true);
+      this.css_refresh(true);
     },
-    activate_css: function(new_css: string) {
+    activate_css: async function(new_css: string) {
       // CSS eintragen und aktivieren
       // @todo --- ruft die Haupt Vue Instanz
-      this.$emit("change-tab-additional", {event_name : "usi:change-additional-css", data: new_css});
-      
+      await event_controller().set.config.own_css(new_css);
+      this.$emit("change-tab-additional", {
+        event_name: "usi:change-additional-css",
+        data: new_css
+      });
+      this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     },
-    css_refresh: function(no_reset?: boolean, no_undo?: boolean) {
+    css_refresh: async function(is_reset?: boolean) {
       // CSS eintragen und aktivieren
       this.activate_css(this.AddCSS);
 
-      // Speichern
-      event_controller().set.config.own_css(this.AddCSS);
-
-      if (no_undo !== true) {
-        // in die historie packen
-        // @todo
-        /* this.LastCSS.push(new_css); */
-      }
-
-      // Reset anbieten, für den fall das etwas schief gegangen ist
-      if (no_reset !== true) {
+      if (is_reset === true) {
+        // nichts weiter unternehmen
+        return true;
+      } else {
+        // Reset anbieten, für den fall das etwas schief gegangen ist
         window.setTimeout(() => {
           if (
             window.confirm(
@@ -228,7 +229,10 @@ export default Vue.component(componentName, {
             )
           ) {
             // reset
-            this.activate_css("");
+            this.css_undo();
+          } else {
+            // CSS in den Stack packen
+            this.LastCSS.push(this.AddCSS);
           }
         }, 5000);
       }
