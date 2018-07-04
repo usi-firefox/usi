@@ -131,7 +131,7 @@ export default Vue.component(componentName, {
       this.run();
 
       // @todo Workaround
-      this.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
+      this.$parent.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
     });
   },
   methods: {
@@ -152,7 +152,7 @@ export default Vue.component(componentName, {
       // Style speichern
       await event_controller().set.highlightjs.style(this.active_style);
       
-      this.$parent.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
+      this.$parent.$parent.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     }
   }
 });

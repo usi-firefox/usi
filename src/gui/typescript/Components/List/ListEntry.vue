@@ -199,6 +199,10 @@ export default Vue.component(componentName, {
     index: {
       required: true
     },
+    configuration: {
+      type: Object as () => usi.Storage.Config,
+      required: true
+    },
     expanded: {
       required: false,
       type: Boolean
@@ -210,8 +214,8 @@ export default Vue.component(componentName, {
       showUserscriptContent: false,
       markedAsDeleted: false,
       localScript: this.$props.script,
-      hightlightsjsActive: false,
-      hightlightsjsStyle: "default",
+      hightlightsjsActive: this.configuration.hightlightjs.active,
+      hightlightsjsStyle: this.configuration.hightlightjs.style,
       GMValues: [],
       lang: {
         deactivated: browser.i18n.getMessage("deactivated"),
@@ -222,15 +226,6 @@ export default Vue.component(componentName, {
     };
   },
   created: function() {
-    // @todo Highlight JS aktiv?
-    let parent_data = <any>this.$parent.$parent;
-    this.hightlightsjsActive = <boolean>parent_data.configuration.hightlightjs
-      .active;
-    if (parent_data.configuration.hightlightjs.style) {
-      this.hightlightsjsStyle = <string>parent_data.configuration.hightlightjs
-        .style;
-    }
-
     if (typeof this.localScript.settings.spa !== "undefined") {
       this.localScript.isSpa = true;
     }

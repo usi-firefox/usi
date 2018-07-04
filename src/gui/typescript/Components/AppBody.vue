@@ -35,6 +35,7 @@
                         v-on:change-tab-additional="eventsFromOtherComponents"
                         v-bind:addional="extraData"></overview-component>
                   <list-component v-if="activeComponent == 'list'" 
+                        v-bind:configuration="configuration"
                         v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
                         v-on:change-tab-additional="eventsFromOtherComponents"
                         v-bind:addional="extraData"></list-component>

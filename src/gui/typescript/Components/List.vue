@@ -20,7 +20,7 @@
         <div class="panel-group">
             <div v-if="userscripts">
                 <div v-for="(script,index) in userscripts" :key="index">
-                    <list-entry-component v-bind:expanded="is_expanded" v-bind:script="script" v-bind:index="index" />
+                    <list-entry-component v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
                 </div>
             </div>
         </div>
@@ -43,6 +43,12 @@ import ListEntryComponent from "./List/ListEntry.vue";
  */
 const componentName = "list-component";
 export default Vue.component(componentName, {
+  props: {
+    configuration: {
+      type: Object as () => usi.Storage.Config,
+      required: true
+    }
+  },
   data: function() {
     return {
       is_expanded: true,
