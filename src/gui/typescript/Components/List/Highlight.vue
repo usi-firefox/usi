@@ -5,7 +5,7 @@
             <option v-for="(style, index) in hightlightjsstyles" :key="index" :value="style">{{style}}</option>
         </select>
         <hr />
-        <pre><code class="border-black">{{this.dataCode}}</code></pre>
+        <pre><code class="border-black">{{this.code}}</code></pre>
     </span>
 </template>
 
@@ -34,13 +34,13 @@ export default Vue.component(componentName, {
     },
     // @todo rename
     astyle: {
+      default: "default",
       required: false
     }
   },
   data: function() {
     return {
-      dataCode: this.code,
-      active_style: this.astyle || "default",
+      active_style: this.astyle,
       highlight_styles_path: "libs/highlight/styles/",
       // enthält alle verfügbaren highlight js styles
       hightlightjsstyles: [
@@ -135,7 +135,7 @@ export default Vue.component(componentName, {
     });
   },
   methods: {
-    run: function(): void {
+    run: async function(): Promise<void> {
       jQuery(this.$el)
         .find("pre code")
         .each(function(i: number, block: HTMLElement) {
@@ -150,7 +150,9 @@ export default Vue.component(componentName, {
       jQuery("#HighlightJSStyle").attr("href", style_filepath);
 
       // Style speichern
-      event_controller().set.highlightjs.style(this.active_style);
+      await event_controller().set.highlightjs.style(this.active_style);
+      
+      this.$parent.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     }
   }
 });

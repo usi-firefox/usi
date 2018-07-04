@@ -157,7 +157,7 @@ export default Vue.component(componentName, {
   },
   data: function() {
     return {
-      LastCSS: [],
+      LastCSS: <string[]>[],
       load_script_with_js_end: this.initialData.load_script_with_js_end,
       greasemonkey_global_active: this.initialData.greasemonkey.global_active,
       hightlightjs_active: this.initialData.hightlightjs.active,

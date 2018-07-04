@@ -43,7 +43,6 @@ declare var jQuery: any;
 import event_controller from "../events/event_controller";
 
 import Vue from "vue";
-import { throws } from "assert";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -55,9 +54,9 @@ import { throws } from "assert";
  */
 const componentName = "loadExternal-component";
 export default Vue.component(componentName, {
-  props: ["directUpload", "charset"],
   data() {
     return {
+      charset: "",
       alternativeCharsets: ["", "utf-8", "cp1252"]
     };
   },
