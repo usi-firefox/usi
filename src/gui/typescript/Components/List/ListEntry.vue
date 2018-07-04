@@ -239,10 +239,10 @@ export default Vue.component(componentName, {
     this.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
   },
   methods: {
-    export_script: function() {
+    export_script: function(): void {
       event_controller().get.userscript.export.single(this.localScript.id);
     },
-    add_icon: function() {
+    add_icon: function(): void {
       // Icon mit usi logo füllen, falls leer
       // @todo -- ICON
       if (!this.localScript.settings.icon_data) {
@@ -256,7 +256,7 @@ export default Vue.component(componentName, {
      * Userscript aktivieren, bzw deaktivieren
      * @returns void
      */
-    toggleActivation: function() {
+    toggleActivation: function(): void {
       // aktiviere oder deaktiviere dieses Userscript!
       event_controller().set.userscript.toogle_state(this.localScript.id);
 
@@ -264,15 +264,15 @@ export default Vue.component(componentName, {
     },
 
     // fragt nach den gesetzten Greasemonkey Variablen
-    GMValuesGet: function() {
+    GMValuesGet: function(): void {
       event_controller()
         .request.userscript.gm_values(this.localScript.id)
         .then((GMValues: any) => {
-            this.GMValues = GMValues;
+          this.GMValues = GMValues;
         });
     },
 
-    toggleOverview: function(force: any) {
+    toggleOverview: function(force: any): void {
       if (force === true || force === false) {
         this.showUserscriptEntry = force;
       } else {
@@ -285,7 +285,7 @@ export default Vue.component(componentName, {
      * Userscript entfernen
      * @returns {void}
      */
-    deleteUserscript: function() {
+    deleteUserscript: function(): void {
       // das Skript mit der ID löschen!
       if (!basic_helper().empty(this.localScript.id)) {
         // Frage zusammensetzen
@@ -305,7 +305,7 @@ export default Vue.component(componentName, {
     },
 
     // entfernt alle gesetzten GM_Values
-    GMValuesDelete: function() {
+    GMValuesDelete: function(): void {
       // Frage den Benutzer nochmals ob er wirklich alle gesetzten Werte entfernen möchte
       if (
         window.confirm(browser.i18n.getMessage("confirm_delete_all_GMValues"))
@@ -317,7 +317,7 @@ export default Vue.component(componentName, {
     },
 
     // Sende es an den Editierungs Controller
-    edit: function() {
+    edit: function(): void {
       // veranlasse den Tab Wechsel!
       this.$parent.$emit("change-tab", {
         comp: "edit",
@@ -328,12 +328,12 @@ export default Vue.component(componentName, {
       });
     },
 
-    start_spa: function() {
+    start_spa: function(): void {
       event_controller().request.userscript.start_spa(this.localScript);
     },
 
     // Übergibt die URL an die Nachlade Funktion
-    loadAgain: function() {
+    loadAgain: function(): void {
       if (/^http/.test(this.localScript.moreinformations.url)) {
         // URL muss mit http beginnen
         event_controller().request.userscript.reload_from_source(
@@ -346,12 +346,12 @@ export default Vue.component(componentName, {
       }
     },
 
-    showUserscript: function() {
+    showUserscript: function(): void {
       this.showUserscriptContent = !this.showUserscriptContent;
     }
   },
   watch: {
-    expanded: function() {
+    expanded: function(): void {
       // auf oder zu klappen, definiert durch List.vue
       this.toggleOverview(this.expanded);
     }

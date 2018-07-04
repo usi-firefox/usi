@@ -11,7 +11,6 @@
 
 <script lang="ts">
 declare var jQuery: any;
-declare var global_settings: any;
 declare var hljs: any;
 
 import event_controller from "../../events/event_controller";
@@ -40,8 +39,8 @@ export default Vue.component(componentName, {
   },
   data: function() {
     return {
-      dataCode: this.$props.code,
-      active_style: this.$props.astyle || "default",
+      dataCode: this.code,
+      active_style: this.astyle || "default",
       highlight_styles_path: "libs/highlight/styles/",
       // enthält alle verfügbaren highlight js styles
       hightlightjsstyles: [
@@ -131,12 +130,12 @@ export default Vue.component(componentName, {
     Vue.nextTick().then(() => {
       this.run();
 
-        // @todo Workaround
-        this.$parent.$emit("change-tab-additional", {event_name : "usi:lang"});
+      // @todo Workaround
+      this.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
     });
   },
   methods: {
-    run: function() {
+    run: function(): void {
       jQuery(this.$el)
         .find("pre code")
         .each(function(i: number, block: HTMLElement) {
@@ -152,12 +151,10 @@ export default Vue.component(componentName, {
 
       // Style speichern
       event_controller().set.highlightjs.style(this.active_style);
-
     }
   }
 });
 </script>
 
 <style>
-
 </style>

@@ -177,21 +177,21 @@ export default Vue.component(componentName, {
   watch: {
     /** @todo */
     // Schreibe die Neue Konfiguration
-    load_script_with_js_end: async function(newValue, oldValue) {
+    load_script_with_js_end: async function(newValue, oldValue) : Promise<void> {
       await event_controller().set.config.load_external_script(newValue);
       this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     },
-    greasemonkey_global_active: async function(newValue, oldValue) {
+    greasemonkey_global_active: async function(newValue, oldValue) : Promise<void> {
       await event_controller().set.config.gm_funcs_always_on(newValue);
       this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     },
-    hightlightjs_active: async function(newValue, oldValue) {
+    hightlightjs_active: async function(newValue, oldValue) : Promise<void> {
       await event_controller().set.config.highlightjs_state(newValue);
       this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     }
   },
   methods: {
-    css_undo: function() {
+    css_undo: function(): void {
       if (this.LastCSS.length > 0) {
         // Letzten Wert wieder eintragen
         this.AddCSS = String(this.LastCSS.pop()).toString();
@@ -203,7 +203,7 @@ export default Vue.component(componentName, {
       // danach den Refresh Prozess antriggern
       this.css_refresh(true);
     },
-    activate_css: async function(new_css: string) {
+    activate_css: async function(new_css: string): Promise<void> {
       // CSS eintragen und aktivieren
       // @todo --- ruft die Haupt Vue Instanz
       await event_controller().set.config.own_css(new_css);
@@ -213,7 +213,7 @@ export default Vue.component(componentName, {
       });
       this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
     },
-    css_refresh: async function(is_reset?: boolean) {
+    css_refresh: function(is_reset?: boolean): void | boolean {
       // CSS eintragen und aktivieren
       this.activate_css(this.AddCSS);
 
@@ -263,7 +263,7 @@ export default Vue.component(componentName, {
      * Alle Userscripte entfernen
      * @returns {undefined}
      */
-    deleteAll: function() {
+    deleteAll: function(): void {
       // Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
       if (
         window.confirm(browser.i18n.getMessage("really_reset_all_settings"))
@@ -282,7 +282,7 @@ export default Vue.component(componentName, {
     checkForUpdates: event_controller().request.userscript.update_check,
 
     // exportiere die Skripte
-    exportAll: function() {
+    exportAll: function(): void {
       if (this.completeExport === true) {
         event_controller().get.userscript.export.all(true);
       } else {
@@ -294,5 +294,4 @@ export default Vue.component(componentName, {
 </script>
 
 <style>
-
 </style>

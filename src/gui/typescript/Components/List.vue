@@ -55,11 +55,11 @@ export default Vue.component(componentName, {
   },
   methods: {
     // fragt die Userscripte ab
-    refresh: async function() {
+    refresh: async function(): Promise<void> {
       this.userscripts = <any>await event_controller().request.userscript.all();
-    }
-    ,toggleExpanded : function(){
-        this.is_expanded = !this.is_expanded;
+    },
+    toggleExpanded: function(): void {
+      this.is_expanded = !this.is_expanded;
     }
   },
   components: {
@@ -69,5 +69,4 @@ export default Vue.component(componentName, {
 </script>
 
 <style>
-
 </style>

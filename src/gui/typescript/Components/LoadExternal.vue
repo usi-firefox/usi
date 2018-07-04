@@ -62,7 +62,7 @@ export default Vue.component(componentName, {
     };
   },
   methods: {
-    addCustomCharset: function() {
+    addCustomCharset: function(): void {
       // nach dem eigenen Charset fragen
       const new_charset = window.prompt(
         browser.i18n.getMessage("add_new_custom_charset")
@@ -84,7 +84,7 @@ export default Vue.component(componentName, {
     },
 
     // Direkter Userscript Datei Upload
-    loadLocalFile: function() {
+    loadLocalFile: function(): void {
       var file = jQuery("#direct-userscript-upload").get(0).files[0];
 
       if (typeof file !== "object") {
@@ -108,5 +108,4 @@ export default Vue.component(componentName, {
 </script>
 
 <style>
-
 </style>
