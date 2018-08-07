@@ -1,5 +1,6 @@
 const path = require('path');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 // Ausgelagert für ts-loader 4.3.1 und höher
 const tsLoaderConfig = {
@@ -35,10 +36,10 @@ module.exports = [
     devtool: 'inline-source-map',
     plugins: [
       new CopyWebpackPlugin([
-        { from: '_locales' , to: '_locales'},
+        { from: '_locales', to: '_locales' },
         { from: 'manifest.json' },
         { from: 'lib/GM/GM_Frontend.js', to: 'js/GM_Frontend.js' },
-        { from: 'html' , to: 'html'}
+        { from: 'html', to: 'html' }
       ])
     ]
   }
@@ -109,7 +110,7 @@ module.exports = [
               // other preprocessors should work out of the box, no loader config like this necessary.
               'scss': 'vue-style-loader!css-loader!sass-loader',
               'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax',
-              'ts' : tsLoaderConfig
+              'ts': tsLoaderConfig
             }
             // other vue-loader options go here
           }
@@ -118,6 +119,13 @@ module.exports = [
           test: /\.tsx?$/,
           exclude: /node_modules/,
           use: tsLoaderConfig
+        },
+        {
+          test: /\.css$/,
+          use: [
+            'vue-style-loader',
+            'css-loader'
+          ]
         }
       ]
     },
@@ -146,6 +154,7 @@ module.exports = [
     },
     devtool: 'inline-source-map',
     plugins: [
+      new VueLoaderPlugin(),
       new CopyWebpackPlugin([
         { from: 'gui', to: "gui", ignore: ["*.ts", "*.vue"] },
       ])

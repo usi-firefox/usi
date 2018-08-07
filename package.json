@@ -8,23 +8,23 @@
     "webpack-prod": "webpack --watch --mode production --devtool none",
     "build-prepare": "webpack --mode production --devtool none",
     "webpack-info": "webpack --help",
-    "browser": "web-ext run -s dist",
+    "browser": "web-ext run -p usi -s dist",
     "build-web-ext": "web-ext build -s dist"
   },
   "author": "usi <>",
   "license": "LGPL",
   "devDependencies": {
-    "@types/jquery": "3.3.4",
+    "@types/jquery": "3.3.5",
     "copy-webpack-plugin": "4.5.2",
-    "css-loader": "0.28.11",
+    "css-loader": "1.0.0",
     "ts-loader": "4.4.2",
-    "typescript": "2.9.2",
-    "vue": "2.5.16",
-    "vue-loader": "14.2.3",
-    "vue-template-compiler": "2.5.16",
-    "web-ext": "2.7.0",
+    "typescript": "3.0.1",
+    "vue": "2.5.17",
+    "vue-loader": "15.2.7",
+    "vue-template-compiler": "2.5.17",
+    "web-ext": "2.8.0",
     "web-ext-types": "2.1.0",
-    "webpack": "4.15.1",
-    "webpack-cli": "3.0.8"
+    "webpack": "4.16.5",
+    "webpack-cli": "3.1.0"
   }
 }
