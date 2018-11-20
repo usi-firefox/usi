@@ -13,9 +13,9 @@
         <!--Userscript Beispiel-->
         <div class="container">
             <div class="row">
-                <button @click="save" class="btn btn-primary btn-block" data-usi-lang="save">
+                <v-btn @click="save" color="info" data-usi-lang="save">
                     <!--Userscript speichern-->
-                </button>
+                </v-btn>
             </div>
             <hr />
             <div class="row">
@@ -24,9 +24,9 @@
                     ({{last_userscript_text.length}})
                 </div>
                 <div class="col-xs-6">
-                    <button @click="undo" class="btn btn-default col-xs-12">
-                        <i class="fa fa-undo fa-2x" aria-hidden="true"></i>
-                    </button>
+                    <v-btn @click="undo" color="warning">
+                        <i class="material-icons">undo</i>
+                    </v-btn>
                 </div>
             </div>
             <hr />
@@ -39,12 +39,12 @@
                 </div>
 
                 <!--Standard laden oder leeren-->
-                <button id="usi-edit-script-load-example" @click="load_example" class="btn btn-default col-xs-6 " data-usi-lang="load_example">
+                <v-btn id="usi-edit-script-load-example" @click="load_example" data-usi-lang="load_example">
                     <!--Beispiel laden-->
-                </button>
-                <button id="usi-edit-script-textarea-clear" @click="textarea_clear" class="btn btn-warning col-xs-6 " data-usi-lang="clear">
+                </v-btn>
+                <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" data-usi-lang="clear">
                     <!--Textfeld leeren-->
-                </button>
+                </v-btn>
             </div>
             <hr />
             <div class="row">
@@ -52,9 +52,9 @@
                 <label>Zoom:</label>
             </div>
             <div class="row">
-                <button class="btn btn-default col-xs-3" @click="defaultSize">
-                    <i class="fa fa-undo"></i>
-                </button>
+                <v-btn @click="defaultSize">
+                    <i class="material-icons">undo</i>
+                </v-btn>
                 <input type="range" v-model="textarea.size" min="8" max="30" step="0.5" value="14" />
             </div>
         </div>
@@ -66,10 +66,10 @@
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <button @click="utf8_to_latin1" class="btn btn-default col-xs-12">UTF-8 -> Latin1</button>
+                    <v-btn @click="utf8_to_latin1" >UTF-8 -> Latin1</v-btn>
                 </div>
                 <div class="col-xs-6">
-                    <button @click="latin1_to_utf8" class="btn btn-primary col-xs-12">Latin1 -> UTF-8</button>
+                    <v-btn @click="latin1_to_utf8" >Latin1 -> UTF-8</v-btn>
                 </div>
             </div>
         </div>

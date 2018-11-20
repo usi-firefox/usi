@@ -6,15 +6,14 @@
                 <h4 class="panel-title">
                     <img v-bind:src="localScript.icon" /> Index: {{index}} | {{localScript.settings.name}} | {{localScript.settings.author}} | {{localScript.settings.version}}
                     <span v-if="localScript.isSpa">| SPA</span>
-
-                    <i :class="[{'fa-angle-double-up':showUserscriptEntry},{'fa-angle-double-down' : !showUserscriptEntry}]" class="fa" title="expand or compress overview"></i>
+                    <i class="material-icons" v-html="showUserscriptEntry ? 'expand_less' : 'expand_more'" title="expand or compress overview"></i>
                 </h4>
             </div>
 
             <!--Panel Inhalt-->
             <div class="panel-body fade-in-animation" :class="[{'not-visible' : !showUserscriptEntry}, { 'hidden' : !showUserscriptEntry }]">
                 <div class="row">
-                    <button @click="export_script" class="btn btn-info col-xs-3 col-xs-push-8">export</button>
+                    <v-btn @click="export_script" class="btn btn-info col-xs-3 col-xs-push-8">export</v-btn>
                 </div>
 
                 <label>usi-id: </label>{{localScript.id}}
@@ -34,15 +33,15 @@
                 <!--Userscript aktivieren oder deaktivieren-->
                 <label>Userscript:</label>
                 <br />
-                <button class="btn btn-default" :class="{active: this.localScript.deactivated}" @click="toggleActivation">
+                <v-btn color="info" :class="{active: this.localScript.deactivated}" @click="toggleActivation">
                     <span v-show="!this.localScript.deactivated">{{lang.activated}}</span>
                     <span v-show="this.localScript.deactivated">{{lang.deactivated}}</span>
-                </button>
+                </v-btn>
 
                 <hr />
 
                 <div v-if="localScript.isSpa" class="row">
-                    <button @click="start_spa" class="btn btn-info col-xs-push-2 col-xs-8">Start SPA</button>
+                    <v-btn @click="start_spa" class="btn btn-info col-xs-push-2 col-xs-8">Start SPA</v-btn>
                 </div>
 
                 <!--Require Skripte-->
@@ -75,9 +74,9 @@
                     </label>
                     <br />
                     <!--Neuladen von der Quelle-->
-                    <button @click="loadAgain">
-                        <i class="fa fa-repeat"></i>
-                    </button>
+                    <v-btn @click="loadAgain">
+                        <i class="material-icons">repeat</i>
+                    </v-btn>
                     <br />
                 </div>
                 <br />
@@ -88,11 +87,11 @@
                         <!--Zeige die gespeicherten GM Variablen-->
                     </label>
                     <br />
-                    <button @click="GMValuesGet" class="btn btn-info col-xs-3" data-usi-lang="show">
-                    </button>
-                    <button @click="GMValuesDelete" :class="{hidden : (GMValues.length == 0)}" class="btn btn-danger col-xs-offset-1 col-xs-3"
+                    <v-btn @click="GMValuesGet" class="btn btn-info col-xs-3" data-usi-lang="show">
+                    </v-btn>
+                    <v-btn @click="GMValuesDelete" :class="{hidden : (GMValues.length == 0)}" class="btn btn-danger col-xs-offset-1 col-xs-3"
                         data-usi-lang="delete_x">
-                    </button>
+                    </v-btn>
                     <br />
                     <br />
                     <div class="row" v-if="GMValues.length > 0">
@@ -124,14 +123,14 @@
                 <div class="row">
                     <!--Userscript anzeigen/ausblenden-->
                     <span class="col-xs-3">
-                        <button class="btn btn-default" @click="showUserscript">
+                        <v-btn color="info" @click="showUserscript">
                             <span v-show="!showUserscriptContent">{{lang.show}}</span>
                             <span v-show="showUserscriptContent">{{lang.hide}}</span>
-                        </button>
+                        </v-btn>
                     </span>
-                    <button class="btn btn-info col-xs-3 col-xs-offset-1" @click="edit" data-usi-lang="change"></button>
+                    <v-btn class="btn btn-info col-xs-3 col-xs-offset-1" @click="edit" data-usi-lang="change"></v-btn>
                     <!--Userscript entfernen-->
-                    <button class="btn btn-danger col-xs-3 col-xs-offset-1" @click="deleteUserscript" data-usi-lang="delete_x"></button>
+                    <v-btn class="btn btn-danger col-xs-3 col-xs-offset-1" @click="deleteUserscript" data-usi-lang="delete_x"></v-btn>
                 </div>
 
                 <br />

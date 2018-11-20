@@ -8,14 +8,16 @@
             <h3 class="col-xs-6">
                 <span v-if="userscripts" @click="toggleExpanded">
                     Userscripts ({{userscripts.length}})
-                    <i class="fa" :class="is_expanded ? 'fa-expand' : 'fa-compress'" ></i>
+                    <v-btn>
+                      <i class="material-icons" v-html="is_expanded ? 'expand_more' : 'expand_less'" ></i>
+                    </v-btn>
                 </span>
                 <span v-else data-usi-lang="no_userscript_there">
                 </span>
             </h3>
-            <button class="btn btn-primary col-xs-push-4 col-xs-2" @click="refresh">
-                <i class="fa fa-refresh"></i>
-            </button>
+            <v-btn @click="refresh">
+                <i class="material-icons">refresh</i>
+            </v-btn>
         </div>
         <div class="panel-group">
             <div v-if="userscripts">

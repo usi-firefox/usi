@@ -7,8 +7,8 @@
                     <!--Alle Userscripts entfernen-->
                 </h3>
 
-                <button class="btn btn-danger" @click="deleteAll" data-usi-lang="revert_all">
-                </button>
+                <v-btn color="error" @click="deleteAll" data-usi-lang="revert_all">
+                </v-btn>
                 <!--alles zurücksetzen-->
             </div>
         </div>
@@ -20,8 +20,8 @@
                     <!--Alle Userscripts auf Updates überprüfen-->
                 </h3>
 
-                <button @click="checkForUpdates" class="btn btn-primary" data-usi-lang="check_now">
-                </button>
+                <v-btn @click="checkForUpdates" color="info" data-usi-lang="check_now">
+                </v-btn>
                 <!--jetzt prüfen-->
             </div>
         </div>
@@ -38,10 +38,10 @@
                 </label>
             </div>
             <div class="row">
-                <button class="btn btn-default" @click="load_script_with_js_end = !load_script_with_js_end">
+                <v-btn color="info" @click="load_script_with_js_end = !load_script_with_js_end">
                     <span v-show="load_script_with_js_end">{{lang.yes}}</span>
                     <span v-show="!load_script_with_js_end">{{lang.no}}</span>
-                </button>
+                </v-btn>
             </div>
         </div>
         <hr />
@@ -53,10 +53,10 @@
             </div>
 
             <div class="row">
-                <button class="btn btn-default" @click="hightlightjs_active = !hightlightjs_active">
+                <v-btn color="info" @click="hightlightjs_active = !hightlightjs_active">
                     <span v-show="hightlightjs_active">{{lang.yes}}</span>
                     <span v-show="!hightlightjs_active">{{lang.no}}</span>
-                </button>
+                </v-btn>
             </div>
         </div>
         <hr />
@@ -67,10 +67,10 @@
                 </h3>
             </div>
             <div class="row">
-                <button class="btn btn-default" @click="greasemonkey_global_active = !greasemonkey_global_active">
+                <v-btn color="info" @click="greasemonkey_global_active = !greasemonkey_global_active">
                     <span v-show="greasemonkey_global_active">{{lang.yes}}</span>
                     <span v-show="!greasemonkey_global_active">{{lang.no}}</span>
-                </button>
+                </v-btn>
             </div>
         </div>
         <hr />
@@ -86,16 +86,16 @@
                 </label>
             </div>
             <div class="row">
-                <button class="btn btn-default" @click="completeExport = !completeExport">
+                <v-btn color="info" @click="completeExport = !completeExport">
                     <span v-show="completeExport">{{lang.yes}}</span>
                     <span v-show="!completeExport">{{lang.no}}</span>
-                </button>
+                </v-btn>
             </div>
             <br />
 
             <div class="row">
-                <button @click="exportAll" class="btn btn-primary" data-usi-lang="export_all_now">
-                </button>
+                <v-btn @click="exportAll" color="info" data-usi-lang="export_all_now">
+                </v-btn>
             </div>
             <!--jetzt exportieren-->
         </div>
@@ -119,11 +119,11 @@
             </div>
             <br />
             <div class="row">
-                <button @click="css_refresh(false)" class="btn btn-primary col-xs-6 col-md-2" data-usi-lang="config_add_css_refresh">
-                </button>
-                <button @click="css_undo" class="btn btn-default col-xs-6 col-md-push-1 col-md-2">
-                    <i class="fa fa-undo fa-2x" aria-hidden="true"></i>
-                </button>
+                <v-btn @click="css_refresh(false)" color="info" data-usi-lang="config_add_css_refresh">
+                </v-btn>
+                <v-btn @click="css_undo">
+                    <i class="material-icons" >undo</i>
+                </v-btn>
             </div>
         </div>
     </div>

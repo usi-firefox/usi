@@ -1,66 +1,44 @@
 <template>
-<div id="gui" class="scrollable-content">
-<!-- Sidebar -->
-<div class="sidebar sidebar-left">
-    <div id="sidebar-menu">
-        <h1 class="scrollable-header app-name">USI - ({{version}})</h1>
-            <!-- Sidebar Eintrag -->
-            <a v-once v-for="(entry,index) in menuEntries" v-bind:key="index" class="list-group-item load_template" @click="hide_side_menu_and_load(index)"
-                v-bind:data-usi-lang="entry.lang"></a>
-    </div>
-</div>
-
-<!-- Main -->
-<div class="app">
-    <!-- Top Navbar -->
-    <div @click="toggle_side_menu" class="navbar navbar-app navbar-absolute-top">
-        <div class="navbar-brand navbar-brand-center">{{navTitle}}</div>
-        <div class="btn-group pull-left">
-            <div class="btn sidebar-toggle">
-                <i class="fa fa-bars"></i>
-            </div>
-        </div>
-    </div>
-    <!-- Top Navbar -->
-
-    <!-- App Content -->
-    <div class='app-body'>
-        <div class='app-content'>
-            <div class="scrollable-content section" id="app-body-content">
-                <!-- <keep-alive> -->
-                  <!-- @todo  schaltet die aktive Componente um -->
-                  <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
-                  <overview-component v-if="activeComponent == 'overview'" 
-                        v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
-                        v-on:change-tab-additional="eventsFromOtherComponents"
-                        v-bind:addional="extraData"></overview-component>
-                  <list-component v-if="activeComponent == 'list'" 
-                        v-bind:configuration="configuration"
-                        v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
-                        v-on:change-tab-additional="eventsFromOtherComponents"
-                        v-bind:addional="extraData"></list-component>
-                  <edit-component v-if="activeComponent == 'edit'" 
-                        v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
-                        v-on:change-tab-additional="eventsFromOtherComponents"
-                        v-bind:addional="extraData"></edit-component>
-                  <config-component v-if="activeComponent == 'config'" 
-                        v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
-                        v-on:change-tab-additional="eventsFromOtherComponents"
-                        v-bind:initial-data="configuration"
-                        v-bind:addional="extraData"></config-component>
-                  <loadExternal-component v-if="activeComponent == 'loadExternal'" 
-                        v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" 
-                        v-on:change-tab-additional="eventsFromOtherComponents"
-                        v-bind:addional="extraData"></loadExternal-component>
-                <!-- </keep-alive> -->
-            </div>
-        </div>
-    </div>
-    <!-- App Content -->
-
-</div>
-</div>
-<!-- Main -->
+  <div id="gui" class="scrollable-content">
+    <v-app>
+      <v-navigation-drawer app>
+        <v-toolbar>
+          <v-list>
+            <v-list-tile>
+              <v-list-tile-title class="title">
+                USI - ({{version}})
+              </v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <!-- Sidebar -->
+        <!-- Sidebar Eintrag -->
+        <v-list-tile v-once v-for="(entry,index) in menuEntries" v-bind:key="index" @click="hide_side_menu_and_load(index)">
+          <v-list-tile-content>
+            <v-list-tile-title v-bind:data-usi-lang="entry.lang"></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-navigation-drawer>
+      <v-toolbar app>{{navTitle}}</v-toolbar>
+      <v-content>
+        <v-container fluid>
+          <!-- App Content -->
+          <!-- <keep-alive> -->
+          <!-- @todo  schaltet die aktive Componente um -->
+          <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
+          <overview-component v-if="activeComponent == 'overview'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></overview-component>
+          <list-component v-if="activeComponent == 'list'" v-bind:configuration="configuration" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></list-component>
+          <edit-component v-if="activeComponent == 'edit'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></edit-component>
+          <config-component v-if="activeComponent == 'config'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:initial-data="configuration" v-bind:addional="extraData"></config-component>
+          <loadExternal-component v-if="activeComponent == 'loadExternal'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></loadExternal-component>
+          <!-- </keep-alive> -->
+          <!-- App Content -->
+        </v-container>
+      </v-content>
+    </v-app>
+  </div>
+  <!-- Main -->
 </template>
 
 <script lang="ts">
@@ -88,7 +66,7 @@ const componentName = "appbody-component";
 
 // AppBody Vue Instance - Verwaltet die einzelnen Components
 export default Vue.component(componentName, {
-  data: function() {
+  data: function () {
     return {
       navTitle: "Overview",
 
@@ -101,7 +79,7 @@ export default Vue.component(componentName, {
     };
   },
 
-  created: function() {
+  created: function () {
     this.version = manifest.version;
 
     this.menuEntries = [
@@ -141,10 +119,10 @@ export default Vue.component(componentName, {
       });
   },
   methods: {
-    eventsFromOtherComponents: function(data: any) : void{
+    eventsFromOtherComponents: function (data: any): void {
       switch (data.event_name) {
         case "usi:lang":
-          Vue.nextTick().then(function() {
+          Vue.nextTick().then(function () {
             /**
              * nachdem die create() ausgeführt wurde,
              * müssen noch die Attribute data-usi-lang ersetzt werden
@@ -170,12 +148,12 @@ export default Vue.component(componentName, {
           break;
       }
     },
-    change_css: function(cssContent: string) :void {
+    change_css: function (cssContent: string): void {
       let css_text = cssContent.replace(/<\/?[^>]+>/gi, "");
       // CSS aktivieren
       jQuery("#usiAdditionalCss").text(css_text);
     },
-    hide_side_menu_and_load: function(index: number) :void{
+    hide_side_menu_and_load: function (index: number): void {
       // Aktuelle Komponente suchen
       const menu_entry = this.menuEntries[index];
       if (!menu_entry) {
@@ -185,10 +163,10 @@ export default Vue.component(componentName, {
       this.change_active_component(menu_entry);
     },
 
-    change_active_component: function(menuEntry: {
+    change_active_component: function (menuEntry: {
       name: string;
       lang: string;
-    }) :void {
+    }): void {
       // @todo
       jQuery("body").removeClass(class_names_for_sidebar);
 
@@ -201,8 +179,8 @@ export default Vue.component(componentName, {
       this.replace_language_attributes();
     },
 
-    replace_language_attributes: function() : void{
-      Vue.nextTick().then(function() {
+    replace_language_attributes: function (): void {
+      Vue.nextTick().then(function () {
         /**
          * nachdem die create() ausgeführt wurde,
          * müssen noch die Attribute data-usi-lang ersetzt werden
@@ -212,14 +190,10 @@ export default Vue.component(componentName, {
     },
 
     // Toggle Sidebar Menu
-    toggle_side_menu: function() :void {
-      // @todo
-      jQuery("body").toggleClass(class_names_for_sidebar);
-    }
   },
   computed: {},
   watch: {
-    activeComponent: function() {
+    activeComponent: function () {
       // passenden Eintrag suchen
       // und change_active_component() aufrufen
       for (let comp of this.menuEntries) {

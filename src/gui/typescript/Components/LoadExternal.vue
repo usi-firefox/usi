@@ -5,12 +5,12 @@
         <label data-usi-lang="direct_userscript_upload">
             <!--Userscript direkt hochladen-->
         </label>
-        <i class="fa fa-upload" aria-hidden="true"></i>
+        <i class="material-icons" >cloud_upload</i>
         <input type="file" accept="text/*" id="direct-userscript-upload" />
         <br />
-        <button class="btn btn-primary col-xs-push-1 col-xs-10 text-capitalize" @click="loadLocalFile" data-usi-lang="start">
+        <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
             <!--Start-->
-        </button>
+        </v-btn>
         <br />
         <br />
         <br />
@@ -25,9 +25,9 @@
         </label>
 
         <!-- Eigenes Charset hinzufügen -->
-        <button @click="addCustomCharset" class="btn btn-default">
-            <i class="fa fa-plus-circle"></i>
-        </button>
+        <v-btn @click="addCustomCharset" color="info">
+            <i class="material-icons">add_circle</i>
+        </v-btn>
 
         <select class="form-control">
             <!-- Charset Auswahl für die Datei -->
