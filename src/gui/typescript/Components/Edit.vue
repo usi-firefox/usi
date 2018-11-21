@@ -1,79 +1,50 @@
 <template>
-    <!--Neues Userscript erstellen / bearbeiten-->
-    <div id="usi-edit-script">
-        <h3 v-if="script_id">
-            <span data-usi-lang="edit_userscript_with_id"></span> : {{script_id}}
-        </h3>
+  <!--Neues Userscript erstellen / bearbeiten-->
+  <div id="usi-edit-script">
+    <h3 v-if="script_id">
+      <span data-usi-lang="edit_userscript_with_id"></span> : {{script_id}}
+    </h3>
 
-        <!--Userscript Eingabe-->
-        <textarea class="col-xs-12" v-model="textarea.content" :style="{fontSize : textarea.size + 'px', height: textarea.height + 'px' }"
-            id="usi-edit-script-textarea" rows="30" cols="64" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-            placeholder="// ==UserScript== ..."></textarea>
+    <!--Userscript Eingabe-->
+    <v-textarea class="col-xs-12" v-model="textarea.content" :style="{fontSize : textarea.size + 'px', height: textarea.height + 'px' }" id="usi-edit-script-textarea" rows="30" cols="64" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="// ==UserScript== ..."></v-textarea>
 
-        <!--Userscript Beispiel-->
-        <div class="container">
-            <div class="row">
-                <v-btn @click="save" color="info" data-usi-lang="save">
-                    <!--Userscript speichern-->
-                </v-btn>
-            </div>
-            <hr />
-            <div class="row">
-                <div class="col-xs-6">
-                    <label data-usi-lang="edit_last_changes"></label>
-                    ({{last_userscript_text.length}})
-                </div>
-                <div class="col-xs-6">
-                    <v-btn @click="undo" color="warning">
-                        <i class="material-icons">undo</i>
-                    </v-btn>
-                </div>
-            </div>
-            <hr />
-            <div class="row">
-                <!--Userscript überschreiben?-->
-                <div v-if="script_id">
-                    <label>Userscript <span data-usi-lang="overwrite_without_warning"></span>?</label>
-                    <input id="usi-edit-script-overwrite" data-toggle="toggle" type="checkbox" />
-                    <hr />
-                </div>
+    <!--Userscript Beispiel-->
+    <v-btn @click="save" color="info" data-usi-lang="save">
+      <!--Userscript speichern-->
+    </v-btn>
 
-                <!--Standard laden oder leeren-->
-                <v-btn id="usi-edit-script-load-example" @click="load_example" data-usi-lang="load_example">
-                    <!--Beispiel laden-->
-                </v-btn>
-                <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" data-usi-lang="clear">
-                    <!--Textfeld leeren-->
-                </v-btn>
-            </div>
-            <hr />
-            <div class="row">
-                <!--Textarea Zoom einstellen-->
-                <label>Zoom:</label>
-            </div>
-            <div class="row">
-                <v-btn @click="defaultSize">
-                    <i class="material-icons">undo</i>
-                </v-btn>
-                <input type="range" v-model="textarea.size" min="8" max="30" step="0.5" value="14" />
-            </div>
-        </div>
-        <hr />
-        <div class="container">
-            <div class="row">
-                <!--Umwandlung bei Problemen mit dem Charset-->
-                <label>Convert : </label>
-            </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <v-btn @click="utf8_to_latin1" >UTF-8 -> Latin1</v-btn>
-                </div>
-                <div class="col-xs-6">
-                    <v-btn @click="latin1_to_utf8" >Latin1 -> UTF-8</v-btn>
-                </div>
-            </div>
-        </div>
+    <label data-usi-lang="edit_last_changes"></label>
+    ({{last_userscript_text.length}})
+    <v-btn @click="undo" color="warning">
+      <i class="material-icons">undo</i>
+    </v-btn>
+
+    <!--Userscript überschreiben?-->
+    <div v-if="script_id">
+      <label>Userscript <span data-usi-lang="overwrite_without_warning"></span>?</label>
+      <input id="usi-edit-script-overwrite" data-toggle="toggle" type="checkbox" />
     </div>
+
+    <!--Standard laden oder leeren-->
+    <v-btn id="usi-edit-script-load-example" @click="load_example" data-usi-lang="load_example">
+      <!--Beispiel laden-->
+    </v-btn>
+    <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" data-usi-lang="clear">
+      <!--Textfeld leeren-->
+    </v-btn>
+    <!--Textarea Zoom einstellen-->
+    <v-flex xs12>
+      <v-subheader class="pl-0">Zoom:</v-subheader>
+      <v-slider thumb-label v-model="textarea.size" min="8" max="30" step="0.5" value="14"></v-slider>
+    </v-flex>
+    <v-btn @click="defaultSize">
+      <i class="material-icons">undo</i>
+    </v-btn>
+    <!--Umwandlung bei Problemen mit dem Charset-->
+    <label>Convert : </label>
+    <v-btn @click="utf8_to_latin1">UTF-8 -> Latin1</v-btn>
+    <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
+  </div>
 </template>
 
 <script lang="ts">
@@ -81,13 +52,12 @@ import Vue from "vue";
 
 declare var jQuery: any;
 declare var window: any;
-declare var document: any;
 
 import event_controller from "../events/event_controller";
 import { throws } from "assert";
 
 // Die ID der Textarea
-var last_userscript_interval_id : number = 0;
+var last_userscript_interval_id: number = 0;
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -113,11 +83,7 @@ export default Vue.component(componentName, {
       load_example_by_prefered_locale: "de"
     };
   },
-  beforeDestroy : function(){
-    // Event für Text Area Anpassung entfernen
-    jQuery(window).off("resize",this.setTextareaHeight);
-  },
-  created: function() {
+  created: function () {
     /**
      * falls zusältziche Daten übergeben wurden
      * Werden diese gesetzt
@@ -147,24 +113,21 @@ export default Vue.component(componentName, {
       this.load_example_by_prefered_locale = "en";
     }
 
-    // Text Area anpassen bei Größen Änderung
-    jQuery(window).on("resize",this.setTextareaHeight);
-
     if (last_userscript_interval_id === 0) {
       last_userscript_interval_id = window.setInterval(() => {
 
         const text = this.textarea.content;
         // falls der letzte Wert in der Historie verschieden sein sollte
         if (text.length > 0) {
-            const undo_length = this.last_userscript_text.length;
-            const b = this.last_userscript_text[undo_length -1 ];
+          const undo_length = this.last_userscript_text.length;
+          const b = this.last_userscript_text[undo_length - 1];
 
           // Kein Wert enthalten ODER der Letzte Wert ist verschieden
-          if(undo_length === 0 || this.last_userscript_text[undo_length -1 ] !== text){
+          if (undo_length === 0 || this.last_userscript_text[undo_length - 1] !== text) {
             // den Wert der Historie hinzufügen
             this.last_userscript_text.push(text);
           }
-          
+
         }
 
         // alle 7 Sekunden durchführen
@@ -181,25 +144,25 @@ export default Vue.component(componentName, {
     /**
      * Höhe der Textarea an die Fenstergröße anpassen!
      */
-    setTextareaHeight: function(): void {
+    setTextareaHeight: function (): void {
       // Textarea Höhe auf 65 % setzen
       this.textarea.height = Math.floor(window.innerHeight * (65 / 100));
     },
     /**
      * Textarea auf Standard Größe zurücksetzen
      */
-    defaultSize: function(): void {
+    defaultSize: function (): void {
       this.textarea.size = this.textarea.default_size;
     },
 
-    textarea_clear: function(): void {
+    textarea_clear: function (): void {
       this.script_id = 0;
       this.textarea.content = "";
       this.$forceUpdate();
     },
 
     // Setzt den Text Inhalt zurück
-    undo: function(): void {
+    undo: function (): void {
       if (this.last_userscript_text.length > 0) {
         var undo_value = this.last_userscript_text.pop();
 
@@ -215,7 +178,7 @@ export default Vue.component(componentName, {
       }
     },
 
-    load_example: function(
+    load_example: function (
       event: any,
       lang_key: string,
       error_count: number = 1
@@ -249,7 +212,7 @@ export default Vue.component(componentName, {
      * Userscript aus der Textarea übermitteln
      * @returns {undefined}
      */
-    save: function(): void {
+    save: function (): void {
       // Textarea nicht leer ...
       if (this.textarea.content.length > 20) {
         // sende den Userscript Text an das Addon Skript...
@@ -278,7 +241,7 @@ export default Vue.component(componentName, {
     /**
      * Textarea in einen Vollbild Modus schalten!
      */
-    textarea_to_fullscreen: function(): void {
+    textarea_to_fullscreen: function (): void {
       // Textarea höhe berechnen
       this.textarea.height = Math.floor(window.innerHeight * (75 / 100));
     },
@@ -286,19 +249,19 @@ export default Vue.component(componentName, {
     /**
      * Convert Funktionen, falls es Probleme mit den Charset's geben sollte
      */
-    utf8_to_latin1: function(): void {
+    utf8_to_latin1: function (): void {
       try {
         this.textarea.content = window.unescape(
           encodeURIComponent(this.textarea.content)
         );
-      } catch (e) {}
+      } catch (e) { }
     },
-    latin1_to_utf8: function(): void {
+    latin1_to_utf8: function (): void {
       try {
         this.textarea.content = decodeURIComponent(
           window.escape(this.textarea.content)
         );
-      } catch (e) {}
+      } catch (e) { }
     }
   },
   computed: {}

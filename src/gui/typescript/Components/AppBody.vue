@@ -1,7 +1,7 @@
 <template>
   <div id="gui" class="scrollable-content">
     <v-app>
-      <v-navigation-drawer app>
+      <v-navigation-drawer app v-model="drawer">
         <v-toolbar>
           <v-list>
             <v-list-tile>
@@ -20,14 +20,16 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-navigation-drawer>
-      <v-toolbar app>{{navTitle}}</v-toolbar>
+      <v-toolbar app>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-title>{{navTitle}}</v-toolbar-title>
+        </v-toolbar>
       <v-content>
         <v-container fluid>
           <!-- App Content -->
           <!-- <keep-alive> -->
           <!-- @todo  schaltet die aktive Componente um -->
           <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
-          <overview-component v-if="activeComponent == 'overview'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></overview-component>
           <list-component v-if="activeComponent == 'list'" v-bind:configuration="configuration" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></list-component>
           <edit-component v-if="activeComponent == 'edit'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></edit-component>
           <config-component v-if="activeComponent == 'config'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:initial-data="configuration" v-bind:addional="extraData"></config-component>
@@ -51,7 +53,6 @@ import config_storage from "lib/storage/config";
 
 import Vue from "vue";
 
-import OverviewComponent from "Components/Overview.vue";
 import EditComponent from "Components/Edit.vue";
 import LoadExternalComponent from "Components/LoadExternal.vue";
 import ConfigComponent from "Components/Config.vue";
@@ -68,10 +69,11 @@ const componentName = "appbody-component";
 export default Vue.component(componentName, {
   data: function () {
     return {
-      navTitle: "Overview",
+      navTitle: "All Userscripts",
+      drawer : false,
 
       // legt fest, welcher Component momentan aktiv ist
-      activeComponent: "overview",
+      activeComponent: "list",
       extraData: {},
       configuration: <usi.Storage.Config>{},
       menuEntries: <any>[],
@@ -83,7 +85,6 @@ export default Vue.component(componentName, {
     this.version = manifest.version;
 
     this.menuEntries = [
-      { name: "overview", lang: "overview" },
       { name: "list", lang: "all_userscripts" },
       { name: "edit", lang: "create_new_userscript" },
       { name: "loadExternal", lang: "userscript_after_load" },
@@ -177,6 +178,8 @@ export default Vue.component(componentName, {
       this.activeComponent = menuEntry.name;
 
       this.replace_language_attributes();
+
+      this.drawer = false;
     },
 
     replace_language_attributes: function (): void {
@@ -210,7 +213,6 @@ export default Vue.component(componentName, {
   },
   components: {
     // Komponenten manuell hinzufügen
-    OverviewComponent,
     EditComponent,
     ConfigComponent,
     ListComponent,

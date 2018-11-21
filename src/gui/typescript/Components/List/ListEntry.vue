@@ -1,155 +1,165 @@
 <template>
-    <div class="panel panel-default" v-if="localScript">
-        <!--Panel Kopf-->
-        <div class="usi-list-entry-id" :class="[{grey : localScript.deactivated},{'strike-through': markedAsDeleted}]">
-            <div class="panel-heading" @click="toggleOverview">
-                <h4 class="panel-title">
-                    <img v-bind:src="localScript.icon" /> Index: {{index}} | {{localScript.settings.name}} | {{localScript.settings.author}} | {{localScript.settings.version}}
-                    <span v-if="localScript.isSpa">| SPA</span>
-                    <i class="material-icons" v-html="showUserscriptEntry ? 'expand_less' : 'expand_more'" title="expand or compress overview"></i>
-                </h4>
+  <div v-if="localScript">
+    <div class="usi-list-entry-id" :class="[{grey : localScript.deactivated},{'strike-through': markedAsDeleted}]">
+      <v-card>
+        <v-card-title>
+          <div @click="toggleOverview" class="pointer">
+            <img v-bind:src="localScript.icon" /> Index: {{index}} | {{localScript.settings.name}} | {{localScript.settings.author}} | {{localScript.settings.version}}
+            <span v-if="localScript.isSpa">| SPA</span>
+            <i class="material-icons" v-html="showUserscriptEntry ? 'expand_less' : 'expand_more'" title="expand or compress overview"></i>
+          </div>
+          <v-menu offset-y>
+            <!-- Options Menü -->
+            <span slot="activator" class="pointer">
+              <!-- !!!TODO -->
+              More Userscript Options
+              <i class="material-icons">more_vert</i>
+            </span>
+
+            <v-list class="pointer">
+              <!--Userscript anzeigen/ausblenden-->
+              <v-list-tile>
+                <v-list-tile-title @click="showUserscript">
+                  <i class="material-icons">pageview</i>
+                  <span v-html="!showUserscriptContent ? lang.show: lang.hide"></span>
+                </v-list-tile-title>
+              </v-list-tile>
+              <!--Userscript bearbeiten-->
+              <v-list-tile>
+                <v-list-tile-title @click="edit">
+                  <i class="material-icons">edit</i>
+                  <span v-html="lang.change"></span>
+                </v-list-tile-title>
+              </v-list-tile>
+              <!--Userscript entfernen-->
+              <v-list-tile>
+                <v-list-tile-title @click="deleteUserscript">
+                  <i class="material-icons">delete</i>
+                  <span v-html="lang.delete_x"></span>
+                </v-list-tile-title>
+              </v-list-tile>
+
+              <!-- Userscript Exportieren -->
+              <v-list-tile>
+                <v-list-tile-title @click="export_script">
+                  <i class="material-icons">import_export</i>
+                  export
+                </v-list-tile-title>
+              </v-list-tile>
+              <!-- SPA Starten -->
+              <v-list-tile v-if="localScript.isSpa">
+                <v-list-tile-title @click="start_spa">
+                  <i class="material-icons">play_arrow</i>
+                  Start SPA
+                </v-list-tile-title>
+              </v-list-tile>
+              <!--Neuladen von der Quelle-->
+              <v-list-tile v-if="localScript.moreinformations && localScript.moreinformations.url">
+                <v-list-tile-title @click="loadAgain">
+                  <i class="material-icons">repeat</i>
+                  <span data-usi-lang="reload_from_source"></span>
+                </v-list-tile-title>
+              </v-list-tile>
+              <!-- Gespeicherte Variablen anzeigen-->
+              <v-list-tile v-if="localScript.val_store">
+                <v-list-tile-title @click="GMValuesGet">
+                  <i class="material-icons">get_app</i>
+                  GM Values show
+                </v-list-tile-title>
+              </v-list-tile>
+
+              <!-- Gespeicherte Variablen entfernen-->
+              <v-list-tile v-if="localScript.val_store">
+                <v-list-tile-title @click="GMValuesDelete">
+                  <i class="material-icons">delete</i>
+                  GM Values delete
+                </v-list-tile-title>
+              </v-list-tile>
+
+            </v-list>
+          </v-menu>
+        </v-card-title>
+        <v-card-text v-if="this.showUserscriptEntry">
+          <label>usi-id: </label>{{localScript.id}}
+          <br />
+          <label>Name: </label>{{localScript.settings.name}}
+          <br />
+          <label>Author: </label>{{localScript.settings.author}}
+          <br />
+          <label>Version: </label>{{localScript.settings.version}}
+          <br />
+          <label>
+            <span data-usi-lang="description"></span>: </label>{{localScript.settings.description}}
+          <br />
+
+          <!--Userscript aktivieren oder deaktivieren-->
+          <label>Userscript:</label>
+          <br />
+          <v-switch v-model="localScriptDeactivated" :label="localScriptDeactivated ? lang.deactivated : lang.activated"></v-switch>
+
+          <!--Require Skripte-->
+          <div v-if="localScript.require_scripts.length > 0">
+
+            <label>Require Scripts:</label>
+            <br />
+            <ol class="usi-list-entry-required-scripts---output">
+              <li v-for="entry in localScript.require_scripts" :key="entry.url">
+                {{entry.url}}
+              </li>
+            </ol>
+          </div>
+
+          <div v-if="localScript.settings && localScript.settings.include">
+            <!--gültige Include Regeln-->
+            <label>Includes: </label>
+            <br />
+            <ol>
+              <li v-for="(entry,index) in localScript.settings.include" :key="index">
+                {{entry}}
+              </li>
+            </ol>
+          </div>
+
+          <br />
+
+          <!--Greasemonkey Variablen-->
+          <div class="row" v-if="GMValues.length > 0">
+            <label data-usi-lang="GMValues">
+              <!--Zeige die gespeicherten GM Variablen-->
+            </label>
+            <div class="col-xs-12">
+              <table class="col-xs-12">
+                <thead>
+                  <th>Name</th>
+                  <th>Value</th>
+                </thead>
+                <tbody>
+                  <tr v-for="(item,index) in GMValues" :key="index">
+                    <td>{{item.key}}</td>
+                    <td>{{item.value}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
             </div>
+          </div>
 
-            <!--Panel Inhalt-->
-            <div class="panel-body fade-in-animation" :class="[{'not-visible' : !showUserscriptEntry}, { 'hidden' : !showUserscriptEntry }]">
-                <div class="row">
-                    <v-btn @click="export_script" class="btn btn-info col-xs-3 col-xs-push-8">export</v-btn>
-                </div>
+          <br />
+          <!--Userscript Inhalt-->
 
-                <label>usi-id: </label>{{localScript.id}}
-                <br />
-                <label>Name: </label>{{localScript.settings.name}}
-                <br />
-                <label>Author: </label>{{localScript.settings.author}}
-                <br />
-                <label>Version: </label>{{localScript.settings.version}}
-                <br />
-                <label>
-                    <span data-usi-lang="description"></span>: </label>{{localScript.settings.description}}
-                <br />
-
-                <hr />
-
-                <!--Userscript aktivieren oder deaktivieren-->
-                <label>Userscript:</label>
-                <br />
-                <v-btn color="info" :class="{active: this.localScript.deactivated}" @click="toggleActivation">
-                    <span v-show="!this.localScript.deactivated">{{lang.activated}}</span>
-                    <span v-show="this.localScript.deactivated">{{lang.deactivated}}</span>
-                </v-btn>
-
-                <hr />
-
-                <div v-if="localScript.isSpa" class="row">
-                    <v-btn @click="start_spa" class="btn btn-info col-xs-push-2 col-xs-8">Start SPA</v-btn>
-                </div>
-
-                <!--Require Skripte-->
-                <div v-if="localScript.require_scripts.length > 0">
-                    <hr />
-                    <label>Require Scripts:</label>
-                    <br />
-                    <ol class="usi-list-entry-required-scripts---output">
-                        <li v-for="entry in localScript.require_scripts" :key="entry.url">
-                            {{entry.url}}
-                        </li>
-                    </ol>
-                </div>
-
-                <div v-if="localScript.settings && localScript.settings.include">
-                    <!--gültige Include Regeln-->
-                    <label>Includes: </label>
-                    <br />
-                    <ol>
-                        <li v-for="(entry,index) in localScript.settings.include" :key="index">
-                            {{entry}}
-                        </li>
-                    </ol>
-                </div>
-
-                <hr />
-
-                <div v-if="localScript.moreinformations && localScript.moreinformations.url">
-                    <label class="" data-usi-lang="reload_from_source">
-                    </label>
-                    <br />
-                    <!--Neuladen von der Quelle-->
-                    <v-btn @click="loadAgain">
-                        <i class="material-icons">repeat</i>
-                    </v-btn>
-                    <br />
-                </div>
-                <br />
-
-                <!--Greasemonkey Variablen-->
-                <div v-if="localScript.val_store">
-                    <label data-usi-lang="GMValues">
-                        <!--Zeige die gespeicherten GM Variablen-->
-                    </label>
-                    <br />
-                    <v-btn @click="GMValuesGet" class="btn btn-info col-xs-3" data-usi-lang="show">
-                    </v-btn>
-                    <v-btn @click="GMValuesDelete" :class="{hidden : (GMValues.length == 0)}" class="btn btn-danger col-xs-offset-1 col-xs-3"
-                        data-usi-lang="delete_x">
-                    </v-btn>
-                    <br />
-                    <br />
-                    <div class="row" v-if="GMValues.length > 0">
-                        <div class="col-xs-12">
-                          <table class="col-xs-12">
-                            <thead>
-                              <th>Name</th>
-                              <th>Value</th>
-                            </thead>
-                            <tbody>
-                              <tr v-for="(item,index) in GMValues" :key="index">
-                                <td>{{item.key}}</td>
-                                <td>{{item.value}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                            
-                        </div>
-                    </div>
-                    <hr />
-                    <br />
-                </div>
-
-                <!--Userscript Inhalt-->
-                <label>Userscript:</label>
-                <br />
-
-                <!--Userscript bearbeiten-->
-                <div class="row">
-                    <!--Userscript anzeigen/ausblenden-->
-                    <span class="col-xs-3">
-                        <v-btn color="info" @click="showUserscript">
-                            <span v-show="!showUserscriptContent">{{lang.show}}</span>
-                            <span v-show="showUserscriptContent">{{lang.hide}}</span>
-                        </v-btn>
-                    </span>
-                    <v-btn class="btn btn-info col-xs-3 col-xs-offset-1" @click="edit" data-usi-lang="change"></v-btn>
-                    <!--Userscript entfernen-->
-                    <v-btn class="btn btn-danger col-xs-3 col-xs-offset-1" @click="deleteUserscript" data-usi-lang="delete_x"></v-btn>
-                </div>
-
-                <br />
-
-                <div v-if="showUserscriptContent" class="usi-list-entry-view-userscript---output row">
-                    <br />
-                    <br />
-
-                    <span v-if="hightlightsjsActive">
-                        <highlightjs-component :code="this.localScript.userscript" :astyle="hightlightsjsStyle" />
-                    </span>
-                    <span v-else>
-                        <!-- Es dürfen keine Leerzeichen dazwischen sein -->
-                        <pre><code class="border-black">{{this.localScript.userscript}}</code></pre>
-                    </span>
-                </div>
-            </div>
-        </div>
+          <div v-if="showUserscriptContent" class="usi-list-entry-view-userscript---output row">
+            <span v-if="hightlightsjsActive">
+              <highlightjs-component :code="this.localScript.userscript" :astyle="hightlightsjsStyle" />
+            </span>
+            <span v-else>
+              <!-- Es dürfen keine Leerzeichen dazwischen sein -->
+              <pre><code class="border-black">{{this.localScript.userscript}}</code></pre>
+            </span>
+          </div>
+        </v-card-text>
+      </v-card>
     </div>
+  </div>
 </template>
 <script lang="ts">
 declare var jQuery: any;
@@ -207,24 +217,27 @@ export default Vue.component(componentName, {
       type: Boolean
     }
   },
-  data: function() {
+  data: function () {
     return {
       showUserscriptEntry: true,
       showUserscriptContent: false,
       markedAsDeleted: false,
       localScript: this.$props.script,
+      localScriptDeactivated: this.$props.script.deactivated,
       hightlightsjsActive: this.configuration.hightlightjs.active,
       hightlightsjsStyle: this.configuration.hightlightjs.style,
       GMValues: [],
       lang: {
         deactivated: browser.i18n.getMessage("deactivated"),
         activated: browser.i18n.getMessage("activated"),
+        delete_x: browser.i18n.getMessage("delete_x"),
+        change: browser.i18n.getMessage("change"),
         show: browser.i18n.getMessage("show"),
         hide: browser.i18n.getMessage("hide")
       }
     };
   },
-  created: function() {
+  created: function () {
     if (typeof this.localScript.settings.spa !== "undefined") {
       this.localScript.isSpa = true;
     }
@@ -233,10 +246,10 @@ export default Vue.component(componentName, {
     this.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
   },
   methods: {
-    export_script: function(): void {
+    export_script: function (): void {
       event_controller().get.userscript.export.single(this.localScript.id);
     },
-    add_icon: function(): void {
+    add_icon: function (): void {
       // Icon mit usi logo füllen, falls leer
       // @todo -- ICON
       if (!this.localScript.settings.icon_data) {
@@ -250,7 +263,7 @@ export default Vue.component(componentName, {
      * Userscript aktivieren, bzw deaktivieren
      * @returns void
      */
-    toggleActivation: function(): void {
+    toggleActivation: function (): void {
       // aktiviere oder deaktiviere dieses Userscript!
       event_controller().set.userscript.toogle_state(this.localScript.id);
 
@@ -258,7 +271,7 @@ export default Vue.component(componentName, {
     },
 
     // fragt nach den gesetzten Greasemonkey Variablen
-    GMValuesGet: function(): void {
+    GMValuesGet: function (): void {
       event_controller()
         .request.userscript.gm_values(this.localScript.id)
         .then((GMValues: any) => {
@@ -266,7 +279,7 @@ export default Vue.component(componentName, {
         });
     },
 
-    toggleOverview: function(force: any): void {
+    toggleOverview: function (force: any): void {
       if (force === true || force === false) {
         this.showUserscriptEntry = force;
       } else {
@@ -279,7 +292,7 @@ export default Vue.component(componentName, {
      * Userscript entfernen
      * @returns {void}
      */
-    deleteUserscript: function(): void {
+    deleteUserscript: function (): void {
       // das Skript mit der ID löschen!
       if (!basic_helper().empty(this.localScript.id)) {
         // Frage zusammensetzen
@@ -299,7 +312,7 @@ export default Vue.component(componentName, {
     },
 
     // entfernt alle gesetzten GM_Values
-    GMValuesDelete: function(): void {
+    GMValuesDelete: function (): void {
       // Frage den Benutzer nochmals ob er wirklich alle gesetzten Werte entfernen möchte
       if (
         window.confirm(browser.i18n.getMessage("confirm_delete_all_GMValues"))
@@ -311,7 +324,7 @@ export default Vue.component(componentName, {
     },
 
     // Sende es an den Editierungs Controller
-    edit: function(): void {
+    edit: function (): void {
       // veranlasse den Tab Wechsel!
       this.$parent.$emit("change-tab", {
         comp: "edit",
@@ -322,12 +335,12 @@ export default Vue.component(componentName, {
       });
     },
 
-    start_spa: function(): void {
+    start_spa: function (): void {
       event_controller().request.userscript.start_spa(this.localScript);
     },
 
     // Übergibt die URL an die Nachlade Funktion
-    loadAgain: function(): void {
+    loadAgain: function (): void {
       if (/^http/.test(this.localScript.moreinformations.url)) {
         // URL muss mit http beginnen
         event_controller().request.userscript.reload_from_source(
@@ -340,12 +353,17 @@ export default Vue.component(componentName, {
       }
     },
 
-    showUserscript: function(): void {
+    showUserscript: function (): void {
       this.showUserscriptContent = !this.showUserscriptContent;
     }
   },
   watch: {
-    expanded: function(): void {
+    localScriptDeactivated: function (newVal: boolean): void {
+      // @TODO !!!
+      this.localScript.deactivated = newVal;
+      this.toggleActivation();
+    },
+    expanded: function (): void {
       // auf oder zu klappen, definiert durch List.vue
       this.toggleOverview(this.expanded);
     }
@@ -359,5 +377,8 @@ export default Vue.component(componentName, {
 <style>
 .strike-through {
   text-decoration: line-through;
+}
+.pointer {
+  cursor: pointer;
 }
 </style>

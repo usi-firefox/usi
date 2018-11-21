@@ -1,32 +1,29 @@
 <template>
-    <!--Alle Userscripte auflisten-->
-    <div class="container">
-        <div class="row">
-            <div :class="{hidden : !isLoading}">
-                <object data="icon/hourglass.svg" type="image/svg+xml"></object>
-            </div>
-            <h3 class="col-xs-6">
-                <span v-if="userscripts" @click="toggleExpanded">
-                    Userscripts ({{userscripts.length}})
-                    <v-btn>
-                      <i class="material-icons" v-html="is_expanded ? 'expand_more' : 'expand_less'" ></i>
-                    </v-btn>
-                </span>
-                <span v-else data-usi-lang="no_userscript_there">
-                </span>
-            </h3>
-            <v-btn @click="refresh">
-                <i class="material-icons">refresh</i>
-            </v-btn>
-        </div>
-        <div class="panel-group">
-            <div v-if="userscripts">
-                <div v-for="(script,index) in userscripts" :key="index">
-                    <list-entry-component v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
-                </div>
-            </div>
-        </div>
+  <!--Alle Userscripte auflisten-->
+  <div>
+    <div>
+      <div :class="{hidden : !isLoading}">
+        <object data="icon/hourglass.svg" type="image/svg+xml"></object>
+      </div>
+      <h3 class="col-xs-6">
+        <span v-if="userscripts" @click="toggleExpanded">
+          Userscripts ({{userscripts.length}})
+          <v-btn>
+            <i class="material-icons" v-html="is_expanded ? 'expand_more' : 'expand_less'"></i>
+          </v-btn>
+        </span>
+        <span v-else data-usi-lang="no_userscript_there">
+        </span>
+      </h3>
+      <v-btn @click="refresh">
+        <i class="material-icons">refresh</i>
+      </v-btn>
     </div>
+
+    <div v-if="userscripts" v-for="(script,index) in userscripts" :key="index">
+        <list-entry-component v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -51,22 +48,22 @@ export default Vue.component(componentName, {
       required: true
     }
   },
-  data: function() {
+  data: function () {
     return {
       is_expanded: true,
       isLoading: false,
       userscripts: []
     };
   },
-  created: function() {
+  created: function () {
     this.refresh();
   },
   methods: {
     // fragt die Userscripte ab
-    refresh: async function(): Promise<void> {
+    refresh: async function (): Promise<void> {
       this.userscripts = <any>await event_controller().request.userscript.all();
     },
-    toggleExpanded: function(): void {
+    toggleExpanded: function (): void {
       this.is_expanded = !this.is_expanded;
     }
   },

@@ -1,39 +1,31 @@
 <template>
 
-    <!--Userscript nachladen-->
-    <div class="container" id="usi-load-external">
-        <label data-usi-lang="direct_userscript_upload">
-            <!--Userscript direkt hochladen-->
-        </label>
-        <i class="material-icons" >cloud_upload</i>
-        <input type="file" accept="text/*" id="direct-userscript-upload" />
-        <br />
-        <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
-            <!--Start-->
-        </v-btn>
-        <br />
-        <br />
-        <br />
-        <label data-usi-lang="alternative_charset_description">
-            <!--Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen-->
-        </label>
-        <br />
-        <br />
+  <!--Userscript nachladen-->
+  <div id="usi-load-external">
+    <label data-usi-lang="direct_userscript_upload">
+      <!--Userscript direkt hochladen-->
+    </label>
+    <i class="material-icons">cloud_upload</i>
+    <input type="file" accept="text/*" id="direct-userscript-upload" />
+    <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
+      <!--Start-->
+    </v-btn>
+    <label data-usi-lang="alternative_charset_description">
+      <!--Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen-->
+    </label>
 
-        <label data-usi-lang="alternative_charset">
-            <!--Alternatives Charset-->
-        </label>
+    <label data-usi-lang="alternative_charset">
+      <!--Alternatives Charset-->
+    </label>
 
-        <!-- Eigenes Charset hinzufügen -->
-        <v-btn @click="addCustomCharset" color="info">
-            <i class="material-icons">add_circle</i>
-        </v-btn>
+    <!-- Charset Auswahl für die Datei -->
+    <v-select :items="alternativeCharsets" v-model="charset"></v-select>
 
-        <select class="form-control">
-            <!-- Charset Auswahl für die Datei -->
-            <option v-for="opt in alternativeCharsets" @click="charset = opt" :key="opt" :value="opt">{{opt}}</option>
-        </select>
-    </div>
+    <!-- Eigenes Charset hinzufügen -->
+    <v-btn @click="addCustomCharset" color="info">
+      <i class="material-icons">add_circle</i>
+    </v-btn>
+  </div>
 
 </template>
 
@@ -61,7 +53,7 @@ export default Vue.component(componentName, {
     };
   },
   methods: {
-    addCustomCharset: function(): void {
+    addCustomCharset: function (): void {
       // nach dem eigenen Charset fragen
       const new_charset = window.prompt(
         browser.i18n.getMessage("add_new_custom_charset")
@@ -83,7 +75,7 @@ export default Vue.component(componentName, {
     },
 
     // Direkter Userscript Datei Upload
-    loadLocalFile: function(): void {
+    loadLocalFile: function (): void {
       var file = jQuery("#direct-userscript-upload").get(0).files[0];
 
       if (typeof file !== "object") {
