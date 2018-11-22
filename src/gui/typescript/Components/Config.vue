@@ -84,10 +84,12 @@
                     <v-spacer></v-spacer>
                     <!-- erneute Sicherheitsabfrage -->
                     <v-btn v-if="dialogStep == 1" color="info" @click="deleteAll(2)">OK</v-btn>
-                    <!-- endgültig löschen -->
-                    <v-btn v-if="dialogStep == 2" color="error" @click="deleteAll(3)">OK</v-btn>
 
+                    <!-- Abbruch Button -->
                     <v-btn color="success" @click="dialogWindow = false;dialogStep = 0;">Cancel</v-btn>
+
+                    <!-- endgültig löschen | die Position getauscht -->
+                    <v-btn v-if="dialogStep == 2" color="error" @click="deleteAll(3)">OK</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -115,7 +117,9 @@ import basic_helper from "lib/helper/basic_helper";
 const componentName = "config-component";
 
 const placeholderAddCss = `@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
-
+.container {
+    color: red;
+}
 #usi-edit-script-textarea {
     font-family: 'Roboto Mono', monospace;
 }`;

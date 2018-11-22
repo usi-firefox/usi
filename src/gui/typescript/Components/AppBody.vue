@@ -150,9 +150,19 @@ export default Vue.component(componentName, {
             }
         },
         change_css: function (cssContent: string): void {
-            let css_text = cssContent.replace(/<\/?[^>]+>/gi, "");
+            const css_text = cssContent.replace(/<\/?[^>]+>/gi, "");
+
+            if(jQuery("#usiAdditionalCss").length > 0) {
+                // Element zuvor immer entfernen
+                jQuery("#usiAdditionalCss").remove();
+            }
+
+            // Element bauen
+            const ownCss = jQuery("<style>").attr("id","usiAdditionalCss").attr("type","text/css").text(css_text);
+
             // CSS aktivieren
-            jQuery("#usiAdditionalCss").text(css_text);
+            jQuery("head").append(ownCss);
+
         },
         hide_side_menu_and_load: function (index: number): void {
             // Aktuelle Komponente suchen

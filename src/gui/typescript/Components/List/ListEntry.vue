@@ -383,3 +383,8 @@ export default Vue.component(componentName, {
   cursor: pointer;
 }
 </style>
+<style scoped>
+p {
+    font-size: 18px
+}
+</style>
