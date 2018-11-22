@@ -1,29 +1,28 @@
 <template>
-  <!--Alle Userscripte auflisten-->
-  <div>
+    <!--Alle Userscripte auflisten-->
     <div>
-      <div :class="{hidden : !isLoading}">
-        <object data="icon/hourglass.svg" type="image/svg+xml"></object>
-      </div>
-      <h3 class="col-xs-6">
-        <span v-if="userscripts" @click="toggleExpanded">
-          Userscripts ({{userscripts.length}})
-          <v-btn>
-            <i class="material-icons" v-html="is_expanded ? 'expand_more' : 'expand_less'"></i>
-          </v-btn>
-        </span>
-        <span v-else data-usi-lang="no_userscript_there">
-        </span>
-      </h3>
-      <v-btn @click="refresh">
-        <i class="material-icons">refresh</i>
-      </v-btn>
-    </div>
+        <v-progress-linear :indeterminate="isLoading"></v-progress-linear>
+        <div>
+            <h3>
+                <span v-if="userscripts" @click="toggleExpanded">
+                    Userscripts ({{userscripts.length}})
+                    <v-btn>
+                        <v-icon v-html="is_expanded ? 'expand_more' : 'expand_less'"></v-icon>
+                    </v-btn>
+                </span>
+                <span v-else data-usi-lang="no_userscript_there">
+                </span>
+            </h3>
+            <v-spacer></v-spacer>
+            <v-btn @click="refresh">
+                <i class="material-icons">refresh</i>
+            </v-btn>
+        </div>
 
-    <div v-if="userscripts" v-for="(script,index) in userscripts" :key="index">
-        <list-entry-component v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
+        <div v-if="userscripts" v-for="(script,index) in userscripts" :key="index">
+            <list-entry-component v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -42,34 +41,36 @@ import ListEntryComponent from "./List/ListEntry.vue";
  */
 const componentName = "list-component";
 export default Vue.component(componentName, {
-  props: {
-    configuration: {
-      type: Object as () => usi.Storage.Config,
-      required: true
-    }
-  },
-  data: function () {
-    return {
-      is_expanded: true,
-      isLoading: false,
-      userscripts: []
-    };
-  },
-  created: function () {
-    this.refresh();
-  },
-  methods: {
-    // fragt die Userscripte ab
-    refresh: async function (): Promise<void> {
-      this.userscripts = <any>await event_controller().request.userscript.all();
+    props: {
+        configuration: {
+            type: Object as () => usi.Storage.Config,
+            required: true
+        }
     },
-    toggleExpanded: function (): void {
-      this.is_expanded = !this.is_expanded;
+    data: function () {
+        return {
+            is_expanded: true,
+            isLoading: true,
+            userscripts: []
+        };
+    },
+    created: function () {
+        this.refresh();
+    },
+    methods: {
+        // fragt die Userscripte ab
+        refresh: async function (): Promise<void> {
+            this.isLoading = true;
+            this.userscripts = <any>await event_controller().request.userscript.all();
+            this.isLoading = false;
+        },
+        toggleExpanded: function (): void {
+            this.is_expanded = !this.is_expanded;
+        }
+    },
+    components: {
+        ListEntryComponent
     }
-  },
-  components: {
-    ListEntryComponent
-  }
 });
 </script>
 

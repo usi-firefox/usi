@@ -13,9 +13,8 @@ import Vue from "vue";
  * <html>... <overview-component> ... </html>
  */
 const componentName = "changeMe-component";
-export default Vue.component(componentName,{});
+export default Vue.component(componentName, {});
 </script>
 
 <style>
-
 </style>

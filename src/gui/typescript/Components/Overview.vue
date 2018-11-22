@@ -30,5 +30,4 @@ export default Vue.component(componentName, {});
 </script>
 
 <style>
-
 </style>

@@ -1,6 +1,6 @@
 <template>
     <!--USI Konfiguration bearbeiten-->
-    <div>
+    <v-flex>
         <div>
             <h3 data-usi-lang="delete_all_userscripts">
                 <!--Alle Userscripts entfernen-->
@@ -33,7 +33,7 @@
         </div>
 
         <div>
-            
+
             <h3 data-usi-lang="options_activate_highlightjs_title">
                 <!--HighlightJS aktiv-->
             </h3>
@@ -68,9 +68,7 @@
             </h3>
         </div>
         <div>
-
-            <v-textarea v-model="AddCSS" rows="20" cols="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" :placeholder="exampleAddCSS"></v-textarea>
-
+            <v-textarea v-model="AddCSS" rows="20" cols="32" box="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" :placeholder="exampleAddCSS"></v-textarea>
         </div>
         <div>
             <v-btn @click="css_refresh(false)" color="info" data-usi-lang="config_add_css_refresh">
@@ -97,7 +95,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </div>
+    </v-flex>
 
 </template>
 
