@@ -1,5 +1,6 @@
 <template>
     <!--Neues Userscript erstellen / bearbeiten-->
+    <v-container grid-list-md>
     <div id="usi-edit-script">
         <h3 v-if="script_id">
             <span data-usi-lang="edit_userscript_with_id"></span> : {{script_id}}
@@ -47,6 +48,7 @@
             <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
         </p>
     </div>
+    </v-container>
 </template>
 
 <script lang="ts">

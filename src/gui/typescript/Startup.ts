@@ -13,7 +13,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'; // Ensur
  * ähnliche Funktionen zu vermeiden
  */
 const app = new Vue({
-    el: '#gui',
+    el: '#vuetify-gui',
     /**
      * Dies ist der Workaround für den Vue Compiler
      */

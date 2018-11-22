@@ -1,7 +1,7 @@
 <template>
     <!--USI Konfiguration bearbeiten-->
-    <v-flex>
-        <div>
+    <v-container grid-list-md>
+        <p>
             <h3 data-usi-lang="delete_all_userscripts">
                 <!--Alle Userscripts entfernen-->
             </h3>
@@ -9,8 +9,8 @@
             <v-btn color="error" @click="deleteAll(1)" data-usi-lang="revert_all">
             </v-btn>
             <!--alles zurücksetzen-->
-        </div>
-        <div>
+        </p>
+        <p>
 
             <h3 data-usi-lang="check_updates_for_all_userscripts">
                 <!--Alle Userscripts auf Updates überprüfen-->
@@ -19,8 +19,8 @@
             <v-btn @click="checkForUpdates" color="info" data-usi-lang="check_now">
             </v-btn>
             <!--jetzt prüfen-->
-        </div>
-        <div>
+        </p>
+        <p>
             <h3 data-usi-lang="enableExternalScriptLoadQuestion_title">
                 <!--Importiere externe Skripte-->
             </h3>
@@ -30,53 +30,49 @@
                 </span>
             </label>
             <v-switch v-model="load_script_with_js_end" :label="load_script_with_js_end ? lang.yes : lang.no"></v-switch>
-        </div>
+        </p>
 
-        <div>
+        <p>
 
             <h3 data-usi-lang="options_activate_highlightjs_title">
                 <!--HighlightJS aktiv-->
             </h3>
             <v-switch v-model="hightlightjs_active" :label="hightlightjs_active ? lang.yes : lang.no"></v-switch>
-        </div>
-        <div>
+        </p>
+        <p>
             <h3 data-usi-lang="options_always_activate_greasemonkey_title">
                 <!--Greasemonkey immer aktivieren-->
             </h3>
             <v-switch v-model="greasemonkey_global_active" :label="greasemonkey_global_active ? lang.yes : lang.no"></v-switch>
-        </div>
-        <div>
+        </p>
+        <p>
             <h3 data-usi-lang="export_all_userscripts">
                 <!--Alle Userscripts exportieren-->
             </h3>
-            <label>
-                <span data-usi-lang="complete_export">
-                    <!--Kompletter Export-->
-                </span>
+            <label data-usi-lang="complete_export">
+               <!--Kompletter Export-->
             </label>
             <v-switch v-model="completeExport" :label="completeExport ? lang.yes : lang.no"></v-switch>
-        </div>
-
-        <div>
             <v-btn @click="exportAll" color="info" data-usi-lang="export_all_now">
             </v-btn>
-        </div>
+        </p>
+
         <!--jetzt exportieren-->
-        <div>
+        <p>
             <h3 data-usi-lang="config_add_css">
                 <!--Extra CSS Anpassungen-->
             </h3>
-        </div>
-        <div>
-            <v-textarea v-model="AddCSS" rows="20" cols="32" box="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" :placeholder="exampleAddCSS"></v-textarea>
-        </div>
-        <div>
+        </p>
+        <p>
+            <v-textarea v-model="AddCSS" box rows="20" cols="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" :placeholder="exampleAddCSS"></v-textarea>
+        </p>
+        <p>
             <v-btn @click="css_refresh(false)" color="info" data-usi-lang="config_add_css_refresh">
             </v-btn>
             <v-btn @click="css_undo">
                 <i class="material-icons">undo</i>
             </v-btn>
-        </div>
+        </p>
 
         <v-dialog v-model="dialogWindow" width="500">
             <v-card>
@@ -95,7 +91,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </v-flex>
+    </v-container>
 
 </template>
 

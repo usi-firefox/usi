@@ -1,6 +1,7 @@
 <template>
 
     <!--Userscript nachladen-->
+    <v-container grid-list-md>
     <div id="usi-load-external">
         <p>
             <label data-usi-lang="direct_userscript_upload">
@@ -37,6 +38,7 @@
             </v-btn>
         </p>
     </div>
+    </v-container>
 
 </template>
 

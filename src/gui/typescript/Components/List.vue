@@ -1,8 +1,8 @@
 <template>
     <!--Alle Userscripte auflisten-->
-    <div>
-        <v-progress-linear :indeterminate="isLoading"></v-progress-linear>
-        <div>
+    <v-container grid-list-md>
+        <v-progress-linear v-show="isLoading" :indeterminate="isLoading"></v-progress-linear>
+        <v-layout row wrap>
             <h3>
                 <span v-if="userscripts" @click="toggleExpanded">
                     Userscripts ({{userscripts.length}})
@@ -17,12 +17,12 @@
             <v-btn @click="refresh">
                 <i class="material-icons">refresh</i>
             </v-btn>
-        </div>
+        </v-layout>
 
         <div v-if="userscripts" v-for="(script,index) in userscripts" :key="index">
             <list-entry-component v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
         </div>
-    </div>
+    </v-container>
 </template>
 
 <script lang="ts">

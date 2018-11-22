@@ -1,5 +1,5 @@
 <template>
-    <div id="gui" class="scrollable-content">
+    <div id="vuetify-gui">
         <v-app>
             <v-navigation-drawer app v-model="drawer">
                 <v-toolbar>
@@ -25,8 +25,7 @@
                 <v-toolbar-title>{{navTitle}}</v-toolbar-title>
             </v-toolbar>
             <v-content>
-                <v-container fluid grid-list-md>
-                    <v-layout wrap>
+                <v-container fluid>
                         <!-- App Content -->
                         <!-- <keep-alive> -->
                         <!-- @todo  schaltet die aktive Componente um -->
@@ -37,7 +36,6 @@
                         <loadExternal-component v-if="activeComponent == 'loadExternal'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></loadExternal-component>
                         <!-- </keep-alive> -->
                         <!-- App Content -->
-                    </v-layout>
                 </v-container>
             </v-content>
         </v-app>
