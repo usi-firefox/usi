@@ -33,7 +33,8 @@
         "default_title": "USI"
     },
     "options_ui": {
-        "page": "html/about_addons.html"
+        "open_in_tab": true,
+        "page": "gui/options.html"
     },
     "applications": {
         "gecko": {
