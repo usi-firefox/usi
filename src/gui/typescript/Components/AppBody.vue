@@ -1,6 +1,12 @@
 <template>
     <div id="vuetify-gui">
         <v-app>
+            <v-snackbar v-model="snackbar">
+                {{ snackbar_text }}
+                <v-btn color="pink" flat @click="snackbar = false">
+                    Close
+                </v-btn>
+            </v-snackbar>
             <v-navigation-drawer app v-model="drawer">
                 <v-toolbar>
                     <v-list>
@@ -26,16 +32,16 @@
             </v-toolbar>
             <v-content>
                 <v-container fluid>
-                        <!-- App Content -->
-                        <!-- <keep-alive> -->
-                        <!-- @todo  schaltet die aktive Componente um -->
-                        <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
-                        <list-component v-if="activeComponent == 'list'" v-bind:configuration="configuration" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></list-component>
-                        <edit-component v-if="activeComponent == 'edit'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></edit-component>
-                        <config-component v-if="activeComponent == 'config'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:initial-data="configuration" v-bind:addional="extraData"></config-component>
-                        <loadExternal-component v-if="activeComponent == 'loadExternal'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></loadExternal-component>
-                        <!-- </keep-alive> -->
-                        <!-- App Content -->
+                    <!-- App Content -->
+                    <!-- <keep-alive> -->
+                    <!-- @todo  schaltet die aktive Componente um -->
+                    <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
+                    <list-component v-if="activeComponent == 'list'" v-bind:configuration="configuration" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></list-component>
+                    <edit-component v-if="activeComponent == 'edit'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></edit-component>
+                    <config-component v-if="activeComponent == 'config'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:initial-data="configuration" v-bind:addional="extraData"></config-component>
+                    <loadExternal-component v-if="activeComponent == 'loadExternal'" v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData" v-on:change-tab-additional="eventsFromOtherComponents" v-bind:addional="extraData"></loadExternal-component>
+                    <!-- </keep-alive> -->
+                    <!-- App Content -->
                 </v-container>
             </v-content>
         </v-app>
@@ -71,6 +77,8 @@ export default Vue.component(componentName, {
         return {
             navTitle: "All Userscripts",
             drawer: false,
+            snackbar: false,
+            snackbar_text: "",
 
             // legt fest, welcher Component momentan aktiv ist
             activeComponent: "list",
@@ -122,6 +130,11 @@ export default Vue.component(componentName, {
     methods: {
         eventsFromOtherComponents: function (data: any): void {
             switch (data.event_name) {
+                case "snackbar":
+                    // Snackbar aktivieren
+                    this.snackbar_text = data.data;
+                    this.snackbar = true;
+                    break;
                 case "usi:lang":
                     Vue.nextTick().then(function () {
                         /**
@@ -152,13 +165,13 @@ export default Vue.component(componentName, {
         change_css: function (cssContent: string): void {
             const css_text = cssContent.replace(/<\/?[^>]+>/gi, "");
 
-            if(jQuery("#usiAdditionalCss").length > 0) {
+            if (jQuery("#usiAdditionalCss").length > 0) {
                 // Element zuvor immer entfernen
                 jQuery("#usiAdditionalCss").remove();
             }
 
             // Element bauen
-            const ownCss = jQuery("<style>").attr("id","usiAdditionalCss").attr("type","text/css").text(css_text);
+            const ownCss = jQuery("<style>").attr("id", "usiAdditionalCss").attr("type", "text/css").text(css_text);
 
             // CSS aktivieren
             jQuery("head").append(ownCss);

@@ -14,82 +14,84 @@
                             </h3>
                         </div>
                         <v-spacer></v-spacer>
-                        <v-menu offset-y>
+                        <v-menu offset-y allow-overflow class="pointer">
                             <!-- Options Menü -->
-                            <span slot="activator" class="pointer">
-                                <!-- !!!TODO -->
-                                <v-btn icon>
-                                    <v-icon>more_vert</v-icon>
-                                </v-btn>
-                            </span>
+                            <v-btn icon slot="activator">
+                                <v-icon>more_vert</v-icon>
+                            </v-btn>
 
-                            <v-list class="pointer">
+                            <v-list>
                                 <!--Userscript anzeigen/ausblenden-->
-                                <v-list-tile>
-                                    <v-list-tile-title @click="showUserscript">
-                                        <i class="material-icons">pageview</i>
+                                <v-list-tile @click="showUserscript">
+                                    <v-list-tile-action><i class="material-icons">pageview</i></v-list-tile-action>
+                                    <v-list-tile-title>
                                         <span v-html="!showUserscriptContent ? lang.show: lang.hide"></span>
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-divider></v-divider>
 
                                 <!--Userscript bearbeiten-->
-                                <v-list-tile>
-                                    <v-list-tile-title @click="edit">
-                                        <i class="material-icons">edit</i>
+                                <v-divider></v-divider>
+                                <v-list-tile @click="edit">
+                                    <v-list-tile-action><i class="material-icons">edit</i></v-list-tile-action>
+                                    <v-list-tile-title>
                                         <span v-html="lang.change"></span>
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-divider></v-divider>
 
                                 <!--Userscript entfernen-->
-                                <v-list-tile>
-                                    <v-list-tile-title @click="deleteUserscript">
-                                        <i class="material-icons">delete</i>
+                                <v-divider></v-divider>
+                                <v-list-tile @click="deleteUserscript">
+                                    <v-list-tile-action><i class="material-icons">delete</i></v-list-tile-action>
+                                    <v-list-tile-title >
                                         <span v-html="lang.delete_x"></span>
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-divider></v-divider>
                                 <!-- Userscript Exportieren -->
-                                <v-list-tile>
-                                    <v-list-tile-title @click="export_script">
-                                        <i class="material-icons">import_export</i>
+                                <v-divider></v-divider>
+                                <v-list-tile @click="export_script">
+                                    <v-list-tile-action><i class="material-icons">import_export</i></v-list-tile-action>
+                                    <v-list-tile-title >
                                         export
                                     </v-list-tile-title>
                                 </v-list-tile>
-                                <v-divider></v-divider>
                                 <!-- SPA Starten -->
-                                <v-list-tile v-if="localScript.isSpa">
-                                    <v-list-tile-title @click="start_spa">
-                                        <i class="material-icons">play_arrow</i>
-                                        Start SPA
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                                <v-divider></v-divider>
+                                <span v-if="localScript.isSpa">
+                                    <v-divider></v-divider>
+                                    <v-list-tile @click="start_spa">
+                                        <v-list-tile-action><i class="material-icons">play_arrow</i></v-list-tile-action>
+                                        <v-list-tile-title>
+                                            Start SPA
+                                        </v-list-tile-title>
+                                    </v-list-tile>
+                                </span>
                                 <!--Neuladen von der Quelle-->
-                                <v-list-tile v-if="localScript.moreinformations && localScript.moreinformations.url">
-                                    <v-list-tile-title @click="loadAgain">
-                                        <i class="material-icons">repeat</i>
-                                        <span data-usi-lang="reload_from_source"></span>
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                                <v-divider></v-divider>
+                                <span v-if="localScript.moreinformations && localScript.moreinformations.url">
+                                    <v-divider></v-divider>
+                                    <v-list-tile @click="loadAgain">
+                                        <v-list-tile-action><i class="material-icons">repeat</i></v-list-tile-action>
+                                        <v-list-tile-title>
+                                            <span data-usi-lang="reload_from_source"></span>
+                                        </v-list-tile-title>
+                                    </v-list-tile>
+                                </span>
                                 <!-- Gespeicherte Variablen anzeigen-->
-                                <v-list-tile v-if="localScript.val_store">
-                                    <v-list-tile-title @click="GMValuesGet">
-                                        <i class="material-icons">get_app</i>
-                                        GM Values show
-                                    </v-list-tile-title>
-                                </v-list-tile>
-                                <v-divider></v-divider>
-
-                                <!-- Gespeicherte Variablen entfernen-->
-                                <v-list-tile v-if="localScript.val_store">
-                                    <v-list-tile-title @click="GMValuesDelete">
-                                        <i class="material-icons">delete</i>
-                                        GM Values delete
-                                    </v-list-tile-title>
-                                </v-list-tile>
+                                <span v-if="localScript.val_store">
+                                    <v-divider></v-divider>
+                                    <v-list-tile @click="GMValuesGet">
+                                        <v-list-tile-action><i class="material-icons">get_app</i></v-list-tile-action>
+                                        <v-list-tile-title>
+                                            GM Values show
+                                        </v-list-tile-title>
+                                    </v-list-tile>
+                                    <!-- Gespeicherte Variablen entfernen-->
+                                    <v-divider></v-divider>
+                                    <v-list-tile @click="GMValuesDelete">
+                                        <v-list-tile-action><i class="material-icons">delete</i></v-list-tile-action>
+                                        <v-list-tile-title>
+                                            GM Values delete
+                                        </v-list-tile-title>
+                                    </v-list-tile>
+                                </span>
 
                             </v-list>
                         </v-menu>
@@ -98,16 +100,16 @@
                         <!--Userscript aktivieren oder deaktivieren-->
                         <v-switch v-model="localScriptDeactivated" :label="localScriptDeactivated ? lang.deactivated : lang.activated"></v-switch>
 
-                        <p v-if="localScript.id">usi-id: {{localScript.id}} </p>
-                        <p v-if="localScript.settings.name">Name: {{localScript.settings.name}} </p>
-                        <p v-if="localScript.settings.author">Author: {{localScript.settings.author}} </p>
-                        <p v-if="localScript.settings.version">Version: {{localScript.settings.version}} </p>
-                        <p v-if="localScript.settings.description"> <span data-usi-lang="description"></span>:{{localScript.settings.description}} </p>
+                        <p v-if="localScript.id"><strong>usi-id</strong>: {{localScript.id}} </p>
+                        <p v-if="localScript.settings.name"><strong>Name</strong>: {{localScript.settings.name}} </p>
+                        <p v-if="localScript.settings.author"><strong>Author</strong>: {{localScript.settings.author}} </p>
+                        <p v-if="localScript.settings.version"><strong>Version</strong>: {{localScript.settings.version}} </p>
+                        <p v-if="localScript.settings.description"><strong data-usi-lang="description"></strong>:{{localScript.settings.description}} </p>
 
                         <!--Require Skripte-->
                         <div v-if="localScript.require_scripts.length > 0">
 
-                            <p>Require Scripts:</p>
+                            <p><strong>Require Scripts</strong></p>
                             <ol class="usi-list-entry-required-scripts---output">
                                 <li v-for="entry in localScript.require_scripts" :key="entry.url">
                                     {{entry.url}}
@@ -117,7 +119,7 @@
 
                         <div v-if="localScript.settings && localScript.settings.include">
                             <!--gültige Include Regeln-->
-                            <p>Includes:</p>
+                            <p><strong>Includes</strong></p>
                             <ol>
                                 <li v-for="(entry,index) in localScript.settings.include" :key="index">
                                     {{entry}}
@@ -385,6 +387,6 @@ export default Vue.component(componentName, {
 </style>
 <style scoped>
 p {
-    font-size: 18px
+  font-size: 18px;
 }
 </style>

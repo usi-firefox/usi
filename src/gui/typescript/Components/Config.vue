@@ -217,27 +217,6 @@ export default Vue.component(componentName, {
             }
         },
 
-        /* ifUpdatesAreFoundForUserscripts : function(){
-        // Hört darauf ob Aktualisierungen für die Skripte zur Verfügung stehen ...
-          event_controller().register.userscript.update.available(function(
-            userscript_infos: any
-          ) {
-            if (
-              window.confirm(
-                browser.i18n.getMessage("userscript_update_was_found_1") +
-                  userscript_infos.id +
-                  browser.i18n.getMessage("userscript_update_was_found_2")
-              )
-            ) {
-              // Nun das Skript aktualisieren!
-              event_controller().set.userscript.override(userscript_infos);
-    
-              event_controller().request.userscript.refresh();
-            }
-          });
-    
-        }, */
-
         /**
          * Alle Userscripte entfernen
          * @returns {undefined}

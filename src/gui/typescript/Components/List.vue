@@ -4,13 +4,15 @@
         <v-progress-linear v-show="isLoading" :indeterminate="isLoading"></v-progress-linear>
         <v-layout row wrap>
             <h3>
-                <span v-if="userscripts" @click="toggleExpanded">
-                    Userscripts ({{userscripts.length}})
+                <span v-if="userscripts.length > 0" @click="toggleExpanded">
+                    <p>Userscripts ({{userscripts.length}})
                     <v-btn>
                         <v-icon v-html="is_expanded ? 'expand_more' : 'expand_less'"></v-icon>
                     </v-btn>
+                    </p>
                 </span>
-                <span v-else data-usi-lang="no_userscript_there">
+                <span v-else >
+                    <p data-usi-lang="no_userscript_there"></p>
                 </span>
             </h3>
             <v-spacer></v-spacer>

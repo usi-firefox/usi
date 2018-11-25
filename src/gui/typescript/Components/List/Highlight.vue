@@ -1,9 +1,11 @@
 <template>
     <div class="highlightjs">
-        <v-divider></v-divider>
-        <label>HighlightJS Style:</label>
-        <v-autocomplete :items="hightlightjsstyles" @change="run" v-model="active_style"></v-autocomplete>
-        <pre><code class="border-black">{{this.code}}</code></pre>
+        <v-container>
+            <v-divider class="mb-3"></v-divider>
+            <h3>HighlightJS Style <v-btn @click="active_style = ''" ><v-icon>undo</v-icon></v-btn></h3>
+            <v-autocomplete :items="hightlightjsstyles" @change="run" v-model="active_style"></v-autocomplete>
+            <pre><code class="border-black">{{this.code}}</code></pre>
+        </v-container>
     </div>
 </template>
 

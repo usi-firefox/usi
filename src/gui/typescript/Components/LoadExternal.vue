@@ -2,42 +2,42 @@
 
     <!--Userscript nachladen-->
     <v-container grid-list-md>
-    <div id="usi-load-external">
-        <p>
-            <label data-usi-lang="direct_userscript_upload">
-                <!--Userscript direkt hochladen-->
-            </label>
-            <i class="material-icons">cloud_upload</i>
-        </p>
-        <p>
-            <input type="file" accept="text/*" id="direct-userscript-upload" />
-        </p>
-        <p>
-            <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
-                <!--Start-->
-            </v-btn>
-        </p>
+        <div id="usi-load-external">
+            <p>
+                <label data-usi-lang="direct_userscript_upload">
+                    <!--Userscript direkt hochladen-->
+                </label>
+                <i class="material-icons">cloud_upload</i>
+            </p>
+            <p>
+                <input type="file" accept="text/*" id="direct-userscript-upload" />
+            </p>
+            <p>
+                <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
+                    <!--Start-->
+                </v-btn>
+            </p>
 
-        <v-divider></v-divider>
+            <v-divider></v-divider>
 
-        <p data-usi-lang="alternative_charset_description">
-            <!--Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen-->
-        </p>
+            <p data-usi-lang="alternative_charset_description">
+                <!--Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen-->
+            </p>
 
-        <p>
-            <label data-usi-lang="alternative_charset">
-                <!--Alternatives Charset-->
-            </label>
+            <p>
+                <label data-usi-lang="alternative_charset">
+                    <!--Alternatives Charset-->
+                </label>
 
-            <!-- Charset Auswahl für die Datei -->
-            <v-select :items="alternativeCharsets" v-model="charset"></v-select>
+                <!-- Charset Auswahl für die Datei -->
+                <v-select :items="alternativeCharsets" v-model="charset"></v-select>
 
-            <!-- Eigenes Charset hinzufügen -->
-            <v-btn @click="addCustomCharset" color="info">
-                <i class="material-icons">add_circle</i>
-            </v-btn>
-        </p>
-    </div>
+                <!-- Eigenes Charset hinzufügen -->
+                <v-btn @click="addCustomCharset" color="info">
+                    <i class="material-icons">add_circle</i>
+                </v-btn>
+            </p>
+        </div>
     </v-container>
 
 </template>
@@ -111,5 +111,8 @@ export default Vue.component(componentName, {
 });
 </script>
 
-<style>
+<style scoped>
+p,label {
+    font-size: 18px;
+}
 </style>

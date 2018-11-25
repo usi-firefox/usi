@@ -1,53 +1,53 @@
 <template>
     <!--Neues Userscript erstellen / bearbeiten-->
     <v-container grid-list-md>
-    <div id="usi-edit-script">
-        <h3 v-if="script_id">
-            <span data-usi-lang="edit_userscript_with_id"></span> : {{script_id}}
-        </h3>
+        <div id="usi-edit-script">
+            <h3 v-if="script_id">
+                <span data-usi-lang="edit_userscript_with_id"></span> : {{script_id}}
+            </h3>
 
-        <!--Userscript Eingabe-->
-        <v-textarea v-model="textarea.content" box :style="{fontSize : textarea.size + 'px'}" id="usi-edit-script-textarea" rows="30" cols="64" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="// ==UserScript== ..."></v-textarea>
+            <!--Userscript Eingabe-->
+            <v-textarea v-model="textarea.content" box :style="{fontSize : textarea.size + 'px'}" id="usi-edit-script-textarea" rows="30" cols="64" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="// ==UserScript== ..."></v-textarea>
 
-        <!--Userscript Beispiel-->
-        <v-btn @click="save" color="info" data-usi-lang="save">
-            <!--Userscript speichern-->
-        </v-btn>
+            <!--Userscript Beispiel-->
+            <v-btn @click="save" color="info" data-usi-lang="save">
+                <!--Userscript speichern-->
+            </v-btn>
 
-        <label data-usi-lang="edit_last_changes"></label>
-        ({{last_userscript_text.length}})
-        <v-btn @click="undo" color="warning">
-            <i class="material-icons">undo</i>
-        </v-btn>
+            <label data-usi-lang="edit_last_changes"></label>
+            ({{last_userscript_text.length}})
+            <v-btn @click="undo" color="warning">
+                <i class="material-icons">undo</i>
+            </v-btn>
 
-        <!--Userscript überschreiben?-->
-        <div v-if="script_id">
-            <label>Userscript <span data-usi-lang="overwrite_without_warning"></span>?</label>
-            <input id="usi-edit-script-overwrite" data-toggle="toggle" type="checkbox" />
+            <!--Userscript überschreiben?-->
+            <div v-if="script_id">
+                <label>Userscript <span data-usi-lang="overwrite_without_warning"></span>?</label>
+                <input id="usi-edit-script-overwrite" data-toggle="toggle" type="checkbox" />
+            </div>
+
+            <!--Standard laden oder leeren-->
+            <v-btn id="usi-edit-script-load-example" @click="load_example" data-usi-lang="load_example">
+                <!--Beispiel laden-->
+            </v-btn>
+            <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" data-usi-lang="clear">
+                <!--Textfeld leeren-->
+            </v-btn>
+            <!--Textarea Zoom einstellen-->
+            <v-flex xs12>
+                <v-subheader class="pl-0">Zoom:</v-subheader>
+                <v-slider thumb-label v-model="textarea.size" min="8" max="30" step="0.5" value="14"></v-slider>
+            </v-flex>
+            <v-btn @click="defaultSize">
+                <i class="material-icons">undo</i>
+            </v-btn>
+            <p>
+                <!--Umwandlung bei Problemen mit dem Charset-->
+                <label>Convert : </label>
+                <v-btn @click="utf8_to_latin1">UTF-8 -> Latin1</v-btn>
+                <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
+            </p>
         </div>
-
-        <!--Standard laden oder leeren-->
-        <v-btn id="usi-edit-script-load-example" @click="load_example" data-usi-lang="load_example">
-            <!--Beispiel laden-->
-        </v-btn>
-        <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" data-usi-lang="clear">
-            <!--Textfeld leeren-->
-        </v-btn>
-        <!--Textarea Zoom einstellen-->
-        <v-flex xs12>
-            <v-subheader class="pl-0">Zoom:</v-subheader>
-            <v-slider thumb-label v-model="textarea.size" min="8" max="30" step="0.5" value="14"></v-slider>
-        </v-flex>
-        <v-btn @click="defaultSize">
-            <i class="material-icons">undo</i>
-        </v-btn>
-        <p>
-            <!--Umwandlung bei Problemen mit dem Charset-->
-            <label>Convert : </label>
-            <v-btn @click="utf8_to_latin1">UTF-8 -> Latin1</v-btn>
-            <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
-        </p>
-    </div>
     </v-container>
 </template>
 
