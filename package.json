@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "npm run webpack",
     "prod": "npm run webpack-prod",
+    "build": "npm run build-prepare && npm run build-web-ext",
     "webpack": "webpack --watch --mode development",
     "webpack-prod": "webpack --watch --mode production --devtool none",
     "build-prepare": "webpack --mode production --devtool none",
     "webpack-info": "webpack --help",
-    "browser": "web-ext run -p usi -s dist",
+    "browser": "web-ext run -s dist",
     "build-web-ext": "web-ext build -s dist"
   },
   "author": "usi <>",
