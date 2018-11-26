@@ -7,11 +7,11 @@
                     Close
                 </v-btn>
             </v-snackbar>
-            <v-navigation-drawer app v-model="drawer">
-                <v-toolbar>
+            <v-navigation-drawer style="background-color: #555;" app v-model="drawer">
+                <v-toolbar style="background-color: #555;">
                     <v-list>
                         <v-list-tile>
-                            <v-list-tile-title class="title">
+                            <v-list-tile-title class="title white--text">
                                 USI - ({{version}})
                             </v-list-tile-title>
                         </v-list-tile>
@@ -20,14 +20,14 @@
                 <v-divider></v-divider>
                 <!-- Sidebar -->
                 <!-- Sidebar Eintrag -->
-                <v-list-tile v-once v-for="(entry,index) in menuEntries" v-bind:key="index" @click="hide_side_menu_and_load(index)">
-                    <v-list-tile-content>
+                <v-list-tile class="white" v-once v-for="(entry,index) in menuEntries" v-bind:key="index" @click="hide_side_menu_and_load(index)">
+                    <v-list-tile-content :style="index < (menuEntries.length - 1) ? 'border-bottom: 1px solid grey' : ''">
                         <v-list-tile-title v-bind:data-usi-lang="entry.lang"></v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-navigation-drawer>
-            <v-toolbar app>
-                <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <v-toolbar style="background-color: #f7f7f7;" class="blue--text" app @click.stop="drawer = !drawer">
+                <v-toolbar-side-icon></v-toolbar-side-icon>
                 <v-toolbar-title>{{navTitle}}</v-toolbar-title>
             </v-toolbar>
             <v-content>

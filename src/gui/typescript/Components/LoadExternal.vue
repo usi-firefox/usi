@@ -18,7 +18,7 @@
                 </v-btn>
             </p>
 
-            <v-divider></v-divider>
+            <v-divider class="mb-3"></v-divider>
 
             <p data-usi-lang="alternative_charset_description">
                 <!--Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen-->
