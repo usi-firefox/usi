@@ -1,5 +1,7 @@
 const path = require('path');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const usi_version_number = require('./package.json').version;
+const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 // Ausgelagert für ts-loader 4.3.1 und höher
@@ -130,14 +132,14 @@ module.exports = [
         {
           test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
           use: [{
-              loader: 'file-loader',
-              options: {
-                  name: '[name].[ext]',
-                  outputPath: 'gui/fonts/',
-                  publicPath: 'fonts/'
-              }
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'gui/fonts/',
+              publicPath: 'fonts/'
+            }
           }]
-      }
+        }
       ]
     },
     resolve: {
@@ -166,6 +168,14 @@ module.exports = [
     devtool: 'inline-source-map',
     plugins: [
       new VueLoaderPlugin(),
+      new ReplaceInFileWebpackPlugin([{
+        dir: 'dist',
+        files: ['manifest.json'],
+        rules: [{
+          search: '###USI-VERSION###',
+          replace: usi_version_number
+        }]
+      }]),
       new CopyWebpackPlugin([
         { from: 'gui', to: "gui", ignore: ["*.ts", "*.vue"] },
       ])
