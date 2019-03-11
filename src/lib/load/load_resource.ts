@@ -42,7 +42,7 @@ export default function load_resource() {
                                 response_contenttype = "text/plain";
                             }
 
-                            const arr = new Uint8Array(xhr.response);
+                            const arr = new Uint8Array(xhr.response) as any;
 
                             // Convert the int array to a binary string
                             // We have to use apply() as we are converting an *array*
