@@ -8,7 +8,7 @@ the versions of usi are available at [addons.mozilla.org](https://addons.mozilla
 ## run on computer
 ```
 1. npm i
-2. npm run webpack
+2. npm run dev
 3. npm run browser
 ```
 
@@ -29,13 +29,13 @@ if you want to build usi from source, you will need to install
 and then you can build usi (from it's root directory) with this short command in your commandline/shell
 ```
 1. npm i
-2. npm run build-prepare
+2. npm run build
 ```
 
 ## running/debug on Firefox for Android
 For running on Firefox for Android, you have to build usi with
 ```
-npm run build-prepare
+npm run build
 ```
 1. you have to rename the file ending from .zip to .xpi
 2. transfer the xpi file to your phone/emulator (e.g. `adb push /home/user/usi/web-ext-artifacts/firefox-addon-usi_jetpack-0.5.1.9.xpi /sdcard/.`)

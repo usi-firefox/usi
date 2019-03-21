@@ -3,15 +3,10 @@
   "version": "0.5.8",
   "description": "usi, userscript injector for Mozilla Firefox",
   "scripts": {
-    "dev": "npm run webpack",
-    "prod": "npm run webpack-prod",
-    "build": "npm run build-prepare && npm run build-web-ext",
-    "webpack": "webpack --watch --mode development",
-    "webpack-prod": "webpack --watch --mode production --devtool none",
-    "build-prepare": "webpack --mode production --devtool none",
-    "webpack-info": "webpack --help",
+    "dev": "webpack --watch --mode development",
     "browser": "web-ext run -s dist",
-    "build-web-ext": "web-ext build -s dist"
+    "prod": "webpack --watch --mode production --devtool none",
+    "build": "webpack --mode production --devtool none && web-ext build -s dist"
   },
   "author": "usi <>",
   "license": "LGPL",
