@@ -67,7 +67,7 @@ import HelpComponent from "Components/Help.vue";
 
 const class_names_for_sidebar = "sidebar-left-visible sidebar-left-in";
 // Versionslabel auslesen
-const manifest = <any>browser.runtime.getManifest();
+const manifest = browser.runtime.getManifest();
 
 const componentName = "appbody-component";
 

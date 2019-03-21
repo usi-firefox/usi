@@ -1,30 +1,34 @@
 <template>
     <!--Neues Userscript erstellen / bearbeiten-->
     <v-container grid-list-md>
-        <div id="usi-edit-script">
+        <v-layout>
+            <v-flex x12>
             <h3 v-if="script_id">
                 <span data-usi-lang="edit_userscript_with_id"></span> : {{script_id}}
+
+                <!--Userscript überschreiben?-->
+                <v-switch v-model="overwrite_without_warning" :label="'Userscript ' + lang.overwrite_without_warning"></v-switch>
             </h3>
 
             <!--Userscript Eingabe-->
-            <v-textarea v-model="textarea.content" box :style="{fontSize : textarea.size + 'px'}" id="usi-edit-script-textarea" rows="30" cols="64" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="// ==UserScript== ..."></v-textarea>
-
+            <v-textarea v-model="textarea.content" box 
+            :style="{fontSize : textarea.size + 'px'}" id="usi-edit-script-textarea" rows="30" cols="64"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="// ==UserScript== ..."></v-textarea>
+             </v-flex>
+        </v-layout>
+        <v-card>
+            <v-container>
+                 <v-layout>
+            <v-subheader>Userscript:</v-subheader>
             <!--Userscript Beispiel-->
-            <v-btn @click="save" color="info" data-usi-lang="save">
-                <!--Userscript speichern-->
+            <v-btn @click="save" color="info" >
+                <v-icon>save</v-icon>&nbsp;<span data-usi-lang="save"></span>
             </v-btn>
-
-            <label data-usi-lang="edit_last_changes"></label>
-            ({{last_userscript_text.length}})
+            
             <v-btn @click="undo" color="warning">
-                <i class="material-icons">undo</i>
+                <v-icon>undo</v-icon>&nbsp;{{last_userscript_text.length}}
             </v-btn>
 
-            <!--Userscript überschreiben?-->
-            <div v-if="script_id">
-                <label>Userscript <span data-usi-lang="overwrite_without_warning"></span>?</label>
-                <input id="usi-edit-script-overwrite" data-toggle="toggle" type="checkbox" />
-            </div>
 
             <!--Standard laden oder leeren-->
             <v-btn id="usi-edit-script-load-example" @click="load_example" data-usi-lang="load_example">
@@ -33,21 +37,35 @@
             <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" data-usi-lang="clear">
                 <!--Textfeld leeren-->
             </v-btn>
-            <!--Textarea Zoom einstellen-->
-            <v-flex xs12>
-                <v-subheader class="pl-0">Zoom:</v-subheader>
-                <v-slider thumb-label v-model="textarea.size" min="8" max="30" step="0.5" value="14"></v-slider>
-            </v-flex>
-            <v-btn @click="defaultSize">
-                <i class="material-icons">undo</i>
-            </v-btn>
-            <p>
+             </v-layout>
+            </v-container>
+
+            <v-container>   
+                <v-layout>
+                    <v-subheader>Textarea:</v-subheader>
+                    
+                    <!--Textarea Zoom einstellen-->
+                    <v-flex xs10>
+                    <v-slider label="Zoom:" v-model="textarea.size" min="8" max="30" step="0.5" value="14"></v-slider>
+                    </v-flex>
+                    <v-flex xs2>
+                    <v-btn @click="defaultSize">
+                        <i class="material-icons">undo</i>
+                    </v-btn>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-card>
                 <!--Umwandlung bei Problemen mit dem Charset-->
-                <label>Convert : </label>
-                <v-btn @click="utf8_to_latin1">UTF-8 -> Latin1</v-btn>
-                <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
-            </p>
-        </div>
+        <v-card>
+            <v-container>
+                <v-layout>
+                    <v-subheader>Convert:</v-subheader>
+                    <v-btn @click="utf8_to_latin1">UTF-8 -> Latin1</v-btn>
+                    <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
+                </v-layout>
+            </v-container>
+        </v-card>
     </v-container>
 </template>
 
@@ -58,7 +76,6 @@ declare var jQuery: any;
 declare var window: any;
 
 import event_controller from "../events/event_controller";
-import { throws } from "assert";
 
 // Die ID der Textarea
 var last_userscript_interval_id: number = 0;
@@ -83,6 +100,10 @@ export default Vue.component(componentName, {
                 height: 14,
                 content: ""
             },
+            lang: {
+                overwrite_without_warning: browser.i18n.getMessage("overwrite_without_warning"),
+            },
+            overwrite_without_warning : false,
             last_userscript_text: <any>[],
             load_example_by_prefered_locale: "de"
         };
@@ -223,7 +244,7 @@ export default Vue.component(componentName, {
                 // Falls eine Userscript ID existiert und es überschrieben werden soll
                 if (
                     this.script_id &&
-                    jQuery("#usi-edit-script-overwrite").prop("checked")
+                    this.overwrite_without_warning
                 ) {
                     // Vorhandes Userscript überschreiben
                     event_controller().set.userscript.override({
