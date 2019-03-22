@@ -121,7 +121,7 @@
                             <!--gültige Include Regeln-->
                             <p><strong>Includes</strong></p>
                             <ol>
-                                <li v-for="(entry,index) in localScript.settings.include" :key="index">
+                                <li v-for="(entry,idx) in localScript.settings.include" :key="idx">
                                     {{entry}}
                                 </li>
                             </ol>
@@ -174,24 +174,6 @@ import HighlightjsComponent from "./Highlight.vue";
 
 import Vue from "vue";
 
-function flatten_keys(obj: any, prepend_key: string, result?: any) {
-    var key;
-    if (typeof result === "undefined") {
-        result = {};
-    }
-    for (var i in obj) {
-        key = prepend_key + "-" + i;
-        if (typeof obj[i] === "object") {
-            flatten_keys(obj[i], key, result);
-        } else {
-            result[key] = obj[i];
-        }
-    }
-
-    return result;
-}
-
-var highlightjs_already_done = false;
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
  * genutzt werden kann ->
@@ -204,9 +186,11 @@ const componentName = "list-entry-component";
 export default Vue.component(componentName, {
     props: {
         script: {
+            type: Object,
             required: true
         },
         index: {
+            type : Number,
             required: true
         },
         configuration: {
