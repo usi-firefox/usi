@@ -1,72 +1,97 @@
 <template>
-    <!--Neues Userscript erstellen / bearbeiten-->
-    <v-container grid-list-md>
+  <!--Neues Userscript erstellen / bearbeiten-->
+  <v-container grid-list-md>
+    <v-layout>
+      <v-flex x12>
+        <h3 v-if="script_id">
+          <span data-usi-lang="edit_userscript_with_id">: {{script_id}}</span>
+          <!--Userscript überschreiben?-->
+          <v-switch
+            v-model="overwrite_without_warning"
+            :label="'Userscript ' + lang.overwrite_without_warning"
+          ></v-switch>
+        </h3>
+
+        <!--Userscript Eingabe-->
+        <v-textarea
+          v-model="textarea.content"
+          box
+          :style="{fontSize : textarea.size + 'px'}"
+          id="usi-edit-script-textarea"
+          rows="30"
+          cols="64"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="// ==UserScript== ..."
+        ></v-textarea>
+      </v-flex>
+    </v-layout>
+    <v-card>
+      <v-container>
         <v-layout>
-            <v-flex x12>
-            <h3 v-if="script_id">
-                <span data-usi-lang="edit_userscript_with_id"></span> : {{script_id}}
-
-                <!--Userscript überschreiben?-->
-                <v-switch v-model="overwrite_without_warning" :label="'Userscript ' + lang.overwrite_without_warning"></v-switch>
-            </h3>
-
-            <!--Userscript Eingabe-->
-            <v-textarea v-model="textarea.content" box 
-            :style="{fontSize : textarea.size + 'px'}" id="usi-edit-script-textarea" rows="30" cols="64"
-             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="// ==UserScript== ..."></v-textarea>
-             </v-flex>
-        </v-layout>
-        <v-card>
-            <v-container>
-                 <v-layout>
-            <v-subheader>Userscript:</v-subheader>
+          <v-subheader>Userscript:</v-subheader>
+          <v-flex>
             <!--Userscript Beispiel-->
-            <v-btn @click="save" color="info" >
-                <v-icon>save</v-icon>&nbsp;<span data-usi-lang="save"></span>
-            </v-btn>
-            
-            <v-btn @click="undo" color="warning">
-                <v-icon>undo</v-icon>&nbsp;{{last_userscript_text.length}}
+            <v-btn @click="save" color="info">
+              <v-icon>save</v-icon>&nbsp;
+              <span data-usi-lang="save"></span>
             </v-btn>
 
+            <v-btn @click="undo" color="warning">
+              <v-icon>undo</v-icon>
+              &nbsp;{{last_userscript_text.length}}
+            </v-btn>
 
             <!--Standard laden oder leeren-->
-            <v-btn id="usi-edit-script-load-example" @click="load_example" data-usi-lang="load_example">
-                <!--Beispiel laden-->
+            <v-btn
+              id="usi-edit-script-load-example"
+              @click="load_example"
+              data-usi-lang="load_example"
+            >
+              <!--Beispiel laden-->
             </v-btn>
-            <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" data-usi-lang="clear">
-                <!--Textfeld leeren-->
+            <v-btn
+              id="usi-edit-script-textarea-clear"
+              @click="textarea_clear"
+              data-usi-lang="clear"
+            >
+              <!--Textfeld leeren-->
             </v-btn>
-             </v-layout>
-            </v-container>
-
-            <v-container>   
-                <v-layout>
-                    <v-subheader>Textarea:</v-subheader>
-                    
-                    <!--Textarea Zoom einstellen-->
-                    <v-flex xs10>
-                    <v-slider label="Zoom:" v-model="textarea.size" min="8" max="30" step="0.5" value="14"></v-slider>
-                    </v-flex>
-                    <v-flex xs2>
-                    <v-btn @click="defaultSize">
-                        <i class="material-icons">undo</i>
-                    </v-btn>
-                    </v-flex>
-                </v-layout>
-            </v-container>
-        </v-card>
-                <!--Umwandlung bei Problemen mit dem Charset-->
-        <v-card>
-            <v-container>
-                <v-layout>
-                    <v-subheader>Convert:</v-subheader>
-                    <v-btn @click="utf8_to_latin1">UTF-8 -> Latin1</v-btn>
-                    <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
-                </v-layout>
-            </v-container>
-        </v-card>
-    </v-container>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-card>
+    <v-card>
+      <v-container>
+        <v-layout>
+          <v-subheader>Textarea:</v-subheader>
+          <!--Textarea Zoom einstellen-->
+          <v-flex xs10>
+            <v-slider label="Zoom:" v-model="textarea.size" min="8" max="30" step="0.5" value="14"></v-slider>
+          </v-flex>
+          <v-flex xs2>
+            <v-btn @click="defaultSize">
+              <i class="material-icons">undo</i>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-card>
+    <v-card>
+      <v-container>
+        <v-layout>
+          <v-subheader>Convert:</v-subheader>
+          <!--Umwandlung bei Problemen mit dem Charset-->
+          <v-flex>
+            <v-btn @click="utf8_to_latin1">UTF-8 -> Latin1</v-btn>
+            <v-btn @click="latin1_to_utf8">Latin1 -> UTF-8</v-btn>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <script lang="ts">
