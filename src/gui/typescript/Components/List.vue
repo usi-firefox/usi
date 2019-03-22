@@ -21,9 +21,9 @@
             </v-btn>
         </v-layout>
 
-        <div v-if="userscripts" v-for="(script,index) in userscripts" :key="index">
-            <list-entry-component v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
-        </div>
+        <v-layout v-if="userscripts">
+            <list-entry-component v-for="(script,index) in userscripts" v-bind:key="index" v-bind:expanded="is_expanded" v-bind:configuration="configuration" v-bind:script="script" v-bind:index="index" />
+        </v-layout>
     </v-container>
 </template>
 

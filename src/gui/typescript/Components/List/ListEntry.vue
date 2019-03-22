@@ -1,19 +1,17 @@
 <template>
-    <div v-if="localScript">
         <v-flex>
-            <div class="usi-list-entry-id" :class="[{'strike-through': markedAsDeleted}]">
-                <v-card :class="localScriptDeactivated ? 'grey' : ''">
+                <v-card :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
                     <v-card-title primary-title>
-                        <div @click="toggleOverview" class="pointer">
+                        <v-flex xs11 @click="toggleOverview" class="pointer"> 
                             <img v-bind:src="localScript.icon" />
-                            <h3>Index: {{index}} | {{localScript.settings.name}} | {{localScript.settings.author}} | {{localScript.settings.version}}
+                            Index: {{index}} | {{localScript.settings.name}} | {{localScript.settings.author}} | {{localScript.settings.version}}
                                 <span v-if="localScript.isSpa"> | SPA</span>
                                 <v-btn icon>
                                     <v-icon v-html="showUserscriptEntry ? 'expand_less' : 'expand_more'" title="expand or compress overview"></v-icon>
                                 </v-btn>
-                            </h3>
-                        </div>
-                        <v-spacer></v-spacer>
+                        </v-flex>
+                        <v-flex xs1>
+                            <v-layout justify-end>
                         <v-menu offset-y allow-overflow class="pointer">
                             <!-- Options Menü -->
                             <v-btn icon slot="activator">
@@ -95,6 +93,8 @@
 
                             </v-list>
                         </v-menu>
+                        </v-layout>
+                        </v-flex>
                     </v-card-title>
                     <v-card-text v-if="this.showUserscriptEntry">
                         <!--Userscript aktivieren oder deaktivieren-->
@@ -160,9 +160,7 @@
                         </div>
                     </v-card-text>
                 </v-card>
-            </div>
         </v-flex>
-    </div>
 </template>
 <script lang="ts">
 declare var jQuery: any;
