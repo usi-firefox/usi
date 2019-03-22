@@ -1,43 +1,46 @@
 <template>
 
     <!--Userscript nachladen-->
-    <v-container grid-list-md>
-        <div id="usi-load-external">
-            <p>
-                <label data-usi-lang="direct_userscript_upload">
-                    <!--Userscript direkt hochladen-->
-                </label>
-                <i class="material-icons">cloud_upload</i>
-            </p>
-            <p>
-                <input type="file" accept="text/*" id="direct-userscript-upload" />
-            </p>
-            <p>
-                <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
-                    <!--Start-->
-                </v-btn>
-            </p>
+    <v-container>
+        <v-card>
+            <v-card-title>
+                <h3 data-usi-lang="direct_userscript_upload"></h3>
+                <!--Userscript direkt hochladen-->
+                &nbsp;
+                <v-icon>cloud_upload</v-icon>
+            </v-card-title>
+            <v-card-text>
+                <v-card-actions>
+                    <input type="file" accept="text/*" id="direct-userscript-upload" />
+                    <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
+                        <!--Start-->
+                    </v-btn>
+                </v-card-actions>
+            </v-card-text>
+        </v-card>
 
-            <v-divider class="mb-3"></v-divider>
-
-            <p data-usi-lang="alternative_charset_description">
+        <v-card>
+            <v-card-title>
+                <h3 data-usi-lang="alternative_charset"></h3>
+                <!--Alternatives Charset-->
+            </v-card-title>
+            <v-card-text data-usi-lang="alternative_charset_description">
                 <!--Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen-->
-            </p>
-
-            <p>
-                <label data-usi-lang="alternative_charset">
-                    <!--Alternatives Charset-->
-                </label>
-
-                <!-- Charset Auswahl für die Datei -->
-                <v-select :items="alternativeCharsets" v-model="charset"></v-select>
-
-                <!-- Eigenes Charset hinzufügen -->
-                <v-btn @click="addCustomCharset" color="info">
-                    <i class="material-icons">add_circle</i>
-                </v-btn>
-            </p>
-        </div>
+            <v-card-actions>
+                <v-flex xs2>
+                    <!-- Charset Auswahl für die Datei -->
+                    <v-select :items="alternativeCharsets" v-model="charset"></v-select>
+                </v-flex>
+                
+                <v-flex xs1 offset-xs1>
+                    <!-- Eigenes Charset hinzufügen -->
+                    <v-btn @click="addCustomCharset" color="info">
+                        <v-icon>add_circle</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-card-actions>
+            </v-card-text>
+        </v-card>
     </v-container>
 
 </template>
