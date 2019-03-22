@@ -1,4 +1,4 @@
-import basic_helper from "lib/helper/basic_helper";
+import {empty} from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_handle from "lib/storage/userscript";
 import userscript_storage from "lib/storage/storage";
@@ -431,7 +431,7 @@ export default class page_injection_helper {
         let contentScript = [];
 
         // Füge @require Skripte hinzu
-        if (!basic_helper().empty(userscript_handle.getAllRequireScripts())) {
+        if (!empty(userscript_handle.getAllRequireScripts())) {
             let req_scripts = userscript_handle.getAllRequireScripts();
             for (let i in req_scripts) {
                 contentScript.push(req_scripts[i].text);

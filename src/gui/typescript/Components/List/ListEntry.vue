@@ -166,7 +166,7 @@
 declare var jQuery: any;
 declare var global_settings: any;
 
-import basic_helper from "lib/helper/basic_helper";
+import {empty,notify} from "lib/helper/basic_helper";
 import event_controller from "../../events/event_controller";
 import language_replace_in_DOM from "../../Language";
 
@@ -279,7 +279,7 @@ export default Vue.component(componentName, {
          */
         deleteUserscript: function (): void {
             // das Skript mit der ID löschen!
-            if (!basic_helper().empty(this.localScript.id)) {
+            if (!empty(this.localScript.id)) {
                 // Frage zusammensetzen
                 const question_text =
                     browser.i18n.getMessage("want_to_delete_this_userscript_1") +
@@ -332,7 +332,7 @@ export default Vue.component(componentName, {
                     this.localScript.moreinformations.url
                 );
             } else {
-                basic_helper().notify(
+                notify(
                     "only source from http:// or https:// are allowed at the moment"
                 );
             }

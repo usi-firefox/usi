@@ -1,7 +1,7 @@
 declare var jQuery: any;
 declare var document: any;
 
-import basic_helper from "lib/helper/basic_helper";
+import { notify, getExtId } from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 
@@ -40,7 +40,7 @@ function download_file(data: string, type?: string, filename?: string): void {
 
 function getBackendPort(): usi.Backend.Port {
     // Abstraktions Möglichkeit
-    var backend_port = <usi.Backend.Port>browser.runtime.connect(basic_helper().getExtId(), { name: "options-backend" });
+    var backend_port = <usi.Backend.Port>browser.runtime.connect(getExtId(), { name: "options-backend" });
 
     // Workaround Wrapper
     backend_port.on = function (response_name: string, callback: Function) {
@@ -183,14 +183,14 @@ export default function event_controller() {
                         // lösche dieses Element
                         await userscript_handle.deleteUserscript();
 
-                        basic_helper().notify(browser.i18n.getMessage("userscript_was_successful_deleted") + " (ID " + id + ")");
+                        notify(browser.i18n.getMessage("userscript_was_successful_deleted") + " (ID " + id + ")");
 
                         // Userscript entfernen lassen
                         port.postMessage({ name: "USI-BACKEND:pageinjection-remove", data: { id: id } });
 
                     } else {
                         // konnte nicht gefunden und daher auch nicht gelöscht werden
-                        basic_helper().notify(browser.i18n.getMessage("userscript_could_not_deleted"));
+                        notify(browser.i18n.getMessage("userscript_could_not_deleted"));
                     }
                 }
                 , update_check: function () {
@@ -264,7 +264,7 @@ export default function event_controller() {
                         userscript_handle.switchActiveState();
                     }
 
-                    let page_injection_helper_port = browser.runtime.connect(basic_helper().getExtId(), { name: "page-injection-helper" });
+                    let page_injection_helper_port = browser.runtime.connect(getExtId(), { name: "page-injection-helper" });
 
                     if (userscript_handle.isDeactivated()) {
                         // deaktivieren
@@ -313,19 +313,19 @@ export default function event_controller() {
 
             port.on("userscript-is-created", function (data: any) {
                 // Neues Userscript wurde erstellt
-                basic_helper().notify(browser.i18n.getMessage("userscript_was_created") + " (ID " + data.id + ")");
+                notify(browser.i18n.getMessage("userscript_was_created") + " (ID " + data.id + ")");
             });
             port.on("userscript-was-overwritten", function (data: any) {
                 // Userscript wurde überschrieben
-                basic_helper().notify(browser.i18n.getMessage("userscript_was_overwritten") + " (ID " + data.id + ")");
+                notify(browser.i18n.getMessage("userscript_was_overwritten") + " (ID " + data.id + ")");
             });
             port.on("userscript-already-exist", function (data: any) {
                 // Userscript existiert bereits
-                basic_helper().notify(browser.i18n.getMessage("userscript_already_exist") + " (ID " + data.id + ")");
+                notify(browser.i18n.getMessage("userscript_already_exist") + " (ID " + data.id + ")");
             });
 
             port.on("USI-BACKEND:get-alert", function (text: string) {
-                basic_helper().notify(text);
+                notify(text);
             });
 
             /**

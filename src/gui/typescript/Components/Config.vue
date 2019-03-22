@@ -106,7 +106,6 @@ import config_storage from "lib/storage/config";
 import event_controller from "../events/event_controller";
 
 import Vue from "vue";
-import basic_helper from "lib/helper/basic_helper";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag

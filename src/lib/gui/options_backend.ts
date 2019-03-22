@@ -3,7 +3,7 @@
  ************************************************************************/
 
 import parse_userscript from "lib/parse/parse_userscript";
-import basic_helper from "lib/helper/basic_helper";
+import {isset} from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
 import add_userscript from "lib/storage/add_userscript";
 import SPA from "lib/spa/handler";
@@ -127,7 +127,7 @@ export default class options_backend {
                                 let userscript_id = all_userscripts[i].id;
 
                                 // prüfe ob eine UpdateURL gesetzt wurde!
-                                if (basic_helper().isset(userscript_settings["updateURL"])) {
+                                if (isset(userscript_settings["updateURL"])) {
 
                                     try {
                                         // UpdateURL gefunden, lade es nach!

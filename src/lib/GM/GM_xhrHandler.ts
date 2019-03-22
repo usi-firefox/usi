@@ -2,7 +2,7 @@
  ************************* Basic Funktionen! *************************
  ************************************************************************/
 
-import basic_helper from "lib/helper/basic_helper";
+import { valid_url } from "lib/helper/basic_helper";
 
 export default function GM_xhrHandler() {
 
@@ -164,14 +164,14 @@ export default function GM_xhrHandler() {
         },
         checkUrl: function (test_url: string, originUrl: string): string {
             // falls die gesamte Url korrekt ist
-            if (basic_helper().valid_url(test_url) === true) {
+            if (valid_url(test_url) === true) {
                 return test_url;
             } else {
                 // versuche die URL mithilfe der originUrl zusammen zu bauen
                 if (typeof originUrl === "string") {
 
                     // Origin URL plus "test_url", falls diese relativ ist
-                    if (basic_helper().valid_url(originUrl + "/" + test_url)) {
+                    if (valid_url(originUrl + "/" + test_url)) {
                         return originUrl + "/" + test_url;
                     }
                 }

@@ -1,4 +1,4 @@
-import basic_helper from "lib/helper/basic_helper";
+import { valid_url } from "lib/helper/basic_helper";
 import GM_xhrHandler from "lib/GM/GM_xhrHandler";
 import userscript_storage from "lib/storage/storage";
 
@@ -123,7 +123,7 @@ export default class GM_Backend {
         let open_in_background = data.open_in_background;
 
         // Prüft ob value_pair.url wirklich valide ist!
-        if (basic_helper().valid_url(url) === true) {
+        if (valid_url(url) === true) {
 
             let script_storage = await userscript_storage();
             let userscript_handle = <any>script_storage.getById(userscript_id);

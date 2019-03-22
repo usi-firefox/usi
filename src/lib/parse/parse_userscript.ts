@@ -2,7 +2,7 @@
  ********* Parse-Userscript-Konfiguration Funktionen ********************
  ************************************************************************/
 
-import basic_helper from "lib/helper/basic_helper";
+import { isset, notify, empty } from "lib/helper/basic_helper";
 import { GM_convert2RegExp } from "lib/parse/convert2RegExp";
 
 export default function parse_userscript() {
@@ -52,7 +52,7 @@ export default function parse_userscript() {
          * @returns {String}
          */
         create_metablock_from_array: function (userscript_metablock: string[], new_entries?: any) {
-            if (basic_helper().isset(new_entries) && !basic_helper().empty(new_entries) && typeof new_entries.concat) {
+            if (isset(new_entries) && !empty(new_entries) && typeof new_entries.concat) {
                 // Füge die neuen Einträge an den Anfang
                 userscript_metablock = new_entries.concat(userscript_metablock);
             }
@@ -255,14 +255,14 @@ export default function parse_userscript() {
 
             // Prüfe den Inhalt des options Array
             switch (true) {
-                case !basic_helper().isset(options.include) && !basic_helper().isset(options.spa):
+                case !isset(options.include) && !isset(options.spa):
                     // Mindestens ein Include Eintrag muss vorhanden sein!
-                    basic_helper().notify(browser.i18n.getMessage("required_script_one_include"));
+                    notify(browser.i18n.getMessage("required_script_one_include"));
                     return null;
 
-                case !basic_helper().isset(options.name):
+                case !isset(options.name):
                     // Du solltest schon einen Namen vergeben
-                    basic_helper().notify(browser.i18n.getMessage("required_script_name"));
+                    notify(browser.i18n.getMessage("required_script_name"));
                     return null;
 
                 default:

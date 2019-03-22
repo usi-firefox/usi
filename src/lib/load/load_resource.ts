@@ -1,4 +1,4 @@
-import basic_helper from "lib/helper/basic_helper";
+import { valid_url, empty, url_ends_with_user_js } from "lib/helper/basic_helper";
 
 export default function load_resource() {
 
@@ -10,7 +10,7 @@ export default function load_resource() {
          * @returns {Boolean|Promise}
          */
         load_image_or_text: function (url: string, charset?: string): Promise<any> | boolean {
-            if (!basic_helper().valid_url(url)) {
+            if (!valid_url(url)) {
                 return false;
             }
             const xhr = new XMLHttpRequest();
@@ -21,7 +21,7 @@ export default function load_resource() {
             xhr.responseType = 'arraybuffer';
 
             // ändere das angeforderte Charset, falls es gesetzt wurde
-            if (!basic_helper().empty(charset)) {
+            if (!empty(charset)) {
                 xhr.setRequestHeader("Content-Type", "text/plain; charset=" + charset);
             }
 
@@ -37,7 +37,7 @@ export default function load_resource() {
                              */
                             let response_contenttype = xhr.getResponseHeader("Content-Type");
 
-                            if (response_contenttype === null || basic_helper().empty(response_contenttype)) {
+                            if (response_contenttype === null || empty(response_contenttype)) {
                                 // Falls er leer sein sollte, setzte einfach => image/png
                                 response_contenttype = "text/plain";
                             }
@@ -52,7 +52,7 @@ export default function load_resource() {
 
                             // Falls der Content-Type mit "image" beginnt, wird dieses als base64 encodierter String zurückgegeben
                             if (/^image/.test(response_contenttype)) {
-                                if (!basic_helper().empty(raw)) {
+                                if (!empty(raw)) {
                                     // Arrow Funktion ohne geschweifete Klammer, gibt das Ergebnis wie "return" zurück
                                     const base64_encoded = window.btoa(raw);
 
@@ -60,7 +60,7 @@ export default function load_resource() {
                                     resolve("data:" + response_contenttype + ";base64," + base64_encoded, response_contenttype);
                                 }
                             } else {
-                                if (!basic_helper().empty(raw)) {
+                                if (!empty(raw)) {
                                     // sehr verwahrscheinlich handelt es sich um einen Text
                                     resolve(raw, response_contenttype);
                                 }
@@ -160,13 +160,13 @@ export default function load_resource() {
 
             return new Promise((resolve, reject) => {
 
-                if (!basic_helper().url_ends_with_user_js(url_str)) {
+                if (!url_ends_with_user_js(url_str)) {
                     // Nur URL erlaubt die mit .user.js endet
                     reject("keine .user.js Endung");
                     return false;
                 }
 
-                if (!basic_helper().valid_url(url_str)) {
+                if (!valid_url(url_str)) {
                     reject("keine gültige URL übergeben");
                     return false;
                 }

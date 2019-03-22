@@ -1,4 +1,4 @@
-import basic_helper from "lib/helper/basic_helper";
+import {notify, empty} from "lib/helper/basic_helper";
 import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
 
@@ -21,7 +21,7 @@ browser.runtime.onConnect.addListener(function (port: any) {
 
                     if (valid_userscript.valid === false) {
                         // Userscript Konfiguration nicht in Ordnung
-                        basic_helper().notify(browser.i18n.getMessage("userscript_config_is_wrong"));
+                        notify(browser.i18n.getMessage("userscript_config_is_wrong"));
                         return;
                     }
 
@@ -34,7 +34,7 @@ browser.runtime.onConnect.addListener(function (port: any) {
                         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
                         (new page_injection_helper()).add_userscript(userscript_handle);
 
-                        basic_helper().notify(browser.i18n.getMessage("userscript_was_created"));
+                        notify(browser.i18n.getMessage("userscript_was_created"));
 
                     } else {
                         // bzgl. update fragen
@@ -46,7 +46,7 @@ browser.runtime.onConnect.addListener(function (port: any) {
 
                 case "USI-BACKEND:override-same-userscript":
                     // Wenn dies aufgerufen wird, überschreibe ein vorhandenes Userscript
-                    if (!basic_helper().empty(message.data.id) && !basic_helper().empty(message.data.userscript)) {
+                    if (!empty(message.data.id) && !empty(message.data.userscript)) {
                         let more_informations = null;
                         if (message.data.moreinformations) {
                             more_informations = message.data.moreinformations;
@@ -56,12 +56,12 @@ browser.runtime.onConnect.addListener(function (port: any) {
                         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
                         (new page_injection_helper()).add_userscript(userscript_handle);
 
-                        basic_helper().notify(browser.i18n.getMessage("userscript_was_overwritten"));
+                        notify(browser.i18n.getMessage("userscript_was_overwritten"));
                     }
                     break;
             }
         } catch (ex) {
-            basic_helper().notify("Excetion:" + ex);
+            notify("Excetion:" + ex);
         }
     });
 

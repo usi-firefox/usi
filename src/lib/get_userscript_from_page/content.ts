@@ -1,4 +1,4 @@
-import basic_helper from "lib/helper/basic_helper";
+import { getExtId } from "lib/helper/basic_helper";
 import config_storage from "lib/storage/config";
 
 config_storage().get().then((config: any) => {
@@ -10,7 +10,7 @@ config_storage().get().then((config: any) => {
     }
 
     // Port zum Backend Skript öffnen
-    let port = browser.runtime.connect(basic_helper().getExtId(), { name: "get-userscript-from-page" });
+    let port = browser.runtime.connect(getExtId(), { name: "get-userscript-from-page" });
 
     let userscript_content = document.body.innerText;
 

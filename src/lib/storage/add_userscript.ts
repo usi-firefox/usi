@@ -1,4 +1,4 @@
-import basic_helper from "lib/helper/basic_helper";
+import { is_datauri, notify, empty, getFilenameFromURL, valid_url } from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
 
@@ -26,13 +26,13 @@ export default function add_userscript() {
                 switch (actual_type) {
                     case "datauri":
                         // wenn zu beginn, data: steht -> dann sollte es sich auch um eine DataURI handeln?!
-                        if (basic_helper().is_datauri(val)) {
+                        if (is_datauri(val)) {
                             return val;
                         }
                     case "url":
                         // Sollte es eine gültige URL sein, gib sie direkt zurück
                         // Falls es nur ein * ist -> gib auch dies zurück
-                        if (val === "*" || basic_helper().valid_url(val) === true) {
+                        if (val === "*" || valid_url(val) === true) {
                             return val;
                         }
                 }
@@ -59,12 +59,12 @@ export default function add_userscript() {
                 userscript_settings = <any>parse_userscript().find_settings(userscript);
 
             // Falls im Userscript kein Name vorhanden ist, setze den Dateinamen als @name
-            if (moreinformations && !basic_helper().empty(moreinformations.url)) {
-                alternative_name = basic_helper().getFilenameFromURL(moreinformations.url);
+            if (moreinformations && !empty(moreinformations.url)) {
+                alternative_name = getFilenameFromURL(moreinformations.url);
             }
 
             // Rückgabe eines Promise Objects
-            if (typeof userscript_settings.error_code === "number" && userscript_settings.error_code === 101 && !basic_helper().empty(alternative_name)) {
+            if (typeof userscript_settings.error_code === "number" && userscript_settings.error_code === 101 && !empty(alternative_name)) {
                 // setze den @name in den Metablock des Userscripts ein
                 let modified_userscript = parse_userscript().add_option_to_userscript_metablock(userscript, ["// @name     " + alternative_name]);
                 // Benachrichtige den Nutzer, dass das Userscript verändert wurde
@@ -180,7 +180,7 @@ export default function add_userscript() {
                     }
 
                     // Fehlermeldung zeigen
-                    basic_helper().notify(alert_text);
+                    notify(alert_text);
                 };
 
             // setze und speichere die gefundenen Einstellungen
