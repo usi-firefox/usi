@@ -3,7 +3,7 @@ import parse_userscript from "lib/parse/parse_userscript";
 import userscript_handle from "lib/storage/userscript";
 import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
-import load_resource from "lib/load/load_resource";
+import load_resource from "lib/helper/load_resource";
 
 export default class page_injection_helper {
 
@@ -456,7 +456,8 @@ export default class page_injection_helper {
     async add_jQuery_Functions(include_jQuery: boolean | string): Promise<string> {
         // Wenn jQuery gefordert ist muss das page_injection_object angepasst werden
         if (include_jQuery === "true" || include_jQuery === true) {
-            return await load_resource().load_internal_file("/gui/libs/jquery/jquery-3.3.1.min.js");
+            const load_resource_instance = new load_resource();
+            return await load_resource_instance.load_internal_file("/gui/libs/jquery/jquery-3.3.1.min.js");
         }
 
         return "";
@@ -493,7 +494,8 @@ export default class page_injection_helper {
         // @todo Übler Workaround, da keine Dateien direkt gelesen werden können ...
         let script_extra_data = "var prefilled_data = " + JSON.stringify(gm.prefilled_data) + "; \n\n";
         // GM_Frontend wird auf die Root Ebene kopiert
-        let gm_content_script = await load_resource().load_internal_file("/js/GM_Frontend.js");
+        const load_resource_instance = new load_resource();
+        let gm_content_script = await load_resource_instance.load_internal_file("/js/GM_Frontend.js");
 
         /*
          *  dieses muss per browser.tabs.executeScript ausgeführt werden

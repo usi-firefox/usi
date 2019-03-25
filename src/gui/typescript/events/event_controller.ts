@@ -7,7 +7,7 @@ import config_storage from "lib/storage/config";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import SPA from "lib/spa/handler";
 import add_userscript from "lib/storage/add_userscript";
-import load_resource from "lib/load/load_resource";
+import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
 
 declare function unescape(s: string): string;
@@ -61,6 +61,8 @@ function getBackendPort(): usi.Backend.Port {
 
 // Instanziere den Backend Port
 var port = getBackendPort();
+
+const load_resource_instance = new load_resource();
 
 export default function event_controller() {
 
@@ -215,7 +217,7 @@ export default function event_controller() {
 
                             try {
                                 // UpdateURL gefunden, lade es nach!
-                                let loaded_userscript = await <any>load_resource().load_userscript_by_url(userscript_settings["updateURL"]);
+                                let loaded_userscript = await <any>load_resource_instance.load_userscript_by_url(userscript_settings["updateURL"]);
                                 if (!loaded_userscript.target.responseText) {
                                     // keine antwort
                                     continue;

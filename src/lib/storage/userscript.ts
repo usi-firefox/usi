@@ -1,5 +1,5 @@
 import userscript_storage from "lib/storage/storage";
-import load_resource from "lib/load/load_resource";
+import load_resource from "lib/helper/load_resource";
 
 // stellt Funktionen für die Verarbeitung des Userscripts zur Verfügung
 export default function userscript_handle(initial_data: usi.Storage.Userscript) {
@@ -140,7 +140,8 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
             }
             , loadAndAddExternals: function (type: any, url: any, name: any, charset: any, resolve: any, reject: any) {
                 // Lade die Resource
-                const loaded_image_or_text = <any>load_resource().load_image_or_text(url, charset);
+                const load_resource_instance = new load_resource();
+                const loaded_image_or_text = <any>load_resource_instance.load_image_or_text(url, charset);
 
                 loaded_image_or_text.then(function (response_data: any, response_contenttype: any) {
 
