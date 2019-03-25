@@ -1,4 +1,4 @@
-import {empty} from "lib/helper/basic_helper";
+import { empty } from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_handle from "lib/storage/userscript";
 import userscript_storage from "lib/storage/storage";
@@ -20,16 +20,17 @@ export default class page_injection_helper {
             return false;
         }
 
-        if (details.url) {
-            let what = new page_injection_helper;
-
-            // falls der Status = loading ist, und eine URL verfügbar ist kann checkUserscriptInjection() aufgerufen werden
-            return what.checkUserscriptInjection(details.tabId, details.url, details.transitionType);
-        } else {
+        if (!details.url) {
             // nichts zu tun
             return false;
         }
+
+        let pih = new page_injection_helper;
+
+        // falls der Status = loading ist, und eine URL verfügbar ist kann checkUserscriptInjection() aufgerufen werden
+        return pih.checkUserscriptInjection(details.tabId, details.url, details.transitionType);
     }
+
     /**
      * Prüft ob es passende Include Regeln innerhalb eines Page Injection Objekts gibt
      * und übergibt führt dieses dann aus
@@ -40,54 +41,58 @@ export default class page_injection_helper {
      * @returns {Boolean}
      */
     checkUserscriptInjection(tabId: number, tabUrl: string, transitionType?: string): boolean {
-        if (page_injection_helper.all_page_injections.length > 0) {
-            page_injection_helper.all_page_injections.forEach((ele) => {
-                if (!ele || ele.spa || !ele.filter_urls) {
-                    return false;
-                }
-
-                /**
-                 * Exclude Regeln prüfen
-                 */
-                const excludes = ele.filter_urls.exclude;
-                for (let i in excludes) {
-                    if (typeof excludes[i].test === "function" && excludes[i].test(tabUrl)) {
-                        // Script NICHT ausführen
-                        return false;
-                    }
-                }
-
-                /**
-                 * Prüfung des transitionType auf Frames
-                 */
-                // Falls allFrames nicht gesetzt wurd, wird nun abgebrochen
-                if (transitionType === "auto_subframe" && ele.exec_details.allFrames !== true) {
-                    return false;
-                }
-
-                const includes = ele.filter_urls.include;
-
-                // falls ein * gesetzt ist, brauchen wir nicht alle "includes" prüfen
-                if (includes.indexOf("*") > -1) {
-                    // Script ausführen
-                    this._startTabExecution(tabId, ele);
-                    return true;
-                }
-
-                // restlichen Include Regeln prüfen
-                for (let i in includes) {
-                    if (typeof includes[i].test === "function" && includes[i].test(tabUrl)) {
-                        // Script ausführen
-                        this._startTabExecution(tabId, ele);
-                        return true;
-                    }
-                }
-            });
-
-            return true;
-        } else {
+        if (page_injection_helper.all_page_injections.length === 0) {
             return false;
         }
+
+        // Gültige Userscripte heraussuchen
+        const valid_userscripts = page_injection_helper.all_page_injections.filter((ele) => {
+            // Kein SPA prüfen
+            if (!ele || ele.spa || !ele.filter_urls) {
+                return false;
+            }
+
+            /**
+             * Exclude Regeln prüfen
+             */
+            const excludes = ele.filter_urls.exclude;
+            for (let i in excludes) {
+                if (typeof excludes[i].test === "function" && excludes[i].test(tabUrl)) {
+                    // Script NICHT ausführen
+                    return false;
+                }
+            }
+
+            /**
+             * Prüfung des transitionType auf Frames
+             */
+            // Falls allFrames nicht gesetzt wurde, wird nun abgebrochen
+            if (transitionType === "auto_subframe" && ele.exec_details.allFrames !== true) {
+                return false;
+            }
+
+            const includes = ele.filter_urls.include;
+
+            // falls ein * gesetzt ist, brauchen wir nicht alle "includes" prüfen
+            if (includes.indexOf("*") > -1) {
+                return true;
+            }
+
+            // restlichen Include Regeln prüfen
+            for (let i in includes) {
+                if (typeof includes[i].test === "function" && includes[i].test(tabUrl)) {
+                    return true;
+                }
+            }
+        });
+
+        // alle Gültigen Userscripte starten
+        valid_userscripts.forEach((userscript : any) => {
+            // Script ausführen
+            this._startTabExecution(tabId, userscript);
+        });
+
+        return true;
     }
 
     /**
@@ -124,7 +129,7 @@ export default class page_injection_helper {
      * @param {type} userscript_handle
      * @returns {undefined}
      */
-    async add_userscript(userscript_id: number) : Promise<void>{
+    async add_userscript(userscript_id: number): Promise<void> {
         // @todo
         this.re_init_page_injection();
     }
@@ -142,7 +147,7 @@ export default class page_injection_helper {
      * Öffnet einen Port, damit Skripte zur Laufzeit (de-)aktiviert werden können
      * @returns {undefined}
      */
-    register_re_init_page_injection_event() : void {
+    register_re_init_page_injection_event(): void {
 
         browser.runtime.onConnect.addListener((port) => {
             if (port.name !== "page-injection-helper") {
@@ -170,10 +175,8 @@ export default class page_injection_helper {
 
     /**
      * Führe diese Funktion aus damit der Injection Bereich neu geladen werden kann
-     * @param {boolean} first_run
-     * @returns {undefined}
      */
-    re_init_page_injection() {
+    async re_init_page_injection() {
 
         // zurücksetzen vom Sammler Objekt!
         page_injection_helper.all_page_injections = [];
@@ -183,36 +186,32 @@ export default class page_injection_helper {
         }
 
         // hole alle Userscripts aus dem Speicher
-        userscript_storage().then(async (storage) => {
+        const storage_t = await userscript_storage();
+        const storage = await storage_t.refresh();
+        const all_userscripts = <any>storage.getAll();
 
-            storage = await storage.refresh();
+        // Registriere alle Userscripte!
+        //
+        // durchlaufe alle Einträge im Storage
+        if (all_userscripts.length === 0) {
+            return false;
+        }
 
-            const all_userscripts = <any>storage.getAll();
-
-            // Registriere alle Userscripte!
-            //
-            // durchlaufe alle Einträge im Storage
-            if (all_userscripts.length > 0) {
-
-                for (let userscript of all_userscripts) {
-                    // baue aus dem Userscript ein Objekt für tabs.executeScript
-                    let userscript_init = userscript_handle(userscript);
-                    let page_injection = await this.get_rules_and_exec_object(userscript_init);
-                    if (page_injection) {
-                        page_injection_helper.all_page_injections.push(page_injection);
-                    }
-                }
-
-                /**
-                 * Standard: USI fügt die Userscripte nur bei einer Veränderung an einem Tab durch
-                 */
-                if (!browser.webNavigation.onCommitted.hasListener(this.userscriptInjection_onUpdate)) {
-                    browser.webNavigation.onCommitted.addListener(this.userscriptInjection_onUpdate);
-                }
-
+        for (let userscript of all_userscripts) {
+            // baue aus dem Userscript ein Objekt für tabs.executeScript
+            let userscript_init = userscript_handle(userscript);
+            let page_injection = await this.get_rules_and_exec_object(userscript_init);
+            if (page_injection) {
+                page_injection_helper.all_page_injections.push(page_injection);
             }
+        }
 
-        });
+        /**
+         * Standard: USI fügt die Userscripte nur bei einer Veränderung an einem Tab durch
+         */
+        if (!browser.webNavigation.onCommitted.hasListener(this.userscriptInjection_onUpdate)) {
+            browser.webNavigation.onCommitted.addListener(this.userscriptInjection_onUpdate);
+        }
 
     }
 
@@ -315,7 +314,7 @@ export default class page_injection_helper {
         }
 
         // Wichtig damit die Konfigurations Oberfläche von USI nicht unbrauchbar gemacht werden kann
-        let result_excludes = [/resource:\/\/firefox-addon-usi-at-jetpack\/.*/, new RegExp("moz-extension://.*")] as string[] | RegExp[];
+        let result_excludes = [new RegExp("moz-extension://.*")] as string[] | RegExp[];
 
         /**
          *  Zusätzliche Exclude Regeln
@@ -326,9 +325,9 @@ export default class page_injection_helper {
 
             // Sicherheitscheck
             if (prepared_result_excludes && prepared_result_excludes.length > 0) {
-               /*  prepared_result_excludes.forEach((rule : RegExp[] | string[]) => {
-                    result_excludes.push(rule);
-                }); */
+                /*  prepared_result_excludes.forEach((rule : RegExp[] | string[]) => {
+                     result_excludes.push(rule);
+                 }); */
             }
         }
 
