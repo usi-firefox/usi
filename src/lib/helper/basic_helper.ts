@@ -59,13 +59,6 @@ export function notify(text: string): Promise<string> {
             message: text
         });
 }
-export function addScriptLink(srcLink: string): string {
-    if (srcLink) {
-        return "<script type=\"text/javascript\" src=\"" + browser.extension.getURL(srcLink) + "\" ></script>";
-    } else {
-        return "";
-    }
-}
 export function getExtId(): string {
     const manifest = <any>browser.runtime.getManifest();
     if (typeof manifest === "object" && typeof manifest.applications.gecko.id === "string") {
@@ -79,9 +72,6 @@ export function is_datauri(v: string): boolean {
     // wenn zu beginn, data: steht -> dann sollte es sich auch um eine DataURI handeln?!
     return (/^data:(.*)/.test(v));
 }
-export function is_function(v: any): boolean {
-    return (typeof v === "function");
-}
 export function valid_url(v: string): boolean {
     return /^(https?|file):\/\//.test(v);
 }
@@ -90,13 +80,6 @@ export function url_ends_with_user_js(v: string): boolean {
 }
 export function empty(v: any): boolean {
     if (typeof v === "undefined" || v === "" || v === 0 || v === false || v === null) {
-        return true;
-    } else {
-        return false;
-    }
-}
-export function is_user_script_ending(url: any): boolean {
-    if (/\.user\.\js$/g.test(url)) {
         return true;
     } else {
         return false;

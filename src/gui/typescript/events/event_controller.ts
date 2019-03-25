@@ -1,9 +1,14 @@
 declare var jQuery: any;
 declare var document: any;
 
-import { notify, getExtId } from "lib/helper/basic_helper";
+import { notify, getExtId, isset } from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
+import page_injection_helper from "lib/inject/page_injection_helper";
+import SPA from "lib/spa/handler";
+import add_userscript from "lib/storage/add_userscript";
+import load_resource from "lib/load/load_resource";
+import parse_userscript from "lib/parse/parse_userscript";
 
 declare function unescape(s: string): string;
 
@@ -152,7 +157,7 @@ export default function event_controller() {
         // löst eine Aktion im Backend aus, ohne direkt Daten zurück zu erhalten
         , request: {
             userscript: {
-                 all: async function (c?: Function) {
+                all: async function (c?: Function) {
                     let script_storage = await userscript_storage();
 
                     await script_storage.refresh();
@@ -172,7 +177,7 @@ export default function event_controller() {
                     script_storage.deleteAll();
 
                     // lade Page Mod neu!
-                    port.postMessage({ name: "USI-BACKEND:pageinjection-refresh" });
+                    (new page_injection_helper()).re_init_page_injection();
 
                 }
                 , delete: async function (id: number) {
@@ -186,21 +191,68 @@ export default function event_controller() {
                         notify(browser.i18n.getMessage("userscript_was_successful_deleted") + " (ID " + id + ")");
 
                         // Userscript entfernen lassen
-                        port.postMessage({ name: "USI-BACKEND:pageinjection-remove", data: { id: id } });
-
+                        (new page_injection_helper()).remove_userscript(id);
                     } else {
                         // konnte nicht gefunden und daher auch nicht gelöscht werden
                         notify(browser.i18n.getMessage("userscript_could_not_deleted"));
                     }
                 }
-                , update_check: function () {
-                    port.postMessage({ name: "USI-BACKEND:check-for-userscript-updates" });
+                , update_check: async function () {
+                    // durchlaufe alle Einträge und suche nach einer UpdateURL
+                    let script_storage = await userscript_storage();
+                    let all_userscripts = script_storage.getAll();
+
+                    if (all_userscripts.length === 0) {
+                        throw "no Userscripts available";
+                    }
+
+                    for (var i in all_userscripts) {
+                        let userscript_settings = all_userscripts[i].settings;
+                        let userscript_id = all_userscripts[i].id;
+
+                        // prüfe ob eine UpdateURL gesetzt wurde!
+                        if (isset(userscript_settings["updateURL"])) {
+
+                            try {
+                                // UpdateURL gefunden, lade es nach!
+                                let loaded_userscript = await <any>load_resource().load_userscript_by_url(userscript_settings["updateURL"]);
+                                if (!loaded_userscript.target.responseText) {
+                                    // keine antwort
+                                    continue;
+                                }
+                                let loaded_userscript_text = loaded_userscript.target.responseText;
+
+                                // @todo Konfig suchen und danach die Optionen Parsen...
+                                let loaded_userscript_settings = <any> parse_userscript().find_settings(loaded_userscript_text);
+                                // Prüfe ob die Versionen verschieden sind!
+                                if (loaded_userscript_settings !== null && loaded_userscript_settings["version"] !== userscript_settings["version"]) {
+
+                                    // Frage den Benutzer ob das Skript aktualisiert werden soll!
+                                    port.postMessage({ name: "USI-BACKEND:update-for-userscript-available", data: { id: userscript_id, userscript: loaded_userscript_text } });
+                                }
+                            } catch (exception) {
+
+                            }
+                        }
+                    }
                 }
                 , reload_from_source: function (source_path: string) {
-                    port.postMessage({ name: "USI-BACKEND:reload-from-source", data: { url: source_path } });
+                    if (source_path) {
+                        /**
+                         * @todo
+                         * Zunächst einmal nur einen neuen Tab öffnen
+                         * Skript später wieder richtig laden
+                         */
+                        browser.tabs.create({ url: source_path });
+                    }
                 }
                 , start_spa: function (userscript: any) {
-                    port.postMessage({ name: "USI-BACKEND:start-spa", data: { userscript } });
+                    /**
+                             * Startet ein SPA, in einem neuen Tab
+                             */
+                    let spa_instance = new SPA();
+
+                    spa_instance.createPage(userscript.id);
                 }
                 , gm_values: async function (id: number) {
                     let script_storage = await userscript_storage();
@@ -251,10 +303,61 @@ export default function event_controller() {
             }
             , userscript: {
                 create: async function (data: any) {
-                    port.postMessage({ name: "USI-BACKEND:create-userscript", data });
+                    if (!data.userscript) {
+                        throw "Userscript is missing";
+                    }
+
+                    let userscript = data.userscript;
+                    // Hier wird das UserScript weiterverarbeitet und gespeichert
+
+                    if (!data.moreinformations) {
+                        data.moreinformations = null;
+                    }
+                    let valid_userscript = add_userscript().check_for_valid_userscript_settings(userscript, data.moreinformations);
+
+                    if (valid_userscript.valid === false) {
+                        // Userscript Konfiguration nicht in Ordnung
+                        port.postMessage({ name: "userscript-config-is-wrong", data: { valid_userscript } });
+                        return;
+                    }
+
+                    // Überprüfe ob das Userscript bereits gespeichert wurde
+                    let userscript_id = await add_userscript().exist_userscript_already(userscript);
+
+                    if (userscript_id === 0) {
+                        // neu anlegen
+                        let userscript_handle = await <any>add_userscript().save_new_userscript(userscript, data.moreinformations);
+                        // füge das Skript gleich hinzu, damit es ausgeführt werden kann
+                        (new page_injection_helper()).add_userscript(userscript_handle.getId());
+
+                        port.postMessage({ name: "userscript-is-created", data: { id: userscript_handle.getId() } });
+                    } else {
+                        // bzgl. update fragen
+                        // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
+                        port.postMessage({ name: "USI-BACKEND:same-userscript-was-found", data: { id: userscript_id, userscript: userscript } });
+                    }
                 }
-                , override: function (data: any) {
-                    port.postMessage({ name: "USI-BACKEND:override-same-userscript", data });
+                , override: async function (data: any) {
+
+                    if (!data.id) {
+                        throw "Userscript ID is missing";
+                    }
+                    if (!data.userscript) {
+                        throw "Userscript is missing";
+                    }
+
+                    // Hier wird das UserScript weiterverarbeitet und gespeichert
+                    let moreinformations = null;
+                    if (data.moreinformations) {
+                        moreinformations = data.moreinformations;
+                    }
+
+                    let userscript_handle = await <any>add_userscript().update_userscript(data.id, data.userscript, moreinformations);
+                    (new page_injection_helper()).add_userscript(userscript_handle.getId());
+
+                    // Userscript wurde überschrieben
+                    notify(browser.i18n.getMessage("userscript_was_overwritten") + " (ID " + data.id + ")");
+
                 }
                 , toogle_state: async function (id: number) {
                     var script_storage = await userscript_storage();
@@ -314,10 +417,6 @@ export default function event_controller() {
             port.on("userscript-is-created", function (data: any) {
                 // Neues Userscript wurde erstellt
                 notify(browser.i18n.getMessage("userscript_was_created") + " (ID " + data.id + ")");
-            });
-            port.on("userscript-was-overwritten", function (data: any) {
-                // Userscript wurde überschrieben
-                notify(browser.i18n.getMessage("userscript_was_overwritten") + " (ID " + data.id + ")");
             });
             port.on("userscript-already-exist", function (data: any) {
                 // Userscript existiert bereits

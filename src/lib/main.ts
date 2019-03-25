@@ -1,5 +1,4 @@
 import page_injection_helper from "lib/inject/page_injection_helper";
-import options_backend from "lib/gui/options_backend";
 import sdk_to_webext from "lib/update/sdk_to_webext";
 import GM_Backend from "lib/GM/GM_Backend";
 
@@ -12,11 +11,9 @@ export default class usi_main {
     private static active_tab: number = 0;
 
     private static page_injection_helper: page_injection_helper;
-    private static options_backend: options_backend;
 
     constructor() {
         usi_main.page_injection_helper = new page_injection_helper();
-        usi_main.options_backend = new options_backend();
     }
 
     createGuiListener(): void {
@@ -64,9 +61,6 @@ export default class usi_main {
         usi_main.page_injection_helper.re_init_page_injection();
         usi_main.page_injection_helper.register_re_init_page_injection_event();
     }
-    startOptionsBackend(): void {
-        usi_main.options_backend.start();
-    }
     startGMBackend(): void {
         new GM_Backend().register_listener();
     }
@@ -96,7 +90,6 @@ if (!browser.runtime.onInstalled.hasListener(usi_main_instance.doUpdateFromSDKTo
 
 // Konfigurations Button erstellen
 usi_main_instance.createGuiListener();
-usi_main_instance.startOptionsBackend();
 
 // GM Backend Listener starten
 usi_main_instance.startGMBackend();
