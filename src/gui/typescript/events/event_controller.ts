@@ -62,8 +62,6 @@ function getBackendPort(): usi.Backend.Port {
 // Instanziere den Backend Port
 var port = getBackendPort();
 
-const load_resource_instance = new load_resource();
-
 export default function event_controller() {
 
     var self = {
@@ -185,80 +183,13 @@ export default function event_controller() {
                         notify(browser.i18n.getMessage("userscript_could_not_deleted"));
                     }
                 }
-                , update_check: async function () {
-                    // durchlaufe alle Einträge und suche nach einer UpdateURL
-                    let script_storage = await userscript_storage();
-                    let all_userscripts = script_storage.getAll();
-
-                    if (all_userscripts.length === 0) {
-                        throw "no Userscripts available";
-                    }
-
-                    for (var i in all_userscripts) {
-                        let userscript_settings = all_userscripts[i].settings;
-                        let userscript_id = all_userscripts[i].id;
-
-                        // prüfe ob eine UpdateURL gesetzt wurde!
-                        if (isset(userscript_settings["updateURL"])) {
-
-                            try {
-                                // UpdateURL gefunden, lade es nach!
-                                let loaded_userscript = await <any>load_resource_instance.load_userscript_by_url(userscript_settings["updateURL"]);
-                                if (!loaded_userscript.target.responseText) {
-                                    // keine antwort
-                                    continue;
-                                }
-                                let loaded_userscript_text = loaded_userscript.target.responseText;
-
-                                // @todo Konfig suchen und danach die Optionen Parsen...
-                                let loaded_userscript_settings = <any>parse_userscript().find_settings(loaded_userscript_text);
-                                // Prüfe ob die Versionen verschieden sind!
-                                if (loaded_userscript_settings !== null && loaded_userscript_settings["version"] !== userscript_settings["version"]) {
-
-                                    //wurde gefunden, möchtest du es aktualisieren?")){
-                                    let confirmed = window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"));
-                                    
-                                    if(confirmed){
-                                        // Dieses Skript wird nun aktualisiert
-                                        self.set.userscript.override(loaded_userscript_text);
-                                        self.request.userscript.all();
-                                    }
-                                }
-                            } catch (exception) {
-
-                            }
-                        }
-                    }
-                }
             }
 
         }
         // Daten zum setzen
         , set: {
-            config: {
-                load_external_script: async function (bool: boolean) {
-                    let config = await config_storage().get();
-                    config.load_script_with_js_end = bool;
-                    return await config_storage().set(config);
-                }
-                , highlightjs_state: async function (bool: boolean) {
-                    let config = await config_storage().get();
-                    config.hightlightjs.active = bool;
-                    return await config_storage().set(config);
-                }
-                , gm_funcs_always_on: async function (bool: boolean) {
-                    let config = await config_storage().get();
-                    config.greasemonkey.global_active = bool;
-                    return await config_storage().set(config);
-                }
-                , own_css: async function (new_css: string) {
-                    let config = await config_storage().get();
-                    config.own_css = new_css;
-                    return await config_storage().set(config);
-                }
-            }
             // highlightjs
-            , highlightjs: {
+            highlightjs: {
                 style: async function (style_name: string) {
                     let config = await config_storage().get();
                     config.hightlightjs.style = style_name;

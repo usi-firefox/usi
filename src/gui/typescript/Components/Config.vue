@@ -1,102 +1,82 @@
 <template>
-    <!--USI Konfiguration bearbeiten-->
-    <v-container grid-list-md>
-        <div>
-            <h3 data-usi-lang="delete_all_userscripts">
-                <!--Alle Userscripts entfernen-->
-            </h3>
+  <!--USI Konfiguration bearbeiten-->
+  <v-container grid-list-md>
+    <div>
+      <h3 data-usi-lang="delete_all_userscripts">
+        <!--Alle Userscripts entfernen-->
+      </h3>
 
-            <v-btn color="error" @click="deleteAll(1)" data-usi-lang="revert_all">
-            </v-btn>
-            <!--alles zurücksetzen-->
-        </div>
-        <div>
+      <v-btn color="error" @click="deleteAll(1)" data-usi-lang="revert_all"></v-btn>
+      <!--alles zurücksetzen-->
+    </div>
+    <div>
+      <h3 data-usi-lang="check_updates_for_all_userscripts">
+        <!--Alle Userscripts auf Updates überprüfen-->
+      </h3>
 
-            <h3 data-usi-lang="check_updates_for_all_userscripts">
-                <!--Alle Userscripts auf Updates überprüfen-->
-            </h3>
-
-            <v-btn @click="checkForUpdates" color="info" data-usi-lang="check_now">
-            </v-btn>
-            <!--jetzt prüfen-->
-        </div>
-        <div>
-            <h3 data-usi-lang="enableExternalScriptLoadQuestion_title">
-                <!--Importiere externe Skripte-->
-            </h3>
-            <label>
-                <span data-usi-lang="enableExternalScriptLoadQuestion_description">
-                    <!--Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)-->
-                </span>
-            </label>
-            <v-switch v-model="load_script_with_js_end" :label="load_script_with_js_end ? lang.yes : lang.no"></v-switch>
-        </div>
-
-        <div>
-
-            <h3 data-usi-lang="options_activate_highlightjs_title">
-                <!--HighlightJS aktiv-->
-            </h3>
-            <v-switch v-model="hightlightjs_active" :label="hightlightjs_active ? lang.yes : lang.no"></v-switch>
-        </div>
-        <div>
-            <h3 data-usi-lang="options_always_activate_greasemonkey_title">
-                <!--Greasemonkey immer aktivieren-->
-            </h3>
-            <v-switch v-model="greasemonkey_global_active" :label="greasemonkey_global_active ? lang.yes : lang.no"></v-switch>
-        </div>
-        <div>
-            <h3 data-usi-lang="export_all_userscripts">
-                <!--Alle Userscripts exportieren-->
-            </h3>
-            <label data-usi-lang="complete_export">
-               <!--Kompletter Export-->
-            </label>
-            <v-switch v-model="completeExport" :label="completeExport ? lang.yes : lang.no"></v-switch>
-            <!--jetzt exportieren-->
-            <v-btn @click="exportAll" color="info" data-usi-lang="export_all_now">
-            </v-btn>
-        </div>
-
-        <span style="display: none;">
-        <div>
-            <h3 data-usi-lang="config_add_css">
-                <!--Extra CSS Anpassungen-->
-            </h3>
-        </div>
-        <div>
-            <v-textarea v-model="AddCSS" box rows="20" cols="32" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" :placeholder="exampleAddCSS"></v-textarea>
-        </div>
-        <div>
-            <v-btn @click="css_refresh(false)" color="info" data-usi-lang="config_add_css_refresh">
-            </v-btn>
-            <v-btn @click="css_undo">
-                <i class="material-icons">undo</i>
-            </v-btn>
-        </div>
+      <v-btn @click="checkForUpdates" color="info" data-usi-lang="check_now"></v-btn>
+      <!--jetzt prüfen-->
+    </div>
+    <div>
+      <h3 data-usi-lang="enableExternalScriptLoadQuestion_title">
+        <!--Importiere externe Skripte-->
+      </h3>
+      <label>
+        <span data-usi-lang="enableExternalScriptLoadQuestion_description">
+          <!--Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)-->
         </span>
+      </label>
+      <v-switch
+        v-model="load_script_with_js_end"
+        :label="load_script_with_js_end ? lang.yes : lang.no"
+      ></v-switch>
+    </div>
 
-        <v-dialog v-model="dialogWindow" width="500">
-            <v-card>
-                <v-card-text>
-                    {{dialogWindowText}}
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <!-- erneute Sicherheitsabfrage -->
-                    <v-btn v-if="dialogStep == 1" color="info" @click="deleteAll(2)">OK</v-btn>
+    <div>
+      <h3 data-usi-lang="options_activate_highlightjs_title">
+        <!--HighlightJS aktiv-->
+      </h3>
+      <v-switch v-model="hightlightjs_active" :label="hightlightjs_active ? lang.yes : lang.no"></v-switch>
+    </div>
+    <div>
+      <h3 data-usi-lang="options_always_activate_greasemonkey_title">
+        <!--Greasemonkey immer aktivieren-->
+      </h3>
+      <v-switch
+        v-model="greasemonkey_global_active"
+        :label="greasemonkey_global_active ? lang.yes : lang.no"
+      ></v-switch>
+    </div>
+    <div>
+      <h3 data-usi-lang="export_all_userscripts">
+        <!--Alle Userscripts exportieren-->
+      </h3>
+      <label data-usi-lang="complete_export">
+        <!--Kompletter Export-->
+      </label>
+      <v-switch v-model="completeExport" :label="completeExport ? lang.yes : lang.no"></v-switch>
+      <!--jetzt exportieren-->
+      <v-btn @click="exportAll" color="info" data-usi-lang="export_all_now"></v-btn>
+    </div>
 
-                    <!-- Abbruch Button -->
-                    <v-btn color="success" @click="dialogWindow = false;dialogStep = 0;">Cancel</v-btn>
+    <v-dialog v-model="dialogWindow" width="500">
+      <v-card>
+        <v-card-text>{{dialogWindowText}}</v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <!-- erneute Sicherheitsabfrage -->
+          <v-btn v-if="dialogStep == 1" color="info" @click="deleteAll(2)">OK</v-btn>
 
-                    <!-- endgültig löschen | die Position getauscht -->
-                    <v-btn v-if="dialogStep == 2" color="error" @click="deleteAll(3)">OK</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-container>
+          <!-- Abbruch Button -->
+          <v-btn color="success" @click="dialogWindow = false;dialogStep = 0;">Cancel</v-btn>
 
+          <!-- endgültig löschen | die Position getauscht -->
+          <v-btn v-if="dialogStep == 2" color="error" @click="deleteAll(3)">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -106,6 +86,10 @@ import config_storage from "lib/storage/config";
 import event_controller from "../events/event_controller";
 
 import Vue from "vue";
+import userscript_storage from "lib/storage/storage";
+import { isset } from "lib/helper/basic_helper";
+import load_resource from "lib/helper/load_resource";
+import parse_userscript from "lib/parse/parse_userscript";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -126,19 +110,16 @@ const placeholderAddCss = `@import url('https://fonts.googleapis.com/css?family=
 }`;
 
 export default Vue.component(componentName, {
-    props: {
-        initialData: {
-            type: Object as () => usi.Storage.Config
-        }
-    },
     data: function () {
         return {
+            load_script_with_js_end: false,
+            greasemonkey_global_active: false,
+            hightlightjs_active: false,
+            AddCSS: "",
+            config : <usi.Storage.Config> {},
             LastCSS: <string[]>[],
-            load_script_with_js_end: this.initialData.load_script_with_js_end,
-            greasemonkey_global_active: this.initialData.greasemonkey.global_active,
-            hightlightjs_active: this.initialData.hightlightjs.active,
-            AddCSS: this.initialData.own_css,
             exampleAddCSS: placeholderAddCss,
+
             completeExport: false,
             dialogWindow: false,
             dialogWindowText: "",
@@ -153,71 +134,32 @@ export default Vue.component(componentName, {
             }
         };
     },
-    created: function () { },
+    created: async function () { 
+        this.config = await config_storage().get();
+        
+        this.load_script_with_js_end = this.config.load_script_with_js_end;
+        this.greasemonkey_global_active = this.config.greasemonkey.global_active;
+        this.hightlightjs_active = this.config.hightlightjs.active;
+        
+        this.AddCSS = this.config.own_css;
+    },
     watch: {
         /** @todo */
         // Schreibe die Neue Konfiguration
-        load_script_with_js_end: async function (newValue, oldValue): Promise<void> {
-            await event_controller().set.config.load_external_script(newValue);
-            this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
+        load_script_with_js_end: function (newValue : boolean){
+            this.config.load_script_with_js_end = newValue;
+            config_storage().set(this.config);
         },
-        greasemonkey_global_active: async function (newValue, oldValue): Promise<void> {
-            await event_controller().set.config.gm_funcs_always_on(newValue);
-            this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
+        greasemonkey_global_active: function (newValue : boolean) {
+            this.config.greasemonkey.global_active = newValue;
+            config_storage().set(this.config);
         },
-        hightlightjs_active: async function (newValue, oldValue): Promise<void> {
-            await event_controller().set.config.highlightjs_state(newValue);
-            this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
+        hightlightjs_active: function (newValue : boolean) {
+            this.config.hightlightjs.active = newValue;
+            config_storage().set(this.config);
         }
     },
     methods: {
-        css_undo: function (): void {
-            if (this.LastCSS.length > 0) {
-                // Letzten Wert wieder eintragen
-                this.AddCSS = String(this.LastCSS.pop()).toString();
-            } else {
-                // leeren
-                this.AddCSS = "";
-            }
-
-            // danach den Refresh Prozess antriggern
-            this.css_refresh(true);
-        },
-        activate_css: async function (new_css: string): Promise<void> {
-            // CSS eintragen und aktivieren
-            // @todo --- ruft die Haupt Vue Instanz
-            await event_controller().set.config.own_css(new_css);
-            this.$emit("change-tab-additional", {
-                event_name: "usi:change-additional-css",
-                data: new_css
-            });
-            this.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
-        },
-        css_refresh: function (is_reset?: boolean): void | boolean {
-            // CSS eintragen und aktivieren
-            this.activate_css(this.AddCSS);
-
-            if (is_reset === true) {
-                // nichts weiter unternehmen
-                return true;
-            } else {
-                // Reset anbieten, für den fall das etwas schief gegangen ist
-                window.setTimeout(() => {
-                    if (
-                        window.confirm(
-                            browser.i18n.getMessage("config_add_css_reset_question")
-                        )
-                    ) {
-                        // reset
-                        this.css_undo();
-                    } else {
-                        // CSS in den Stack packen
-                        this.LastCSS.push(this.AddCSS);
-                    }
-                }, 5000);
-            }
-        },
-
         /**
          * Alle Userscripte entfernen
          * @returns {undefined}
@@ -251,7 +193,64 @@ export default Vue.component(componentName, {
         },
 
         // Prüfe ob für die Skripte Updates gefunden wurden!
-        checkForUpdates: event_controller().request.userscript.update_check,
+        checkForUpdates: async function () {
+            // durchlaufe alle Einträge und suche nach einer UpdateURL
+            let script_storage = await userscript_storage();
+            let all_userscripts = script_storage.getAll();
+
+            debugger;
+
+            if (all_userscripts.length === 0) {
+                return "no Userscripts available";
+            }
+
+            const check_this_userscripts = all_userscripts.filter((userscript : any) => {
+                return isset(userscript.settings["updateURL"]);
+            });
+            
+            const load_resource_instance = new load_resource();
+
+            check_this_userscripts.forEach(async (userscript : any) => {
+                const {updateURL, version} = userscript.settings;
+                const userscript_id = userscript.id;
+
+                try{
+                    const loaded_userscript = await <any>load_resource_instance.load_userscript_by_url(updateURL);
+                    if (!loaded_userscript.target.responseText) {
+                        // keine antwort
+                        return false;
+                    }
+                
+                const loaded_userscript_text = loaded_userscript.target.responseText;
+
+                // @todo Konfig suchen und danach die Optionen Parsen...
+                const loaded_userscript_settings = <any>parse_userscript().find_settings(loaded_userscript_text);
+
+                if(loaded_userscript_settings === null){
+                    return false;
+                }
+
+                // Prüfe ob die Versionen verschieden sind!
+                if (loaded_userscript_settings["version"] === version) {
+                    return false;
+                }
+
+                //wurde gefunden, möchtest du es aktualisieren?")){
+                let confirmed = window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"));
+                
+                if(!confirmed){
+                    return false;
+                }
+
+                // Dieses Skript wird nun aktualisiert
+                event_controller().set.userscript.override(loaded_userscript_text);
+                
+                }catch {
+                    // keine Userscript erhalten
+                    return false;
+                }
+            });
+        },
 
         // exportiere die Skripte
         exportAll: function (): void {
