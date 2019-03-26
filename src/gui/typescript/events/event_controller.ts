@@ -142,20 +142,6 @@ export default function event_controller() {
             }
         }
 
-        // Registriert ein Event 
-        , register: {
-            userscript: {
-                update: {
-                    available: function (c: Function) {
-                        port.on("USI-BACKEND:update-for-userscript-available", c);
-                    }
-                }
-                , gm_values: function (id: number, c: Function) {
-                    port.on("USI-BACKEND:list-GMValues-done-" + id, c);
-                }
-            }
-        }
-
         // löst eine Aktion im Backend aus, ohne direkt Daten zurück zu erhalten
         , request: {
             userscript: {
@@ -225,48 +211,24 @@ export default function event_controller() {
                                 let loaded_userscript_text = loaded_userscript.target.responseText;
 
                                 // @todo Konfig suchen und danach die Optionen Parsen...
-                                let loaded_userscript_settings = <any> parse_userscript().find_settings(loaded_userscript_text);
+                                let loaded_userscript_settings = <any>parse_userscript().find_settings(loaded_userscript_text);
                                 // Prüfe ob die Versionen verschieden sind!
                                 if (loaded_userscript_settings !== null && loaded_userscript_settings["version"] !== userscript_settings["version"]) {
 
-                                    // Frage den Benutzer ob das Skript aktualisiert werden soll!
-                                    port.postMessage({ name: "USI-BACKEND:update-for-userscript-available", data: { id: userscript_id, userscript: loaded_userscript_text } });
+                                    //wurde gefunden, möchtest du es aktualisieren?")){
+                                    let confirmed = window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"));
+                                    
+                                    if(confirmed){
+                                        // Dieses Skript wird nun aktualisiert
+                                        self.set.userscript.override(loaded_userscript_text);
+                                        self.request.userscript.all();
+                                    }
                                 }
                             } catch (exception) {
 
                             }
                         }
                     }
-                }
-                , reload_from_source: function (source_path: string) {
-                    if (source_path) {
-                        /**
-                         * @todo
-                         * Zunächst einmal nur einen neuen Tab öffnen
-                         * Skript später wieder richtig laden
-                         */
-                        browser.tabs.create({ url: source_path });
-                    }
-                }
-                , start_spa: function (userscript: any) {
-                    /**
-                             * Startet ein SPA, in einem neuen Tab
-                             */
-                    let spa_instance = new SPA();
-
-                    spa_instance.createPage(userscript.id);
-                }
-                , gm_values: async function (id: number) {
-                    let script_storage = await userscript_storage();
-
-                    let userscript = <any>script_storage.getById(id);
-
-                    var result = [], completeValStore = userscript.getValStore();
-                    for (var name in completeValStore) {
-                        // Key => value ...
-                        result.push({ key: name, value: completeValStore[name] });
-                    }
-                    return result;
                 }
             }
 
@@ -332,7 +294,8 @@ export default function event_controller() {
                         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
                         (new page_injection_helper()).add_userscript(userscript_handle.getId());
 
-                        port.postMessage({ name: "userscript-is-created", data: { id: userscript_handle.getId() } });
+                        // Neues Userscript wurde erstellt
+                        notify(browser.i18n.getMessage("userscript_was_created") + " (ID " + userscript_handle.getId() + ")");
                     } else {
                         // bzgl. update fragen
                         // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
@@ -382,65 +345,12 @@ export default function event_controller() {
                 }
                 , gm_values: {
                     delete_all: async function (id: number) {
-                        // Wenn dies aufgerufen wird, werden die vorhanden Variablen des Userscripts entfernt (val_store)
-
-                        let script_storage = await userscript_storage();
-                        let userscript_handle = script_storage.getById(id);
-                        if (userscript_handle !== false) {
-                            // entfernen aller zuvor gesetzten Variablen
-                            userscript_handle.resetValStore().save();
-                        }
+                        
 
                     }
                 }
             }
         }
-        // Registiert die globalen Events
-        , register_global_events: function () {
-
-            /**
-            * Fragt ob ein Userscript aktualisiert werden soll
-            * 
-            * @param {object} userscript_infos
-            * @returns {void}
-            */
-            const confirmationUserscriptUpdate = function (userscript_infos: any): void {
-                //wurde gefunden, möchtest du es aktualisieren?")){
-                if (window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_infos.id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"))) {
-                    // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
-                    self.set.userscript.override(userscript_infos);
-                    self.request.userscript.all();
-                }
-            }
-
-            // falls ein aktualisiertes Userscript gefunden wurde
-            self.register.userscript.update.available(confirmationUserscriptUpdate);
-
-            port.on("userscript-is-created", function (data: any) {
-                // Neues Userscript wurde erstellt
-                notify(browser.i18n.getMessage("userscript_was_created") + " (ID " + data.id + ")");
-            });
-            port.on("userscript-already-exist", function (data: any) {
-                // Userscript existiert bereits
-                notify(browser.i18n.getMessage("userscript_already_exist") + " (ID " + data.id + ")");
-            });
-
-            port.on("USI-BACKEND:get-alert", function (text: string) {
-                notify(text);
-            });
-
-            /**
-             * Wenn das Userscript schon existiert und überschrieben werden kann
-             */
-            port.on("USI-BACKEND:same-userscript-was-found", confirmationUserscriptUpdate);
-
-            // Event Weiterleitung vom Backend
-            port.on("USI-BACKEND:To-Frontend-Document-Event-Forwarder", function (data: any) {
-                jQuery(document).trigger(data.event_name, [data.action, data.param1]);
-            });
-
-        }
-
     };
 
     return self;

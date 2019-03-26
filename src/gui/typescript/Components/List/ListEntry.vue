@@ -173,6 +173,8 @@ import language_replace_in_DOM from "../../Language";
 import HighlightjsComponent from "./Highlight.vue";
 
 import Vue from "vue";
+import SPA from "lib/spa/handler";
+import userscript_storage from "lib/storage/storage";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -256,12 +258,19 @@ export default Vue.component(componentName, {
         },
 
         // fragt nach den gesetzten Greasemonkey Variablen
-        GMValuesGet: function (): void {
-            event_controller()
-                .request.userscript.gm_values(this.localScript.id)
-                .then((GMValues: any) => {
-                    this.GMValues = GMValues;
-                });
+        GMValuesGet: async function (): Promise<void> {
+
+                    let script_storage = await userscript_storage();
+
+                    let userscript = <any>script_storage.getById(this.localScript.id);
+
+                    var result = [], completeValStore = userscript.getValStore();
+                    for (var name in completeValStore) {
+                        // Key => value ...
+                        result.push({ key: name, value: completeValStore[name] });
+                    }
+                    this.GMValues =  result as any;
+
         },
 
         toggleOverview: function (force: any): void {
@@ -297,14 +306,20 @@ export default Vue.component(componentName, {
         },
 
         // entfernt alle gesetzten GM_Values
-        GMValuesDelete: function (): void {
+        GMValuesDelete: async function (): Promise<any> {
             // Frage den Benutzer nochmals ob er wirklich alle gesetzten Werte entfernen möchte
-            if (
-                window.confirm(browser.i18n.getMessage("confirm_delete_all_GMValues"))
-            ) {
-                event_controller().set.userscript.gm_values.delete_all(
-                    this.localScript.id
-                );
+            const confirmed = window.confirm(browser.i18n.getMessage("confirm_delete_all_GMValues"));
+
+            if(confirmed === false){
+                return;
+            }
+            // Wenn dies aufgerufen wird, werden die vorhanden Variablen des Userscripts entfernt (val_store)
+
+            let script_storage = await userscript_storage();
+            let userscript_handle = script_storage.getById(this.localScript.id);
+            if (userscript_handle !== false) {
+                // entfernen aller zuvor gesetzten Variablen
+                userscript_handle.resetValStore().save();
             }
         },
 
@@ -321,16 +336,24 @@ export default Vue.component(componentName, {
         },
 
         start_spa: function (): void {
-            event_controller().request.userscript.start_spa(this.localScript);
+            /**
+             * Startet ein SPA, in einem neuen Tab
+             */
+            const spa_instance = new SPA();
+            spa_instance.createPage(this.localScript.id);
         },
 
         // Übergibt die URL an die Nachlade Funktion
         loadAgain: function (): void {
             if (/^http/.test(this.localScript.moreinformations.url)) {
                 // URL muss mit http beginnen
-                event_controller().request.userscript.reload_from_source(
-                    this.localScript.moreinformations.url
-                );
+                /**
+                 * @todo
+                 * Zunächst einmal nur einen neuen Tab öffnen
+                 * Skript später wieder richtig laden
+                 */
+                browser.tabs.create({ url: this.localScript.moreinformations.url });
+
             } else {
                 notify(
                     "only source from http:// or https:// are allowed at the moment"

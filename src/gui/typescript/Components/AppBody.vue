@@ -108,9 +108,6 @@ export default Vue.component(componentName, {
             .then((config: usi.Storage.Config) => {
                 this.configuration = config;
 
-                // initialisiere die globalen Events für die Kommunikation mit dem Backend
-                event_controller().register_global_events();
-
                 // Eigenes CSS
                 if (this.configuration.own_css.length > 0) {
                     // CSS aktivieren
