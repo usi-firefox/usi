@@ -110,157 +110,174 @@ const placeholderAddCss = `@import url('https://fonts.googleapis.com/css?family=
 }`;
 
 export default Vue.component(componentName, {
-    data: function () {
-        return {
-            load_script_with_js_end: false,
-            greasemonkey_global_active: false,
-            hightlightjs_active: false,
-            AddCSS: "",
-            config : <usi.Storage.Config> {},
-            LastCSS: <string[]>[],
-            exampleAddCSS: placeholderAddCss,
+  data: function() {
+    return {
+      load_script_with_js_end: false,
+      greasemonkey_global_active: false,
+      hightlightjs_active: false,
+      AddCSS: "",
+      config: <usi.Storage.Config>{},
+      LastCSS: <string[]>[],
+      exampleAddCSS: placeholderAddCss,
 
-            completeExport: false,
-            dialogWindow: false,
-            dialogWindowText: "",
-            dialogStep: 0,
-            lang: {
-                deactivated: browser.i18n.getMessage("deactivated"),
-                activated: browser.i18n.getMessage("activated"),
-                yes: browser.i18n.getMessage("yes"),
-                no: browser.i18n.getMessage("no"),
-                show: browser.i18n.getMessage("show"),
-                hide: browser.i18n.getMessage("hide")
-            }
-        };
+      completeExport: false,
+      dialogWindow: false,
+      dialogWindowText: "",
+      dialogStep: 0,
+      lang: {
+        deactivated: browser.i18n.getMessage("deactivated"),
+        activated: browser.i18n.getMessage("activated"),
+        yes: browser.i18n.getMessage("yes"),
+        no: browser.i18n.getMessage("no"),
+        show: browser.i18n.getMessage("show"),
+        hide: browser.i18n.getMessage("hide")
+      }
+    };
+  },
+  created: async function() {
+    this.config = await config_storage().get();
+
+    this.load_script_with_js_end = this.config.load_script_with_js_end;
+    this.greasemonkey_global_active = this.config.greasemonkey.global_active;
+    this.hightlightjs_active = this.config.hightlightjs.active;
+
+    this.AddCSS = this.config.own_css;
+  },
+  watch: {
+    /** @todo */
+    // Schreibe die Neue Konfiguration
+    load_script_with_js_end: function(newValue: boolean) {
+      this.config.load_script_with_js_end = newValue;
+      config_storage().set(this.config);
     },
-    created: async function () { 
-        this.config = await config_storage().get();
-        
-        this.load_script_with_js_end = this.config.load_script_with_js_end;
-        this.greasemonkey_global_active = this.config.greasemonkey.global_active;
-        this.hightlightjs_active = this.config.hightlightjs.active;
-        
-        this.AddCSS = this.config.own_css;
+    greasemonkey_global_active: function(newValue: boolean) {
+      this.config.greasemonkey.global_active = newValue;
+      config_storage().set(this.config);
     },
-    watch: {
-        /** @todo */
-        // Schreibe die Neue Konfiguration
-        load_script_with_js_end: function (newValue : boolean){
-            this.config.load_script_with_js_end = newValue;
-            config_storage().set(this.config);
-        },
-        greasemonkey_global_active: function (newValue : boolean) {
-            this.config.greasemonkey.global_active = newValue;
-            config_storage().set(this.config);
-        },
-        hightlightjs_active: function (newValue : boolean) {
-            this.config.hightlightjs.active = newValue;
-            config_storage().set(this.config);
-        }
-    },
-    methods: {
-        /**
-         * Alle Userscripte entfernen
-         * @returns {undefined}
-         */
-        deleteAll: function (step: number): void {
-            this.dialogStep = step;
-
-            // Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
-            switch (this.dialogStep) {
-                case 1:
-                    // Sicherheitsabfrage
-                    this.dialogWindow = true;
-                    this.dialogWindowText = browser.i18n.getMessage("really_reset_all_settings");
-                    break;
-
-                case 2:
-                    // erneute Sicherheitsabfrage
-                    this.dialogWindow = true;
-                    this.dialogWindowText = browser.i18n.getMessage("really_really_reset_all_settings");
-                    break;
-
-                case 3:
-                    // nun werden alle Userscripte gelöscht
-                    event_controller().request.userscript.delete_all();
-
-                    this.dialogWindow = false;
-                    break;
-                default:
-                    throw "Unbekannter Step : " + step;
-            }
-        },
-
-        // Prüfe ob für die Skripte Updates gefunden wurden!
-        checkForUpdates: async function () {
-            // durchlaufe alle Einträge und suche nach einer UpdateURL
-            let script_storage = await userscript_storage();
-            let all_userscripts = script_storage.getAll();
-
-            debugger;
-
-            if (all_userscripts.length === 0) {
-                return "no Userscripts available";
-            }
-
-            const check_this_userscripts = all_userscripts.filter((userscript : any) => {
-                return isset(userscript.settings["updateURL"]);
-            });
-            
-            const load_resource_instance = new load_resource();
-
-            check_this_userscripts.forEach(async (userscript : any) => {
-                const {updateURL, version} = userscript.settings;
-                const userscript_id = userscript.id;
-
-                try{
-                    const loaded_userscript = await <any>load_resource_instance.load_userscript_by_url(updateURL);
-                    if (!loaded_userscript.target.responseText) {
-                        // keine antwort
-                        return false;
-                    }
-                
-                const loaded_userscript_text = loaded_userscript.target.responseText;
-
-                // @todo Konfig suchen und danach die Optionen Parsen...
-                const loaded_userscript_settings = <any>parse_userscript().find_settings(loaded_userscript_text);
-
-                if(loaded_userscript_settings === null){
-                    return false;
-                }
-
-                // Prüfe ob die Versionen verschieden sind!
-                if (loaded_userscript_settings["version"] === version) {
-                    return false;
-                }
-
-                //wurde gefunden, möchtest du es aktualisieren?")){
-                let confirmed = window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"));
-                
-                if(!confirmed){
-                    return false;
-                }
-
-                // Dieses Skript wird nun aktualisiert
-                event_controller().set.userscript.override(loaded_userscript_text);
-                
-                }catch {
-                    // keine Userscript erhalten
-                    return false;
-                }
-            });
-        },
-
-        // exportiere die Skripte
-        exportAll: function (): void {
-            if (this.completeExport === true) {
-                event_controller().get.userscript.export.all(true);
-            } else {
-                event_controller().get.userscript.export.all(false);
-            }
-        }
+    hightlightjs_active: function(newValue: boolean) {
+      this.config.hightlightjs.active = newValue;
+      config_storage().set(this.config);
     }
+  },
+  methods: {
+    /**
+     * Alle Userscripte entfernen
+     * @returns {undefined}
+     */
+    deleteAll: function(step: number): void {
+      this.dialogStep = step;
+
+      // Doppelte Sicherheitsabfrage, bevor wirklich alles gelöscht wird!
+      switch (this.dialogStep) {
+        case 1:
+          // Sicherheitsabfrage
+          this.dialogWindow = true;
+          this.dialogWindowText = browser.i18n.getMessage(
+            "really_reset_all_settings"
+          );
+          break;
+
+        case 2:
+          // erneute Sicherheitsabfrage
+          this.dialogWindow = true;
+          this.dialogWindowText = browser.i18n.getMessage(
+            "really_really_reset_all_settings"
+          );
+          break;
+
+        case 3:
+          // nun werden alle Userscripte gelöscht
+          event_controller().request.userscript.delete_all();
+
+          this.dialogWindow = false;
+          break;
+        default:
+          throw "Unbekannter Step : " + step;
+      }
+    },
+
+    // Prüfe ob für die Skripte Updates gefunden wurden!
+    checkForUpdates: async function() {
+      // durchlaufe alle Einträge und suche nach einer UpdateURL
+      let script_storage = await userscript_storage();
+      let all_userscripts = script_storage.getAll();
+
+      debugger;
+
+      if (all_userscripts.length === 0) {
+        return "no Userscripts available";
+      }
+
+      const check_this_userscripts = all_userscripts.filter(
+        (userscript: any) => {
+          return isset(userscript.settings["updateURL"]);
+        }
+      );
+
+      const load_resource_instance = new load_resource();
+
+      check_this_userscripts.forEach(async (userscript: any) => {
+        const { updateURL, version } = userscript.settings;
+        const userscript_id = userscript.id;
+
+        try {
+          const loaded_userscript = await (<any>(
+            load_resource_instance.load_userscript_by_url(updateURL)
+          ));
+          if (!loaded_userscript.target.responseText) {
+            // keine antwort
+            return false;
+          }
+
+          const loaded_userscript_text = loaded_userscript.target.responseText;
+
+          // @todo Konfig suchen und danach die Optionen Parsen...
+          const loaded_userscript_settings = <any>(
+            parse_userscript().find_settings(loaded_userscript_text)
+          );
+
+          if (loaded_userscript_settings === null) {
+            return false;
+          }
+
+          // Prüfe ob die Versionen verschieden sind!
+          if (loaded_userscript_settings["version"] === version) {
+            return false;
+          }
+
+          //wurde gefunden, möchtest du es aktualisieren?")){
+          let confirmed = window.confirm(
+            browser.i18n.getMessage(
+              "same_userscript_was_found_ask_update_it_1"
+            ) +
+              userscript_id +
+              browser.i18n.getMessage(
+                "same_userscript_was_found_ask_update_it_2"
+              )
+          );
+
+          if (!confirmed) {
+            return false;
+          }
+
+          // Dieses Skript wird nun aktualisiert
+          event_controller().set.userscript.override(loaded_userscript_text);
+        } catch {
+          // keine Userscript erhalten
+          return false;
+        }
+      });
+    },
+
+    // exportiere die Skripte
+    exportAll: function(): void {
+      if (this.completeExport === true) {
+        event_controller().get.userscript.export.all(true);
+      } else {
+        event_controller().get.userscript.export.all(false);
+      }
+    }
+  }
 });
 </script>
 
