@@ -23,8 +23,7 @@ declare namespace usi.Tabs {
 
 declare namespace usi.Storage {
     interface Config {
-        own_css: string
-        , load_script_with_js_end: boolean
+        load_script_with_js_end: boolean
         , hightlightjs: {
             active: boolean
             , style: string

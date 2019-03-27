@@ -87,7 +87,7 @@ import event_controller from "../events/event_controller";
 
 import Vue from "vue";
 import userscript_storage from "lib/storage/storage";
-import { isset } from "lib/helper/basic_helper";
+import { isset, download_file } from "lib/helper/basic_helper";
 import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
 
@@ -115,9 +115,7 @@ export default Vue.component(componentName, {
       load_script_with_js_end: false,
       greasemonkey_global_active: false,
       hightlightjs_active: false,
-      AddCSS: "",
       config: <usi.Storage.Config>{},
-      LastCSS: <string[]>[],
       exampleAddCSS: placeholderAddCss,
 
       completeExport: false,
@@ -140,8 +138,6 @@ export default Vue.component(componentName, {
     this.load_script_with_js_end = this.config.load_script_with_js_end;
     this.greasemonkey_global_active = this.config.greasemonkey.global_active;
     this.hightlightjs_active = this.config.hightlightjs.active;
-
-    this.AddCSS = this.config.own_css;
   },
   watch: {
     /** @todo */
@@ -270,11 +266,71 @@ export default Vue.component(componentName, {
     },
 
     // exportiere die Skripte
-    exportAll: function(): void {
-      if (this.completeExport === true) {
-        event_controller().get.userscript.export.all(true);
+    exportAll: async function(): Promise<void> {
+      /**
+       * Erzeugt ein Download Fenster für den Fertigen Export
+       */
+
+      let script_storage = await userscript_storage();
+
+      let result_export = "",
+        result_export_tmp = [],
+        separator = "//*******************USI-EXPORT*************************//\n",
+        date_obj = new Date();
+
+      let export_date = [
+        date_obj.getFullYear(),
+        date_obj.getMonth(),
+        date_obj.getDate(),
+        "-",
+        date_obj.getHours(),
+        date_obj.getMinutes()
+      ].join("-");
+      // Hinweis darauf ob alles exportiert wurde und lediglich die Userscripte
+      // ---> complete_export
+
+      let infos = [
+        "USI-EXPORT",
+        "VERSION:0.2",
+        "DATE:" + export_date,
+        "COMPLETE:" + this.completeExport
+      ];
+      // infos hinzufügen
+      for (var i in infos) {
+        result_export += "//" + infos[i] + "\n";
+      }
+
+      // Trenner hinzufügen
+      result_export += separator + separator + separator;
+      let all_userscripts = script_storage.getAll();
+      // Userscript aus dem script_storage holen
+      for (var j in all_userscripts) {
+        if (this.completeExport === false) {
+          result_export_tmp.push(all_userscripts[j].userscript);
+        } else {
+          result_export_tmp.push(all_userscripts[j]);
+        }
+      }
+
+      if (result_export_tmp.length === 0) {
+        // Kein Userscript für den Export vorhanden
+        return;
+      }
+
+      if (this.completeExport === false) {
+        result_export += result_export_tmp.join("\n" + separator);
       } else {
-        event_controller().get.userscript.export.all(false);
+        result_export += JSON.stringify(result_export_tmp);
+      }
+
+      if (this.completeExport === true) {
+        download_file(result_export, "text/plain", "usi-export.usi.json");
+      } else {
+        download_file(
+          result_export,
+          "application/octet-stream",
+          "usi-export.usi.js"
+        );
       }
     }
   }

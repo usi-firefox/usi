@@ -166,7 +166,7 @@
 declare var jQuery: any;
 declare var global_settings: any;
 
-import {empty,notify} from "lib/helper/basic_helper";
+import {empty,notify, download_file} from "lib/helper/basic_helper";
 import event_controller from "../../events/event_controller";
 import language_replace_in_DOM from "../../Language";
 
@@ -233,8 +233,14 @@ export default Vue.component(componentName, {
         this.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
     },
     methods: {
-        export_script: function (): void {
-            event_controller().get.userscript.export.single(this.localScript.id);
+        export_script: async function (): Promise<void> {
+            const script_storage = await userscript_storage();
+            const userscript_handler = <any>script_storage.getById(this.localScript.id);
+
+            if (userscript_handler !== false) {
+                // Bietet das Userscript zur lokalen Speicherung an!
+                download_file(userscript_handler.getUserscriptContent(), "text/plain", encodeURI(userscript_handler.getSettings()["name"] + ".user.js"));
+            }
         },
         add_icon: function (): void {
             // Icon mit usi logo füllen, falls leer

@@ -1,8 +1,7 @@
 export default class sdk_to_webext {
 
     private config_default: usi.Storage.Config = {
-        own_css: ""
-        , load_script_with_js_end: true
+        load_script_with_js_end: true
         , hightlightjs: {
             active: true
             , style: "default"
@@ -33,9 +32,6 @@ export default class sdk_to_webext {
                 config: this.config_default
             };
 
-            if (typeof old_sdk_prefs.config_add_css === "string") {
-                new_sdk_prefs.config.own_css = old_sdk_prefs.config_add_css;
-            }
             if (typeof old_sdk_prefs.enableExternalScriptLoadQuestion === "boolean") {
                 new_sdk_prefs.config.load_script_with_js_end = old_sdk_prefs.enableExternalScriptLoadQuestion;
             }

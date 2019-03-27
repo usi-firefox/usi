@@ -108,12 +108,6 @@ export default Vue.component(componentName, {
             .then((config: usi.Storage.Config) => {
                 this.configuration = config;
 
-                // Eigenes CSS
-                if (this.configuration.own_css.length > 0) {
-                    // CSS aktivieren
-                    this.change_css(this.configuration.own_css);
-                }
-
                 // initial die overview Komponente laden
                 this.hide_side_menu_and_load(0);
             })

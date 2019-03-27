@@ -1,7 +1,7 @@
 declare var jQuery: any;
 declare var document: any;
 
-import { notify, getExtId, isset } from "lib/helper/basic_helper";
+import { notify, getExtId, isset, download_file } from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 import page_injection_helper from "lib/inject/page_injection_helper";
@@ -12,36 +12,6 @@ import parse_userscript from "lib/parse/parse_userscript";
 
 declare function unescape(s: string): string;
 
-/**
- * erzeugt einen Download (Datei Speichern Dialog)
- * @param {string} data
- * @param {string} type
- * @param {string} filename
- * @returns {void}
- */
-function download_file(data: string, type?: string, filename?: string): void {
-    var link = document.createElement("a");
-    // Dateinamen angeben
-    if (filename) {
-        // z.B. %20 durch Leerzeichen ersetzen
-        link.download = decodeURIComponent(filename);
-    }
-
-    // data type festlegen
-    if (type) {
-        link.href = "data:" + type;
-    } else {
-        link.href = "data:text/plain";
-    }
-
-    // Datenanhängen
-    link.href += ";base64," + btoa(unescape(encodeURIComponent(data)));
-
-    // Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
 
 function getBackendPort(): usi.Backend.Port {
     // Abstraktions Möglichkeit
@@ -69,63 +39,7 @@ export default function event_controller() {
         get: {
             userscript: {
                 export: {
-                    /** 
-                     * Erzeugt ein Download Fenster für den Fertigen Export
-                     */
-                    all: async function (complete_export: boolean) {
-
-                        let script_storage = await userscript_storage();
-
-                        let result_export = "",
-                            result_export_tmp = [],
-                            separator = "//*******************USI-EXPORT*************************//\n",
-                            date_obj = new Date();
-
-                        let export_date = [date_obj.getFullYear(),
-                        date_obj.getMonth(),
-                        date_obj.getDate(),
-                            "-",
-                        date_obj.getHours(),
-                        date_obj.getMinutes()].join("-");
-                        // Hinweis darauf ob alles exportiert wurde und lediglich die Userscripte
-                        // ---> complete_export
-
-                        let infos = ["USI-EXPORT", "VERSION:0.2", "DATE:" + export_date, "COMPLETE:" + complete_export];
-                        // infos hinzufügen
-                        for (var i in infos) {
-                            result_export += "//" + infos[i] + "\n";
-                        }
-
-                        // Trenner hinzufügen
-                        result_export += separator + separator + separator;
-                        let all_userscripts = script_storage.getAll();
-                        // Userscript aus dem script_storage holen
-                        for (var j in all_userscripts) {
-                            if (complete_export === false) {
-                                result_export_tmp.push(all_userscripts[j].userscript);
-                            } else {
-                                result_export_tmp.push(all_userscripts[j]);
-                            }
-                        }
-
-                        if (result_export_tmp.length > 0) {
-                            if (complete_export === false) {
-                                result_export += result_export_tmp.join("\n" + separator);
-                            } else {
-                                result_export += JSON.stringify(result_export_tmp);
-                            }
-
-                            if (jQuery("#usi-config-change-complete-export").prop("checked") === true) {
-                                download_file(result_export, "text/plain", "usi-export.usi.json");
-                            } else {
-                                download_file(result_export, "application/octet-stream", "usi-export.usi.js");
-                            }
-                        } else {
-                            // Kein Userscript für den Export vorhanden
-                        }
-
-                    }
-                    , single: async function (id: number) {
+                    single: async function (id: number) {
                         let script_storage = await userscript_storage();
                         let userscript_handler = <any>script_storage.getById(id);
 
