@@ -35,27 +35,8 @@ var port = getBackendPort();
 export default function event_controller() {
 
     var self = {
-        // Daten vom Backend erhalten
-        get: {
-            userscript: {
-                export: {
-                    single: async function (id: number) {
-                        let script_storage = await userscript_storage();
-                        let userscript_handler = <any>script_storage.getById(id);
-
-                        if (userscript_handler !== false) {
-                            // Bietet das Userscript zur lokalen Speicherung an!
-                            download_file(userscript_handler.getUserscriptContent(), "text/plain", encodeURI(userscript_handler.getSettings()["name"] + ".user.js"));
-                        }
-
-                    }
-                }
-
-            }
-        }
-
         // löst eine Aktion im Backend aus, ohne direkt Daten zurück zu erhalten
-        , request: {
+        request: {
             userscript: {
                 all: async function (c?: Function) {
                     let script_storage = await userscript_storage();

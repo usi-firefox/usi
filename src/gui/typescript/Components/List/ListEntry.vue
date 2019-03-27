@@ -266,16 +266,16 @@ export default Vue.component(componentName, {
         // fragt nach den gesetzten Greasemonkey Variablen
         GMValuesGet: async function (): Promise<void> {
 
-                    let script_storage = await userscript_storage();
+            let script_storage = await userscript_storage();
 
-                    let userscript = <any>script_storage.getById(this.localScript.id);
+            let userscript = <any>script_storage.getById(this.localScript.id);
 
-                    var result = [], completeValStore = userscript.getValStore();
-                    for (var name in completeValStore) {
-                        // Key => value ...
-                        result.push({ key: name, value: completeValStore[name] });
-                    }
-                    this.GMValues =  result as any;
+            var result = [], completeValStore = userscript.getValStore();
+            for (var name in completeValStore) {
+                // Key => value ...
+                result.push({ key: name, value: completeValStore[name] });
+            }
+            this.GMValues =  result as any;
 
         },
 

@@ -97,7 +97,6 @@
 <script lang="ts">
 import Vue from "vue";
 
-declare var jQuery: any;
 declare var window: any;
 
 import event_controller from "../events/event_controller";
@@ -241,20 +240,13 @@ export default Vue.component(componentName, {
             }
 
             // Beispiel Datei laden
-            jQuery.ajax({
-                url:
-                    window.location.origin +
-                    "/gui/example/" +
-                    lang_local +
-                    "-example.user.js",
-                dataType: "text",
-                success: (example_userscript: string) => {
-                    this.textarea.content = example_userscript;
-                },
-                error: () => {
-                    // versuche es erneut mit der englischen Variante
-                    this.load_example(event, "en", error_count--);
-                }
+            const url = window.location.origin + "/gui/example/" + lang_local + "-example.user.js";
+
+            fetch(url).then(async (example_userscript) => {
+              this.textarea.content = await example_userscript.text();
+            }).catch(() =>{
+              // versuche es erneut mit der englischen Variante
+              this.load_example(event, "en", error_count--);
             });
         },
 

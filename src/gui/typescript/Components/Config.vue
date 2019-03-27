@@ -80,8 +80,6 @@
 </template>
 
 <script lang="ts">
-declare var jQuery: any;
-
 import config_storage from "lib/storage/config";
 import event_controller from "../events/event_controller";
 
@@ -132,30 +130,42 @@ export default Vue.component(componentName, {
       }
     };
   },
-  created: async function() {
-    this.config = await config_storage().get();
+  created: function() {
+    config_storage()
+      .get()
+      .then(config => {
+        this.config = config;
 
-    this.load_script_with_js_end = this.config.load_script_with_js_end;
-    this.greasemonkey_global_active = this.config.greasemonkey.global_active;
-    this.hightlightjs_active = this.config.hightlightjs.active;
+        this.load_script_with_js_end = this.config.load_script_with_js_end;
+        if (typeof this.config.greasemonkey === "object") {
+          this.greasemonkey_global_active = this.config.greasemonkey.global_active;
+        }
+        if (typeof this.config.hightlightjs === "object") {
+          this.hightlightjs_active = this.config.hightlightjs.active;
+        }
+      });
   },
   watch: {
     /** @todo */
     // Schreibe die Neue Konfiguration
     load_script_with_js_end: function(newValue: boolean) {
       this.config.load_script_with_js_end = newValue;
-      config_storage().set(this.config);
+      this.setConfig();
     },
     greasemonkey_global_active: function(newValue: boolean) {
       this.config.greasemonkey.global_active = newValue;
-      config_storage().set(this.config);
+      this.setConfig();
     },
     hightlightjs_active: function(newValue: boolean) {
       this.config.hightlightjs.active = newValue;
-      config_storage().set(this.config);
+      this.setConfig();
     }
   },
   methods: {
+    setConfig() {
+      // Konfiguration sichern
+      config_storage().set(this.config);
+    },
     /**
      * Alle Userscripte entfernen
      * @returns {undefined}
@@ -187,6 +197,7 @@ export default Vue.component(componentName, {
 
           this.dialogWindow = false;
           break;
+
         default:
           throw "Unbekannter Step : " + step;
       }
@@ -273,12 +284,8 @@ export default Vue.component(componentName, {
 
       let script_storage = await userscript_storage();
 
-      let result_export = "",
-        result_export_tmp = [],
-        separator = "//*******************USI-EXPORT*************************//\n",
-        date_obj = new Date();
-
-      let export_date = [
+      const date_obj = new Date();
+      const export_date = [
         date_obj.getFullYear(),
         date_obj.getMonth(),
         date_obj.getDate(),
@@ -286,48 +293,46 @@ export default Vue.component(componentName, {
         date_obj.getHours(),
         date_obj.getMinutes()
       ].join("-");
-      // Hinweis darauf ob alles exportiert wurde und lediglich die Userscripte
-      // ---> complete_export
 
-      let infos = [
+      const result_export_header = [
         "USI-EXPORT",
-        "VERSION:0.2",
+        "VERSION:0.3",
         "DATE:" + export_date,
-        "COMPLETE:" + this.completeExport
-      ];
-      // infos hinzufügen
-      for (var i in infos) {
-        result_export += "//" + infos[i] + "\n";
-      }
+        "COMPLETE:" + this.completeExport,
+        ...new Array(5).fill("*******************USI-EXPORT*************************//")
+      ].map(line => {
+        // Trenner 5 mal hinzufügen
+        return "//" + line + "\n";
+      });
 
-      // Trenner hinzufügen
-      result_export += separator + separator + separator;
       let all_userscripts = script_storage.getAll();
-      // Userscript aus dem script_storage holen
-      for (var j in all_userscripts) {
-        if (this.completeExport === false) {
-          result_export_tmp.push(all_userscripts[j].userscript);
-        } else {
-          result_export_tmp.push(all_userscripts[j]);
-        }
-      }
-
-      if (result_export_tmp.length === 0) {
+      if (all_userscripts.length === 0) {
         // Kein Userscript für den Export vorhanden
         return;
       }
 
-      if (this.completeExport === false) {
-        result_export += result_export_tmp.join("\n" + separator);
-      } else {
-        result_export += JSON.stringify(result_export_tmp);
-      }
+      const result_export_userscripts = all_userscripts.map((data: any) => {
+        if (this.completeExport) {
+          return data;
+        } else {
+          return data.userscript + "\n//*******************USERSCRIPT*************************//";
+        }
+      });
 
-      if (this.completeExport === true) {
-        download_file(result_export, "text/plain", "usi-export.usi.json");
+      let result_export_complete = [
+        ...result_export_header,
+        ...result_export_userscripts
+      ];
+
+      if (this.completeExport) {
+        download_file(
+          JSON.stringify(result_export_complete),
+          "text/plain",
+          "usi-export.usi.json"
+        );
       } else {
         download_file(
-          result_export,
+          result_export_complete.join(),
           "application/octet-stream",
           "usi-export.usi.js"
         );
