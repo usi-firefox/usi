@@ -4,7 +4,7 @@
     <v-container>
         <v-card>
             <v-card-title>
-                <h3 data-usi-lang="direct_userscript_upload"></h3>
+                <h3 v-lang="'direct_userscript_upload'"></h3>
                 <!--Userscript direkt hochladen-->
                 &nbsp;
                 <v-icon>cloud_upload</v-icon>
@@ -12,7 +12,7 @@
             <v-card-text>
                 <v-card-actions>
                     <input type="file" accept="text/*" id="direct-userscript-upload" />
-                    <v-btn class="text-capitalize" @click="loadLocalFile" data-usi-lang="start">
+                    <v-btn class="text-capitalize" @click="loadLocalFile" v-lang="'start'">
                         <!--Start-->
                     </v-btn>
                 </v-card-actions>
@@ -21,10 +21,10 @@
 
         <v-card>
             <v-card-title>
-                <h3 data-usi-lang="alternative_charset"></h3>
+                <h3 v-lang="'alternative_charset'"></h3>
                 <!--Alternatives Charset-->
             </v-card-title>
-            <v-card-text data-usi-lang="alternative_charset_description">
+            <v-card-text v-lang="'alternative_charset_description'">
                 <!--Wenn du Probleme mit der Kodierung der Dateien haben solltest, kannst du hier eine andere Kodierung festlegen-->
             <v-card-actions>
                 <v-flex xs2>

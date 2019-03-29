@@ -22,7 +22,7 @@
                 <!-- Sidebar Eintrag -->
                 <v-list-tile class="white" v-once v-for="(entry,index) in menuEntries" v-bind:key="index" @click="hide_side_menu_and_load(index)">
                     <v-list-tile-content :style="index < (menuEntries.length - 1) ? 'border-bottom: 1px solid grey' : ''">
-                        <v-list-tile-title v-bind:data-usi-lang="entry.lang"></v-list-tile-title>
+                        <v-list-tile-title v-lang="entry.lang"></v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
             </v-navigation-drawer>
@@ -54,7 +54,6 @@ declare var jQuery: any;
 
 import event_controller from "../events/event_controller";
 
-import language_replace_in_DOM from "../Language";
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";
@@ -126,15 +125,6 @@ export default Vue.component(componentName, {
                     this.snackbar_text = data.data;
                     this.snackbar = true;
                     break;
-                case "usi:lang":
-                    Vue.nextTick().then(function () {
-                        /**
-                         * nachdem die create() ausgeführt wurde,
-                         * müssen noch die Attribute data-usi-lang ersetzt werden
-                         */
-                        language_replace_in_DOM();
-                    });
-                    break;
                 case "usi:reset-extraData":
                     this.extraData = {};
                     break;
@@ -191,21 +181,8 @@ export default Vue.component(componentName, {
             // Aktive Komponente umschalten
             this.activeComponent = menuEntry.name;
 
-            this.replace_language_attributes();
-
             this.drawer = false;
         },
-
-        replace_language_attributes: function (): void {
-            Vue.nextTick().then(function () {
-                /**
-                 * nachdem die create() ausgeführt wurde,
-                 * müssen noch die Attribute data-usi-lang ersetzt werden
-                 */
-                language_replace_in_DOM();
-            });
-        },
-
         // Toggle Sidebar Menu
     },
     computed: {},

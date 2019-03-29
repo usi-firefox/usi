@@ -4,7 +4,7 @@
     <v-layout>
       <v-flex x12>
         <h3 v-if="script_id">
-          <span data-usi-lang="edit_userscript_with_id">: {{script_id}}</span>
+          <span v-lang="'edit_userscript_with_id'">: {{script_id}}</span>
           <!--Userscript überschreiben?-->
           <v-switch
             v-model="overwrite_without_warning"
@@ -36,7 +36,7 @@
             <!--Userscript Beispiel-->
             <v-btn @click="save" color="info">
               <v-icon>save</v-icon>&nbsp;
-              <span data-usi-lang="save"></span>
+              <span v-lang="'save'"></span>
             </v-btn>
 
             <v-btn @click="undo" color="warning">
@@ -48,14 +48,14 @@
             <v-btn
               id="usi-edit-script-load-example"
               @click="load_example"
-              data-usi-lang="load_example"
+              v-lang="'load_example'"
             >
               <!--Beispiel laden-->
             </v-btn>
             <v-btn
               id="usi-edit-script-textarea-clear"
               @click="textarea_clear"
-              data-usi-lang="clear"
+              v-lang="'clear'"
             >
               <!--Textfeld leeren-->
             </v-btn>

@@ -68,7 +68,7 @@
                                     <v-list-tile @click="loadAgain">
                                         <v-list-tile-action><i class="material-icons">repeat</i></v-list-tile-action>
                                         <v-list-tile-title>
-                                            <span data-usi-lang="reload_from_source"></span>
+                                            <span v-lang="'reload_from_source'"></span>
                                         </v-list-tile-title>
                                     </v-list-tile>
                                 </span>
@@ -104,7 +104,7 @@
                         <p v-if="localScript.settings.name"><strong>Name</strong>: {{localScript.settings.name}} </p>
                         <p v-if="localScript.settings.author"><strong>Author</strong>: {{localScript.settings.author}} </p>
                         <p v-if="localScript.settings.version"><strong>Version</strong>: {{localScript.settings.version}} </p>
-                        <p v-if="localScript.settings.description"><strong data-usi-lang="description"></strong>:{{localScript.settings.description}} </p>
+                        <p v-if="localScript.settings.description"><strong v-lang="'description'"></strong>:{{localScript.settings.description}} </p>
 
                         <!--Require Skripte-->
                         <div v-if="localScript.require_scripts.length > 0">
@@ -129,7 +129,7 @@
 
                         <!--Greasemonkey Variablen-->
                         <div class="row" v-if="GMValues.length > 0">
-                            <label data-usi-lang="GMValues">
+                            <label v-lang="'GMValues'">
                                 <!--Zeige die gespeicherten GM Variablen-->
                             </label>
                             <div class="col-xs-12">
@@ -228,9 +228,6 @@ export default Vue.component(componentName, {
         if (typeof this.localScript.settings.spa !== "undefined") {
             this.localScript.isSpa = true;
         }
-
-        // @todo
-        this.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
     },
     methods: {
         export_script: async function (): Promise<void> {

@@ -2,27 +2,27 @@
   <!--USI Konfiguration bearbeiten-->
   <v-container grid-list-md>
     <div>
-      <h3 data-usi-lang="delete_all_userscripts">
+      <h3 v-lang="'delete_all_userscripts'">
         <!--Alle Userscripts entfernen-->
       </h3>
 
-      <v-btn color="error" @click="deleteAll(1)" data-usi-lang="revert_all"></v-btn>
+      <v-btn color="error" @click="deleteAll(1)" v-lang="'revert_all'"></v-btn>
       <!--alles zurücksetzen-->
     </div>
     <div>
-      <h3 data-usi-lang="check_updates_for_all_userscripts">
+      <h3 v-lang="'check_updates_for_all_userscripts'">
         <!--Alle Userscripts auf Updates überprüfen-->
       </h3>
 
-      <v-btn @click="checkForUpdates" color="info" data-usi-lang="check_now"></v-btn>
+      <v-btn @click="checkForUpdates" color="info" v-lang="'check_now'"></v-btn>
       <!--jetzt prüfen-->
     </div>
     <div>
-      <h3 data-usi-lang="enableExternalScriptLoadQuestion_title">
+      <h3 v-lang="'enableExternalScriptLoadQuestion_title'">
         <!--Importiere externe Skripte-->
       </h3>
       <label>
-        <span data-usi-lang="enableExternalScriptLoadQuestion_description">
+        <span v-lang="'enableExternalScriptLoadQuestion_description'">
           <!--Möchtest du das USI dich fragt, ob ein Userscript importiert werden soll? (Beim Aufruf von UserScript Sourcen, deren URL auf `user.js` endet)-->
         </span>
       </label>
@@ -33,13 +33,13 @@
     </div>
 
     <div>
-      <h3 data-usi-lang="options_activate_highlightjs_title">
+      <h3 v-lang="'options_activate_highlightjs_title'">
         <!--HighlightJS aktiv-->
       </h3>
       <v-switch v-model="hightlightjs_active" :label="hightlightjs_active ? lang.yes : lang.no"></v-switch>
     </div>
     <div>
-      <h3 data-usi-lang="options_always_activate_greasemonkey_title">
+      <h3 v-lang="'options_always_activate_greasemonkey_title'">
         <!--Greasemonkey immer aktivieren-->
       </h3>
       <v-switch
@@ -48,15 +48,15 @@
       ></v-switch>
     </div>
     <div>
-      <h3 data-usi-lang="export_all_userscripts">
+      <h3 v-lang="'export_all_userscripts'">
         <!--Alle Userscripts exportieren-->
       </h3>
-      <label data-usi-lang="complete_export">
+      <label v-lang="'complete_export'">
         <!--Kompletter Export-->
       </label>
       <v-switch v-model="completeExport" :label="completeExport ? lang.yes : lang.no"></v-switch>
       <!--jetzt exportieren-->
-      <v-btn @click="exportAll" color="info" data-usi-lang="export_all_now"></v-btn>
+      <v-btn @click="exportAll" color="info" v-lang="'export_all_now'"></v-btn>
     </div>
 
     <v-dialog v-model="dialogWindow" width="500">

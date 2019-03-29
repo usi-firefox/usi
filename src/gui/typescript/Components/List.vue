@@ -6,7 +6,7 @@
             <v-toolbar>
                 <v-toolbar-title>
                     <span v-if="userscripts.length > 0">Userscripts ({{userscripts.length}})</span>
-                    <span v-else data-usi-lang="no_userscript_there"></span>
+                    <span v-else v-lang="'no_userscript_there'"></span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items class="hidden-sm-and-down">

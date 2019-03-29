@@ -129,9 +129,6 @@ export default Vue.component(componentName, {
     created: function () {
         Vue.nextTick().then(() => {
             this.run();
-
-            // @todo Workaround
-            this.$parent.$parent.$emit("change-tab-additional", { event_name: "usi:lang" });
         });
     },
     methods: {
