@@ -163,12 +163,10 @@
         </v-flex>
 </template>
 <script lang="ts">
-declare var jQuery: any;
 declare var global_settings: any;
 
 import {empty,notify, download_file} from "lib/helper/basic_helper";
 import event_controller from "../../events/event_controller";
-import language_replace_in_DOM from "../../Language";
 
 import HighlightjsComponent from "./Highlight.vue";
 

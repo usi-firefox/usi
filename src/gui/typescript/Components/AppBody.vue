@@ -50,10 +50,7 @@
 </template>
 
 <script lang="ts">
-declare var jQuery: any;
-
 import event_controller from "../events/event_controller";
-
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";
@@ -64,7 +61,6 @@ import ConfigComponent from "Components/Config.vue";
 import ListComponent from "Components/List.vue";
 import HelpComponent from "Components/Help.vue";
 
-const class_names_for_sidebar = "sidebar-left-visible sidebar-left-in";
 // Versionslabel auslesen
 const manifest = browser.runtime.getManifest();
 
@@ -135,28 +131,10 @@ export default Vue.component(componentName, {
                             this.configuration = config;
                         });
                     break;
-                case "usi:change-additional-css":
-                    this.change_css(data.data);
-                    break;
                 default:
                     // nichts tun
                     break;
             }
-        },
-        change_css: function (cssContent: string): void {
-            const css_text = cssContent.replace(/<\/?[^>]+>/gi, "");
-
-            if (jQuery("#usiAdditionalCss").length > 0) {
-                // Element zuvor immer entfernen
-                jQuery("#usiAdditionalCss").remove();
-            }
-
-            // Element bauen
-            const ownCss = jQuery("<style>").attr("id", "usiAdditionalCss").attr("type", "text/css").text(css_text);
-
-            // CSS aktivieren
-            jQuery("head").append(ownCss);
-
         },
         hide_side_menu_and_load: function (index: number): void {
             // Aktuelle Komponente suchen
@@ -172,8 +150,6 @@ export default Vue.component(componentName, {
             name: string;
             lang: string;
         }): void {
-            // @todo
-            jQuery("body").removeClass(class_names_for_sidebar);
 
             // ersetze die Überschrift
             this.navTitle = browser.i18n.getMessage(menuEntry.lang);

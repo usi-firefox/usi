@@ -199,7 +199,7 @@ function GM_addStyle(css) {
 	// Textsetzen ohne innerHMTML
 	elem.appendChild(css_code);
 	// in den Head schreiben
-	document.getElementsByTagName("head")[0].appendChild(elem);
+	document.querySelector("head").appendChild(elem);
 } 
 
 /**

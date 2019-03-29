@@ -99,14 +99,6 @@ import parse_userscript from "lib/parse/parse_userscript";
  */
 const componentName = "config-component";
 
-const placeholderAddCss = `@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
-.container {
-    color: red;
-}
-#usi-edit-script-textarea {
-    font-family: 'Roboto Mono', monospace;
-}`;
-
 export default Vue.component(componentName, {
   data: function() {
     return {
@@ -114,7 +106,6 @@ export default Vue.component(componentName, {
       greasemonkey_global_active: false,
       hightlightjs_active: false,
       config: <usi.Storage.Config>{},
-      exampleAddCSS: placeholderAddCss,
 
       completeExport: false,
       dialogWindow: false,

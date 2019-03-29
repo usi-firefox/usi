@@ -46,8 +46,6 @@
 </template>
 
 <script lang="ts">
-declare var jQuery: any;
-
 import event_controller from "../events/event_controller";
 
 import Vue from "vue";
@@ -92,13 +90,18 @@ export default Vue.component(componentName, {
 
         // Direkter Userscript Datei Upload
         loadLocalFile: function (): void {
-            var file = jQuery("#direct-userscript-upload").get(0).files[0];
-
-            if (typeof file !== "object") {
+            
+            const ele = document.querySelector("#direct-userscript-upload") as HTMLInputElement;
+            if(ele === null || !ele.files){
                 return;
             }
-            var reader = new FileReader();
 
+            const file = ele.files[0];
+            if (typeof file !== "object" || !(file instanceof File)) {
+                return;
+            }
+
+            const reader = new FileReader();
             reader.onload = (e: any) => {
                 // Daten an den EditController weiterreichen
                 this.$emit("change-tab", {

@@ -1,14 +1,10 @@
-declare var jQuery: any;
 declare var document: any;
 
 import { notify, getExtId, isset, download_file } from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 import page_injection_helper from "lib/inject/page_injection_helper";
-import SPA from "lib/spa/handler";
 import add_userscript from "lib/storage/add_userscript";
-import load_resource from "lib/helper/load_resource";
-import parse_userscript from "lib/parse/parse_userscript";
 
 declare function unescape(s: string): string;
 
