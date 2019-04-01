@@ -165,14 +165,14 @@
 <script lang="ts">
 declare var global_settings: any;
 
-import {empty,notify, download_file} from "lib/helper/basic_helper";
-import event_controller from "../../events/event_controller";
+import {empty,notify, download_file, getExtId} from "lib/helper/basic_helper";
 
 import HighlightjsComponent from "./Highlight.vue";
 
 import Vue from "vue";
 import SPA from "lib/spa/handler";
 import userscript_storage from "lib/storage/storage";
+import page_injection_helper from "lib/inject/page_injection_helper";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -251,9 +251,25 @@ export default Vue.component(componentName, {
          * Userscript aktivieren, bzw deaktivieren
          * @returns void
          */
-        toggleActivation: function (): void {
+        toggleActivation: async function (): Promise<void> {
             // aktiviere oder deaktiviere dieses Userscript!
-            event_controller().set.userscript.toogle_state(this.localScript.id);
+            const id = this.localScript.id;
+            var script_storage = await userscript_storage();
+            var userscript_handle = <any>script_storage.getById(id);
+            if (userscript_handle !== false) {
+                // wechsele den Status ob das Userscript aktiviert oder deaktiviert ist
+                userscript_handle.switchActiveState();
+            }
+
+            let page_injection_helper_port = browser.runtime.connect(getExtId(), { name: "page-injection-helper" });
+
+            if (userscript_handle.isDeactivated()) {
+                // deaktivieren
+                (new page_injection_helper()).remove_userscript(this.localScript.id);
+            } else {
+                // aktivieren
+                (new page_injection_helper()).add_userscript(this.localScript.id);
+            }
 
             this.localScript.deactivated = !this.localScript.deactivated;
         },
@@ -298,10 +314,25 @@ export default Vue.component(componentName, {
 
                 //zusätzliche Abfrage
                 if (window.confirm(question_text)) {
-                    event_controller().request.userscript.delete(this.localScript.id);
+                    (async () => {
+                        let script_storage = await userscript_storage();
+                        let userscript_handle = script_storage.getById(this.localScript.id);
+                        // userscript_handle darf nicht false sein
+                        if (userscript_handle !== false) {
+                            // lösche dieses Element
+                            await userscript_handle.deleteUserscript();
 
-                    // Text nur durchstreichen, nicht direkt neuladen
-                    this.markedAsDeleted = true;
+                            notify(browser.i18n.getMessage("userscript_was_successful_deleted") + " (ID " + this.localScript.id + ")");
+
+                            // Userscript entfernen lassen
+                            (new page_injection_helper()).remove_userscript(this.localScript.id);
+                        } else {
+                            // konnte nicht gefunden und daher auch nicht gelöscht werden
+                            notify(browser.i18n.getMessage("userscript_could_not_deleted"));
+                        }
+                        // Text nur durchstreichen, nicht direkt neuladen
+                        this.markedAsDeleted = true;
+                    })();
                 }
             }
         },
@@ -327,7 +358,7 @@ export default Vue.component(componentName, {
         // Sende es an den Editierungs Controller
         edit: function (): void {
             // veranlasse den Tab Wechsel!
-            this.$parent.$emit("change-tab", {
+            this.$parent.$emit("change-tab", <usi.Frontend.changeTabEvent>{
                 comp: "edit",
                 extraData: {
                     userscript: this.localScript.userscript,

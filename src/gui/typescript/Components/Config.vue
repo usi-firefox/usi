@@ -81,13 +81,13 @@
 
 <script lang="ts">
 import config_storage from "lib/storage/config";
-import event_controller from "../events/event_controller";
 
 import Vue from "vue";
 import userscript_storage from "lib/storage/storage";
 import { isset, download_file } from "lib/helper/basic_helper";
 import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
+import page_injection_helper from "lib/inject/page_injection_helper";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -184,9 +184,16 @@ export default Vue.component(componentName, {
 
         case 3:
           // nun werden alle Userscripte gelöscht
-          event_controller().request.userscript.delete_all();
+          userscript_storage().then((script_storage) => {
 
-          this.dialogWindow = false;
+            // lösche jedes einzelene Userscript...
+            script_storage.deleteAll();
+
+            // lade Page Mod neu!
+            (new page_injection_helper()).re_init_page_injection();
+
+            this.dialogWindow = false;
+          });
           break;
 
         default:
@@ -196,11 +203,12 @@ export default Vue.component(componentName, {
 
     // Prüfe ob für die Skripte Updates gefunden wurden!
     checkForUpdates: async function() {
+
+      alert("not implemented");
+
       // durchlaufe alle Einträge und suche nach einer UpdateURL
       let script_storage = await userscript_storage();
       let all_userscripts = script_storage.getAll();
-
-      debugger;
 
       if (all_userscripts.length === 0) {
         return "no Userscripts available";
@@ -259,7 +267,10 @@ export default Vue.component(componentName, {
           }
 
           // Dieses Skript wird nun aktualisiert
-          event_controller().set.userscript.override(loaded_userscript_text);
+          /**
+           * @TODO 
+           */
+          /* event_controller().set.userscript.override(loaded_userscript_text); */
         } catch {
           // keine Userscript erhalten
           return false;
@@ -290,9 +301,9 @@ export default Vue.component(componentName, {
         "VERSION:0.3",
         "DATE:" + export_date,
         "COMPLETE:" + this.completeExport,
+        // Trenner 5 mal hinzufügen
         ...new Array(5).fill("*******************USI-EXPORT*************************//")
       ].map(line => {
-        // Trenner 5 mal hinzufügen
         return "//" + line + "\n";
       });
 

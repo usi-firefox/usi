@@ -18,7 +18,8 @@ Vue.directive("lang", {
     // When the bound element is inserted into the DOM...
     inserted: function (el, binding) {
         // Language Key holen
-        const { value } = binding;
+        const { value, arg } = binding;
+
         if (!value) {
             return;
         }
@@ -29,11 +30,19 @@ Vue.directive("lang", {
             return;
         }
 
-        // Neuen Textknoten erstellen
-        const text_node = document.createTextNode(translated);
+        switch (arg) {
+            case "label":
+                // Übersetzung in das label Attribut einsetzen
+                el.setAttribute(arg, translated);
+            break;
 
-        // Die Übersetzung nun hinzufügen
-        el.prepend(text_node);
+            default:
+                // Neuen Textknoten erstellen
+                const text_node = document.createTextNode(translated);
+
+                // Die Übersetzung nun hinzufügen
+                el.prepend(text_node);
+        }
 
     }
 });

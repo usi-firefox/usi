@@ -13,7 +13,6 @@
 declare var jQuery: any;
 declare var hljs: any;
 
-import event_controller from "../../events/event_controller";
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";
@@ -147,9 +146,14 @@ export default Vue.component(componentName, {
             jQuery("#HighlightJSStyle").attr("href", style_filepath);
 
             // Style speichern
-            await event_controller().set.highlightjs.style(this.active_style);
+            this.setStyle(this.active_style);
 
-            this.$parent.$parent.$emit("change-tab-additional", { event_name: "usi:refresh-config" });
+            this.$parent.$parent.$emit("change-tab-additional", <usi.Frontend.changeTabAdditionalEvent>{ event_name: "usi:refresh-config" });
+        },
+        async setStyle (style_name: string) {
+            let config = await config_storage().get();
+            config.hightlightjs.style = style_name;
+            return await config_storage().set(config);
         }
     }
 });

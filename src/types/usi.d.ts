@@ -74,6 +74,23 @@ declare namespace usi.Backend {
     }
 }
 
+declare namespace usi.Frontend {
+    interface menuEntry {
+        name: string,
+        lang: string
+    }
+    interface changeTabAdditionalEvent {
+        event_name: string,
+    }
+    interface changeTabEvent{
+        comp: string,
+        extraData: {
+            userscript: string,
+            id?: number
+        }
+    }
+}
+
 declare namespace usi.GM_Backend {
     interface GM_openInTab {
         open_in_background: boolean,

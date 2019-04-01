@@ -45,18 +45,10 @@
             </v-btn>
 
             <!--Standard laden oder leeren-->
-            <v-btn
-              id="usi-edit-script-load-example"
-              @click="load_example"
-              v-lang="'load_example'"
-            >
+            <v-btn id="usi-edit-script-load-example" @click="load_example" v-lang="'load_example'">
               <!--Beispiel laden-->
             </v-btn>
-            <v-btn
-              id="usi-edit-script-textarea-clear"
-              @click="textarea_clear"
-              v-lang="'clear'"
-            >
+            <v-btn id="usi-edit-script-textarea-clear" @click="textarea_clear" v-lang="'clear'">
               <!--Textfeld leeren-->
             </v-btn>
           </v-flex>
@@ -99,7 +91,9 @@ import Vue from "vue";
 
 declare var window: any;
 
-import event_controller from "../events/event_controller";
+import add_userscript from "lib/storage/add_userscript";
+import page_injection_helper from "lib/inject/page_injection_helper";
+import { notify } from "lib/helper/basic_helper";
 
 // Die ID der Textarea
 var last_userscript_interval_id: number = 0;
@@ -147,7 +141,7 @@ export default Vue.component(componentName, {
                 // aus einem anderen Component übergeben wurde
                 this.textarea.content = this.addional.userscript;
 
-                this.$emit("change-tab-additional", {
+                this.$emit("change-tab-additional", <usi.Frontend.changeTabAdditionalEvent>{
                     event_name: "usi:reset-extraData"
                 });
             }
@@ -264,20 +258,64 @@ export default Vue.component(componentName, {
                     this.overwrite_without_warning
                 ) {
                     // Vorhandes Userscript überschreiben
-                    event_controller().set.userscript.override({
-                        userscript: this.textarea.content,
-                        id: this.script_id
-                    });
+                    this._overrideUserscript(this.script_id, this.textarea.content); 
                 } else {
                     // Keine Script ID gegeben
-                    event_controller().set.userscript.create({
-                        userscript: this.textarea.content
-                    });
+                    this._createUserscript(this.textarea.content);
                 }
 
                 // den Wert der Historie hinzufügen
                 this.last_userscript_text.push(this.textarea.content);
             }
+        },
+
+        _createUserscript: async function(userscript: string) {
+          if (!userscript) {
+              throw "Userscript is missing";
+          }
+          // Hier wird das UserScript weiterverarbeitet und gespeichert
+          let valid_userscript = add_userscript().check_for_valid_userscript_settings(userscript);
+
+          if (valid_userscript.valid === false) {
+              // Userscript Konfiguration nicht in Ordnung
+              notify("userscript-config-is-wrong");
+              return;
+          }
+
+          // Überprüfe ob das Userscript bereits gespeichert wurde
+          let userscript_id = await add_userscript().exist_userscript_already(userscript);
+
+          if (userscript_id === 0) {
+              // neu anlegen
+              let userscript_handle = await <any>add_userscript().save_new_userscript(userscript);
+              // füge das Skript gleich hinzu, damit es ausgeführt werden kann
+              (new page_injection_helper()).add_userscript(userscript_handle.getId());
+
+              // Neues Userscript wurde erstellt
+              notify(browser.i18n.getMessage("userscript_was_created") + " (ID " + userscript_handle.getId() + ")");
+          } else {
+              // bzgl. update fragen
+              // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
+              if (window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + userscript_id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"))) {
+                    // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
+                    this._overrideUserscript(userscript_id, userscript); 
+                }
+          }
+        },
+
+        _overrideUserscript: async function(userscript_id : number, userscript : string, moreinformations?: usi.Userscript.AddionalData.Moreinformations){
+          if (!userscript_id) {
+              throw "Userscript ID is missing";
+          }
+          if (!userscript) {
+              throw "Userscript is missing";
+          }
+
+          let userscript_handle = await <any>add_userscript().update_userscript(userscript_id, userscript, moreinformations);
+          (new page_injection_helper()).add_userscript(userscript_handle.getId());
+
+          // Userscript wurde überschrieben
+          notify(browser.i18n.getMessage("userscript_was_overwritten") + " (ID " + userscript_id + ")");
         },
 
         /**
