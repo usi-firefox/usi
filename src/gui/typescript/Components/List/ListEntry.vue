@@ -1,11 +1,11 @@
 <template>
-        <v-flex>
+        <v-container>
                 <v-card :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
-                    <v-card-title primary-title>
+                    <v-card-title>
                         <v-flex xs11 @click="toggleOverview" class="pointer"> 
-                            <img v-bind:src="localScript.icon" />
-                            Index: {{index}} | {{localScript.settings.name}} | {{localScript.settings.author}} | {{localScript.settings.version}}
-                                <span v-if="localScript.isSpa"> | SPA</span>
+                            <img :src="icon" />
+                            Index: {{index}} | {{script.settings.name}} | {{script.settings.author}} | {{script.settings.version}}
+                                <span v-if="script.isSpa"> | SPA</span>
                                 <v-btn icon>
                                     <v-icon v-html="showUserscriptEntry ? 'expand_less' : 'expand_more'" title="expand or compress overview"></v-icon>
                                 </v-btn>
@@ -53,7 +53,7 @@
                                     </v-list-tile-title>
                                 </v-list-tile>
                                 <!-- SPA Starten -->
-                                <span v-if="localScript.isSpa">
+                                <span v-if="script.isSpa">
                                     <v-divider></v-divider>
                                     <v-list-tile @click="start_spa">
                                         <v-list-tile-action><i class="material-icons">play_arrow</i></v-list-tile-action>
@@ -63,7 +63,7 @@
                                     </v-list-tile>
                                 </span>
                                 <!--Neuladen von der Quelle-->
-                                <span v-if="localScript.moreinformations && localScript.moreinformations.url">
+                                <span v-if="script.moreinformations && script.moreinformations.url">
                                     <v-divider></v-divider>
                                     <v-list-tile @click="loadAgain">
                                         <v-list-tile-action><i class="material-icons">repeat</i></v-list-tile-action>
@@ -73,7 +73,7 @@
                                     </v-list-tile>
                                 </span>
                                 <!-- Gespeicherte Variablen anzeigen-->
-                                <span v-if="localScript.val_store">
+                                <span v-if="script.val_store">
                                     <v-divider></v-divider>
                                     <v-list-tile @click="GMValuesGet">
                                         <v-list-tile-action><i class="material-icons">get_app</i></v-list-tile-action>
@@ -100,28 +100,28 @@
                         <!--Userscript aktivieren oder deaktivieren-->
                         <v-switch v-model="localScriptDeactivated" :label="localScriptDeactivated ? lang.deactivated : lang.activated"></v-switch>
 
-                        <p v-if="localScript.id"><strong>usi-id</strong>: {{localScript.id}} </p>
-                        <p v-if="localScript.settings.name"><strong>Name</strong>: {{localScript.settings.name}} </p>
-                        <p v-if="localScript.settings.author"><strong>Author</strong>: {{localScript.settings.author}} </p>
-                        <p v-if="localScript.settings.version"><strong>Version</strong>: {{localScript.settings.version}} </p>
-                        <p v-if="localScript.settings.description"><strong v-lang="'description'"></strong>:{{localScript.settings.description}} </p>
+                        <p v-if="script.id"><strong>usi-id</strong>: {{script.id}} </p>
+                        <p v-if="script.settings.name"><strong>Name</strong>: {{script.settings.name}} </p>
+                        <p v-if="script.settings.author"><strong>Author</strong>: {{script.settings.author}} </p>
+                        <p v-if="script.settings.version"><strong>Version</strong>: {{script.settings.version}} </p>
+                        <p v-if="script.settings.description"><strong v-lang="'description'"></strong>:{{script.settings.description}} </p>
 
                         <!--Require Skripte-->
-                        <div v-if="localScript.require_scripts.length > 0">
+                        <div v-if="script.require_scripts.length > 0">
 
                             <p><strong>Require Scripts</strong></p>
                             <ol class="usi-list-entry-required-scripts---output">
-                                <li v-for="entry in localScript.require_scripts" :key="entry.url">
+                                <li v-for="entry in script.require_scripts" :key="entry.url">
                                     {{entry.url}}
                                 </li>
                             </ol>
                         </div>
 
-                        <div v-if="localScript.settings && localScript.settings.include">
+                        <div v-if="script.settings && script.settings.include">
                             <!--gültige Include Regeln-->
                             <p><strong>Includes</strong></p>
                             <ol>
-                                <li v-for="(entry,idx) in localScript.settings.include" :key="idx">
+                                <li v-for="(entry,idx) in script.settings.include" :key="idx">
                                     {{entry}}
                                 </li>
                             </ol>
@@ -151,16 +151,16 @@
 
                         <div v-if="showUserscriptContent" class="usi-list-entry-view-userscript---output row">
                             <span v-if="hightlightsjsActive">
-                                <highlightjs-component :code="this.localScript.userscript" :astyle="hightlightsjsStyle" />
+                                <highlightjs-component :code="this.script.userscript" :astyle="hightlightsjsStyle" />
                             </span>
                             <span v-else>
                                 <!-- Es dürfen keine Leerzeichen dazwischen sein -->
-                                <pre><code class="border-black">{{this.localScript.userscript}}</code></pre>
+                                <pre><code class="border-black">{{this.script.userscript}}</code></pre>
                             </span>
                         </div>
                     </v-card-text>
                 </v-card>
-        </v-flex>
+        </v-container>
 </template>
 <script lang="ts">
 declare var global_settings: any;
@@ -207,7 +207,7 @@ export default Vue.component(componentName, {
             showUserscriptEntry: true,
             showUserscriptContent: false,
             markedAsDeleted: false,
-            localScript: this.$props.script,
+            icon : "/gui/icon/usi.png",
             localScriptDeactivated: this.$props.script.deactivated,
             hightlightsjsActive: this.configuration.hightlightjs.active,
             hightlightsjsStyle: this.configuration.hightlightjs.style,
@@ -223,14 +223,11 @@ export default Vue.component(componentName, {
         };
     },
     created: function () {
-        if (typeof this.localScript.settings.spa !== "undefined") {
-            this.localScript.isSpa = true;
-        }
     },
     methods: {
         export_script: async function (): Promise<void> {
             const script_storage = await userscript_storage();
-            const userscript_handler = <any>script_storage.getById(this.localScript.id);
+            const userscript_handler = <any>script_storage.getById(this.script.id);
 
             if (userscript_handler !== false) {
                 // Bietet das Userscript zur lokalen Speicherung an!
@@ -240,11 +237,9 @@ export default Vue.component(componentName, {
         add_icon: function (): void {
             // Icon mit usi logo füllen, falls leer
             // @todo -- ICON
-            if (!this.localScript.settings.icon_data) {
-                // default ICON
-                this.localScript.icon = "/gui/icon/usi.png";
-            } else {
-                this.localScript.icon = this.localScript.settings.icon_data;
+            if (this.script.settings.icon_data) {
+
+                this.icon = this.script.settings.icon_data;
             }
         },
         /**
@@ -253,7 +248,7 @@ export default Vue.component(componentName, {
          */
         toggleActivation: async function (): Promise<void> {
             // aktiviere oder deaktiviere dieses Userscript!
-            const id = this.localScript.id;
+            const id = this.script.id;
             var script_storage = await userscript_storage();
             var userscript_handle = <any>script_storage.getById(id);
             if (userscript_handle !== false) {
@@ -261,17 +256,21 @@ export default Vue.component(componentName, {
                 userscript_handle.switchActiveState();
             }
 
-            let page_injection_helper_port = browser.runtime.connect(getExtId(), { name: "page-injection-helper" });
-
             if (userscript_handle.isDeactivated()) {
                 // deaktivieren
-                (new page_injection_helper()).remove_userscript(this.localScript.id);
+                (new page_injection_helper()).remove_userscript(this.script.id).then((check : boolean) => {
+                    if(check){
+                        this.$emit("showSnack", `Userscript ID ${id} deaktiviert`);
+                    }
+                });
             } else {
                 // aktivieren
-                (new page_injection_helper()).add_userscript(this.localScript.id);
+                (new page_injection_helper()).add_userscript(this.script.id).then((check:boolean) =>{
+                    if(check){
+                        this.$emit("showSnack", `Userscript ID ${id} aktiviert`);
+                    }
+                });
             }
-
-            this.localScript.deactivated = !this.localScript.deactivated;
         },
 
         // fragt nach den gesetzten Greasemonkey Variablen
@@ -279,7 +278,7 @@ export default Vue.component(componentName, {
 
             let script_storage = await userscript_storage();
 
-            let userscript = <any>script_storage.getById(this.localScript.id);
+            let userscript = <any>script_storage.getById(this.script.id);
 
             var result = [], completeValStore = userscript.getValStore();
             for (var name in completeValStore) {
@@ -305,27 +304,27 @@ export default Vue.component(componentName, {
          */
         deleteUserscript: function (): void {
             // das Skript mit der ID löschen!
-            if (!empty(this.localScript.id)) {
+            if (!empty(this.script.id)) {
                 // Frage zusammensetzen
                 const question_text =
                     browser.i18n.getMessage("want_to_delete_this_userscript_1") +
-                    this.localScript.id +
+                    this.script.id +
                     browser.i18n.getMessage("want_to_delete_this_userscript_2");
 
                 //zusätzliche Abfrage
                 if (window.confirm(question_text)) {
                     (async () => {
                         let script_storage = await userscript_storage();
-                        let userscript_handle = script_storage.getById(this.localScript.id);
+                        let userscript_handle = script_storage.getById(this.script.id);
                         // userscript_handle darf nicht false sein
                         if (userscript_handle !== false) {
                             // lösche dieses Element
                             await userscript_handle.deleteUserscript();
 
-                            notify(browser.i18n.getMessage("userscript_was_successful_deleted") + " (ID " + this.localScript.id + ")");
+                            notify(browser.i18n.getMessage("userscript_was_successful_deleted") + " (ID " + this.script.id + ")");
 
                             // Userscript entfernen lassen
-                            (new page_injection_helper()).remove_userscript(this.localScript.id);
+                            (new page_injection_helper()).remove_userscript(this.script.id);
                         } else {
                             // konnte nicht gefunden und daher auch nicht gelöscht werden
                             notify(browser.i18n.getMessage("userscript_could_not_deleted"));
@@ -348,7 +347,7 @@ export default Vue.component(componentName, {
             // Wenn dies aufgerufen wird, werden die vorhanden Variablen des Userscripts entfernt (val_store)
 
             let script_storage = await userscript_storage();
-            let userscript_handle = script_storage.getById(this.localScript.id);
+            let userscript_handle = script_storage.getById(this.script.id);
             if (userscript_handle !== false) {
                 // entfernen aller zuvor gesetzten Variablen
                 userscript_handle.resetValStore().save();
@@ -361,8 +360,8 @@ export default Vue.component(componentName, {
             this.$parent.$emit("change-tab", <usi.Frontend.changeTabEvent>{
                 comp: "edit",
                 extraData: {
-                    userscript: this.localScript.userscript,
-                    id: this.localScript.id
+                    userscript: this.script.userscript,
+                    id: this.script.id
                 }
             });
         },
@@ -372,19 +371,19 @@ export default Vue.component(componentName, {
              * Startet ein SPA, in einem neuen Tab
              */
             const spa_instance = new SPA();
-            spa_instance.createPage(this.localScript.id);
+            spa_instance.createPage(this.script.id);
         },
 
         // Übergibt die URL an die Nachlade Funktion
         loadAgain: function (): void {
-            if (/^http/.test(this.localScript.moreinformations.url)) {
+            if (/^http/.test(this.script.moreinformations.url)) {
                 // URL muss mit http beginnen
                 /**
                  * @todo
                  * Zunächst einmal nur einen neuen Tab öffnen
                  * Skript später wieder richtig laden
                  */
-                browser.tabs.create({ url: this.localScript.moreinformations.url });
+                browser.tabs.create({ url: this.script.moreinformations.url });
 
             } else {
                 notify(
@@ -398,9 +397,7 @@ export default Vue.component(componentName, {
         }
     },
     watch: {
-        localScriptDeactivated: function (newVal: boolean): void {
-            // @TODO !!!
-            this.localScript.deactivated = newVal;
+        localScriptDeactivated: function (): void {
             this.toggleActivation();
         },
         expanded: function (): void {
@@ -420,10 +417,5 @@ export default Vue.component(componentName, {
 }
 .pointer {
   cursor: pointer;
-}
-</style>
-<style scoped>
-p {
-  font-size: 18px;
 }
 </style>

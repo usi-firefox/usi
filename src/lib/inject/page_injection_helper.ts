@@ -129,18 +129,18 @@ export default class page_injection_helper {
      * @param {type} userscript_handle
      * @returns {undefined}
      */
-    async add_userscript(userscript_id: number): Promise<void> {
+    async add_userscript(userscript_id: number): Promise<boolean> {
         // @todo
-        this.re_init_page_injection();
+        return await this.re_init_page_injection();
     }
     /**
      * 
      * @param {type} userscript_handle
      * @returns {undefined}
      */
-    async remove_userscript(userscript_id: number): Promise<void> {
+    async remove_userscript(userscript_id: number): Promise<boolean> {
         // @todo
-        this.re_init_page_injection();
+        return await this.re_init_page_injection();
     }
 
     /**
@@ -176,7 +176,7 @@ export default class page_injection_helper {
     /**
      * Führe diese Funktion aus damit der Injection Bereich neu geladen werden kann
      */
-    async re_init_page_injection() {
+    async re_init_page_injection(): Promise<boolean> {
 
         // zurücksetzen vom Sammler Objekt!
         page_injection_helper.all_page_injections = [];
@@ -213,6 +213,7 @@ export default class page_injection_helper {
             browser.webNavigation.onCommitted.addListener(this.userscriptInjection_onUpdate);
         }
 
+        return true;
     }
 
     /**
