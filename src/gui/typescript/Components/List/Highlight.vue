@@ -153,9 +153,7 @@ export default Vue.component(componentName, {
       // Style speichern
       this.setStyle(this.active_style);
 
-      this.$parent.$parent.$emit("change-tab-additional", <
-        usi.Frontend.changeTabAdditionalEvent
-      >{ event_name: "usi:refresh-config" });
+      this.$parent.$parent.$emit("change-tab-additional", <usi.Frontend.changeTabAdditionalEvent>{ event_name: "usi:refresh-config" });
     },
     async setStyle(style_name: string) {
       let config = await config_storage().get();

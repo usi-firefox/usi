@@ -5,7 +5,7 @@
         {{ snackbar_text }}
         <v-btn color="pink" flat @click="snackbar = false">Close</v-btn>
       </v-snackbar>
-      <v-navigation-drawer style="background-color: #555;" app v-model="drawer">
+      <v-navigation-drawer style="background-color: #555;" :permanent="drawer_permanent" app v-model="drawer">
         <v-toolbar style="background-color: #555;">
           <v-list>
             <v-list-tile>
@@ -31,7 +31,6 @@
         </v-list-tile>
       </v-navigation-drawer>
       <v-toolbar
-        style="background-color: #f7f7f7;"
         class="blue--text"
         app
         @click.stop="drawer = !drawer"
@@ -81,6 +80,8 @@
 </template>
 
 <script lang="ts">
+declare const document : Document;
+
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";
@@ -102,6 +103,8 @@ export default Vue.component(componentName, {
       drawer: false,
       snackbar: false,
       snackbar_text: "",
+      // Wird auf Desktop Geräten auf true gesetzt
+      drawer_permanent : false,
 
       // legt fest, welcher Component momentan aktiv ist
       activeComponent: "list",
@@ -113,6 +116,18 @@ export default Vue.component(componentName, {
   },
 
   created: function() {
+    /**
+     * ACHTUNG Direkter Zugriff über die ID
+     */
+    const app_div = document.getElementById("vuetify-gui");
+    if(app_div instanceof HTMLDivElement && app_div.clientWidth > 1200){
+      /** 
+       * Falls die clientWidth größer als "x" sein sollte
+       * setzen wir den Drawer auf "permanent" damit er nicht geschloßen wird
+       */ 
+      this.drawer_permanent = true;
+    }
+
     this.menuEntries = [
       { name: "list", lang: "all_userscripts" },
       { name: "edit", lang: "create_new_userscript" },
@@ -207,3 +222,10 @@ export default Vue.component(componentName, {
   }
 });
 </script>
+<style>
+/** Workaround/Fix **/
+div.container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+</style>

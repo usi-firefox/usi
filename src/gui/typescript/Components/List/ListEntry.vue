@@ -2,7 +2,7 @@
   <v-container>
     <v-card :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
       <v-card-title>
-        <v-flex xs11 @click="toggleOverview" class="pointer">
+        <v-flex xs11 @click="toggleOverview" class="pointer headline ">
           <img :src="icon">
           Index: {{index}} | {{script.settings.name}} | {{script.settings.author}} | {{script.settings.version}}
           <span
