@@ -2,7 +2,7 @@
   <v-container>
     <v-card :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
       <v-card-title>
-        <v-flex xs11 @click="toggleOverview" class="pointer headline ">
+        <v-flex xs11 @click="toggleOverview" class="pointer title">
           <img :src="icon">
           Index: {{index}} | {{script.settings.name}} | {{script.settings.author}} | {{script.settings.version}}
           <span
@@ -168,7 +168,7 @@
                 <th>Value</th>
               </thead>
               <tbody>
-                <tr v-for="(item,index) in GMValues" :key="index">
+                <tr v-for="(item,i) in GMValues" :key="i">
                   <td>{{item.key}}</td>
                   <td>{{item.value}}</td>
                 </tr>
@@ -242,9 +242,9 @@ export default Vue.component(componentName, {
       showUserscriptContent: false,
       markedAsDeleted: false,
       icon: "/gui/icon/usi.png",
-      localScriptDeactivated: this.$props.script.deactivated,
-      hightlightsjsActive: this.configuration.hightlightjs.active,
-      hightlightsjsStyle: this.configuration.hightlightjs.style,
+      localScriptDeactivated: false,
+      hightlightsjsActive: false,
+      hightlightsjsStyle: "",
       GMValues: [],
       lang: {
         deactivated: browser.i18n.getMessage("deactivated"),
@@ -256,7 +256,18 @@ export default Vue.component(componentName, {
       }
     };
   },
-  created: function() {},
+  created: function() {
+      // Workaround
+      this.localScriptDeactivated = this.script.deactivated;
+      if(this.configuration && this.configuration.hightlightjs){
+          if(this.configuration.hightlightjs.active){
+            this.hightlightsjsActive= this.configuration.hightlightjs.active;
+          }
+          if(this.configuration.hightlightjs.style){
+            this.hightlightsjsStyle= this.configuration.hightlightjs.style;
+          }
+      }
+  },
   methods: {
     export_script: async function(): Promise<void> {
       const script_storage = await userscript_storage();

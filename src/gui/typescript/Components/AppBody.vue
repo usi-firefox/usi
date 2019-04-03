@@ -35,7 +35,7 @@
         app
         @click.stop="drawer = !drawer"
       >
-        <v-toolbar-side-icon></v-toolbar-side-icon>
+        <v-toolbar-side-icon v-show="!drawer_permanent"></v-toolbar-side-icon>
         <v-toolbar-title>{{navTitle}}</v-toolbar-title>
       </v-toolbar>
       <v-content>

@@ -8,13 +8,13 @@
     <v-progress-linear v-show="isLoading" :indeterminate="isLoading"></v-progress-linear>
     <v-layout>
       <v-toolbar>
-        <v-toolbar-title>
+        <v-toolbar-title class="headline">
           <span v-if="userscripts.length > 0">Userscripts ({{userscripts.length}})</span>
           <span v-else v-lang="'no_userscript_there'"></span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
-          <v-btn flat @click="toggleExpanded">
+          <v-btn v-if="userscripts.length > 0" flat @click="toggleExpanded">
             <v-icon>expand_more</v-icon>
             <v-icon>expand_less</v-icon>
           </v-btn>
@@ -25,9 +25,9 @@
       </v-toolbar>
     </v-layout>
 
-    <v-layout row wrap v-if="userscripts.length > 0">
+    <v-layout row wrap v-if="userscripts">
       <list-entry-component
-        v-for="(script,index) in userscripts"
+        v-for="(script,index) in userscripts" 
         v-bind:key="index"
         v-bind:expanded="is_expanded"
         v-bind:configuration="configuration"
@@ -70,7 +70,7 @@ export default Vue.component(componentName, {
     };
   },
   created: function() {
-    this.refresh();
+      this.refresh();
   },
   methods: {
     // fragt die Userscripte ab
