@@ -2,8 +2,8 @@
   <!--Alle Userscripte auflisten-->
   <v-container grid-list-md>
     <v-snackbar v-model="snackbar">
-        {{ snackbar_text }}
-        <v-btn color="red" flat @click="snackbar = false">Close</v-btn>
+      {{ snackbar_text }}
+      <v-btn color="red" flat @click="snackbar = false">Close</v-btn>
     </v-snackbar>
     <v-progress-linear v-show="isLoading" :indeterminate="isLoading"></v-progress-linear>
     <v-layout>
@@ -86,18 +86,17 @@ export default Vue.component(componentName, {
     },
     toggleExpanded: function(): void {
       this.is_expanded = !this.is_expanded;
-    }
-    ,
-    showSnack: function(text: string){
+    },
+    showSnack: function(text: string) {
       // Snackbar einblenden
-        this.snackbar = true;
-        this.snackbar_text = text;
+      this.snackbar = true;
+      this.snackbar_text = text;
 
-        // Nach einiger Zeit die Snachbar automatisch schließen
-        window.setTimeout(() => {
-            this.snackbar = false;
-          this.snackbar_text = "";
-        },6000);
+      // Nach einiger Zeit die Snachbar automatisch schließen
+      window.setTimeout(() => {
+        this.snackbar = false;
+        this.snackbar_text = "";
+      }, 6000);
     }
   },
   components: {

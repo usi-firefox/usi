@@ -91,7 +91,7 @@ export default function GM_xhrHandler() {
             const pass = (typeof details.password === "string") ? details.password : "";
 
             // Xhr Optionen setzen
-            xhr.open(method, url, true , user, pass);
+            xhr.open(method, url, true, user, pass);
 
             // Header
             if (details.headers && typeof details.headers === "object") {

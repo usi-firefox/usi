@@ -87,7 +87,7 @@ export default class page_injection_helper {
         });
 
         // alle Gültigen Userscripte starten
-        valid_userscripts.forEach((userscript : any) => {
+        valid_userscripts.forEach((userscript: any) => {
             // Script ausführen
             this._startTabExecution(tabId, userscript);
         });

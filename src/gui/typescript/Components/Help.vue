@@ -1,24 +1,22 @@
 <template>
-    <div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title" v-lang="'help_1_title'">
-                    <!--Überblick-->
-                </h3>
-            </div>
-            <div class="panel-body" v-lang="'help_1_description'">
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title" v-lang="'help_2_title'">
-                    <!--Überblick-->
-                </h3>
-            </div>
-            <div class="panel-body" v-lang="'help_2_description'">
-            </div>
-        </div>
+  <div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title" v-lang="'help_1_title'">
+          <!--Überblick-->
+        </h3>
+      </div>
+      <div class="panel-body" v-lang="'help_1_description'"></div>
     </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title" v-lang="'help_2_title'">
+          <!--Überblick-->
+        </h3>
+      </div>
+      <div class="panel-body" v-lang="'help_2_description'"></div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

@@ -115,25 +115,25 @@ export function getFilenameFromURL(url: string): string {
 * @returns {void}
 */
 export function download_file(data: string, type?: string, filename?: string): void {
-   var link = document.createElement("a");
-   // Dateinamen angeben
-   if (filename) {
-       // z.B. %20 durch Leerzeichen ersetzen
-       link.download = decodeURIComponent(filename);
-   }
+    var link = document.createElement("a");
+    // Dateinamen angeben
+    if (filename) {
+        // z.B. %20 durch Leerzeichen ersetzen
+        link.download = decodeURIComponent(filename);
+    }
 
-   // data type festlegen
-   if (type) {
-       link.href = "data:" + type;
-   } else {
-       link.href = "data:text/plain";
-   }
+    // data type festlegen
+    if (type) {
+        link.href = "data:" + type;
+    } else {
+        link.href = "data:text/plain";
+    }
 
-   // Datenanhängen
-   link.href += ";base64," + btoa(unescape(encodeURIComponent(data)));
+    // Datenanhängen
+    link.href += ";base64," + btoa(unescape(encodeURIComponent(data)));
 
-   // Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
-   document.body.appendChild(link);
-   link.click();
-   document.body.removeChild(link);
+    // Workaround, muss erst im DOM sein damit der click() getriggert werden kann m(
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }

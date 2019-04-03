@@ -184,13 +184,12 @@ export default Vue.component(componentName, {
 
         case 3:
           // nun werden alle Userscripte gelöscht
-          userscript_storage().then((script_storage) => {
-
+          userscript_storage().then(script_storage => {
             // lösche jedes einzelene Userscript...
             script_storage.deleteAll();
 
             // lade Page Mod neu!
-            (new page_injection_helper()).re_init_page_injection();
+            new page_injection_helper().re_init_page_injection();
 
             this.dialogWindow = false;
           });
@@ -203,7 +202,6 @@ export default Vue.component(componentName, {
 
     // Prüfe ob für die Skripte Updates gefunden wurden!
     checkForUpdates: async function() {
-
       alert("not implemented");
 
       // durchlaufe alle Einträge und suche nach einer UpdateURL
@@ -268,7 +266,7 @@ export default Vue.component(componentName, {
 
           // Dieses Skript wird nun aktualisiert
           /**
-           * @TODO 
+           * @TODO
            */
           /* event_controller().set.userscript.override(loaded_userscript_text); */
         } catch {
@@ -302,7 +300,9 @@ export default Vue.component(componentName, {
         "DATE:" + export_date,
         "COMPLETE:" + this.completeExport,
         // Trenner 5 mal hinzufügen
-        ...new Array(5).fill("*******************USI-EXPORT*************************//")
+        ...new Array(5).fill(
+          "*******************USI-EXPORT*************************//"
+        )
       ].map(line => {
         return "//" + line + "\n";
       });
@@ -317,7 +317,10 @@ export default Vue.component(componentName, {
         if (this.completeExport) {
           return data;
         } else {
-          return data.userscript + "\n//*******************USERSCRIPT*************************//";
+          return (
+            data.userscript +
+            "\n//*******************USERSCRIPT*************************//"
+          );
         }
       });
 

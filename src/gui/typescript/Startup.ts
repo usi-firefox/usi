@@ -34,7 +34,7 @@ Vue.directive("lang", {
             case "label":
                 // Übersetzung in das label Attribut einsetzen
                 el.setAttribute(arg, translated);
-            break;
+                break;
 
             default:
                 // Neuen Textknoten erstellen

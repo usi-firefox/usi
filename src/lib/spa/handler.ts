@@ -43,7 +43,7 @@ export default class SPA {
      * erzeugt einen neuen Tab und führt das SPA aus
      * @param {int} userscriptId 
      */
-    async createPage(userscriptId:number) {
+    async createPage(userscriptId: number) {
         this._create(userscriptId);
     }
 
@@ -52,7 +52,7 @@ export default class SPA {
      * @param {int} userscriptId 
      * @param {int} tabId 
      */
-    async applyToThisTab(userscriptId:number, tabId:number) {
+    async applyToThisTab(userscriptId: number, tabId: number) {
         this._create(userscriptId, tabId);
     }
 }
@@ -65,7 +65,7 @@ browser.runtime.onConnect.addListener(function (port) {
     }
 
     // für Nachrichten vom Content Script
-    port.onMessage.addListener(async function (message : any) {
+    port.onMessage.addListener(async function (message: any) {
         try {
 
             switch (message.name) {
