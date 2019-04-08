@@ -82,12 +82,18 @@ declare namespace usi.Frontend {
     interface changeTabAdditionalEvent {
         event_name: string,
     }
-    interface changeTabEvent{
+    interface changeTabEvent {
         comp: string,
         extraData: {
             userscript: string,
             id?: number
         }
+    }
+    interface UserscriptInfoElement {
+        text: string;
+        value?: string;
+        values?: Array<string>;
+        vlang?: boolean;
     }
 }
 

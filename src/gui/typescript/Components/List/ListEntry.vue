@@ -108,53 +108,30 @@
           </v-layout>
         </v-flex>
       </v-card-title>
-      <v-card-text v-if="this.showUserscriptEntry">
-        <!--Userscript aktivieren oder deaktivieren-->
-        <v-switch
-          v-model="localScriptDeactivated"
-          :label="localScriptDeactivated ? lang.deactivated : lang.activated"
-        ></v-switch>
+      <v-divider></v-divider>
+      <v-card-text v-if="showUserscriptEntry">
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-content>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              <!--Userscript aktivieren oder deaktivieren-->
+              <v-switch v-model="localScriptDeactivated"></v-switch>
+            </v-list-tile-content>
+          </v-list-tile>
 
-        <p v-if="script.id">
-          <strong>usi-id</strong>
-          : {{script.id}}
-        </p>
-        <p v-if="script.settings.name">
-          <strong>Name</strong>
-          : {{script.settings.name}}
-        </p>
-        <p v-if="script.settings.author">
-          <strong>Author</strong>
-          : {{script.settings.author}}
-        </p>
-        <p v-if="script.settings.version">
-          <strong>Version</strong>
-          : {{script.settings.version}}
-        </p>
-        <p v-if="script.settings.description">
-          <strong v-lang="'description'"></strong>
-          :{{script.settings.description}}
-        </p>
+          <!-- Restliche Userscript Informationen -->
+          <v-list-tile v-for="(info,i) in infos" v-bind:key="i">
+            <v-list-tile-content v-if="info.vlang !== true">{{info.text}}</v-list-tile-content>
+            <v-list-tile-content v-else v-lang="info.text"></v-list-tile-content>
 
-        <!--Require Skripte-->
-        <div v-if="script.require_scripts.length > 0">
-          <p>
-            <strong>Require Scripts</strong>
-          </p>
-          <ol class="usi-list-entry-required-scripts---output">
-            <li v-for="entry in script.require_scripts" :key="entry.url">{{entry.url}}</li>
-          </ol>
-        </div>
-
-        <div v-if="script.settings && script.settings.include">
-          <!--gültige Include Regeln-->
-          <p>
-            <strong>Includes</strong>
-          </p>
-          <ol>
-            <li v-for="(entry,idx) in script.settings.include" :key="idx">{{entry}}</li>
-          </ol>
-        </div>
+            <v-list-tile-content v-if="info.value" class="align-end">{{info.value}}</v-list-tile-content>
+            <div v-else class="align-end">
+              <ol>
+                <li v-for="(ele,j) in info.values" v-bind:key="j">{{ele}}</li>
+              </ol>
+            </div>
+          </v-list-tile>
+        </v-list>
 
         <!--Greasemonkey Variablen-->
         <div class="row" v-if="GMValues.length > 0">
@@ -176,24 +153,21 @@
             </table>
           </div>
         </div>
-        <!--Userscript Inhalt-->
-
-        <div v-if="showUserscriptContent" class="usi-list-entry-view-userscript---output row">
-          <span v-if="hightlightsjsActive">
-            <highlightjs-component :code="this.script.userscript" :astyle="hightlightsjsStyle"/>
-          </span>
-          <span v-else>
-            <!-- Es dürfen keine Leerzeichen dazwischen sein -->
-            <pre><code class="border-black">{{this.script.userscript}}</code></pre>
-          </span>
-        </div>
+        <v-card v-show="showUserscriptContent">
+          <!--Userscript Inhalt-->
+          <highlightjs-component
+            v-if="hightlightsjsActive"
+            :code="this.script.userscript"
+            :astyle="hightlightsjsStyle"
+          />
+          <!-- Es dürfen keine Leerzeichen dazwischen sein -->
+          <pre v-else><code class="width-100">{{this.script.userscript}}</code></pre>
+        </v-card>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 <script lang="ts">
-declare var global_settings: any;
-
 import {
   empty,
   notify,
@@ -244,6 +218,7 @@ export default Vue.component(componentName, {
       icon: "/gui/icon/usi.png",
       localScriptDeactivated: false,
       hightlightsjsActive: false,
+      infos: <usi.Frontend.UserscriptInfoElement[]>[],
       hightlightsjsStyle: "",
       GMValues: [],
       lang: {
@@ -257,18 +232,70 @@ export default Vue.component(componentName, {
     };
   },
   created: function() {
-      // Workaround
-      this.localScriptDeactivated = this.script.deactivated;
-      if(this.configuration && this.configuration.hightlightjs){
-          if(this.configuration.hightlightjs.active){
-            this.hightlightsjsActive= this.configuration.hightlightjs.active;
-          }
-          if(this.configuration.hightlightjs.style){
-            this.hightlightsjsStyle= this.configuration.hightlightjs.style;
-          }
+    // Workaround
+    this.localScriptDeactivated = this.script.deactivated;
+    if (this.configuration && this.configuration.hightlightjs) {
+      if (this.configuration.hightlightjs.active) {
+        this.hightlightsjsActive = this.configuration.hightlightjs.active;
       }
+      if (this.configuration.hightlightjs.style) {
+        this.hightlightsjsStyle = this.configuration.hightlightjs.style;
+      }
+    }
+
+    // Usersceript Informationen vorbereiten
+    this.build_infos_array();
   },
   methods: {
+    build_infos_array: function() {
+      // Zurücksetzen
+      this.infos = [];
+
+      if (this.script.id) {
+        this.infos.push({ text: "usi-id", value: this.script.id });
+      }
+      if (this.script.settings.name) {
+        this.infos.push({ text: "Name", value: this.script.settings.name });
+      }
+      if (this.script.settings.author) {
+        this.infos.push({ text: "Author", value: this.script.settings.author });
+      }
+      if (this.script.settings.version) {
+        this.infos.push({
+          text: "Version",
+          value: this.script.settings.version
+        });
+      }
+      if (this.script.settings.include) {
+        this.infos.push({
+          text: "Includes",
+          values: this.script.settings.include
+        });
+      }
+      if (this.script.settings.description) {
+        this.infos.push({
+          text: "description",
+          value: this.script.settings.description,
+          vlang: true
+        });
+      }
+
+      if (
+        this.script.require_scripts instanceof Array &&
+        this.script.require_scripts.length > 0
+      ) {
+        // nur die URL ausgeben
+        const values = this.script.require_scripts.map((ele: any) => {
+          return ele.url;
+        });
+
+        this.infos.push({
+          text: "Require Scripts",
+          values: values
+        });
+      }
+    },
+
     export_script: async function(): Promise<void> {
       const script_storage = await userscript_storage();
       const userscript_handler = <any>script_storage.getById(this.script.id);
@@ -467,11 +494,15 @@ export default Vue.component(componentName, {
 });
 </script>
 
-<style>
+<style scoped>
 .strike-through {
   text-decoration: line-through;
 }
 .pointer {
   cursor: pointer;
+}
+.width-100 {
+  width: 100%;
+  padding: 5px;
 }
 </style>

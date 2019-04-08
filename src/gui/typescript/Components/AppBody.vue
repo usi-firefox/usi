@@ -39,7 +39,6 @@
         <v-toolbar-title>{{navTitle}}</v-toolbar-title>
       </v-toolbar>
       <v-content>
-        <v-container fluid>
           <!-- App Content -->
           <!-- <keep-alive> -->
           <!-- @todo  schaltet die aktive Componente um -->
@@ -72,7 +71,6 @@
           ></loadExternal-component>
           <!-- </keep-alive> -->
           <!-- App Content -->
-        </v-container>
       </v-content>
     </v-app>
   </div>

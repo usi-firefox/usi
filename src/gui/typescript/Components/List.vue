@@ -13,7 +13,7 @@
           <span v-else v-lang="'no_userscript_there'"></span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-items class="hidden-sm-and-down">
+        <v-toolbar-items>
           <v-btn v-if="userscripts.length > 0" flat @click="toggleExpanded">
             <v-icon>expand_more</v-icon>
             <v-icon>expand_less</v-icon>

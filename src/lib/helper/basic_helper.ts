@@ -60,8 +60,8 @@ export function notify(text: string): Promise<string> {
         });
 }
 export function getExtId(): string {
-    const manifest = <any>browser.runtime.getManifest();
-    if (typeof manifest === "object" && typeof manifest.applications.gecko.id === "string") {
+    const manifest = browser.runtime.getManifest();
+    if (manifest && manifest.applications && manifest.applications.gecko && manifest.applications.gecko.id === "string") {
         return manifest.applications.gecko.id;
     } else {
         // default
