@@ -391,7 +391,7 @@ export default class page_injection_helper {
         let gm = {};
 
         // Wenn Greasemonkey Funktionen benötigt werden, muss das page_injection_object angepasst werden
-        if (config_data.greasemonkey.global_active === true ||
+        if (config_data.greasemonkey && config_data.greasemonkey.global_active === true ||
             script_settings["use-greasemonkey"] === "true" ||
             typeof script_settings["grant"] === "object" ||
             script_settings["use-greasemonkey"] === true) {

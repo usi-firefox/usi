@@ -30,18 +30,26 @@ Vue.directive("lang", {
             return;
         }
 
+        // Neuen Textknoten erstellen
+        const text_node = document.createTextNode(translated);
+
         switch (arg) {
+            
             case "label":
                 // Übersetzung in das label Attribut einsetzen
                 el.setAttribute(arg, translated);
                 break;
+            
+            case "append":
 
+                // Die Übersetzung nun anhängen
+                el.append(text_node);
+                break;
             default:
-                // Neuen Textknoten erstellen
-                const text_node = document.createTextNode(translated);
-
-                // Die Übersetzung nun hinzufügen
+                
+                // Die Übersetzung nun als erstes Element hinzufügen
                 el.prepend(text_node);
+                break;
         }
 
     }

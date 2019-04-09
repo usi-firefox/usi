@@ -27,7 +27,7 @@
                 <!--Userscript anzeigen/ausblenden-->
                 <v-list-tile @click="showUserscript">
                   <v-list-tile-action>
-                    <i class="material-icons">pageview</i>
+                    <v-icon>pageview</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-title>
                     <span v-html="!showUserscriptContent ? lang.show: lang.hide"></span>
@@ -38,10 +38,10 @@
                 <v-divider></v-divider>
                 <v-list-tile @click="edit">
                   <v-list-tile-action>
-                    <i class="material-icons">edit</i>
+                    <v-icon>edit</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-title>
-                    <span v-html="lang.change"></span>
+                    <span v-lang="'change'"></span>
                   </v-list-tile-title>
                 </v-list-tile>
 
@@ -49,17 +49,17 @@
                 <v-divider></v-divider>
                 <v-list-tile @click="deleteUserscript">
                   <v-list-tile-action>
-                    <i class="material-icons">delete</i>
+                    <v-icon>delete</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-title>
-                    <span v-html="lang.delete_x"></span>
+                    <span v-lang="'delete_x'"></span>
                   </v-list-tile-title>
                 </v-list-tile>
                 <!-- Userscript Exportieren -->
                 <v-divider></v-divider>
                 <v-list-tile @click="export_script">
                   <v-list-tile-action>
-                    <i class="material-icons">import_export</i>
+                    <v-icon>import_export</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-title>export</v-list-tile-title>
                 </v-list-tile>
@@ -68,7 +68,7 @@
                   <v-divider></v-divider>
                   <v-list-tile @click="start_spa">
                     <v-list-tile-action>
-                      <i class="material-icons">play_arrow</i>
+                      <v-icon>play_arrow</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-title>Start SPA</v-list-tile-title>
                   </v-list-tile>
@@ -78,7 +78,7 @@
                   <v-divider></v-divider>
                   <v-list-tile @click="loadAgain">
                     <v-list-tile-action>
-                      <i class="material-icons">repeat</i>
+                      <v-icon>repeat</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-title>
                       <span v-lang="'reload_from_source'"></span>
@@ -90,7 +90,7 @@
                   <v-divider></v-divider>
                   <v-list-tile @click="GMValuesGet">
                     <v-list-tile-action>
-                      <i class="material-icons">get_app</i>
+                      <v-icon>get_app</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-title>GM Values show</v-list-tile-title>
                   </v-list-tile>
@@ -98,7 +98,7 @@
                   <v-divider></v-divider>
                   <v-list-tile @click="GMValuesDelete">
                     <v-list-tile-action>
-                      <i class="material-icons">delete</i>
+                      <v-icon>delete</v-icon>
                     </v-list-tile-action>
                     <v-list-tile-title>GM Values delete</v-list-tile-title>
                   </v-list-tile>
@@ -132,6 +132,12 @@
             </div>
           </v-list-tile>
         </v-list>
+
+        <v-card-actions>
+          <v-btn @click="showUserscript"><v-icon>pageview</v-icon>{{!showUserscriptContent ? lang.show: lang.hide}}</v-btn>
+          <v-btn @click="edit" v-lang:append="'change'"><v-icon>edit</v-icon></v-btn>
+          <v-btn @click="deleteUserscript" v-lang:append="'delete_x'"><v-icon>delete</v-icon></v-btn>
+        </v-card-actions>
 
         <!--Greasemonkey Variablen-->
         <div class="row" v-if="GMValues.length > 0">
