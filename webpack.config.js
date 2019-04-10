@@ -167,7 +167,6 @@ module.exports = [
     },
     devtool: 'inline-source-map',
     plugins: [
-      new VueLoaderPlugin(),
       new ReplaceInFileWebpackPlugin([{
         dir: 'dist',
         files: ['manifest.json'],
@@ -176,6 +175,7 @@ module.exports = [
           replace: usi_version_number
         }]
       }]),
+      new VueLoaderPlugin(),
       new CopyWebpackPlugin([
         { from: 'gui', to: "gui", ignore: ["*.ts", "*.vue"] },
       ])

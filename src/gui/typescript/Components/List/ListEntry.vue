@@ -134,9 +134,22 @@
         </v-list>
 
         <v-card-actions>
-          <v-btn @click="showUserscript"><v-icon>pageview</v-icon>{{!showUserscriptContent ? lang.show: lang.hide}}</v-btn>
-          <v-btn @click="edit" v-lang:append="'change'"><v-icon>edit</v-icon></v-btn>
-          <v-btn @click="deleteUserscript" v-lang:append="'delete_x'"><v-icon>delete</v-icon></v-btn>
+            <v-flex xs4>
+              <v-btn @click="showUserscript">
+                <v-icon>pageview</v-icon>
+                {{!showUserscriptContent ? lang.show: lang.hide}}
+              </v-btn>
+            </v-flex>
+            <v-flex xs4>
+              <v-btn @click="edit" v-lang:append="'change'">
+                <v-icon>edit</v-icon>
+              </v-btn>
+            </v-flex>
+            <v-flex xs4>
+              <v-btn @click="deleteUserscript" v-lang:append="'delete_x'">
+                <v-icon>delete</v-icon>
+              </v-btn>
+            </v-flex>
         </v-card-actions>
 
         <!--Greasemonkey Variablen-->

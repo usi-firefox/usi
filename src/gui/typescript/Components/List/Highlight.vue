@@ -1,17 +1,27 @@
 <template>
-  <div class="highlightjs">
-    <v-container>
-      <v-divider class="mb-3"></v-divider>
-      <h3>
-        HighlightJS Style
-        <v-btn @click="active_style = ''">
+  <v-container>
+    <v-layout>
+      <v-flex xs4>
+        <h3>HighlightJS Style</h3>
+      </v-flex>
+    </v-layout>
+    <v-layout>
+      <v-flex xs8 md4>
+        <v-autocomplete :items="hightlightjsstyles" @change="run" v-model="active_style"></v-autocomplete>
+      </v-flex>
+      <v-flex xs4>
+        <v-btn @click="active_style = 'default'; run()">
           <v-icon>undo</v-icon>
         </v-btn>
-      </h3>
-      <v-autocomplete :items="hightlightjsstyles" @change="run" v-model="active_style"></v-autocomplete>
-      <pre><code class="border-black">{{this.code}}</code></pre>
-    </v-container>
-  </div>
+      </v-flex>
+    </v-layout>
+
+    <v-layout row>
+      <v-flex xs12>
+        <pre><code class="border-black">{{this.code}}</code></pre>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -35,16 +45,11 @@ export default Vue.component(componentName, {
   props: {
     code: {
       required: true
-    },
-    // @todo rename
-    astyle: {
-      default: "default",
-      required: false
     }
   },
   data: function() {
     return {
-      active_style: this.astyle,
+      active_style: "default",
       highlight_styles_path: "libs/highlight/styles/",
       // enthält alle verfügbaren highlight js styles
       hightlightjsstyles: [
@@ -132,7 +137,12 @@ export default Vue.component(componentName, {
   },
   created: function() {
     Vue.nextTick().then(() => {
-      this.run();
+      config_storage()
+        .get()
+        .then(config => {
+          this.active_style = config.hightlightjs.style;
+          this.run();
+        });
     });
   },
   methods: {
@@ -152,8 +162,6 @@ export default Vue.component(componentName, {
 
       // Style speichern
       this.setStyle(this.active_style);
-
-      this.$parent.$parent.$emit("change-tab-additional", <usi.Frontend.changeTabAdditionalEvent>{ event_name: "usi:refresh-config" });
     },
     async setStyle(style_name: string) {
       let config = await config_storage().get();

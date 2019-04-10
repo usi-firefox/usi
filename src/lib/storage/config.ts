@@ -22,9 +22,11 @@ export default function config_storage() {
 
         , set: async function (newConfig: usi.Storage.Config): Promise<boolean> {
             let the_storage = <any>await browser.storage.local.get("settings");
-
-            // neue Config setzen
-            the_storage.settings.config = newConfig;
+            /**
+             * @TODO
+             * neue Config setzen
+             */  
+            the_storage.settings.config = JSON.parse(JSON.stringify(newConfig));
 
             // gib true zurück, wenn fertig
             return browser.storage.local.set(the_storage).then(() => true);
