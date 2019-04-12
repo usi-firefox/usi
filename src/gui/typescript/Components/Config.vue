@@ -89,6 +89,8 @@ import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
 
+const parse_userscript_instance = new parse_userscript();
+
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
  * genutzt werden kann ->
@@ -237,7 +239,7 @@ export default Vue.component(componentName, {
 
           // @todo Konfig suchen und danach die Optionen Parsen...
           const loaded_userscript_settings = <any>(
-            parse_userscript().find_settings(loaded_userscript_text)
+            parse_userscript_instance.find_settings(loaded_userscript_text)
           );
 
           if (loaded_userscript_settings === null) {

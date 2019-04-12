@@ -94,6 +94,7 @@ export default class load_resource {
     async load_internal_file(file_url: string) {
 
         const internal_file_url = browser.extension.getURL(file_url);
+        debugger
         const xhr = new XMLHttpRequest();
         const file = new Promise((resolve, reject) => {
             try {
@@ -151,47 +152,49 @@ export default class load_resource {
     }
     /**
      * Holt externe Skripte, und gibt bei Erfolg ein Promise zurück
-     * @param {string} url_str
+     * @param {string} url
      * @param {string} charset
      * @returns {Boolean}
      */
-    load_userscript_by_url(url_str: string, charset: string = "utf-8"): Promise<any> {
+    async load_userscript_by_url(url: string, charset: string = "utf-8"): Promise<any> {
 
-        return new Promise((resolve, reject) => {
-
-            if (!url_ends_with_user_js(url_str)) {
+            if (!url_ends_with_user_js(url)) {
                 // Nur URL erlaubt die mit .user.js endet
-                reject("keine .user.js Endung");
-                return false;
+                throw "keine .user.js Endung";
             }
 
-            if (!valid_url(url_str)) {
-                reject("keine gültige URL übergeben");
-                return false;
+            if (!valid_url(url)) {
+                throw "keine gültige URL übergeben";
             }
 
-            const xhr = new XMLHttpRequest();
+            /**
+             * Konfiguration für fetch()
+             */
+            const headers = new Headers();
+            headers.set("Content-Type", "text/plain; charset=" + charset);
+
+            const fetchInit = <RequestInit>{
+                cache : "no-store",
+                // Wichtig damit externe Dateien geladen werden können
+                mode : "cors",
+                headers : headers
+            };
+
             try {
+                const result = await fetch(url, fetchInit);
+                if(result.ok === true ){
+                    return result;
+                }
 
-                xhr.open("GET", url_str, true);
-                // Damit der Request immer "frisch" ist
-                xhr.setRequestHeader("Cache-control", "no-cache");
+                // Unbekannter Fehler
+                throw result;
+            }catch (exception){
+                console.error('exception');
+                console.error(exception);
 
-                xhr.overrideMimeType("text/plain; charset=" + charset);
-
-                xhr.addEventListener("load", resolve);
-                xhr.addEventListener("error", reject);
-
-                // Request mit den zuvor definierten Optionen ausführen
-                xhr.send();
-
-                return true;
-            } catch (e) {
                 // Fehler ist aufgetreten
-                reject("Unbekannter Fehler ist aufgetreten in load_userscript_by_url()");
-                return false;
+                throw "Unbekannter Fehler ist aufgetreten in load_userscript_by_url()";
             }
 
-        });
     }
 }

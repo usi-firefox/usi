@@ -5,6 +5,9 @@ import userscript_storage from "lib/storage/storage";
 import config_storage from "lib/storage/config";
 import load_resource from "lib/helper/load_resource";
 
+
+const parse_userscript_instance = new parse_userscript();
+
 export default class page_injection_helper {
 
     // Sammel Objekt
@@ -300,7 +303,7 @@ export default class page_injection_helper {
         // Prüfung ob es ein Array ist
         if (script_settings["include"].length > 0) {
             // ausgelagert, für Wiederverwendung
-            result_includes = parse_userscript().prepare_includes_and_excludes(script_settings["include"]);
+            result_includes = parse_userscript_instance.prepare_includes_and_excludes(script_settings["include"]);
         }
 
         // Die include dürfen nicht leer sein
@@ -322,7 +325,7 @@ export default class page_injection_helper {
          */
         if (typeof script_settings["exclude"] !== "undefined" && script_settings["exclude"].length > 0) {
             // Exclude Regeln hinzufügen
-            let prepared_result_excludes = parse_userscript().prepare_includes_and_excludes(script_settings["exclude"]);
+            let prepared_result_excludes = parse_userscript_instance.prepare_includes_and_excludes(script_settings["exclude"]);
 
             // Sicherheitscheck
             if (prepared_result_excludes && prepared_result_excludes.length > 0) {
@@ -481,7 +484,7 @@ export default class page_injection_helper {
         // Werte für die Variable GM_info
         gm.prefilled_data.scriptSettings = userscript_handle.getSettings(); // enthält die Settings
 
-        const getUserscriptContent = <any>parse_userscript().find_lines_with_settings(userscript_handle.getUserscriptContent());
+        const getUserscriptContent = <any>parse_userscript_instance.find_lines_with_settings(userscript_handle.getUserscriptContent());
         gm.prefilled_data.scriptMetaStr = getUserscriptContent.join("\n");
 
         const browser_runtime = <any>browser.runtime;

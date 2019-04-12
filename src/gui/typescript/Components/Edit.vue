@@ -95,6 +95,8 @@ import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import { notify } from "lib/helper/basic_helper";
 
+const add_userscript_instance = new add_userscript();
+
 // Die ID der Textarea
 var last_userscript_interval_id: number = 0;
 
@@ -281,7 +283,7 @@ export default Vue.component(componentName, {
         throw "Userscript is missing";
       }
       // Hier wird das UserScript weiterverarbeitet und gespeichert
-      let valid_userscript = add_userscript().check_for_valid_userscript_settings(
+      let valid_userscript = add_userscript_instance.check_for_valid_userscript_settings(
         userscript
       );
 
@@ -292,14 +294,14 @@ export default Vue.component(componentName, {
       }
 
       // Überprüfe ob das Userscript bereits gespeichert wurde
-      let userscript_id = await add_userscript().exist_userscript_already(
+      let userscript_id = await add_userscript_instance.exist_userscript_already(
         userscript
       );
 
       if (userscript_id === 0) {
         // neu anlegen
         let userscript_handle = await (<any>(
-          add_userscript().save_new_userscript(userscript)
+          add_userscript_instance.save_new_userscript(userscript)
         ));
         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
         new page_injection_helper().add_userscript(userscript_handle.getId());
@@ -344,7 +346,7 @@ export default Vue.component(componentName, {
       }
 
       let userscript_handle = await (<any>(
-        add_userscript().update_userscript(
+        add_userscript_instance.update_userscript(
           userscript_id,
           userscript,
           moreinformations
