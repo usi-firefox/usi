@@ -227,10 +227,8 @@ export default Vue.component(componentName, {
         const userscript_id = userscript.id;
 
         try {
-          const loaded_userscript = await (<any>(
-            load_resource_instance.load_userscript_by_url(updateURL)
-          ));
-          if (!loaded_userscript.target.responseText) {
+          const loaded_userscript = await load_resource_instance.load_userscript_by_url(updateURL);
+          if (!loaded_userscript) {
             // keine antwort
             return false;
           }

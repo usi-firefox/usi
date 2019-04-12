@@ -87,13 +87,13 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                 return self;
             }
             // fügt eine Resource hinzu --- @resource resourceName http://www.example.com/example.png
-            , addResource: function (url: string, content: string, name: string, mime_type: string) {
+            , addResource: function (url: string, content: string, name: string) {
                 if (typeof userscript_data.settings.resources_data === "undefined") {
                     // init
                     self.resetAllResources();
                 }
                 // füge die Resource hinzu
-                userscript_data.settings.resources_data.push({ name: name, data: content, mime_type: mime_type, origUrl: url });
+                userscript_data.settings.resources_data.push({ name: name, data: content, origUrl: url });
 
                 // danach speichern
                 return self;
@@ -138,27 +138,29 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                     resetAllResources().
                     resetAllRequiredScripts();
             }
-            , loadAndAddExternals: function (type: any, url: any, name: any, charset: any, resolve: any, reject: any) {
+            , loadAndAddExternals: async function (type: any, url: any, name: any) {
                 // Lade die Resource
                 const load_resource_instance = new load_resource();
-                const loaded_image_or_text = <any>load_resource_instance.load_image_or_text(url, charset);
+                switch (type) {
+                    case "icon":
+                    case "resource":
+                        const response_data = <any>await load_resource_instance.loadImage(url);
 
-                loaded_image_or_text.then(function (response_data: any, response_contenttype: any) {
-
-                    if (type === "icon") {
-                        // Icon hinzufügen
-                        self.addIcon(url, response_data);
-                    } else if (type === "resource") {
-                        // für zusätzliche Resource Dateien (Bilder oder Texte, oder oder oder ...)
-                        self.addResource(url, response_data, name, response_contenttype);
-                    } else if (type === "require") {
+                        if (type === "icon") {
+                            // Icon hinzufügen
+                            self.addIcon(url, response_data);
+                        } else {
+                            // für zusätzliche Resource Dateien (Bilder oder Texte, oder oder oder ...)
+                            self.addResource(url, response_data, name);
+                        }
+                        break;
+                    case "require":
+                        // TEXT
+                        const response_text = <any>await load_resource_instance.loadText(url);
                         // gilt für JS Dateien die benötigt und vor dem Userscript geladen werden müssen
-                        self.addRequireScript(url, response_data);
-                    }
-
-                    // Alles gut gegangen resolve ausführen!
-                    resolve(type + " - " + url);
-                });
+                        self.addRequireScript(url, response_text);
+                        break
+                }
 
                 return self;
             }

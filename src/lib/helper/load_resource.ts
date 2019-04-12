@@ -2,6 +2,50 @@ import { valid_url, empty, url_ends_with_user_js } from "lib/helper/basic_helper
 
 export default class load_resource {
 
+    async loadImage(url: string) : Promise<string> {
+        if (!valid_url(url)) {
+            throw "ungültige URL";
+        }
+        /**
+        * Konfiguration für fetch()
+        */
+        const fetchInit = <RequestInit>{
+            cache: "no-store",
+            // Wichtig damit externe Dateien geladen werden können
+            mode: "cors"
+        };
+
+        try {
+            const response = await fetch(url, fetchInit);
+            if (response.ok === true) {
+                const headers = <Headers>response.headers;
+                const mimetype = headers.get("content-type");
+
+                // Bild in Base64 umwandeln
+                const buffer = await response.arrayBuffer();
+                const arr = new Uint8Array(buffer) as any;
+
+                // Convert the int array to a binary string
+                // We have to use apply() as we are converting an *array*
+                // and String.fromCharCode() takes one or more single values, not
+                // an array.
+                const raw = String.fromCharCode.apply(null, arr);
+                const base64 = window.btoa(raw);
+
+                return "data:" + mimetype + ";base64," + base64;
+            }
+
+            // Unbekannter Fehler
+            throw response;
+        } catch (exception) {
+            console.error('exception');
+            console.error(exception);
+
+            // Fehler ist aufgetreten
+            throw "Unbekannter Fehler ist aufgetreten in loadImage()";
+        }
+    }
+
     /**
      * Lädt ein Bild und gibt es als Datauri an die Callback Funktion weiter
      * @param {string} url
@@ -87,114 +131,66 @@ export default class load_resource {
     }
 
     /**
+     * Interner Funktions Wrapper für fetch()
+     * @param url 
+     * @param charset 
+     */
+    async loadText(url: string, charset: string = "utf-8"): Promise<string> {
+        /**
+        * Konfiguration für fetch()
+        */
+        const headers = new Headers();
+        headers.set("Content-Type", "text/plain; charset=" + charset);
+
+        const fetchInit = <RequestInit>{
+            cache: "no-store",
+            // Wichtig damit externe Dateien geladen werden können
+            mode: "cors",
+            headers: headers
+        };
+
+        try {
+            const response = await fetch(url, fetchInit);
+            if (response.ok === true) {
+                // Rückgabe des Textes
+                return await response.text();
+            }
+
+            // Unbekannter Fehler
+            throw response;
+        } catch (exception) {
+            console.error('exception');
+            console.error(exception);
+
+            // Fehler ist aufgetreten
+            throw "Unbekannter Fehler ist aufgetreten in load_userscript_by_url()";
+        }
+    }
+
+    /**
      * Lädt den Inhalt einer Datei (dieser Extension) nach
-     * @param {string} abs_file_url
-     * @returns {string} Dateiinhalt
      */
     async load_internal_file(file_url: string) {
-
         const internal_file_url = browser.extension.getURL(file_url);
-        debugger
-        const xhr = new XMLHttpRequest();
-        const file = new Promise((resolve, reject) => {
-            try {
-                xhr.open("GET", internal_file_url, true);
-                xhr.overrideMimeType("text/plain; charset=utf-8");
-                xhr.addEventListener("load", resolve);
-                xhr.addEventListener("error", reject);
-                // Request mit den zuvor definierten Optionen ausführen
-                xhr.send();
-
-                return;
-            } catch (e) {
-                // Fehler ist aufgetreten
-                reject("Unbekannter Fehler in load_internal_file()");
-                return;
-            }
-        });
-
-        try {
-            const response = await <any>file;
-            if (!response.target.responseText) {
-                throw "kein response.target.responseText in load_internal_file()";
-            }
-
-            return response.target.responseText;
-
-        } catch (err) {
-            throw err;
-        }
+        const response = await this.loadText(internal_file_url);
+        return response;
     }
-    /**
-     * lädt etwas per XMLHttpRequest()
-     * @param {string} url_str
-     * @param {string} charset
-     * @returns {Promise}
-     */
-    load_by_url(url_str: string, charset: string = "utf-8"): Promise<any> | boolean {
 
-        const xhr = new XMLHttpRequest();
-        try {
-            xhr.open("GET", url_str, true);
-            xhr.overrideMimeType("text/plain; charset=" + charset);
-            let return_promise = new Promise((resolve, reject) => {
-                xhr.addEventListener("load", resolve);
-                xhr.addEventListener("error", reject);
-            });
-            // Request mit den zuvor definierten Optionen ausführen
-            xhr.send();
-
-            return return_promise;
-        } catch (e) {
-            // Fehler ist aufgetreten
-            return false;
-        }
-    }
     /**
      * Holt externe Skripte, und gibt bei Erfolg ein Promise zurück
-     * @param {string} url
-     * @param {string} charset
-     * @returns {Boolean}
      */
     async load_userscript_by_url(url: string, charset: string = "utf-8"): Promise<any> {
 
-            if (!url_ends_with_user_js(url)) {
-                // Nur URL erlaubt die mit .user.js endet
-                throw "keine .user.js Endung";
-            }
+        if (!url_ends_with_user_js(url)) {
+            // Nur URL erlaubt die mit .user.js endet
+            throw "keine .user.js Endung";
+        }
 
-            if (!valid_url(url)) {
-                throw "keine gültige URL übergeben";
-            }
+        if (!valid_url(url)) {
+            throw "keine gültige URL übergeben";
+        }
 
-            /**
-             * Konfiguration für fetch()
-             */
-            const headers = new Headers();
-            headers.set("Content-Type", "text/plain; charset=" + charset);
-
-            const fetchInit = <RequestInit>{
-                cache : "no-store",
-                // Wichtig damit externe Dateien geladen werden können
-                mode : "cors",
-                headers : headers
-            };
-
-            try {
-                const result = await fetch(url, fetchInit);
-                if(result.ok === true ){
-                    return result;
-                }
-
-                // Unbekannter Fehler
-                throw result;
-            }catch (exception){
-                console.error('exception');
-                console.error(exception);
-
-                // Fehler ist aufgetreten
-                throw "Unbekannter Fehler ist aufgetreten in load_userscript_by_url()";
-            }
-
+        const response = await this.loadText(url, charset);
+        return response;
     }
 }

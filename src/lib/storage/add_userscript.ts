@@ -162,20 +162,6 @@ export default class add_userscript {
      * @returns {void}
      */
     async _save_userscript(userscript_handle: any, userscript: any, settings: any, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
-        let running_promises = [],
-            // Diese Funktion wird genutzt, falls beim Nachladen ein Fehler auftritt
-            error_function = function (message: any) {
-                // Default Text
-                let alert_text = browser.i18n.getMessage("userscript_couldnt_saved") + " -> ID " + userscript_handle.getId();
-
-                if (message.code !== 200 && message.code !== 304) {
-                    // Datei Anfrage lieferte kein 200 -> Success und kein 304 -> Not Modified
-                    alert_text += "\n\n" + browser.i18n.getMessage("error_couldnt_load_url") + " -> code:'" + message.code + "' url:'" + message.url + "'";
-                }
-
-                // Fehlermeldung zeigen
-                notify(alert_text);
-            };
 
         // setze und speichere die gefundenen Einstellungen
         userscript_handle.
@@ -201,16 +187,13 @@ export default class add_userscript {
                 }
 
                 // resource überschreiben! und setzt es auf Null falls nicht genutzt werden kann
-                if (resource_allowed_types !== null) {
+                if (resource_allowed_types) {
 
                     resource_url = type_guess(resource_url, resource_allowed_types.types);
 
                     if (resource_url) {
-
                         // Resource nachladen!
-                        running_promises.push(new Promise(function (resolve) {
-                            userscript_handle.loadAndAddExternals("resource", resource_url, resource_name, resource_charset, resolve, error_function);
-                        }));
+                        await userscript_handle.loadAndAddExternals("resource", resource_url, resource_name);
                     }
                 }
             }
@@ -221,15 +204,12 @@ export default class add_userscript {
             let icon_allowed_types = parse_userscript_instance.get_userscript_keyword_config_by_name("icon");
 
             // icon URL
-            if (icon_allowed_types !== null) {
+            if (icon_allowed_types) {
                 let icon_url = type_guess(settings.icon, icon_allowed_types.types);
 
                 if (icon_url) {
-
                     // icon nachladen
-                    running_promises.push(new Promise(function (resolve) {
-                        userscript_handle.loadAndAddExternals("icon", icon_url, null, null, resolve, error_function);
-                    }));
+                    await userscript_handle.loadAndAddExternals("icon", icon_url);
                 }
             }
         }
@@ -243,26 +223,18 @@ export default class add_userscript {
             for (let require_index in settings.require) {
                 one_require = settings.require[require_index];
 
-                if (require_allowed_types !== null) {
+                if (require_allowed_types) {
                     // Überprüfe die URL
                     require_url = type_guess(one_require, require_allowed_types.types);
 
                     // Nachladen des benötigten Skripts
                     if (require_url) {
-
-                        running_promises.push(new Promise(function (resolve) {
-                            userscript_handle.loadAndAddExternals("require", require_url, null, null, resolve, error_function);
-                        }));
-
+                        await userscript_handle.loadAndAddExternals("require", require_url);
                     }
                 }
             }
         }
 
-        // alle Promises abarbeiten, es darf kein Fehler aufgetreten sein!
-        return Promise.all(running_promises).then(function (answers) {
-            // erst jetzt darf es gespeichert werden
-            return userscript_handle.save();
-        });
+        return userscript_handle.save();
     }
 }

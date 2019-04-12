@@ -107,17 +107,16 @@ export default class parse_userscript {
         }
     }
 
-    get_userscript_keyword_config_by_name(keyword: string): usi.Userscript.MetaBlock.Keyword | null {
-        let userscript_keyword_config = this.userscript_keyword_config();
-
-        for (let i in userscript_keyword_config) {
-            if (userscript_keyword_config[i].keyword === keyword) {
-                return userscript_keyword_config[i];
-            }
-        }
-
-        // Falls das Keyword nicht gefunden werden konnte!
-        return null;
+    /**
+     * Meta Block Konfiguration laden
+     * Bsp: keyword -> include
+     * liefert
+     * { m: true, keyword: "include", types: ["url", "regex"] }
+     */
+    get_userscript_keyword_config_by_name(keyword: string): usi.Userscript.MetaBlock.Keyword | undefined {
+        return this.userscript_keyword_config().find((ele) => {
+            return ele.keyword === keyword;
+        });
     }
 
     /**
