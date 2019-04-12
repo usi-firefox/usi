@@ -339,15 +339,23 @@ export default Vue.component(componentName, {
      * Userscript aktivieren, bzw deaktivieren
      * @returns void
      */
-    toggleActivation: async function(): Promise<void> {
+    toggleActivation: async function(isDeactivated:boolean): Promise<void> {
       // aktiviere oder deaktiviere dieses Userscript!
       const id = this.script.id;
       var script_storage = await userscript_storage();
       var userscript_handle = <any>script_storage.getById(id);
-      if (userscript_handle !== false) {
-        // wechsele den Status ob das Userscript aktiviert oder deaktiviert ist
-        userscript_handle.switchActiveState();
+      if (userscript_handle === false) {
+        // kein Userscript erhalten
+        return;
       }
+
+      if(isDeactivated === userscript_handle.isDeactivated()){
+        // Keine Veränderung
+        return;
+      }
+
+      // Aktive State ändern
+      userscript_handle.switchActiveState();
 
       if (userscript_handle.isDeactivated()) {
         // deaktivieren
@@ -499,8 +507,8 @@ export default Vue.component(componentName, {
     }
   },
   watch: {
-    localScriptDeactivated: function(): void {
-      this.toggleActivation();
+    localScriptDeactivated: function(newVal:boolean): void {
+      this.toggleActivation(newVal);
     },
     expanded: function(): void {
       // auf oder zu klappen, definiert durch List.vue
