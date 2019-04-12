@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts">
-declare var jQuery: any;
 declare var hljs: any;
 
 import config_storage from "lib/storage/config";
@@ -147,18 +146,19 @@ export default Vue.component(componentName, {
   },
   methods: {
     run: async function(): Promise<void> {
-      jQuery(this.$el)
-        .find("pre code")
-        .each(function(i: number, block: HTMLElement) {
-          // HighlightJS ausführen
-          hljs.highlightBlock(block);
-        });
-
+      const codeblock = this.$el.querySelector("pre code");
+       // HighlightJS ausführen
+       if(codeblock){
+         hljs.highlightBlock(codeblock);
+       }
       // Pfad zur CSS Datei festlegen
       const style_filepath =
         this.highlight_styles_path + this.active_style + ".css";
       // Link auf die neue CSS Datei ändern
-      jQuery("#HighlightJSStyle").attr("href", style_filepath);
+      const stlye_tag = document.getElementById("HighlightJSStyle");
+      if(stlye_tag){
+          stlye_tag.setAttribute("href", style_filepath);
+      }
 
       // Style speichern
       this.setStyle(this.active_style);
