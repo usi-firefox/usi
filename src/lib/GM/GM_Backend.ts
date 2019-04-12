@@ -20,7 +20,7 @@ export default class GM_Backend {
         }
 
         // Userscript ID, aus dem Port Namen extrahieren
-        let regex_res = /^usi-gm-backend---(\d+)/.exec(port.name);
+        const regex_res = /^usi-gm-backend---(\d+)/.exec(port.name);
 
         if (regex_res === null || !regex_res[1]) {
             // Keine passende ID gefunden
@@ -43,28 +43,26 @@ export default class GM_Backend {
                 switch (message.name) {
                     case "GM_openInTab":
                         {
-                            let message_data = <usi.GM_Backend.GM_openInTab>message.data;
+                            const message_data = <usi.GM_Backend.GM_openInTab>message.data;
                             this.GM_openInTab(message_data, userscript_id);
                         }
-
                         break;
+                        
                     case "GM_registerMenuCommand":
-                        {
-                            this.GM_registerMenuCommand(message.data);
-                        }
+                        this.GM_registerMenuCommand(message.data);
                         break;
 
                     case "GM_setValue":
                     case "GM_deleteValue":
                     case "GM_getValue":
-                        let message_data = <usi.GM_Backend.GM_value>message.data;
+                        const message_data = <usi.GM_Backend.GM_value>message.data;
 
                         if (!message_data.val_name) {
                             throw "no property name was given";
                         }
 
-                        let storage = await userscript_storage();
-                        let userscript_handle = storage.getById(userscript_id);
+                        const storage = await userscript_storage();
+                        const userscript_handle = storage.getById(userscript_id);
 
                         if (!userscript_handle) {
                             throw "couldn't find 'userscript'";
@@ -96,7 +94,7 @@ export default class GM_Backend {
                     case "GM_xmlhttpRequest":
                         // @todo
                         {
-                            let message_data = <usi.GM_Backend.GM_xhr>message.data.details;
+                            const message_data = <usi.GM_Backend.GM_xhr>message.data.details;
                             GM_xhrHandler().init(message_data, message.counter, port);
                         }
                         break;
@@ -106,10 +104,7 @@ export default class GM_Backend {
                 }
 
             } catch (ex) {
-                let funcName = "'unknown function'";
-                if (!funcName) {
-                    funcName = message.name;
-                }
+                let funcName = message.name;
                 // Basic Exception catch
                 port.postMessage({ name: "GM_Backend:error", func_name: funcName, text: ex });
             }
@@ -119,19 +114,19 @@ export default class GM_Backend {
 
     // neuen Tab öffnen
     async GM_openInTab(data: usi.GM_Backend.GM_openInTab, userscript_id: number) {
-        let url = data.url;
-        let open_in_background = data.open_in_background;
+        const url = data.url;
+        const open_in_background = data.open_in_background;
 
         // Prüft ob value_pair.url wirklich valide ist!
         if (valid_url(url) === true) {
 
-            let script_storage = await userscript_storage();
-            let userscript_handle = <any>script_storage.getById(userscript_id);
+            const script_storage = await userscript_storage();
+            const userscript_handle = <any>script_storage.getById(userscript_id);
 
             // Prüf-Variable damit es nicht zu einer "unendlichen" Rekursion kommt
             let not_wildcard_pagemod = true,
                 includes = userscript_handle.getSettings()["include"];
-            for (let i in includes) {
+            for (const i in includes) {
                 if (includes[i] === "*") {
                     // Wildcard Eintrag gefunden, open in Tab ist nicht möglich!
                     not_wildcard_pagemod = false;
