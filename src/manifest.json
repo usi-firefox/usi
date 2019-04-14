@@ -46,8 +46,6 @@
         "<all_urls>",
         "clipboardRead",
         "clipboardWrite",
-        "contextMenus",
-        "downloads",
         "notifications",
         "storage",
         "unlimitedStorage",
