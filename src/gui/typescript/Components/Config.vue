@@ -233,11 +233,9 @@ export default Vue.component(componentName, {
             return false;
           }
 
-          const loaded_userscript_text = loaded_userscript.target.responseText;
-
           // @todo Konfig suchen und danach die Optionen Parsen...
           const loaded_userscript_settings = <any>(
-            parse_userscript_instance.find_settings(loaded_userscript_text)
+            parse_userscript_instance.find_settings(loaded_userscript)
           );
 
           if (loaded_userscript_settings === null) {

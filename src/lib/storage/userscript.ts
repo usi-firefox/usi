@@ -138,30 +138,39 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                     resetAllResources().
                     resetAllRequiredScripts();
             }
-            , loadAndAddExternals: async function (type: any, url: any, name: any) {
+            , loadAndAddExternals: async function (type: string, url: any, name: string | undefined) {
                 // Lade die Resource
                 const load_resource_instance = new load_resource();
-                switch (type) {
-                    case "icon":
-                    case "resource":
-                        const response_data = <any>await load_resource_instance.loadImage(url);
+                try {
+                    switch (type) {
+                        case "icon":
+                        case "resource":
+                            const response_data = await load_resource_instance.loadImage(url);
 
-                        if (type === "icon") {
-                            // Icon hinzufügen
-                            self.addIcon(url, response_data);
-                        } else {
-                            // für zusätzliche Resource Dateien (Bilder oder Texte, oder oder oder ...)
-                            self.addResource(url, response_data, name);
-                        }
-                        break;
-                    case "require":
-                        // TEXT
-                        const response_text = <any>await load_resource_instance.loadText(url);
-                        // gilt für JS Dateien die benötigt und vor dem Userscript geladen werden müssen
-                        self.addRequireScript(url, response_text);
-                        break
+                            if (type === "icon") {
+                                // Icon hinzufügen
+                                self.addIcon(url, response_data);
+                            } else {
+                                if(!name){
+                                    throw "Kein Name vergeben!";
+                                }
+                                // für zusätzliche Resource Dateien (Bilder oder Texte, oder oder oder ...)
+                                self.addResource(url, response_data, name);
+                            }
+                            break;
+                        case "require":
+                            // TEXT
+                            const response_text = await load_resource_instance.loadText(url);
+                            // gilt für JS Dateien die benötigt und vor dem Userscript geladen werden müssen
+                            self.addRequireScript(url, response_text);
+                            break
+                    }
+
+                } catch (exception) {
+                    console.error('exception in loadAndAddExternals()');
+                    console.error(`params: type: ${type}, url: ${url}, name: ${name}`);
+                    console.error(exception);
                 }
-
                 return self;
             }
         };
