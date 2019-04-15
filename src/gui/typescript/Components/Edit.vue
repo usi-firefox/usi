@@ -290,6 +290,8 @@ export default Vue.component(componentName, {
       if (valid_userscript.valid === false) {
         // Userscript Konfiguration nicht in Ordnung
         notify("userscript-config-is-wrong");
+        // @Todo
+        this.$root.$emit("snackbar", "userscript-config-is-wrong");
         return;
       }
 
@@ -306,13 +308,12 @@ export default Vue.component(componentName, {
         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
         new page_injection_helper().add_userscript(userscript_handle.getId());
 
+        const message_text = browser.i18n.getMessage("userscript_was_created") +
+          " (ID " +  userscript_handle.getId() + ")";
         // Neues Userscript wurde erstellt
-        notify(
-          browser.i18n.getMessage("userscript_was_created") +
-            " (ID " +
-            userscript_handle.getId() +
-            ")"
-        );
+        notify(message_text);
+
+        this.$root.$emit("snackbar", message_text);
       } else {
         // bzgl. update fragen
         // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
@@ -354,13 +355,11 @@ export default Vue.component(componentName, {
       ));
       new page_injection_helper().add_userscript(userscript_handle.getId());
 
+      const message_text = browser.i18n.getMessage("userscript_was_overwritten") +
+        " (ID " + userscript_id + ")";
       // Userscript wurde überschrieben
-      notify(
-        browser.i18n.getMessage("userscript_was_overwritten") +
-          " (ID " +
-          userscript_id +
-          ")"
-      );
+      notify(message_text);
+      this.$root.$emit("snackbar", message_text);
     },
 
     /**

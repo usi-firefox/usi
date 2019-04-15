@@ -363,7 +363,7 @@ export default Vue.component(componentName, {
           .remove_userscript(this.script.id)
           .then((check: boolean) => {
             if (check) {
-              this.$emit("showSnack", `Userscript ID ${id} deaktiviert`);
+              this.$root.$emit("snackbar", `Userscript ID ${id} deaktiviert`);
             }
           });
       } else {
@@ -372,7 +372,7 @@ export default Vue.component(componentName, {
           .add_userscript(this.script.id)
           .then((check: boolean) => {
             if (check) {
-              this.$emit("showSnack", `Userscript ID ${id} aktiviert`);
+              this.$root.$emit("snackbar", `Userscript ID ${id} aktiviert`);
             }
           });
       }
@@ -425,18 +425,20 @@ export default Vue.component(componentName, {
               // lösche dieses Element
               await userscript_handle.deleteUserscript();
 
-              notify(
-                browser.i18n.getMessage("userscript_was_successful_deleted") +
+              const message_text = browser.i18n.getMessage("userscript_was_successful_deleted") +
                   " (ID " +
                   this.script.id +
-                  ")"
-              );
+                  ")";
+              
+              notify(message_text);
+              this.$root.$emit("snackbar", message_text);
 
               // Userscript entfernen lassen
               new page_injection_helper().remove_userscript(this.script.id);
             } else {
               // konnte nicht gefunden und daher auch nicht gelöscht werden
               notify(browser.i18n.getMessage("userscript_could_not_deleted"));
+              this.$root.$emit("snackbar", browser.i18n.getMessage("userscript_could_not_deleted"));
             }
             // Text nur durchstreichen, nicht direkt neuladen
             this.markedAsDeleted = true;
@@ -499,6 +501,8 @@ export default Vue.component(componentName, {
         notify(
           "only source from http:// or https:// are allowed at the moment"
         );
+
+        this.$root.$emit("snackbar", "only source from http:// or https:// are allowed at the moment");
       }
     },
 

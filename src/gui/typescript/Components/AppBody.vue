@@ -3,7 +3,7 @@
     <v-app>
       <v-snackbar v-model="snackbar">
         {{ snackbar_text }}
-        <v-btn color="pink" flat @click="snackbar = false">Close</v-btn>
+        <v-btn color="red" flat @click="snackbar = false">Close</v-btn>
       </v-snackbar>
       <v-navigation-drawer style="background-color: #555;" :permanent="drawer_permanent" app v-model="drawer">
         <v-toolbar style="background-color: #555;">
@@ -150,6 +150,12 @@ export default Vue.component(componentName, {
         console.error("Error in loading usi:config_storage");
         console.error(message);
         alert(message);
+      });
+
+      // Register Global Events
+      this.$root.$on("snackbar",(text:string) => {
+        this.snackbar = true;
+        this.snackbar_text = text;
       });
   },
   methods: {
