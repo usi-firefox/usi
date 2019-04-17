@@ -6,6 +6,7 @@
     "dev": "webpack --watch --mode development",
     "browser": "web-ext run -s dist",
     "prod": "webpack --watch --mode production --devtool none",
+    "self-update-packages": "ncu -u --removeRange && npm install",
     "build": "webpack --mode production --devtool none && web-ext build -s dist"
   },
   "author": "usi <>",
@@ -22,10 +23,13 @@
     "vue": "2.6.10",
     "vue-loader": "15.7.0",
     "vue-template-compiler": "2.6.10",
-    "vuetify": "1.5.11",
+    "vuetify": "1.5.12",
     "web-ext": "3.0.0",
     "web-ext-types": "3.1.0",
-    "webpack": "4.29.6",
+    "webpack": "4.30.0",
     "webpack-cli": "3.3.0"
+  },
+  "devDependencies": {
+    "npm-check-updates": "3.1.8"
   }
 }
