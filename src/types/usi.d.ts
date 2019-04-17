@@ -99,6 +99,10 @@ declare namespace usi.Frontend {
         id?: number;
         userscript?: string;
     }
+    interface EditUndo {
+        time: number;
+        text: string;
+    }
 }
 
 declare namespace usi.GM_Backend {

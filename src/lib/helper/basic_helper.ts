@@ -46,6 +46,10 @@ export function convertToText(obj: any): string {
     return string.join(",");
 }
 
+export function getSeconds(){
+    return Math.floor(new Date().getTime() / 1000);
+}
+
 export function isset(v: any): boolean {
     return (typeof v !== "undefined");
 }
