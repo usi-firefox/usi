@@ -1,12 +1,11 @@
 <template>
   <!--Alle Userscripte auflisten-->
-  <v-container grid-list-md>
+  <v-container>
     <v-progress-linear v-show="isLoading" :indeterminate="isLoading"></v-progress-linear>
     <v-layout>
       <v-toolbar>
-        <v-toolbar-title class="headline">
-          <span v-if="userscripts.length > 0">Userscripts ({{userscripts.length}})</span>
-          <span v-else v-lang="'no_userscript_there'"></span>
+        <v-toolbar-title>
+          Userscripts ({{userscripts.length}})
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>

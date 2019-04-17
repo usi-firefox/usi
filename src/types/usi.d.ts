@@ -95,6 +95,10 @@ declare namespace usi.Frontend {
         values?: Array<string>;
         vlang?: boolean;
     }
+    interface EditAddtional {
+        id?: number;
+        userscript?: string;
+    }
 }
 
 declare namespace usi.GM_Backend {

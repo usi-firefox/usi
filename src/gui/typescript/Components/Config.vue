@@ -1,6 +1,6 @@
 <template>
   <!--USI Konfiguration bearbeiten-->
-  <v-container grid-list-md>
+  <v-container>
     <div>
       <h3 v-lang="'delete_all_userscripts'">
         <!--Alle Userscripts entfernen-->

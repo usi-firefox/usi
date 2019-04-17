@@ -110,7 +110,12 @@ var last_userscript_interval_id: number = 0;
  */
 const componentName = "edit-component";
 export default Vue.component(componentName, {
-  props: ["addional"],
+  props: {
+    addional: {
+      type : Object as () => usi.Frontend.EditAddtional,
+      required : false
+    }
+  },
   data() {
     return {
       script_id: 0,
@@ -145,9 +150,7 @@ export default Vue.component(componentName, {
         // aus einem anderen Component übergeben wurde
         this.textarea.content = this.addional.userscript;
 
-        this.$emit("change-tab-additional", <
-          usi.Frontend.changeTabAdditionalEvent
-        >{
+        this.$emit("change-tab-additional", <usi.Frontend.changeTabAdditionalEvent>{
           event_name: "usi:reset-extraData"
         });
       }
