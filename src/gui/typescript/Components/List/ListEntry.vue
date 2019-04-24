@@ -1,10 +1,10 @@
 <template>
-  <v-container>
-    <v-card :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
+  <v-container fluid>
+    <v-card flat :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
       <v-card-title>
-        <v-flex xs11 @click="toggleOverview" class="pointer title">
+        <v-flex xs11 @click="toggleOverview" class="pointer subheading">
           <img :src="icon">
-          Index: {{index}} | {{script.settings.name}} | {{script.settings.author}} | {{script.settings.version}}
+          Index: {{index}} | {{script.settings.name}} | {{script.settings.version}}
           <span
             v-if="script.isSpa"
           >| SPA</span>

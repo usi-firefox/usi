@@ -1,8 +1,7 @@
 <template>
   <!--Alle Userscripte auflisten-->
-  <v-container>
+  <v-container fluid>
     <v-progress-linear v-show="isLoading" :indeterminate="isLoading"></v-progress-linear>
-    <v-layout>
       <v-toolbar>
         <v-toolbar-title>
           Userscripts ({{userscripts.length}})
@@ -18,7 +17,6 @@
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
-    </v-layout>
 
     <v-layout row wrap v-if="userscripts">
       <list-entry-component
