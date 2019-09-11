@@ -1,4 +1,4 @@
-import { empty, notify } from "lib/helper/basic_helper";
+import { empty, notify, getTranslation } from "lib/helper/basic_helper";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import add_userscript from "lib/storage/add_userscript";
 
@@ -23,7 +23,7 @@ browser.runtime.onConnect.addListener(function(port: any) {
 
                     if (valid_userscript.valid === false) {
                         // Userscript Konfiguration nicht in Ordnung
-                        notify(browser.i18n.getMessage("userscript_config_is_wrong"));
+                        notify(getTranslation("userscript_config_is_wrong"));
                         return;
                     }
 
@@ -36,7 +36,7 @@ browser.runtime.onConnect.addListener(function(port: any) {
                         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
                         (new page_injection_helper()).add_userscript(userscript_handle);
 
-                        notify(browser.i18n.getMessage("userscript_was_created"));
+                        notify(getTranslation("userscript_was_created"));
 
                     } else {
                         // bzgl. update fragen
@@ -58,7 +58,7 @@ browser.runtime.onConnect.addListener(function(port: any) {
                         // füge das Skript gleich hinzu, damit es ausgeführt werden kann
                         (new page_injection_helper()).add_userscript(userscript_handle);
 
-                        notify(browser.i18n.getMessage("userscript_was_overwritten"));
+                        notify(getTranslation("userscript_was_overwritten"));
                     }
                     break;
             }

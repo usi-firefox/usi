@@ -2,7 +2,7 @@
  ********* Parse-Userscript-Konfiguration Funktionen ********************
  ************************************************************************/
 
-import { empty, isset, notify } from "lib/helper/basic_helper";
+import { empty, isset, notify, getTranslation } from "lib/helper/basic_helper";
 import { GM_convert2RegExp } from "lib/parse/convert2RegExp";
 
 export default class parse_userscript {
@@ -245,12 +245,12 @@ export default class parse_userscript {
         switch (true) {
             case !isset(options.include) && !isset(options.spa):
                 // Mindestens ein Include Eintrag muss vorhanden sein!
-                notify(browser.i18n.getMessage("required_script_one_include"));
+                notify(getTranslation("required_script_one_include"));
                 return null;
 
             case !isset(options.name):
                 // Du solltest schon einen Namen vergeben
-                notify(browser.i18n.getMessage("required_script_name"));
+                notify(getTranslation("required_script_name"));
                 return null;
 
             default:

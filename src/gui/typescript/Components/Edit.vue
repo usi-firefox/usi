@@ -113,7 +113,7 @@ declare var window: any;
 
 import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
-import { notify, getSeconds } from "lib/helper/basic_helper";
+import { notify, getSeconds, getTranslation } from "lib/helper/basic_helper";
 
 const add_userscript_instance = new add_userscript();
 
@@ -146,7 +146,7 @@ export default Vue.component(componentName, {
       },
       last_userscript_interval_id: 0,
       lang: {
-        overwrite_without_warning: browser.i18n.getMessage(
+        overwrite_without_warning: getTranslation(
           "overwrite_without_warning"
         )
       },
@@ -316,7 +316,7 @@ export default Vue.component(componentName, {
         new page_injection_helper().add_userscript(userscript_handle.getId());
 
         const message_text =
-          browser.i18n.getMessage("userscript_was_created") +
+          getTranslation("userscript_was_created") +
           " (ID " +
           userscript_handle.getId() +
           ")";
@@ -329,11 +329,11 @@ export default Vue.component(componentName, {
         // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
         if (
           window.confirm(
-            browser.i18n.getMessage(
+            getTranslation(
               "same_userscript_was_found_ask_update_it_1"
             ) +
               userscript_id +
-              browser.i18n.getMessage(
+              getTranslation(
                 "same_userscript_was_found_ask_update_it_2"
               )
           )
@@ -366,7 +366,7 @@ export default Vue.component(componentName, {
       new page_injection_helper().add_userscript(userscript_handle.getId());
 
       const message_text =
-        browser.i18n.getMessage("userscript_was_overwritten") +
+        getTranslation("userscript_was_overwritten") +
         " (ID " +
         userscript_id +
         ")";

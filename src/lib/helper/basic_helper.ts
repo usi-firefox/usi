@@ -53,6 +53,9 @@ export function getSeconds() {
 export function isset(v: any): boolean {
     return (typeof v !== "undefined");
 }
+export function getTranslation(str: string) {
+    return browser.i18n.getMessage(str);
+}
 export function notify(text: string): Promise<string> {
     return browser.notifications.create(
         null,
@@ -90,7 +93,7 @@ export function empty(v: any): boolean {
     }
 }
 export function escapeHTMLEntities(str: string): string {
-    return str.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+    return str.replace(/[\u00A0-\u9999<>\&]/gim, function (i) {
         return "&#" + i.charCodeAt(0) + ";";
     });
 }

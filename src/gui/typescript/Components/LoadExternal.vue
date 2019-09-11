@@ -45,6 +45,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { getTranslation } from "../../../lib/helper/basic_helper";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -66,7 +67,7 @@ export default Vue.component(componentName, {
     addCustomCharset: function(): void {
       // nach dem eigenen Charset fragen
       const new_charset = window.prompt(
-        browser.i18n.getMessage("add_new_custom_charset")
+        getTranslation("add_new_custom_charset")
       );
 
       if (!new_charset) {
@@ -76,7 +77,7 @@ export default Vue.component(componentName, {
 
       if (this.alternativeCharsets.indexOf(new_charset) !== -1) {
         // bereits enthalten
-        alert(browser.i18n.getMessage("charset_already_exist"));
+        alert(getTranslation("charset_already_exist"));
         return;
       }
 

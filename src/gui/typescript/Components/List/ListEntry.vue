@@ -1,9 +1,12 @@
 <template>
   <v-container fluid>
-    <v-card flat :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
+    <v-card
+      flat
+      :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  "
+    >
       <v-card-title>
         <v-flex xs11 @click="toggleOverview" class="pointer subheading">
-          <img :src="icon">
+          <img :src="icon" />
           Index: {{index}} | {{script.settings.name}} | {{script.settings.version}}
           <span
             v-if="script.isSpa"
@@ -20,9 +23,9 @@
             <v-menu offset-y allow-overflow class="pointer">
               <!-- Options Menü -->
               <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on">
-                <v-icon>more_vert</v-icon>
-              </v-btn>
+                <v-btn icon v-on="on">
+                  <v-icon>more_vert</v-icon>
+                </v-btn>
               </template>
               <v-list>
                 <!--Userscript anzeigen/ausblenden-->
@@ -135,22 +138,22 @@
         </v-list>
 
         <v-card-actions>
-            <v-flex xs4>
-              <v-btn @click="showUserscript">
-                <v-icon>pageview</v-icon>
-                {{!showUserscriptContent ? lang.show: lang.hide}}
-              </v-btn>
-            </v-flex>
-            <v-flex xs4>
-              <v-btn @click="edit" v-lang:append="'change'">
-                <v-icon>edit</v-icon>
-              </v-btn>
-            </v-flex>
-            <v-flex xs4>
-              <v-btn @click="deleteUserscript" v-lang:append="'delete_x'">
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </v-flex>
+          <v-flex xs4>
+            <v-btn @click="showUserscript">
+              <v-icon>pageview</v-icon>
+              {{!showUserscriptContent ? lang.show: lang.hide}}
+            </v-btn>
+          </v-flex>
+          <v-flex xs4>
+            <v-btn @click="edit" v-lang:append="'change'">
+              <v-icon>edit</v-icon>
+            </v-btn>
+          </v-flex>
+          <v-flex xs4>
+            <v-btn @click="deleteUserscript" v-lang:append="'delete_x'">
+              <v-icon>delete</v-icon>
+            </v-btn>
+          </v-flex>
         </v-card-actions>
 
         <!--Greasemonkey Variablen-->
@@ -192,7 +195,8 @@ import {
   empty,
   notify,
   download_file,
-  getExtId
+  getExtId,
+  getTranslation
 } from "lib/helper/basic_helper";
 
 import HighlightjsComponent from "./Highlight.vue";
@@ -242,12 +246,12 @@ export default Vue.component(componentName, {
       hightlightsjsStyle: "",
       GMValues: [],
       lang: {
-        deactivated: browser.i18n.getMessage("deactivated"),
-        activated: browser.i18n.getMessage("activated"),
-        delete_x: browser.i18n.getMessage("delete_x"),
-        change: browser.i18n.getMessage("change"),
-        show: browser.i18n.getMessage("show"),
-        hide: browser.i18n.getMessage("hide")
+        deactivated: getTranslation("deactivated"),
+        activated: getTranslation("activated"),
+        delete_x: getTranslation("delete_x"),
+        change: getTranslation("change"),
+        show: getTranslation("show"),
+        hide: getTranslation("hide")
       }
     };
   },
@@ -340,7 +344,7 @@ export default Vue.component(componentName, {
      * Userscript aktivieren, bzw deaktivieren
      * @returns void
      */
-    toggleActivation: async function(isDeactivated:boolean): Promise<void> {
+    toggleActivation: async function(isDeactivated: boolean): Promise<void> {
       // aktiviere oder deaktiviere dieses Userscript!
       const id = this.script.id;
       var script_storage = await userscript_storage();
@@ -350,7 +354,7 @@ export default Vue.component(componentName, {
         return;
       }
 
-      if(isDeactivated === userscript_handle.isDeactivated()){
+      if (isDeactivated === userscript_handle.isDeactivated()) {
         // Keine Veränderung
         return;
       }
@@ -412,9 +416,9 @@ export default Vue.component(componentName, {
       if (!empty(this.script.id)) {
         // Frage zusammensetzen
         const question_text =
-          browser.i18n.getMessage("want_to_delete_this_userscript_1") +
+          getTranslation("want_to_delete_this_userscript_1") +
           this.script.id +
-          browser.i18n.getMessage("want_to_delete_this_userscript_2");
+          getTranslation("want_to_delete_this_userscript_2");
 
         //zusätzliche Abfrage
         if (window.confirm(question_text)) {
@@ -426,11 +430,10 @@ export default Vue.component(componentName, {
               // lösche dieses Element
               await userscript_handle.deleteUserscript();
 
-              const message_text = browser.i18n.getMessage("userscript_was_successful_deleted") +
-                  " (ID " +
-                  this.script.id +
-                  ")";
-              
+              const message_text =
+                getTranslation("userscript_was_successful_deleted") +
+                ` (ID ${this.script.id})`;
+
               notify(message_text);
               this.$root.$emit("snackbar", message_text);
 
@@ -438,8 +441,11 @@ export default Vue.component(componentName, {
               new page_injection_helper().remove_userscript(this.script.id);
             } else {
               // konnte nicht gefunden und daher auch nicht gelöscht werden
-              notify(browser.i18n.getMessage("userscript_could_not_deleted"));
-              this.$root.$emit("snackbar", browser.i18n.getMessage("userscript_could_not_deleted"));
+              notify(getTranslation("userscript_could_not_deleted"));
+              this.$root.$emit(
+                "snackbar",
+                getTranslation("userscript_could_not_deleted")
+              );
             }
             // Text nur durchstreichen, nicht direkt neuladen
             this.markedAsDeleted = true;
@@ -452,7 +458,7 @@ export default Vue.component(componentName, {
     GMValuesDelete: async function(): Promise<any> {
       // Frage den Benutzer nochmals ob er wirklich alle gesetzten Werte entfernen möchte
       const confirmed = window.confirm(
-        browser.i18n.getMessage("confirm_delete_all_GMValues")
+        getTranslation("confirm_delete_all_GMValues")
       );
 
       if (confirmed === false) {
@@ -503,7 +509,10 @@ export default Vue.component(componentName, {
           "only source from http:// or https:// are allowed at the moment"
         );
 
-        this.$root.$emit("snackbar", "only source from http:// or https:// are allowed at the moment");
+        this.$root.$emit(
+          "snackbar",
+          "only source from http:// or https:// are allowed at the moment"
+        );
       }
     },
 
@@ -512,7 +521,7 @@ export default Vue.component(componentName, {
     }
   },
   watch: {
-    localScriptDeactivated: function(newVal:boolean): void {
+    localScriptDeactivated: function(newVal: boolean): void {
       this.toggleActivation(newVal);
     },
     expanded: function(): void {

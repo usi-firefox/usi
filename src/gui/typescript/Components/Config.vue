@@ -84,7 +84,7 @@ import config_storage from "lib/storage/config";
 
 import Vue from "vue";
 import userscript_storage from "lib/storage/storage";
-import { isset, download_file } from "lib/helper/basic_helper";
+import { isset, download_file, getTranslation } from "lib/helper/basic_helper";
 import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
@@ -114,12 +114,12 @@ export default Vue.component(componentName, {
       dialogWindowText: "",
       dialogStep: 0,
       lang: {
-        deactivated: browser.i18n.getMessage("deactivated"),
-        activated: browser.i18n.getMessage("activated"),
-        yes: browser.i18n.getMessage("yes"),
-        no: browser.i18n.getMessage("no"),
-        show: browser.i18n.getMessage("show"),
-        hide: browser.i18n.getMessage("hide")
+        deactivated: getTranslation("deactivated"),
+        activated: getTranslation("activated"),
+        yes: getTranslation("yes"),
+        no: getTranslation("no"),
+        show: getTranslation("show"),
+        hide: getTranslation("hide")
       }
     };
   },
@@ -171,7 +171,7 @@ export default Vue.component(componentName, {
         case 1:
           // Sicherheitsabfrage
           this.dialogWindow = true;
-          this.dialogWindowText = browser.i18n.getMessage(
+          this.dialogWindowText = getTranslation(
             "really_reset_all_settings"
           );
           break;
@@ -179,7 +179,7 @@ export default Vue.component(componentName, {
         case 2:
           // erneute Sicherheitsabfrage
           this.dialogWindow = true;
-          this.dialogWindowText = browser.i18n.getMessage(
+          this.dialogWindowText = getTranslation(
             "really_really_reset_all_settings"
           );
           break;
@@ -249,11 +249,11 @@ export default Vue.component(componentName, {
 
           //wurde gefunden, möchtest du es aktualisieren?")){
           let confirmed = window.confirm(
-            browser.i18n.getMessage(
+            getTranslation(
               "same_userscript_was_found_ask_update_it_1"
             ) +
               userscript_id +
-              browser.i18n.getMessage(
+              getTranslation(
                 "same_userscript_was_found_ask_update_it_2"
               )
           );

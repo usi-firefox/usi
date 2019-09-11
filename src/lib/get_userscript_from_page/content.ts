@@ -1,4 +1,4 @@
-import { getExtId } from "lib/helper/basic_helper";
+import { getExtId, getTranslation } from "lib/helper/basic_helper";
 import config_storage from "lib/storage/config";
 
 config_storage().get().then((config: any) => {
@@ -15,7 +15,7 @@ config_storage().get().then((config: any) => {
     const userscript_content = document.body.innerText;
 
     // frage ob das Skript heruntergeladen werden soll
-    if (window.confirm(browser.i18n.getMessage("should_usi_import_this_userscript"))) {
+    if (window.confirm(getTranslation("should_usi_import_this_userscript"))) {
         const message: usi.fromPageWithUserscriptFile.message = {
             name: "USI-BACKEND:new-userscript",
             data: { userscript: userscript_content, moreinformations: { url: window.location.href } },
@@ -31,7 +31,7 @@ config_storage().get().then((config: any) => {
         switch (message.name) {
 
             case "USI-BACKEND:same-userscript-was-found":
-                if (window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + message.data.id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"))) {
+                if (window.confirm(getTranslation("same_userscript_was_found_ask_update_it_1") + message.data.id + getTranslation("same_userscript_was_found_ask_update_it_2"))) {
                     // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
                     const message_override: usi.fromPageWithUserscriptFile.message = {
                         name: "USI-BACKEND:override-same-userscript", data: {

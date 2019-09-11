@@ -89,6 +89,7 @@ import LoadExternalComponent from "Components/LoadExternal.vue";
 import ConfigComponent from "Components/Config.vue";
 import ListComponent from "Components/List.vue";
 import HelpComponent from "Components/Help.vue";
+import { getTranslation } from "../../../lib/helper/basic_helper";
 
 // Versionslabel auslesen
 const componentName = "appbody-component";
@@ -190,7 +191,7 @@ export default Vue.component(componentName, {
 
     change_active_component: function(menuEntry: usi.Frontend.menuEntry): void {
       // ersetze die Überschrift
-      this.navTitle = browser.i18n.getMessage(menuEntry.lang);
+      this.navTitle = getTranslation(menuEntry.lang);
 
       // Aktive Komponente umschalten
       this.activeComponent = menuEntry.name;

@@ -1,4 +1,4 @@
-import { empty, getFilenameFromURL, is_datauri, notify, valid_url } from "lib/helper/basic_helper";
+import { empty, getFilenameFromURL, is_datauri, notify, valid_url, getTranslation } from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
 
@@ -72,7 +72,7 @@ export default class add_userscript {
 
         } else if (typeof userscript_settings.error_message !== "undefined") {
             // es wurde ein Fehler in der Konfiguration gefunden, melde es nun dem Benutzer!
-            return { valid: false, reason: "userscript_configuration_error", message: browser.i18n.getMessage("error_userscript_settings") + userscript_settings.error_message };
+            return { valid: false, reason: "userscript_configuration_error", message: getTranslation("error_userscript_settings") + userscript_settings.error_message };
         } else {
             // Userscript kann gespeichert werden
             return { valid: true };

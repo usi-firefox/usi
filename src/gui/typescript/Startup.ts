@@ -6,6 +6,7 @@ Vue.use(Vuetify);
 
 import "material-design-icons-iconfont/dist/material-design-icons.css"; // Ensure you are using css-loader
 import "vuetify/dist/vuetify.min.css"; // Ensure you are using css-loader
+import { getTranslation } from "lib/helper/basic_helper";
 
 // Register a global custom directive called `v-lang`
 /**
@@ -23,7 +24,7 @@ Vue.directive("lang", {
             return;
         }
 
-        const translated = browser.i18n.getMessage(value);
+        const translated = getTranslation(value);
         if (!translated) {
             // Language Key wurde nicht gefunden
             return;
