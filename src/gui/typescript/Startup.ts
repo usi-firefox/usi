@@ -4,9 +4,8 @@ import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
 
-import 'vuetify/dist/vuetify.min.css'; // Ensure you are using css-loader
-import 'material-design-icons-iconfont/dist/material-design-icons.css'; // Ensure you are using css-loader
-
+import "material-design-icons-iconfont/dist/material-design-icons.css"; // Ensure you are using css-loader
+import "vuetify/dist/vuetify.min.css"; // Ensure you are using css-loader
 
 // Register a global custom directive called `v-lang`
 /**
@@ -16,7 +15,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'; // Ensur
 Vue.directive("lang", {
 
     // When the bound element is inserted into the DOM...
-    inserted: function (el, binding) {
+    inserted(el, binding) {
         // Language Key holen
         const { value, arg } = binding;
 
@@ -34,38 +33,37 @@ Vue.directive("lang", {
         const text_node = document.createTextNode(translated);
 
         switch (arg) {
-            
+
             case "label":
                 // Übersetzung in das label Attribut einsetzen
                 el.setAttribute(arg, translated);
                 break;
-            
+
             case "append":
 
                 // Die Übersetzung nun anhängen
                 el.append(text_node);
                 break;
             default:
-                
+
                 // Die Übersetzung nun als erstes Element hinzufügen
                 el.prepend(text_node);
                 break;
         }
 
-    }
+    },
 });
-
 
 /**
  * Workaround für die Vue Compiler Funktionen
- * Um CSP Probleme zu vermeiden und "eval" und 
+ * Um CSP Probleme zu vermeiden und "eval" und
  * ähnliche Funktionen zu vermeiden
  */
 const app = new Vue({
-    el: '#vuetify-gui',
+    el: "#vuetify-gui",
     vuetify: new Vuetify(),
     /**
      * Dies ist der Workaround für den Vue Compiler
      */
-    render: createElement => createElement(AppBody)
+    render: (createElement) => createElement(AppBody),
 });

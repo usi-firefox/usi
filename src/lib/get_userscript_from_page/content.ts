@@ -10,15 +10,15 @@ config_storage().get().then((config: any) => {
     }
 
     // Port zum Backend Skript öffnen
-    let port = browser.runtime.connect(getExtId(), { name: "get-userscript-from-page" });
+    const port = browser.runtime.connect(getExtId(), { name: "get-userscript-from-page" });
 
-    let userscript_content = document.body.innerText;
+    const userscript_content = document.body.innerText;
 
     // frage ob das Skript heruntergeladen werden soll
     if (window.confirm(browser.i18n.getMessage("should_usi_import_this_userscript"))) {
-        let message: usi.fromPageWithUserscriptFile.message = {
+        const message: usi.fromPageWithUserscriptFile.message = {
             name: "USI-BACKEND:new-userscript",
-            data: { userscript: userscript_content, moreinformations: { url: window.location.href } }
+            data: { userscript: userscript_content, moreinformations: { url: window.location.href } },
         };
 
         port.postMessage(message);
@@ -26,19 +26,19 @@ config_storage().get().then((config: any) => {
 
     port.onMessage.addListener((response: any) => {
 
-        let message = <usi.fromPageWithUserscriptFile.message>response;
+        const message = response as usi.fromPageWithUserscriptFile.message;
 
         switch (message.name) {
 
             case "USI-BACKEND:same-userscript-was-found":
                 if (window.confirm(browser.i18n.getMessage("same_userscript_was_found_ask_update_it_1") + message.data.id + browser.i18n.getMessage("same_userscript_was_found_ask_update_it_2"))) {
                     // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
-                    let message_override: usi.fromPageWithUserscriptFile.message = {
+                    const message_override: usi.fromPageWithUserscriptFile.message = {
                         name: "USI-BACKEND:override-same-userscript", data: {
                             id: message.data.id,
                             userscript: message.data.userscript,
-                            moreinformations: { url: window.location.href }
-                        }
+                            moreinformations: { url: window.location.href },
+                        },
                     };
 
                     port.postMessage(message_override);

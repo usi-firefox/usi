@@ -13,6 +13,6 @@
 // @version             1.0.0
 // ==/UserScript==
 
-document.addEventListener("click", function(){
+document.addEventListener("click", function() {
 	alert("Du hast soeben geklickt!");
 });

@@ -7,28 +7,28 @@ import { valid_url } from "lib/helper/basic_helper";
 export default function GM_xhrHandler() {
 
     const self = {
-        init: function (details: usi.GM_Backend.GM_xhr, counter: number, port: browser.runtime.Port) {
+        init(details: usi.GM_Backend.GM_xhr, counter: number, port: browser.runtime.Port) {
             // Init der XMLHttpRequest Funktion
             const xhr = new XMLHttpRequest();
 
             /**
              * (2016-02-11)		https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
              *	mozAnon
-             *		Boolean: Setting this flag to true will cause the browser not to expose the origin and user credentials 
+             *		Boolean: Setting this flag to true will cause the browser not to expose the origin and user credentials
              *		when fetching resources. Most important, this means that cookies will not be sent unless
              *		explicitly added using setRequestHeader.
-             * 
+             *
              *	mozSystem
-             *	Boolean: Setting this flag to true allows making cross-site connections 
-             *	without requiring the server to opt-in using CORS. Requires setting mozAnon: true, 
-             *	i.e. this can't be combined with sending cookies or other user credentials. 
-             *	This only works in privileged (reviewed) apps; it does not work on arbitrary webpages loaded in Firefox. 
+             *	Boolean: Setting this flag to true allows making cross-site connections
+             *	without requiring the server to opt-in using CORS. Requires setting mozAnon: true,
+             *	i.e. this can't be combined with sending cookies or other user credentials.
+             *	This only works in privileged (reviewed) apps; it does not work on arbitrary webpages loaded in Firefox.
              */
 
             // Muss true sein, sonst wird mozSystem nicht akzeptiert
-            //					xhr.mozAnon = true;
+            // 					xhr.mozAnon = true;
             // If true, the same origin policy will not be enforced on the request.
-            //					xhr.mozSystem = true;
+            // 					xhr.mozSystem = true;
 
             // Nicht unterstützte Optionen
             const unsupported_options = ["context", "upload", "synchronous"];
@@ -61,7 +61,7 @@ export default function GM_xhrHandler() {
              * EVENTS - END *
              ****************/
 
-            var method;
+            let method;
             // Wenn method gesetzt wurde
             if (details.method && typeof details.method === "string") {
                 // immer Großschreiben! Wenn möglich
@@ -72,7 +72,7 @@ export default function GM_xhrHandler() {
             }
 
             // URL setzen
-            var url;
+            let url;
             if (typeof details.url === "string") {
                 // Überprüfe die URL ob diese in Ordnung ist
                 url = self.checkUrl(details.url, details.originUrl);
@@ -83,7 +83,7 @@ export default function GM_xhrHandler() {
                 }
 
             } else {
-                throw "url is not a string";
+                throw new Error("url is not a string");
             }
 
             // Username, Passwort setzen
@@ -98,7 +98,7 @@ export default function GM_xhrHandler() {
                 // Keys auslesen
                 const header_keys = Object.keys(details.headers);
 
-                for (let i in header_keys) {
+                for (const i in header_keys) {
                     // Headers bei Bedarf setzen
                     xhr.setRequestHeader(header_keys[i], details.headers[header_keys[i]]);
                 }
@@ -112,11 +112,11 @@ export default function GM_xhrHandler() {
 
             // als Binary senden, wenn data gesetzt ist
             if (details.binary && (data !== null)) {
-                let dataData = new Uint8Array(data.length);
+                const dataData = new Uint8Array(data.length);
                 for (let i: number = 0; i < data.length; i++) {
                     dataData[i] = data.charCodeAt(i) & 0xff;
                 }
-                // sendAsBinary() ist deprecated seit 
+                // sendAsBinary() ist deprecated seit
                 xhr.send(new Blob([dataData]));
             } else {
                 // Standard Variante, also KEINE Binary übergabe!
@@ -124,12 +124,12 @@ export default function GM_xhrHandler() {
             }
 
         },
-        createSimpleRequestEvent: function (xhr: XMLHttpRequest, event: string, counter: number, port: browser.runtime.Port) {
+        createSimpleRequestEvent(xhr: XMLHttpRequest, event: string, counter: number, port: browser.runtime.Port) {
 
-            xhr.addEventListener(event, function (evt: any) {
+            xhr.addEventListener(event, function(evt: any) {
                 try {
                     // res -> responseState
-                    var res = {};
+                    let res = {};
                     // Die Events haben selbstverständlich unterschiedliche Eigenschaften
                     switch (event) {
                         // Spezial Fall progress
@@ -137,7 +137,7 @@ export default function GM_xhrHandler() {
                             res = {
                                 lengthComputable: evt.lengthComputable,
                                 loaded: evt.loaded,
-                                total: evt.total
+                                total: evt.total,
                             };
                             break;
 
@@ -149,20 +149,20 @@ export default function GM_xhrHandler() {
                                 responseText: xhr.responseText,
                                 responseXML: xhr.responseXML,
                                 status: xhr.status,
-                                statusText: xhr.statusText
+                                statusText: xhr.statusText,
                             };
                             break;
                     }
 
                     // Rückgabe
-                    port.postMessage({ name: "GM_xmlhttpRequest---" + event + "-" + counter, data: res, counter: counter });
+                    port.postMessage({ name: "GM_xmlhttpRequest---" + event + "-" + counter, data: res, counter });
 
                 } catch (ignore) {
 
                 }
             });
         },
-        checkUrl: function (test_url: string, originUrl: string): string {
+        checkUrl(test_url: string, originUrl: string): string {
             // falls die gesamte Url korrekt ist
             if (valid_url(test_url) === true) {
                 return test_url;
@@ -178,10 +178,10 @@ export default function GM_xhrHandler() {
             }
 
             // Ansonsten liefere immer false!
-            throw "url not valid";
+            throw new Error("url not valid");
 
-        }
-    }
+        },
+    };
 
     return self;
-};
+}

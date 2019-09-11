@@ -4,17 +4,17 @@
 
 /**
  * Funktion zum umwandeln von Objekten in Strings
- * 
+ *
  * http://stackoverflow.com/a/18368918
  * Source http://jsfiddle.net/numoccpk/1/
- * 
+ *
  * @param {mixed} obj
  * @returns {String}
  */
 export function convertToText(obj: any): string {
-    //create an array that will later be joined into a string.
-    let string = [];
-    //is object
+    // create an array that will later be joined into a string.
+    const string = [];
+    // is object
     //    Both arrays and objects seem to return "object"
     //    when typeof(obj) is applied to them. So instead
     //    I am checking to see if they have the property
@@ -23,22 +23,22 @@ export function convertToText(obj: any): string {
     if (obj === "undefined") {
         return String(obj);
     } else if (typeof (obj) === "object" && (obj.join === "undefined")) {
-        for (let prop in obj) {
+        for (const prop in obj) {
             if (obj.hasOwnProperty(prop)) {
                 string.push(prop + ": " + convertToText(obj[prop]));
             }
         }
         return "{" + string.join(",") + "}";
-        //is array
+        // is array
     } else if (typeof (obj) === "object" && !(obj.join === "undefined")) {
-        for (let prop in obj) {
+        for (const prop in obj) {
             string.push(convertToText(obj[prop]));
         }
         return "[" + string.join(",") + "]";
-        //is function
+        // is function
     } else if (typeof (obj) === "function") {
         string.push(obj.toString());
-        //all other values can be done with JSON.stringify
+        // all other values can be done with JSON.stringify
     } else {
         string.push(JSON.stringify(obj));
     }
@@ -46,7 +46,7 @@ export function convertToText(obj: any): string {
     return string.join(",");
 }
 
-export function getSeconds(){
+export function getSeconds() {
     return Math.floor(new Date().getTime() / 1000);
 }
 
@@ -60,7 +60,7 @@ export function notify(text: string): Promise<string> {
             type: "basic",
             title: "USI",
             iconUrl: browser.extension.getURL("/gui/icon/usi.png"),
-            message: text
+            message: text,
         });
 }
 export function getExtId(): string {
@@ -90,8 +90,8 @@ export function empty(v: any): boolean {
     }
 }
 export function escapeHTMLEntities(str: string): string {
-    return str.replace(/[\u00A0-\u9999<>\&]/gim, function (i) {
-        return '&#' + i.charCodeAt(0) + ';';
+    return str.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+        return "&#" + i.charCodeAt(0) + ";";
     });
 }
 export function escapeRegExp(str: string): string {
@@ -119,7 +119,7 @@ export function getFilenameFromURL(url: string): string {
 * @returns {void}
 */
 export function download_file(data: string, type?: string, filename?: string): void {
-    var link = document.createElement("a");
+    const link = document.createElement("a");
     // Dateinamen angeben
     if (filename) {
         // z.B. %20 durch Leerzeichen ersetzen

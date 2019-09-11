@@ -1,5 +1,5 @@
-import { valid_url } from "lib/helper/basic_helper";
 import GM_xhrHandler from "lib/GM/GM_xhrHandler";
+import { valid_url } from "lib/helper/basic_helper";
 import userscript_storage from "lib/storage/storage";
 
 export default class GM_Backend {
@@ -8,12 +8,12 @@ export default class GM_Backend {
      * Registriert die Listener für GM_Frontend.js
      * @returns void
      */
-    register_listener() {
+    public register_listener() {
         if (!browser.runtime.onConnect.hasListener(this.listener)) {
             browser.runtime.onConnect.addListener(this.listener);
         }
     }
-    listener(port: browser.runtime.Port) {
+    public listener(port: browser.runtime.Port) {
 
         if (!port || !port.name || !/^usi-gm-backend/.test(port.name)) {
             return false;
@@ -37,17 +37,17 @@ export default class GM_Backend {
         port.onMessage.addListener(async (message: any) => {
             try {
                 if (!message || !message.name || !message.counter) {
-                    throw "missing message|message.name|message.counter";
+                    throw new Error("missing message|message.name|message.counter");
                 }
 
                 switch (message.name) {
                     case "GM_openInTab":
                         {
-                            const message_data = <usi.GM_Backend.GM_openInTab>message.data;
+                            const message_data = message.data as usi.GM_Backend.GM_openInTab;
                             this.GM_openInTab(message_data, userscript_id);
                         }
                         break;
-                        
+
                     case "GM_registerMenuCommand":
                         this.GM_registerMenuCommand(message.data);
                         break;
@@ -55,17 +55,17 @@ export default class GM_Backend {
                     case "GM_setValue":
                     case "GM_deleteValue":
                     case "GM_getValue":
-                        const message_data = <usi.GM_Backend.GM_value>message.data;
+                        const message_data = message.data as usi.GM_Backend.GM_value;
 
                         if (!message_data.val_name) {
-                            throw "no property name was given";
+                            throw new Error("no property name was given");
                         }
 
                         const storage = await userscript_storage();
                         const userscript_handle = storage.getById(userscript_id);
 
                         if (!userscript_handle) {
-                            throw "couldn't find 'userscript'";
+                            throw new Error("couldn't find 'userscript'");
                         }
 
                         if (message.name === "GM_setValue") {
@@ -94,17 +94,17 @@ export default class GM_Backend {
                     case "GM_xmlhttpRequest":
                         // @todo
                         {
-                            const message_data = <usi.GM_Backend.GM_xhr>message.data.details;
+                            const message_data = message.data.details as usi.GM_Backend.GM_xhr;
                             GM_xhrHandler().init(message_data, message.counter, port);
                         }
                         break;
                     default:
-                        //@todo
+                        // @todo
                         break;
                 }
 
             } catch (ex) {
-                let funcName = message.name;
+                const funcName = message.name;
                 // Basic Exception catch
                 port.postMessage({ name: "GM_Backend:error", func_name: funcName, text: ex });
             }
@@ -113,7 +113,7 @@ export default class GM_Backend {
     }
 
     // neuen Tab öffnen
-    async GM_openInTab(data: usi.GM_Backend.GM_openInTab, userscript_id: number) {
+    public async GM_openInTab(data: usi.GM_Backend.GM_openInTab, userscript_id: number) {
         const url = data.url;
         const open_in_background = data.open_in_background;
 
@@ -121,11 +121,11 @@ export default class GM_Backend {
         if (valid_url(url) === true) {
 
             const script_storage = await userscript_storage();
-            const userscript_handle = <any>script_storage.getById(userscript_id);
+            const userscript_handle = script_storage.getById(userscript_id) as any;
 
             // Prüf-Variable damit es nicht zu einer "unendlichen" Rekursion kommt
             let not_wildcard_pagemod = true,
-                includes = userscript_handle.getSettings()["include"];
+                includes = userscript_handle.getSettings().include;
             for (const i in includes) {
                 if (includes[i] === "*") {
                     // Wildcard Eintrag gefunden, open in Tab ist nicht möglich!
@@ -136,26 +136,26 @@ export default class GM_Backend {
             if (not_wildcard_pagemod === true) {
                 try {
                     // neuen Tab öffnen
-                    browser.tabs.create({ url: url, active: open_in_background });
+                    browser.tabs.create({ url, active: open_in_background });
 
                 } catch (ex) {
                     // @todo Exception Handling
-                    throw "tab couldn't be created";
+                    throw new Error("tab couldn't be created");
                 }
             } else {
-                throw "your userscript must not have a wildcard in the include rules e.g. ( // @include * )";
+                throw new Error("your userscript must not have a wildcard in the include rules e.g. ( // @include * )");
             }
 
         } else {
             // Schicke den Fehler zurück zum Aufrufenden Skript
             // @todo Exception Handling
-            throw "url not valid";
+            throw new Error("url not valid");
         }
 
     }
     // GM_registerMenuCommand -> Kommando im Menü Registrieren
-    GM_registerMenuCommand(data: any) {
-        throw "this function is currently not implemented";
+    public GM_registerMenuCommand(data: any) {
+        throw new Error("this function is currently not implemented");
     }
 
 }

@@ -4,12 +4,12 @@ import sdk_to_webext from "lib/update/sdk_to_webext";
 export default function config_storage() {
 
     const self = {
-        get: async function (): Promise<usi.Storage.Config> {
+        async get(): Promise<usi.Storage.Config> {
             /**
              * the_storage.settings -> settings.config
              */
             try {
-                let the_storage = <any>await browser.storage.local.get("settings");
+                let the_storage = await browser.storage.local.get("settings") as any;
                 if (!the_storage.settings) {
                     // Update nötig
                     the_storage = await (new sdk_to_webext()).do_update();
@@ -20,17 +20,17 @@ export default function config_storage() {
             }
         }
 
-        , set: async function (newConfig: usi.Storage.Config): Promise<boolean> {
-            let the_storage = <any>await browser.storage.local.get("settings");
+        , async set(newConfig: usi.Storage.Config): Promise<boolean> {
+            const the_storage = await browser.storage.local.get("settings") as any;
             /**
              * @TODO
              * neue Config setzen
-             */  
+             */
             the_storage.settings.config = JSON.parse(JSON.stringify(newConfig));
 
             // gib true zurück, wenn fertig
             return browser.storage.local.set(the_storage).then(() => true);
-        }
+        },
     };
 
     return self;

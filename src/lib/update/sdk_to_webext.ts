@@ -4,32 +4,32 @@ export default class sdk_to_webext {
         load_script_with_js_end: true
         , hightlightjs: {
             active: true
-            , style: "default"
+            , style: "default",
         }
         , greasemonkey: {
-            global_active: true
-        }
+            global_active: true,
+        },
     };
 
-    create_defaults() {
+    public create_defaults() {
         // ACHTUNG, setzt alle "settings" auf ihre Standard Werte
         // neue Struktur speichern
         return browser.storage.local.set({
-            settings: <any>{
-                config: this.config_default
-            }
+            settings: {
+                config: this.config_default,
+            } as any,
         });
     }
 
-    prefs_update(complete_storage: any) {
+    public prefs_update(complete_storage: any) {
         // Alte Einstellungen anpassen
         if (typeof complete_storage.prefs === "object") {
             // alte SDK Daten vorhanden
-            let old_sdk_prefs = complete_storage.prefs;
+            const old_sdk_prefs = complete_storage.prefs;
 
             // Alte Optionsnamen anpassen - START
-            let new_sdk_prefs = {
-                config: this.config_default
+            const new_sdk_prefs = {
+                config: this.config_default,
             };
 
             if (typeof old_sdk_prefs.enableExternalScriptLoadQuestion === "boolean") {
@@ -49,9 +49,8 @@ export default class sdk_to_webext {
             // Alte Datenstruktur entfernen
             browser.storage.local.remove("prefs");
 
-
             // neue Struktur speichern
-            return browser.storage.local.set({ settings: <any>new_sdk_prefs });
+            return browser.storage.local.set({ settings: new_sdk_prefs as any });
 
         } else if (typeof complete_storage.settings !== "object") {
             // Falls keine Einstellungen gesetzt wurden, setze die Standard Werte
@@ -59,20 +58,20 @@ export default class sdk_to_webext {
         }
     }
 
-    async userscripts_update(complete_storage: any) {
+    public async userscripts_update(complete_storage: any) {
         if (typeof complete_storage.storage === "object") {
 
             // alte SDK Daten vorhanden
-            let old_sdk_userscript_storage = complete_storage.storage;
+            const old_sdk_userscript_storage = complete_storage.storage;
 
-            let userscript_ids = Object.keys(old_sdk_userscript_storage);
+            const userscript_ids = Object.keys(old_sdk_userscript_storage);
 
-            for (let i in userscript_ids) {
+            for (const i in userscript_ids) {
 
-                let userscript_id = userscript_ids[i];
+                const userscript_id = userscript_ids[i];
 
                 if (/(\d+)/.test(userscript_id)) {
-                    let entry = <any>{};
+                    const entry = {} as any;
                     entry["userscript_" + userscript_id] = old_sdk_userscript_storage[userscript_id];
 
                     await browser.storage.local.set(entry);
@@ -86,18 +85,18 @@ export default class sdk_to_webext {
         }
     }
 
-    async do_update() {
+    public async do_update() {
         // Daten Struktur für Webextension anpassen
         return browser.storage.local.get(null).then(async (complete_storage) => {
 
             // Zunächst die Einstellungen updaten
-            let prefs_updated = await this.prefs_update(complete_storage);
+            const prefs_updated = await this.prefs_update(complete_storage);
 
-            // Wenn die Einstellungen fertig sind, müssen die Userscripte angepasst 
-            let userscripts_updated = await this.userscripts_update(complete_storage);
+            // Wenn die Einstellungen fertig sind, müssen die Userscripte angepasst
+            const userscripts_updated = await this.userscripts_update(complete_storage);
 
             // jetzt den neuen Inhalt zurückgeben
-            let refreshed_data = await browser.storage.local.get(null);
+            const refreshed_data = await browser.storage.local.get(null);
 
             return refreshed_data;
         });

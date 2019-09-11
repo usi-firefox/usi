@@ -7,6 +7,7 @@
     "browser": "web-ext run -s dist",
     "prod": "webpack --watch --mode production --devtool none",
     "self-update-packages": "ncu -u --removeRange && npm install",
+    "lint-fix": "tslint --fix -p .",
     "build": "webpack --mode production --devtool none && web-ext build -s dist"
   },
   "author": "usi <>",
@@ -30,6 +31,7 @@
     "webpack-cli": "3.3.8"
   },
   "devDependencies": {
-    "npm-check-updates": "3.1.22"
+    "npm-check-updates": "3.1.22",
+    "tslint": "5.20.0"
   }
 }

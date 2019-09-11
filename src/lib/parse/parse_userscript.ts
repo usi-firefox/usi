@@ -2,7 +2,7 @@
  ********* Parse-Userscript-Konfiguration Funktionen ********************
  ************************************************************************/
 
-import { isset, notify, empty } from "lib/helper/basic_helper";
+import { empty, isset, notify } from "lib/helper/basic_helper";
 import { GM_convert2RegExp } from "lib/parse/convert2RegExp";
 
 export default class parse_userscript {
@@ -14,25 +14,25 @@ export default class parse_userscript {
         start: /\/\/\s*==UserScript==\s*$/
         , end: /\/\/\s*==\/UserScript==\s*$/
         , start_s: "// ==UserScript=="
-        , end_s: "// ==/UserScript=="
+        , end_s: "// ==/UserScript==",
     };
 
     /**
      * Dem übergebenen Userscript (string) werden weitere Werte in den Metablock geschrieben
      */
-    add_option_to_userscript_metablock(userscript: string, new_entries: any) {
+    public add_option_to_userscript_metablock(userscript: string, new_entries: any) {
 
-        let userscript_metablock = this.find_lines_with_settings(userscript);
+        const userscript_metablock = this.find_lines_with_settings(userscript);
         if (!userscript_metablock) {
             return false;
         }
 
-        let userscript_rest = <any>this.find_lines_with_settings(userscript, true);
+        const userscript_rest = this.find_lines_with_settings(userscript, true) as any;
         if (!userscript_rest) {
             return false;
         }
 
-        let new_userscript_metablock = this.create_metablock_from_array(<string[]>userscript_metablock, new_entries);
+        const new_userscript_metablock = this.create_metablock_from_array(userscript_metablock as string[], new_entries);
 
         return new_userscript_metablock + "\n" + userscript_rest.join("\n");
     }
@@ -41,7 +41,7 @@ export default class parse_userscript {
      * Fügt den Userscript Metablock (array) wieder zusammen,
      * falls das Array new_entries gefüllt ist, wird dieses an den Anfang geschrieben
      */
-    create_metablock_from_array(userscript_metablock: string[], new_entries?: any) {
+    public create_metablock_from_array(userscript_metablock: string[], new_entries?: any) {
         if (isset(new_entries) && !empty(new_entries) && typeof new_entries.concat) {
             // Füge die neuen Einträge an den Anfang
             userscript_metablock = new_entries.concat(userscript_metablock);
@@ -55,11 +55,11 @@ export default class parse_userscript {
      * Sucht im String nach der Userscript Konfiguration (Metablock)
      * und liefert als Ergebnis ein Zeilen-basiertes Array der Konfiguration zurück
      * ohne das umschließende " ... ==UserScript== ..."
-     * 
+     *
      * @param {string} userscript
      * @param {Boolean} getRestOfUserscript
      */
-    find_lines_with_settings(userscript: string, getRestOfUserscript?: boolean): string[] | null {
+    public find_lines_with_settings(userscript: string, getRestOfUserscript?: boolean): string[] | null {
         // Teile Anhand von Zeilenumbrüchen ...
         let userscript_lines = userscript.split("\n"),
             // Start und Ende der Userscript Konfiguration
@@ -74,7 +74,7 @@ export default class parse_userscript {
          */
 
         // Durchlaufe jede Zeile!
-        for (let i in userscript_lines) {
+        for (const i in userscript_lines) {
 
             // Suche den Beginn der Konfiguration
             if ((start_line === false) && (start_regex.test(userscript_lines[i]))) {
@@ -113,7 +113,7 @@ export default class parse_userscript {
      * liefert
      * { m: true, keyword: "include", types: ["url", "regex"] }
      */
-    get_userscript_keyword_config_by_name(keyword: string): usi.Userscript.MetaBlock.Keyword | undefined {
+    public get_userscript_keyword_config_by_name(keyword: string): usi.Userscript.MetaBlock.Keyword | undefined {
         return this.userscript_keyword_config().find((ele) => {
             return ele.keyword === keyword;
         });
@@ -123,7 +123,7 @@ export default class parse_userscript {
      * Ausgelagert für mehrfache Verwendung
      * @returns {Array}
      */
-    userscript_keyword_config(): usi.Userscript.MetaBlock.Keyword[] {
+    public userscript_keyword_config(): usi.Userscript.MetaBlock.Keyword[] {
 
         // Konfigurations-Varianten die gefunden werden können
         return [
@@ -149,43 +149,43 @@ export default class parse_userscript {
             { m: false, keyword: "downloadURL", types: ["url"] }, // Hierüber wird später geprüft ob eine neue Version vom Skript zur Verfügung steht
             { m: false, keyword: "version", types: ["string"] },
             { m: false, keyword: "use-greasemonkey", types: ["bool"] }, // true || false
-            /* attach-to -> attachTo  https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/page-mod 
+            /* attach-to -> attachTo  https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/page-mod
              Mögliche Werte sind "existing,top,frame", diese müssen Zeilenweise angegben werden
-             
-             Beispiel: 
+
+             Beispiel:
              @attach-to existing
              @attach-to top
              @attach-to frame
-             
+
              "existing": the page-mod will be automatically applied on already opened tabs.
              "top": the page-mod will be applied to top-level tab documents
              "frame": the page-mod will be applied to all iframes inside tab documents*/
             { m: true, keyword: "attach-to", types: ["string"] },
             { m: false, keyword: "spa", types: ["bool"] }, // erzeugt eine leere Seite mit diesem Skript
-            { m: true, keyword: "options", types: ["string"] }			// Damit kannst du mehrere Werte bestimmen, die dein UserScript nutzen soll!
+            { m: true, keyword: "options", types: ["string"] },			// Damit kannst du mehrere Werte bestimmen, die dein UserScript nutzen soll!
         ];
 
     }
 
     // Suche nach Einstellungen für das UserScript
     // @todo
-    find_settings(userscript: string): null | Object {
+    public find_settings(userscript: string): null | Object {
         // setze die Zeilen die die Konfiguration beinhalten!
-        let userscript_settings = this.find_lines_with_settings(userscript);
+        const userscript_settings = this.find_lines_with_settings(userscript);
 
         if (!userscript_settings) {
             return null;
         }
 
         // Konfigurations-Varianten die gefunden werden können
-        let possible_entries = this.userscript_keyword_config();
+        const possible_entries = this.userscript_keyword_config();
 
-        //init
-        let options = <any>{},
+        // init
+        let options = {} as any,
             option_found: RegExpExecArray | null = null;
 
         // Prüfe für jeden Eintrag, ob du etwas brauchbares im Userscript vorfindest
-        for (let i in possible_entries) {
+        for (const i in possible_entries) {
             // lege den aktuellen Key fest
             let key = possible_entries[i].keyword,
                 // Wenn dies true ist, dürfen die Keys mehrfach vorkommen, ansonsten wird einfach nur der Erste verwendet!
@@ -207,7 +207,7 @@ export default class parse_userscript {
 
             // Durchlaufe für jeden Key alle userscript_settings
             userscript_settings.forEach((userscript_setting) => {
-                //Prüfe ob der Key in der Zeile enthalten ist
+                // Prüfe ob der Key in der Zeile enthalten ist
                 option_found = search_for_key.exec(userscript_setting);
 
                 // Der Key ist enthalten
@@ -230,7 +230,7 @@ export default class parse_userscript {
 
                     // "object" wird auch bei einem Array geliefert, und darauf prüfen wir nur ...
                     if (typeof options[key] !== "object") {
-                        //es ist noch kein Array,deswegen erzeugen wir jetzt eins!
+                        // es ist noch kein Array,deswegen erzeugen wir jetzt eins!
                         options[key] = [];
                     }
 
@@ -240,7 +240,6 @@ export default class parse_userscript {
             });
 
         }
-
 
         // Prüfe den Inhalt des options Array
         switch (true) {
@@ -261,16 +260,16 @@ export default class parse_userscript {
 
     }
 
-    prepare_includes_and_excludes(rules?: string[]): RegExp[] | string[] {
+    public prepare_includes_and_excludes(rules?: string[]): RegExp[] | string[] {
 
         if (!rules) {
             return [] as string[];
         }
 
-        let result: any = [];
+        const result: any = [];
 
         // Durchlaufe alle Einträge
-        rules.forEach(function (rule: string) {
+        rules.forEach(function(rule: string) {
             if (typeof rule !== "string") {
                 return;
             }
@@ -282,7 +281,7 @@ export default class parse_userscript {
             }
 
             // es gibt anscheinend einen Bug in Android, daher werden die Regeln für Android direkt an die GM_convert2RegExp() übergeben
-            let reg = GM_convert2RegExp(rule);
+            const reg = GM_convert2RegExp(rule);
             if (reg instanceof RegExp) {
                 result.push(reg);
                 return;

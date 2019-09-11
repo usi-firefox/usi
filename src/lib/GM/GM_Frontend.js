@@ -1,4 +1,4 @@
-(function (win, given_data) {
+(function(win, given_data) {
     "use strict";
 
     // Wichtig für die Sicherstellung der passenden Antwort zur richtigen Abfrage
@@ -18,13 +18,13 @@
             , version: given_data.usiVersion
             , scriptHandler: "USI"
             , isUsi: true
-            , systemPlatform: given_data.systemPlatform
+            , systemPlatform: given_data.systemPlatform,
         },
 
         storage = {
             data: {},
             identifier: "usi+" + given_data.id,
-            init: function () {
+            init: function() {
                 if (typeof given_data.storage === "object") {
                     // Gespeicherte Werte aus dem Userscript Storage übernehmen
                     storage.data = given_data.storage;
@@ -34,22 +34,22 @@
                     return false;
                 }
             }
-            , get: function (name) {
+            , get: function(name) {
                 return storage.data[name];
             }
-            , getStorage: function () {
+            , getStorage: function() {
                 return storage.data;
             }
-            , set: function (name, value) {
+            , set: function(name, value) {
                 // neuen Wert setzen
                 storage.data[name] = value;
                 return true;
             }
-            , delete: function (name) {
+            , delete: function(name) {
                 // Wert löschen
                 delete storage.data[name];
                 return true;
-            }
+            },
         };
 
     try {
@@ -64,7 +64,7 @@
      */
 
     /**
-     * 
+     *
      * @param {string} name
      * @param {any} default_value
      * @returns {Array|Object|GM_getValue.script_localstorage|given_data.storage|Window.options.storage}
@@ -82,9 +82,9 @@
 
     /**
      * Experimental
-     * 
+     *
      * Liefert den Inhalt der gespeicherten Variable asynchron zurück
-     * 
+     *
      * @param {string} name
      * @param {any} default_value
      * @returns {Promise}
@@ -105,13 +105,13 @@
             backend_port.postMessage({
                 name: "GM_getValue",
                 data: { val_name: name, value: default_value },
-                counter: local_counter
+                counter: local_counter,
             });
         });
     }
 
     /**
-     * 
+     *
      * @param {string} name
      * @param {any} value
      * @returns {void}
@@ -124,7 +124,7 @@
     }
 
     /**
-     * 
+     *
      * @param {string} name
      * @returns {void}
      */
@@ -137,7 +137,7 @@
     }
 
     /**
-     * 
+     *
      * @returns {Array|GM_listValues.result}
      */
     function GM_listValues() {
@@ -151,7 +151,7 @@
     }
 
     /**
-     * 
+     *
      * @param {string} text
      * @returns {void}
      */
@@ -171,7 +171,7 @@
     }
 
     /**
-     * 
+     *
      * @param {string} url
      * @param {boolean} open_in_background
      * @returns {void}
@@ -181,7 +181,7 @@
     }
 
     /**
-     * 
+     *
      * @param {any} value
      * @returns {void}
      */
@@ -191,7 +191,7 @@
     }
 
     /**
-     * 
+     *
      * @param {string} css
      * @returns {void}
      */
@@ -205,7 +205,7 @@
     }
 
     /**
-     * 
+     *
      * @param {object} gm_details
      * @returns {void}
      */
@@ -214,7 +214,7 @@
         message_counter++;
 
         // Wrapper für counter
-        (function (counter) {
+        (function(counter) {
 
             const supported_events = ["onabort", "onerror", "onload", "onloadstart", "loadend", "onprogress", "onreadystatechange", "ontimeout"];
             supported_events.forEach((evt) => {
@@ -251,16 +251,16 @@
                         , binary: gm_details.binary
                         , data: gm_details.data
                         , method: gm_details.method
-                        , overrideMimeType: gm_details.overrideMimeType
-                    }
-                }, counter: counter
+                        , overrideMimeType: gm_details.overrideMimeType,
+                    },
+                }, counter: counter,
             });
 
         })(message_counter);
     }
 
     /**
-     * 
+     *
      * @param {string} caption
      * @param {string} commandFunc
      * @param {string} accessKey
@@ -270,10 +270,10 @@
         backend_port.postMessage({
             name: "GM_registerMenuCommand", data: {
                 caption: caption,
-                // Wandelt die Funktion in einen String um, ansonsten wird Sie einfach weggeworfen :/ ... 
+                // Wandelt die Funktion in einen String um, ansonsten wird Sie einfach weggeworfen :/ ...
                 commandFunc: commandFunc.toString(),
-                accessKey: accessKey
-            }, counter: message_counter++
+                accessKey: accessKey,
+            }, counter: message_counter++,
         });
     }
 
@@ -358,12 +358,11 @@
         }
     }
 
-
     /**
      * Basic Error Handling
      */
 
-    backend_port.onMessage.addListener(function (message) {
+    backend_port.onMessage.addListener(function(message) {
         if (message.name === "GM_Backend:error") {
             var error_message = "Error in " + message.func_name + "() \n with message:" + message.text;
             // Fehlermeldung als Notification darstellen
@@ -371,7 +370,7 @@
                 type: "basic",
                 title: "USI",
                 iconUrl: browser.extension.getURL("/gui/icon/usi.png"),
-                message: error_message
+                message: error_message,
             });
         }
     });
