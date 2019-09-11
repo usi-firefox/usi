@@ -19,10 +19,11 @@
           <v-layout justify-end>
             <v-menu offset-y allow-overflow class="pointer">
               <!-- Options Menü -->
-              <v-btn icon slot="activator">
+              <template v-slot:activator="{ on }">
+              <v-btn icon v-on="on">
                 <v-icon>more_vert</v-icon>
               </v-btn>
-
+              </template>
               <v-list>
                 <!--Userscript anzeigen/ausblenden-->
                 <v-list-item @click="showUserscript">
