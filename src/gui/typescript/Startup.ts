@@ -63,6 +63,7 @@ Vue.directive("lang", {
  */
 const app = new Vue({
     el: '#vuetify-gui',
+    vuetify: new Vuetify(),
     /**
      * Dies ist der Workaround für den Vue Compiler
      */

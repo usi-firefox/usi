@@ -8,36 +8,36 @@
       <v-navigation-drawer style="background-color: #555;" :permanent="drawer_permanent" app v-model="drawer">
         <v-toolbar style="background-color: #555;">
           <v-list>
-            <v-list-tile>
-              <v-list-tile-title class="title white--text">USI - ({{version}})</v-list-tile-title>
-            </v-list-tile>
+            <v-list-item>
+              <v-list-item-title class="title white--text">USI - ({{version}})</v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-toolbar>
         <v-divider></v-divider>
         <!-- Sidebar -->
         <!-- Sidebar Eintrag -->
-        <v-list-tile
+        <v-list-item
           class="white"
           v-once
           v-for="(entry,index) in menuEntries"
           v-bind:key="index"
           @click="hide_side_menu_and_load(index)"
         >
-          <v-list-tile-content
+          <v-list-item-content
             :style="index < (menuEntries.length - 1) ? 'border-bottom: 1px solid grey' : ''"
           >
-            <v-list-tile-title v-lang="entry.lang"></v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+            <v-list-item-title v-lang="entry.lang"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-navigation-drawer>
-      <v-toolbar
+      <v-app-bar
         class="blue--text"
         app
         @click.stop="drawer = !drawer"
       >
-        <v-toolbar-side-icon v-show="!drawer_permanent"></v-toolbar-side-icon>
+        <v-app-bar-nav-icon v-show="!drawer_permanent"></v-app-bar-nav-icon>
         <v-toolbar-title>{{navTitle}}</v-toolbar-title>
-      </v-toolbar>
+      </v-app-bar>
       <v-content>
           <!-- App Content -->
           <!-- <keep-alive> -->

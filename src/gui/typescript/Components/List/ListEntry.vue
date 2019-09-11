@@ -25,83 +25,83 @@
 
               <v-list>
                 <!--Userscript anzeigen/ausblenden-->
-                <v-list-tile @click="showUserscript">
-                  <v-list-tile-action>
+                <v-list-item @click="showUserscript">
+                  <v-list-item-action>
                     <v-icon>pageview</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>
+                  </v-list-item-action>
+                  <v-list-item-title>
                     <span v-html="!showUserscriptContent ? lang.show: lang.hide"></span>
-                  </v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-title>
+                </v-list-item>
 
                 <!--Userscript bearbeiten-->
                 <v-divider></v-divider>
-                <v-list-tile @click="edit">
-                  <v-list-tile-action>
+                <v-list-item @click="edit">
+                  <v-list-item-action>
                     <v-icon>edit</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>
+                  </v-list-item-action>
+                  <v-list-item-title>
                     <span v-lang="'change'"></span>
-                  </v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-title>
+                </v-list-item>
 
                 <!--Userscript entfernen-->
                 <v-divider></v-divider>
-                <v-list-tile @click="deleteUserscript">
-                  <v-list-tile-action>
+                <v-list-item @click="deleteUserscript">
+                  <v-list-item-action>
                     <v-icon>delete</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>
+                  </v-list-item-action>
+                  <v-list-item-title>
                     <span v-lang="'delete_x'"></span>
-                  </v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-title>
+                </v-list-item>
                 <!-- Userscript Exportieren -->
                 <v-divider></v-divider>
-                <v-list-tile @click="export_script">
-                  <v-list-tile-action>
+                <v-list-item @click="export_script">
+                  <v-list-item-action>
                     <v-icon>import_export</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>export</v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-action>
+                  <v-list-item-title>export</v-list-item-title>
+                </v-list-item>
                 <!-- SPA Starten -->
                 <span v-if="script.isSpa">
                   <v-divider></v-divider>
-                  <v-list-tile @click="start_spa">
-                    <v-list-tile-action>
+                  <v-list-item @click="start_spa">
+                    <v-list-item-action>
                       <v-icon>play_arrow</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>Start SPA</v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-action>
+                    <v-list-item-title>Start SPA</v-list-item-title>
+                  </v-list-item>
                 </span>
                 <!--Neuladen von der Quelle-->
                 <span v-if="script.moreinformations && script.moreinformations.url">
                   <v-divider></v-divider>
-                  <v-list-tile @click="loadAgain">
-                    <v-list-tile-action>
+                  <v-list-item @click="loadAgain">
+                    <v-list-item-action>
                       <v-icon>repeat</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>
+                    </v-list-item-action>
+                    <v-list-item-title>
                       <span v-lang="'reload_from_source'"></span>
-                    </v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-title>
+                  </v-list-item>
                 </span>
                 <!-- Gespeicherte Variablen anzeigen-->
                 <span v-if="script.val_store">
                   <v-divider></v-divider>
-                  <v-list-tile @click="GMValuesGet">
-                    <v-list-tile-action>
+                  <v-list-item @click="GMValuesGet">
+                    <v-list-item-action>
                       <v-icon>get_app</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>GM Values show</v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-action>
+                    <v-list-item-title>GM Values show</v-list-item-title>
+                  </v-list-item>
                   <!-- Gespeicherte Variablen entfernen-->
                   <v-divider></v-divider>
-                  <v-list-tile @click="GMValuesDelete">
-                    <v-list-tile-action>
+                  <v-list-item @click="GMValuesDelete">
+                    <v-list-item-action>
                       <v-icon>delete</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>GM Values delete</v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-action>
+                    <v-list-item-title>GM Values delete</v-list-item-title>
+                  </v-list-item>
                 </span>
               </v-list>
             </v-menu>
@@ -111,26 +111,26 @@
       <v-divider></v-divider>
       <v-card-text v-if="showUserscriptEntry">
         <v-list>
-          <v-list-tile>
-            <v-list-tile-content>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-tile-content>
-            <v-list-tile-content class="align-end">
+          <v-list-item>
+            <v-list-item-content>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-item-content>
+            <v-list-item-content class="align-end">
               <!--Userscript aktivieren oder deaktivieren-->
               <v-switch v-model="localScriptDeactivated"></v-switch>
-            </v-list-tile-content>
-          </v-list-tile>
+            </v-list-item-content>
+          </v-list-item>
 
           <!-- Restliche Userscript Informationen -->
-          <v-list-tile v-for="(info,i) in infos" v-bind:key="i">
-            <v-list-tile-content v-if="info.vlang !== true">{{info.text}}</v-list-tile-content>
-            <v-list-tile-content v-else v-lang="info.text"></v-list-tile-content>
+          <v-list-item v-for="(info,i) in infos" v-bind:key="i">
+            <v-list-item-content v-if="info.vlang !== true">{{info.text}}</v-list-item-content>
+            <v-list-item-content v-else v-lang="info.text"></v-list-item-content>
 
-            <v-list-tile-content v-if="info.value" class="align-end">{{info.value}}</v-list-tile-content>
+            <v-list-item-content v-if="info.value" class="align-end">{{info.value}}</v-list-item-content>
             <div v-else class="align-end">
               <ol>
                 <li v-for="(ele,j) in info.values" v-bind:key="j">{{ele}}</li>
               </ol>
             </div>
-          </v-list-tile>
+          </v-list-item>
         </v-list>
 
         <v-card-actions>

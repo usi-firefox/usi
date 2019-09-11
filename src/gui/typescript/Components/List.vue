@@ -8,11 +8,11 @@
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn v-if="userscripts.length > 0" flat @click="toggleExpanded">
+          <v-btn v-if="userscripts.length > 0" text @click="toggleExpanded">
             <v-icon>expand_more</v-icon>
             <v-icon>expand_less</v-icon>
           </v-btn>
-          <v-btn flat @click="refresh">
+          <v-btn text @click="refresh">
             <i class="material-icons">refresh</i>
           </v-btn>
         </v-toolbar-items>

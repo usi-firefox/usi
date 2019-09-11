@@ -15,7 +15,7 @@
         <!--Userscript Eingabe-->
         <v-textarea
           v-model="textarea.content"
-          box
+          filled
           :style="{fontSize : textarea.size + 'px'}"
           id="usi-edit-script-textarea"
           rows="30"
