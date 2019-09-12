@@ -7,6 +7,7 @@ Vue.use(Vuetify);
 import "material-design-icons-iconfont/dist/material-design-icons.css"; // Ensure you are using css-loader
 import "vuetify/dist/vuetify.min.css"; // Ensure you are using css-loader
 import { getTranslation } from "lib/helper/basic_helper";
+import { vuetify_options } from "./vuetify_options";
 
 // Register a global custom directive called `v-lang`
 /**
@@ -62,7 +63,7 @@ Vue.directive("lang", {
  */
 const app = new Vue({
     el: "#vuetify-gui",
-    vuetify: new Vuetify(),
+    vuetify: new Vuetify(vuetify_options),
     /**
      * Dies ist der Workaround für den Vue Compiler
      */
