@@ -13,7 +13,16 @@ export const store = new Vuex.Store({
     /**
      * Einstellungen
      */
-    configuration: null as usi.Storage.Config | null,
+    configuration: {
+      load_script_with_js_end: true
+      , hightlightjs: {
+        active: true
+        , style: "default"
+      }
+      , greasemonkey: {
+        global_active: true
+      }
+    } as usi.Storage.Config,
     /**
      * Daten für die Edit Komponente
      */
@@ -21,13 +30,13 @@ export const store = new Vuex.Store({
     editUserscriptContent: null as string | null,
   },
   getters: {
-    activeView(state, activeView: string) {
+    activeView(state) {
       return state.activeView;
     },
-    editUserscriptId(state, editUserscriptId: number | null) {
+    editUserscriptId(state) {
       return state.editUserscriptId;
     },
-    editUserscriptContent(state, editUserscriptContent: string | null) {
+    editUserscriptContent(state) {
       return state.editUserscriptContent;
     },
     configuration(state) {
@@ -50,6 +59,54 @@ export const store = new Vuex.Store({
         return false;
       }
     },
+    async configurationSetInStorage___load_script_with_js_end({ commit }, payload : boolean) {
+      try {
+        this.state.configuration.load_script_with_js_end = payload;
+        config_storage().set(this.state.configuration);
+        return true;
+      } catch (message) {
+        /** Fehler beim Laden der Konfiguration */
+        console.error("Error in setting configurationSetInStorage___load_script_with_js_end");
+        console.error(message);
+        return false;
+      }
+    },
+    async configurationSetInStorage___greasemonkey_global_active({ commit }, payload : boolean) {
+      try {
+        this.state.configuration.greasemonkey.global_active = payload;
+        config_storage().set(this.state.configuration);
+        return true;
+      } catch (message) {
+        /** Fehler beim Laden der Konfiguration */
+        console.error("Error in setting configurationSetInStorage___greasemonkey_global_active");
+        console.error(message);
+        return false;
+      }
+    },
+    async configurationSetInStorage___hightlightjs_active({ commit }, payload : boolean) {
+      try {
+        this.state.configuration.hightlightjs.active = payload;
+        config_storage().set(this.state.configuration);
+        return true;
+      } catch (message) {
+        /** Fehler beim Laden der Konfiguration */
+        console.error("Error in setting configurationSetInStorage___hightlightjs_active");
+        console.error(message);
+        return false;
+      }
+    },
+    async configurationSetInStorage___hightlightjs_style({ commit }, payload : string) {
+      try {
+        this.state.configuration.hightlightjs.style = payload;
+        config_storage().set(this.state.configuration);
+        return true;
+      } catch (message) {
+        /** Fehler beim Laden der Konfiguration */
+        console.error("Error in setting configurationSetInStorage___hightlightjs_style");
+        console.error(message);
+        return false;
+      }
+    },
     async configurationSetInStorage({ commit }, payload) {
       try {
         config_storage().set(payload);
@@ -68,7 +125,7 @@ export const store = new Vuex.Store({
     activeView(state, activeView: string) {
       state.activeView = activeView;
     },
-    configuration(state, configuration: usi.Storage.Config | null) {
+    configuration(state, configuration: usi.Storage.Config) {
       state.configuration = configuration;
     },
     editUserscriptId(state, editUserscriptId: number | null) {

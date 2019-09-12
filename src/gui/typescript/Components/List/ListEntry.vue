@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-card
-      flat
+      text
       :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  "
     >
       <v-card-title>

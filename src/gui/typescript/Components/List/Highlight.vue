@@ -1,25 +1,19 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex xs4>
-        <h3>HighlightJS Style</h3>
-      </v-flex>
-    </v-layout>
+    <h3>HighlightJS Style</h3>
     <v-layout>
       <v-flex xs8 md4>
-        <v-autocomplete :items="hightlightjsstyles" @change="run" v-model="active_style"></v-autocomplete>
+        <v-autocomplete :items="hightlightjsstyles" @change="changeHighlightStyle" v-model="active_style"></v-autocomplete>
       </v-flex>
       <v-flex xs4>
-        <v-btn @click="active_style = 'default'; run()">
+        <v-btn @click="active_style = 'default'; changeHighlightStyle()">
           <v-icon>undo</v-icon>
         </v-btn>
       </v-flex>
     </v-layout>
 
-    <v-layout row>
-      <v-flex xs12>
-        <pre><code class="border-black">{{this.code}}</code></pre>
-      </v-flex>
+    <v-layout>
+        <pre><code>{{this.code}}</code></pre>
     </v-layout>
   </v-container>
 </template>
@@ -30,6 +24,7 @@ declare var hljs: any;
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";
+import { mapState } from "vuex";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -134,39 +129,37 @@ export default Vue.component(componentName, {
       ]
     };
   },
-  created: function() {
-    Vue.nextTick().then(() => {
-      config_storage()
-        .get()
-        .then(config => {
-          this.active_style = config.hightlightjs.style;
-          this.run();
-        });
-    });
+  computed: {
+    ...mapState(["configuration"])
+  },
+  mounted() {
+    if (!this.configuration) {
+      return;
+    }
+
+    this.active_style = this.configuration.hightlightjs.style;
+
+    const codeblock = this.$el.querySelector("pre code");
+    // HighlightJS ausführen
+    if (codeblock) {
+      hljs.highlightBlock(codeblock);
+    }
+
+    this.changeHighlightStyle();
   },
   methods: {
-    run: async function(): Promise<void> {
-      const codeblock = this.$el.querySelector("pre code");
-       // HighlightJS ausführen
-       if(codeblock){
-         hljs.highlightBlock(codeblock);
-       }
+    changeHighlightStyle: async function(): Promise<void> {
       // Pfad zur CSS Datei festlegen
       const style_filepath =
         this.highlight_styles_path + this.active_style + ".css";
       // Link auf die neue CSS Datei ändern
       const stlye_tag = document.getElementById("HighlightJSStyle");
-      if(stlye_tag){
-          stlye_tag.setAttribute("href", style_filepath);
+      if (stlye_tag) {
+        stlye_tag.setAttribute("href", style_filepath);
       }
 
-      // Style speichern
-      this.setStyle(this.active_style);
-    },
-    async setStyle(style_name: string) {
-      let config = await config_storage().get();
-      config.hightlightjs.style = style_name;
-      return await config_storage().set(config);
+      // Neuen Style speichern
+      this.$store.dispatch("configurationSetInStorage___hightlightjs_style",this.active_style);
     }
   }
 });

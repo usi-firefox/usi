@@ -108,7 +108,6 @@ export default Vue.component(componentName, {
       load_script_with_js_end: false,
       greasemonkey_global_active: false,
       hightlightjs_active: false,
-      config: <usi.Storage.Config>{},
 
       completeExport: false,
       dialogWindow: false,
@@ -127,36 +126,33 @@ export default Vue.component(componentName, {
   computed: {
     ...mapState(["configuration"])
   },
-  created: function() {
+  mounted() {
     if (!this.configuration) {
       return;
     }
 
     this.load_script_with_js_end = this.configuration.load_script_with_js_end;
-    this.greasemonkey_global_active = this.configuration.greasemonkey.global_active;
-    this.hightlightjs_active = this.configuration.hightlightjs.active;
+    if(this.configuration.greasemonkey && this.configuration.greasemonkey.global_active){
+      this.greasemonkey_global_active = this.configuration.greasemonkey.global_active;
+    }
+    if(this.configuration.hightlightjs && this.configuration.hightlightjs.active){
+      this.hightlightjs_active = this.configuration.hightlightjs.active;
+    }
   },
   watch: {
     /** @todo */
     // Schreibe die Neue Konfiguration
     load_script_with_js_end: function(newValue: boolean) {
-      this.config.load_script_with_js_end = newValue;
-      this.setConfig();
+      this.$store.dispatch("configurationSetInStorage___load_script_with_js_end",newValue);
     },
     greasemonkey_global_active: function(newValue: boolean) {
-      this.config.greasemonkey.global_active = newValue;
-      this.setConfig();
+      this.$store.dispatch("configurationSetInStorage___greasemonkey_global_active",newValue);
     },
     hightlightjs_active: function(newValue: boolean) {
-      this.config.hightlightjs.active = newValue;
-      this.setConfig();
+      this.$store.dispatch("configurationSetInStorage___hightlightjs_active",newValue);
     }
   },
   methods: {
-    setConfig() {
-      // Konfiguration sichern
-      this.$store.dispatch("configurationSetInStorage",this.config);
-    },
     /**
      * Alle Userscripte entfernen
      * @returns {undefined}

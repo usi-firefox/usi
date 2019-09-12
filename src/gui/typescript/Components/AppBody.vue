@@ -3,21 +3,23 @@
     <v-app>
       <v-snackbar v-model="snackbar">
         {{ snackbar_text }}
-        <v-btn color="red" flat @click="snackbar = false">X</v-btn>
+        <v-btn color="red" text @click="snackbar = false">X</v-btn>
       </v-snackbar>
       <v-navigation-drawer
         style="background-color: #555;"
-        :permanent="drawer_permanent"
         app
         v-model="drawer"
       >
-        <v-toolbar style="background-color: #555;">
-          <v-list>
-            <v-list-item>
-              <v-list-item-title class="title white--text">USI - ({{version}})</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-toolbar>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title white--text">
+            USI
+          </v-list-item-title>
+          <v-list-item-subtitle class="white--text">
+            {{version}}
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
         <v-divider></v-divider>
         <!-- Sidebar -->
         <!-- Sidebar Eintrag -->
@@ -29,14 +31,14 @@
           @click="hide_side_menu_and_load(index)"
         >
           <v-list-item-content
-            :style="index < (menuEntries.length - 1) ? 'border-bottom: 1px solid grey' : ''"
+            style="border-bottom: 1px solid grey"
           >
             <v-list-item-title v-lang="entry.lang"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-navigation-drawer>
       <v-app-bar class="blue--text" app @click.stop="drawer = !drawer">
-        <v-app-bar-nav-icon v-show="!drawer_permanent"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>{{navTitle}}</v-toolbar-title>
       </v-app-bar>
       <v-content>
@@ -77,11 +79,9 @@ export default Vue.component(componentName, {
   data: function() {
     return {
       navTitle: "All Userscripts",
-      drawer: false,
+      drawer: true,
       snackbar: false,
       snackbar_text: "",
-      // Wird auf Desktop Geräten auf true gesetzt
-      drawer_permanent: false,
 
       extraData: {},
       menuEntries: <usi.Frontend.menuEntry[]>[],
@@ -90,19 +90,6 @@ export default Vue.component(componentName, {
   },
 
   created: function() {
-    /**
-     * ACHTUNG Direkter Zugriff über die ID
-     */
-    const app_div = document.getElementById("vuetify-gui");
-    if (app_div instanceof HTMLDivElement && app_div.clientWidth > 1200) {
-      /**
-       * Falls die clientWidth größer als "x" sein sollte
-       * setzen wir den Drawer auf "permanent" damit er nicht geschloßen wird
-       */
-
-      this.drawer_permanent = true;
-    }
-
     this.menuEntries = [
       { name: "list", lang: "all_userscripts" },
       { name: "edit", lang: "create_new_userscript" },
