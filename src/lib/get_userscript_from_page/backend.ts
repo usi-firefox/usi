@@ -1,4 +1,4 @@
-import { empty, notify, getTranslation } from "lib/helper/basic_helper";
+import { empty, getTranslation, notify } from "lib/helper/basic_helper";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import add_userscript from "lib/storage/add_userscript";
 

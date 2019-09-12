@@ -205,6 +205,7 @@ import Vue from "vue";
 import SPA from "lib/spa/handler";
 import userscript_storage from "lib/storage/storage";
 import page_injection_helper from "lib/inject/page_injection_helper";
+import { mapState } from "vuex";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -223,10 +224,6 @@ export default Vue.component(componentName, {
     },
     index: {
       type: Number,
-      required: true
-    },
-    configuration: {
-      type: Object as () => usi.Storage.Config,
       required: true
     },
     expanded: {
@@ -254,6 +251,9 @@ export default Vue.component(componentName, {
         hide: getTranslation("hide")
       }
     };
+  },
+  computed:{
+    ...mapState(["configuration"])
   },
   created: function() {
     // Workaround

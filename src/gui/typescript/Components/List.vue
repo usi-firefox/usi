@@ -23,7 +23,6 @@
         v-for="(script,index) in userscripts" 
         v-bind:key="index"
         v-bind:expanded="is_expanded"
-        v-bind:configuration="configuration"
         v-bind:script="script"
         v-bind:index="index"
       />
@@ -46,12 +45,6 @@ import userscript_storage from "lib/storage/storage";
  */
 const componentName = "list-component";
 export default Vue.component(componentName, {
-  props: {
-    configuration: {
-      type: Object as () => usi.Storage.Config,
-      required: true
-    }
-  },
   data: function() {
     return {
       is_expanded: true,

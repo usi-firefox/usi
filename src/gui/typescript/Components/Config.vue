@@ -88,6 +88,7 @@ import { isset, download_file, getTranslation } from "lib/helper/basic_helper";
 import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
+import { mapState } from "vuex";
 
 const parse_userscript_instance = new parse_userscript();
 
@@ -123,20 +124,17 @@ export default Vue.component(componentName, {
       }
     };
   },
+  computed: {
+    ...mapState(["configuration"])
+  },
   created: function() {
-    config_storage()
-      .get()
-      .then(config => {
-        this.config = config;
+    if (!this.configuration) {
+      return;
+    }
 
-        this.load_script_with_js_end = this.config.load_script_with_js_end;
-        if (typeof this.config.greasemonkey === "object") {
-          this.greasemonkey_global_active = this.config.greasemonkey.global_active;
-        }
-        if (typeof this.config.hightlightjs === "object") {
-          this.hightlightjs_active = this.config.hightlightjs.active;
-        }
-      });
+    this.load_script_with_js_end = this.configuration.load_script_with_js_end;
+    this.greasemonkey_global_active = this.configuration.greasemonkey.global_active;
+    this.hightlightjs_active = this.configuration.hightlightjs.active;
   },
   watch: {
     /** @todo */
@@ -157,7 +155,7 @@ export default Vue.component(componentName, {
   methods: {
     setConfig() {
       // Konfiguration sichern
-      config_storage().set(this.config);
+      this.$store.dispatch("configurationSetInStorage",this.config);
     },
     /**
      * Alle Userscripte entfernen
@@ -171,9 +169,7 @@ export default Vue.component(componentName, {
         case 1:
           // Sicherheitsabfrage
           this.dialogWindow = true;
-          this.dialogWindowText = getTranslation(
-            "really_reset_all_settings"
-          );
+          this.dialogWindowText = getTranslation("really_reset_all_settings");
           break;
 
         case 2:
@@ -227,7 +223,9 @@ export default Vue.component(componentName, {
         const userscript_id = userscript.id;
 
         try {
-          const loaded_userscript = await load_resource_instance.load_userscript_by_url(updateURL);
+          const loaded_userscript = await load_resource_instance.load_userscript_by_url(
+            updateURL
+          );
           if (!loaded_userscript) {
             // keine antwort
             return false;
@@ -249,13 +247,9 @@ export default Vue.component(componentName, {
 
           //wurde gefunden, möchtest du es aktualisieren?")){
           let confirmed = window.confirm(
-            getTranslation(
-              "same_userscript_was_found_ask_update_it_1"
-            ) +
+            getTranslation("same_userscript_was_found_ask_update_it_1") +
               userscript_id +
-              getTranslation(
-                "same_userscript_was_found_ask_update_it_2"
-              )
+              getTranslation("same_userscript_was_found_ask_update_it_2")
           );
 
           if (!confirmed) {

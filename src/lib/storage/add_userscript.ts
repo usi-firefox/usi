@@ -1,4 +1,4 @@
-import { empty, getFilenameFromURL, is_datauri, notify, valid_url, getTranslation } from "lib/helper/basic_helper";
+import { empty, getFilenameFromURL, getTranslation, is_datauri, notify, valid_url } from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
 

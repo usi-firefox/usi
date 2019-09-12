@@ -2,7 +2,7 @@
  ********* Parse-Userscript-Konfiguration Funktionen ********************
  ************************************************************************/
 
-import { empty, isset, notify, getTranslation } from "lib/helper/basic_helper";
+import { empty, getTranslation, isset, notify } from "lib/helper/basic_helper";
 import { GM_convert2RegExp } from "lib/parse/convert2RegExp";
 
 export default class parse_userscript {

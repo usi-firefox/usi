@@ -5,7 +5,12 @@
         {{ snackbar_text }}
         <v-btn color="red" flat @click="snackbar = false">X</v-btn>
       </v-snackbar>
-      <v-navigation-drawer style="background-color: #555;" :permanent="drawer_permanent" app v-model="drawer">
+      <v-navigation-drawer
+        style="background-color: #555;"
+        :permanent="drawer_permanent"
+        app
+        v-model="drawer"
+      >
         <v-toolbar style="background-color: #555;">
           <v-list>
             <v-list-item>
@@ -30,35 +35,21 @@
           </v-list-item-content>
         </v-list-item>
       </v-navigation-drawer>
-      <v-app-bar
-        class="blue--text"
-        app
-        @click.stop="drawer = !drawer"
-      >
+      <v-app-bar class="blue--text" app @click.stop="drawer = !drawer">
         <v-app-bar-nav-icon v-show="!drawer_permanent"></v-app-bar-nav-icon>
         <v-toolbar-title>{{navTitle}}</v-toolbar-title>
       </v-app-bar>
       <v-content>
-          <!-- App Content -->
-          <!-- <keep-alive> -->
-          <!-- @todo  schaltet die aktive Componente um -->
-          <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
-          <list-component
-            v-if="activeView == 'list'"
-            v-bind:configuration="configuration"
-          ></list-component>
-          <edit-component
-            v-if="activeView == 'edit'"
-          ></edit-component>
-          <config-component
-            v-if="activeView == 'config'"
-            v-bind:initial-data="configuration"
-          ></config-component>
-          <loadExternal-component
-            v-if="activeView == 'loadExternal'"
-          ></loadExternal-component>
-          <!-- </keep-alive> -->
-          <!-- App Content -->
+        <!-- App Content -->
+        <!-- <keep-alive> -->
+        <!-- @todo  schaltet die aktive Componente um -->
+        <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
+        <list-component v-if="activeView == 'list'"></list-component>
+        <edit-component v-if="activeView == 'edit'"></edit-component>
+        <config-component v-if="activeView == 'config'"></config-component>
+        <loadExternal-component v-if="activeView == 'loadExternal'"></loadExternal-component>
+        <!-- </keep-alive> -->
+        <!-- App Content -->
       </v-content>
     </v-app>
   </div>
@@ -66,9 +57,7 @@
 </template>
 
 <script lang="ts">
-declare const document : Document;
-
-import config_storage from "lib/storage/config";
+declare const document: Document;
 
 import Vue from "vue";
 
@@ -78,6 +67,7 @@ import ConfigComponent from "Components/Config.vue";
 import ListComponent from "Components/List.vue";
 import HelpComponent from "Components/Help.vue";
 import { getTranslation } from "../../../lib/helper/basic_helper";
+import { mapState } from "vuex";
 
 // Versionslabel auslesen
 const componentName = "appbody-component";
@@ -91,10 +81,9 @@ export default Vue.component(componentName, {
       snackbar: false,
       snackbar_text: "",
       // Wird auf Desktop Geräten auf true gesetzt
-      drawer_permanent : false,
+      drawer_permanent: false,
 
       extraData: {},
-      configuration: <usi.Storage.Config>{},
       menuEntries: <usi.Frontend.menuEntry[]>[],
       version: browser.runtime.getManifest().version
     };
@@ -105,11 +94,12 @@ export default Vue.component(componentName, {
      * ACHTUNG Direkter Zugriff über die ID
      */
     const app_div = document.getElementById("vuetify-gui");
-    if(app_div instanceof HTMLDivElement && app_div.clientWidth > 1200){
-      /** 
+    if (app_div instanceof HTMLDivElement && app_div.clientWidth > 1200) {
+      /**
        * Falls die clientWidth größer als "x" sein sollte
        * setzen wir den Drawer auf "permanent" damit er nicht geschloßen wird
-       */ 
+       */
+
       this.drawer_permanent = true;
     }
 
@@ -124,26 +114,13 @@ export default Vue.component(componentName, {
     /**
      * Zunächst die Konfiguration laden
      */
-    config_storage()
-      .get()
-      .then((config: usi.Storage.Config) => {
-        this.configuration = config;
+    this.$store.dispatch("configurationLoadFromStorage");
 
-        // initial die overview Komponente laden
-        this.hide_side_menu_and_load(0);
-      })
-      .catch((message: any) => {
-        /** Fehler beim Laden der Konfiguration */
-        console.error("Error in loading usi:config_storage");
-        console.error(message);
-        alert(message);
-      });
-
-      // Register Global Events
-      this.$root.$on("snackbar",(text:string) => {
-        this.snackbar = true;
-        this.snackbar_text = text;
-      });
+    // Register Global Events
+    this.$root.$on("snackbar", (text: string) => {
+      this.snackbar = true;
+      this.snackbar_text = text;
+    });
   },
   methods: {
     hide_side_menu_and_load: function(index: number): void {
@@ -169,11 +146,11 @@ export default Vue.component(componentName, {
   },
   computed: {
     // legt fest, welcher Component momentan aktiv ist
-    activeView :{
-      get(){
+    activeView: {
+      get() {
         return (this as any).$store.getters.activeView;
       },
-      set(viewName: string){
+      set(viewName: string) {
         this.$store.commit("activeView", viewName);
       }
     }

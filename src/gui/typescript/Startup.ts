@@ -5,9 +5,9 @@ import {store} from "./Store/store";
 
 Vue.use(Vuetify);
 
+import { getTranslation } from "lib/helper/basic_helper";
 import "material-design-icons-iconfont/dist/material-design-icons.css"; // Ensure you are using css-loader
 import "vuetify/dist/vuetify.min.css"; // Ensure you are using css-loader
-import { getTranslation } from "lib/helper/basic_helper";
 import { vuetify_options } from "./vuetify_options";
 
 // Register a global custom directive called `v-lang`

@@ -59,7 +59,7 @@ const componentName = "loadExternal-component";
 export default Vue.component(componentName, {
   data() {
     return {
-      charset: "",
+      charset: "utf-8",
       alternativeCharsets: ["", "utf-8", "cp1252"]
     };
   },
