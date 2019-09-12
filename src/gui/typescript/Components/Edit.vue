@@ -50,7 +50,7 @@
 
               <v-card>
                 <v-card-title class="headline grey lighten-2" primary-title>Reset Userscript</v-card-title>
-                
+
                 <v-card-text
                   v-for="entry in last_userscript_text"
                   @click="undo"
@@ -114,6 +114,7 @@ declare var window: any;
 import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
 import { notify, getSeconds, getTranslation } from "lib/helper/basic_helper";
+import { mapState } from "vuex";
 
 const add_userscript_instance = new add_userscript();
 
@@ -146,9 +147,7 @@ export default Vue.component(componentName, {
       },
       last_userscript_interval_id: 0,
       lang: {
-        overwrite_without_warning: getTranslation(
-          "overwrite_without_warning"
-        )
+        overwrite_without_warning: getTranslation("overwrite_without_warning")
       },
       overwrite_without_warning: false,
       last_userscript_text: <usi.Frontend.EditUndo[]>[],
@@ -159,23 +158,22 @@ export default Vue.component(componentName, {
     // Interval für Undo Funktion beenden
     window.clearInterval(this.last_userscript_interval_id);
   },
-  created: function() {
+  computed: {
+    ...mapState(["editUserscriptId", "editUserscriptContent"])
+  },
+  mounted() {
     /**
      * falls zusältziche Daten übergeben wurden
      * Werden diese gesetzt
      */
-    if (this.addional) {
-      if (this.addional.id) {
-        this.script_id = this.addional.id;
-      }
+    if (this.editUserscriptId) {
+      this.script_id = this.editUserscriptId;
+    }
 
-      if (this.addional.userscript) {
-        // Falls ein Userscript zur Editierung
-        // aus einem anderen Component übergeben wurde
-        this.textarea.content = this.addional.userscript;
-
-        this.$emit("change-tab-additional", {event_name: "usi:reset-extraData"});
-      }
+    if (this.editUserscriptContent) {
+      // Falls ein Userscript zur Editierung
+      // aus einem anderen Component übergeben wurde
+      this.textarea.content = this.editUserscriptContent;
     }
 
     const prefered_locale = browser.i18n.getUILanguage();
@@ -225,12 +223,17 @@ export default Vue.component(componentName, {
     textarea_clear: function(): void {
       this.script_id = 0;
       this.textarea.content = "";
+
+      // vuex Store aktualisieren
+      this.$store.commit("editUserscriptId", null);
+      this.$store.commit("editUserscriptContent", null);
+
       this.$forceUpdate();
     },
 
     // Setzt den Text Inhalt zurück
-    undo: function(entry : usi.Frontend.EditUndo): void {
-      this.undo_dialog = false; 
+    undo: function(entry: usi.Frontend.EditUndo): void {
+      this.undo_dialog = false;
       this.textarea.content = entry.text;
     },
 
@@ -281,7 +284,10 @@ export default Vue.component(componentName, {
         }
 
         // den Wert der Historie hinzufügen
-        this.last_userscript_text.unshift({time : getSeconds(), text : this.textarea.content});
+        this.last_userscript_text.unshift({
+          time: getSeconds(),
+          text: this.textarea.content
+        });
       }
     },
 
@@ -329,13 +335,9 @@ export default Vue.component(componentName, {
         // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
         if (
           window.confirm(
-            getTranslation(
-              "same_userscript_was_found_ask_update_it_1"
-            ) +
+            getTranslation("same_userscript_was_found_ask_update_it_1") +
               userscript_id +
-              getTranslation(
-                "same_userscript_was_found_ask_update_it_2"
-              )
+              getTranslation("same_userscript_was_found_ask_update_it_2")
           )
         ) {
           // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}

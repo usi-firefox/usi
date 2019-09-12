@@ -10,7 +10,7 @@
       </v-card-title>
       <v-card-text>
         <v-card-actions>
-          <input type="file" accept="text/*" id="direct-userscript-upload">
+          <input type="file" accept="text/*" id="direct-userscript-upload" />
           <v-btn class="text-capitalize" @click="loadLocalFile" v-lang="'start'">
             <!--Start-->
           </v-btn>
@@ -100,12 +100,16 @@ export default Vue.component(componentName, {
       }
 
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        // Daten an den EditController weiterreichen
-        this.$emit("change-tab", <usi.Frontend.changeTabEvent>{
-          comp: "edit",
-          extraData: { userscript: e.target.result }
-        });
+      reader.onload = (readerResult) => {
+        const target = readerResult.target as FileReader;
+
+        if (typeof target.result === "string") {
+          // Daten für die Edit Komponente setzen
+          this.$store.commit("editUserscriptId", null);
+          this.$store.commit("editUserscriptContent", target.result);
+          // Die Aktive Komponente wechseln
+          this.$store.commit("activeView", "edit");
+        }
       };
 
       // Read in the image file as a data URL.

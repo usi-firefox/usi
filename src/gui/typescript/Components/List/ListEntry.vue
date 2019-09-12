@@ -476,14 +476,12 @@ export default Vue.component(componentName, {
 
     // Sende es an den Editierungs Controller
     edit: function(): void {
+      // Daten für die Edit Komponente setzen
+      this.$store.commit("editUserscriptId", this.script.id);
+      this.$store.commit("editUserscriptContent", this.script.userscript);
+      
       // veranlasse den Tab Wechsel!
-      this.$parent.$emit("change-tab", <usi.Frontend.changeTabEvent>{
-        comp: "edit",
-        extraData: {
-          userscript: this.script.userscript,
-          id: this.script.id
-        }
-      });
+      this.$store.commit("activeView", "edit");
     },
 
     start_spa: function(): void {

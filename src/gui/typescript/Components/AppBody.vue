@@ -44,30 +44,18 @@
           <!-- @todo  schaltet die aktive Componente um -->
           <!-- @todo Aktuell ganz übler Workaround, da das <component> Tag nicht wie erwartet funktioniert -->
           <list-component
-            v-if="activeComponent == 'list'"
+            v-if="activeView == 'list'"
             v-bind:configuration="configuration"
-            v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData"
-            v-on:change-tab-additional="eventsFromOtherComponents"
-            v-bind:addional="extraData"
           ></list-component>
           <edit-component
-            v-if="activeComponent == 'edit'"
-            v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData"
-            v-on:change-tab-additional="eventsFromOtherComponents"
-            v-bind:addional="extraData"
+            v-if="activeView == 'edit'"
           ></edit-component>
           <config-component
-            v-if="activeComponent == 'config'"
-            v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData"
-            v-on:change-tab-additional="eventsFromOtherComponents"
+            v-if="activeView == 'config'"
             v-bind:initial-data="configuration"
-            v-bind:addional="extraData"
           ></config-component>
           <loadExternal-component
-            v-if="activeComponent == 'loadExternal'"
-            v-on:change-tab="activeComponent = $event.comp; extraData = $event.extraData"
-            v-on:change-tab-additional="eventsFromOtherComponents"
-            v-bind:addional="extraData"
+            v-if="activeView == 'loadExternal'"
           ></loadExternal-component>
           <!-- </keep-alive> -->
           <!-- App Content -->
@@ -105,8 +93,6 @@ export default Vue.component(componentName, {
       // Wird auf Desktop Geräten auf true gesetzt
       drawer_permanent : false,
 
-      // legt fest, welcher Component momentan aktiv ist
-      activeComponent: "list",
       extraData: {},
       configuration: <usi.Storage.Config>{},
       menuEntries: <usi.Frontend.menuEntry[]>[],
@@ -160,25 +146,6 @@ export default Vue.component(componentName, {
       });
   },
   methods: {
-    eventsFromOtherComponents: function(
-      data: usi.Frontend.changeTabAdditionalEvent
-    ): void {
-      switch (data.event_name) {
-        case "usi:reset-extraData":
-          this.extraData = {};
-          break;
-        case "usi:refresh-config":
-          config_storage()
-            .get()
-            .then((config: usi.Storage.Config) => {
-              this.configuration = config;
-            });
-          break;
-        default:
-          // nichts tun
-          break;
-      }
-    },
     hide_side_menu_and_load: function(index: number): void {
       // Aktuelle Komponente suchen
       const menu_entry = this.menuEntries[index];
@@ -194,27 +161,21 @@ export default Vue.component(componentName, {
       this.navTitle = getTranslation(menuEntry.lang);
 
       // Aktive Komponente umschalten
-      this.activeComponent = menuEntry.name;
+      this.activeView = menuEntry.name;
 
       this.drawer = false;
     }
     // Toggle Sidebar Menu
   },
-  computed: {},
-  watch: {
-    activeComponent: function() {
-      // passenden Eintrag suchen
-      // und change_active_component() aufrufen
-      for (let comp of this.menuEntries) {
-        if (comp.name === this.activeComponent) {
-          this.change_active_component(comp);
-          // erledigt
-          return;
-        }
+  computed: {
+    // legt fest, welcher Component momentan aktiv ist
+    activeView :{
+      get(){
+        return (this as any).$store.getters.activeView;
+      },
+      set(viewName: string){
+        this.$store.commit("activeView", viewName);
       }
-
-      // Es wurde kein passender Component gefunden, Fehler
-      throw "Kein passender Component gefunden (AppBody.watch.activeComponent())";
     }
   },
   components: {

@@ -1,6 +1,7 @@
 import AppBody from "Components/AppBody.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import {store} from "./Store/store";
 
 Vue.use(Vuetify);
 
@@ -64,6 +65,7 @@ Vue.directive("lang", {
 const app = new Vue({
     el: "#vuetify-gui",
     vuetify: new Vuetify(vuetify_options),
+    store,
     /**
      * Dies ist der Workaround für den Vue Compiler
      */
