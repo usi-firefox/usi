@@ -3,7 +3,7 @@
     <v-app>
       <v-snackbar v-model="snackbar">
         {{ snackbar_text }}
-        <v-btn color="red" flat @click="snackbar = false">Close</v-btn>
+        <v-btn color="red" flat @click="snackbar = false">X</v-btn>
       </v-snackbar>
       <v-navigation-drawer style="background-color: #555;" :permanent="drawer_permanent" app v-model="drawer">
         <v-toolbar style="background-color: #555;">
@@ -228,9 +228,4 @@ export default Vue.component(componentName, {
 });
 </script>
 <style>
-/** Workaround/Fix **/
-div.container {
-  padding-left: 10px;
-  padding-right: 10px;
-}
 </style>

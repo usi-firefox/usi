@@ -542,8 +542,4 @@ export default Vue.component(componentName, {
 .pointer {
   cursor: pointer;
 }
-.width-100 {
-  width: 100%;
-  padding: 5px;
-}
 </style>
