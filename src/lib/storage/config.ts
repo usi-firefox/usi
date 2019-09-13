@@ -34,8 +34,8 @@ export default class config_storage {
          * the_storage.settings -> settings.config
          */
         try {
-            const configuration = await browser.storage.local.get(this.get_default_settings()) as any;
-            return configuration.config;
+            const {configuration} = await browser.storage.local.get(this.get_default_settings()) as any;
+            return configuration;
         } catch (ex) {
             throw ex;
         }
@@ -43,15 +43,14 @@ export default class config_storage {
 
     public async set(newConfig: usi.Storage.Config): Promise<boolean> {
         try {
-            const the_storage = await this.get() as any;
             /**
-             * @TODO
-             * neue Config setzen
+             * @todo
+             * JSON.parse(JSON.stringify())
+             * Nötig um die Werte aus dem Vue Kontext zu holen,
+             * und die weiteren Eigenschaften zu entfernen
              */
-            the_storage.config = JSON.parse(JSON.stringify(newConfig));
-
-            // gib true zurück, wenn fertig
-            await browser.storage.local.set(the_storage);
+            const clean_config = JSON.parse(JSON.stringify(newConfig));
+            await browser.storage.local.set({configuration: clean_config});
             return true;
         } catch (ex) {
             throw ex;

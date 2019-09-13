@@ -26,6 +26,8 @@ import config_storage from "lib/storage/config";
 import Vue from "vue";
 import { mapState } from "vuex";
 
+const highlight_styles_path = "libs/highlight/styles/";
+
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
  * genutzt werden kann ->
@@ -43,8 +45,7 @@ export default Vue.component(componentName, {
   },
   data: function() {
     return {
-      active_style: "default",
-      highlight_styles_path: "libs/highlight/styles/",
+      
       // enthält alle verfügbaren highlight js styles
       hightlightjsstyles: [
         "agate",
@@ -130,15 +131,16 @@ export default Vue.component(componentName, {
     };
   },
   computed: {
-    ...mapState(["configuration"])
+    active_style: {
+      get() : string {
+        return this.$store.getters["configuration/hightlightjs_style"];
+      },
+      set(style: string){
+        this.$store.dispatch("configuration/hightlightjs_style",style);
+      }
+    }
   },
   mounted() {
-    if (!this.configuration) {
-      return;
-    }
-
-    this.active_style = this.configuration.hightlightjs.style;
-
     const codeblock = this.$el.querySelector("pre code");
     // HighlightJS ausführen
     if (codeblock) {
@@ -151,15 +153,12 @@ export default Vue.component(componentName, {
     changeHighlightStyle: async function(): Promise<void> {
       // Pfad zur CSS Datei festlegen
       const style_filepath =
-        this.highlight_styles_path + this.active_style + ".css";
+        highlight_styles_path + this.active_style + ".css";
       // Link auf die neue CSS Datei ändern
       const stlye_tag = document.getElementById("HighlightJSStyle");
       if (stlye_tag) {
         stlye_tag.setAttribute("href", style_filepath);
       }
-
-      // Neuen Style speichern
-      this.$store.dispatch("configurationSetInStorage___hightlightjs_style",this.active_style);
     }
   }
 });

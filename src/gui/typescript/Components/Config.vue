@@ -88,7 +88,6 @@ import { isset, download_file, getTranslation } from "lib/helper/basic_helper";
 import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
-import { mapState } from "vuex";
 
 const parse_userscript_instance = new parse_userscript();
 
@@ -105,10 +104,6 @@ const componentName = "config-component";
 export default Vue.component(componentName, {
   data: function() {
     return {
-      load_script_with_js_end: false,
-      greasemonkey_global_active: false,
-      hightlightjs_active: false,
-
       completeExport: false,
       dialogWindow: false,
       dialogWindowText: "",
@@ -124,32 +119,29 @@ export default Vue.component(componentName, {
     };
   },
   computed: {
-    ...mapState(["configuration"])
-  },
-  mounted() {
-    if (!this.configuration) {
-      return;
-    }
-
-    this.load_script_with_js_end = this.configuration.load_script_with_js_end;
-    if(this.configuration.greasemonkey && this.configuration.greasemonkey.global_active){
-      this.greasemonkey_global_active = this.configuration.greasemonkey.global_active;
-    }
-    if(this.configuration.hightlightjs && this.configuration.hightlightjs.active){
-      this.hightlightjs_active = this.configuration.hightlightjs.active;
-    }
-  },
-  watch: {
-    /** @todo */
-    // Schreibe die Neue Konfiguration
-    load_script_with_js_end: function(newValue: boolean) {
-      this.$store.dispatch("configurationSetInStorage___load_script_with_js_end",newValue);
+    load_script_with_js_end: {
+      get(): boolean {
+        return this.$store.getters["configuration/load_script_with_js_end"];
+      },
+      set(val: boolean) {
+        this.$store.dispatch("configuration/load_script_with_js_end", val);
+      }
     },
-    greasemonkey_global_active: function(newValue: boolean) {
-      this.$store.dispatch("configurationSetInStorage___greasemonkey_global_active",newValue);
+    greasemonkey_global_active: {
+      get(): boolean {
+        return this.$store.getters["configuration/greasemonkey_global_active"];
+      },
+      set(val: boolean) {
+        this.$store.dispatch("configuration/greasemonkey_global_active", val);
+      }
     },
-    hightlightjs_active: function(newValue: boolean) {
-      this.$store.dispatch("configurationSetInStorage___hightlightjs_active",newValue);
+    hightlightjs_active: {
+      get(): boolean {
+        return this.$store.getters["configuration/hightlightjs_active"];
+      },
+      set(val: boolean) {
+        this.$store.dispatch("configuration/hightlightjs_active", val);
+      }
     }
   },
   methods: {

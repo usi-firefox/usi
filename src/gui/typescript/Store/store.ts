@@ -3,28 +3,130 @@ import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
 
-const config_storage_instance =  new config_storage();
+const config_storage_instance = new config_storage();
 
 export const store = new Vuex.Store({
+  modules: {
+    /**
+     * Einstellungen
+     */
+    configuration: {
+      namespaced: true,
+      state: {
+        load_script_with_js_end: true
+        , hightlightjs: {
+          active: true,
+          style: "default",
+        }
+        , greasemonkey: {
+          global_active: true,
+        },
+      }
+      , getters: {
+        load_script_with_js_end(state) {
+          return state.load_script_with_js_end;
+        },
+        greasemonkey_global_active(state) {
+          return state.greasemonkey.global_active;
+        },
+        hightlightjs_active(state) {
+          return state.hightlightjs.active;
+        },
+        hightlightjs_style(state) {
+          return state.hightlightjs.style;
+        },
+      },
+      mutations: {
+        load_script_with_js_end(state, val: boolean) {
+          state.load_script_with_js_end = val;
+        },
+        greasemonkey_global_active(state, val: boolean) {
+          state.greasemonkey.global_active = val;
+        },
+        hightlightjs_active(state, val: boolean) {
+          state.hightlightjs.active = val;
+        },
+        hightlightjs_style(state, val: string) {
+          state.hightlightjs.style = val;
+        },
+      },
+      actions: {
+        /**
+         * Hole die aktuelle Konfiguration aus dem Storage
+         */
+        async loadFromStorage(context) {
+          try {
+            const config = await new config_storage().get();
+
+            context.commit("load_script_with_js_end", config.load_script_with_js_end);
+            context.commit("greasemonkey_global_active", config.greasemonkey.global_active);
+            context.commit("hightlightjs_active", config.hightlightjs.active);
+            context.commit("hightlightjs_style", config.hightlightjs.style);
+
+            return true;
+          } catch (message) {
+            /** Fehler beim Laden der Konfiguration */
+            console.error("Error in loading usi:config_storage");
+            console.error(message);
+            return false;
+          }
+        },
+        async load_script_with_js_end(context, payload: boolean) {
+          try {
+            context.commit("load_script_with_js_end", payload);
+            await config_storage_instance.set(context.state);
+            return true;
+          } catch (message) {
+            /** Fehler beim Laden der Konfiguration */
+            console.error("Error in setting load_script_with_js_end");
+            console.error(message);
+            return false;
+          }
+        },
+        async greasemonkey_global_active(context, payload: boolean) {
+          try {
+            context.commit("greasemonkey_global_active", payload);
+            await config_storage_instance.set(context.state);
+            return true;
+          } catch (message) {
+            /** Fehler beim Laden der Konfiguration */
+            console.error("Error in setting greasemonkey_global_active");
+            console.error(message);
+            return false;
+          }
+        },
+        async hightlightjs_active(context, payload: boolean) {
+          try {
+            context.commit("hightlightjs_active", payload);
+            await config_storage_instance.set(context.state);
+            return true;
+          } catch (message) {
+            /** Fehler beim Laden der Konfiguration */
+            console.error("Error in setting hightlightjs_active");
+            console.error(message);
+            return false;
+          }
+        },
+        async hightlightjs_style(context, payload: string) {
+          try {
+            context.commit("hightlightjs_style", payload);
+            await config_storage_instance.set(context.state);
+            return true;
+          } catch (message) {
+            /** Fehler beim Laden der Konfiguration */
+            console.error("Error in setting hightlightjs_style");
+            console.error(message);
+            return false;
+          }
+        },
+      },
+    }
+  },
   state: {
     /**
      * Momentan Aktiver View
      */
     activeView: "list",
-
-    /**
-     * Einstellungen
-     */
-    configuration: {
-      load_script_with_js_end: true
-      , hightlightjs: {
-        active: true
-        , style: "default",
-      }
-      , greasemonkey: {
-        global_active: true,
-      },
-    } as usi.Storage.Config,
     /**
      * Daten für die Edit Komponente
      */
@@ -40,95 +142,13 @@ export const store = new Vuex.Store({
     },
     editUserscriptContent(state) {
       return state.editUserscriptContent;
-    },
-    configuration(state) {
-      return state.configuration;
-    },
-  },
-  actions: {
-    /**
-     * Hole die aktuelle Konfiguration aus dem Storage
-     */
-    async configurationLoadFromStorage({ commit }) {
-      try {
-        const config = await new config_storage().get();
-        commit("configuration", config);
-        return true;
-      } catch (message) {
-        /** Fehler beim Laden der Konfiguration */
-        console.error("Error in loading usi:config_storage");
-        console.error(message);
-        return false;
-      }
-    },
-    async configurationSetInStorage___load_script_with_js_end({ commit }, payload: boolean) {
-      try {
-        this.state.configuration.load_script_with_js_end = payload;
-        config_storage_instance.set(this.state.configuration);
-        return true;
-      } catch (message) {
-        /** Fehler beim Laden der Konfiguration */
-        console.error("Error in setting configurationSetInStorage___load_script_with_js_end");
-        console.error(message);
-        return false;
-      }
-    },
-    async configurationSetInStorage___greasemonkey_global_active({ commit }, payload: boolean) {
-      try {
-        this.state.configuration.greasemonkey.global_active = payload;
-        config_storage_instance.set(this.state.configuration);
-        return true;
-      } catch (message) {
-        /** Fehler beim Laden der Konfiguration */
-        console.error("Error in setting configurationSetInStorage___greasemonkey_global_active");
-        console.error(message);
-        return false;
-      }
-    },
-    async configurationSetInStorage___hightlightjs_active({ commit }, payload: boolean) {
-      try {
-        this.state.configuration.hightlightjs.active = payload;
-        config_storage_instance.set(this.state.configuration);
-        return true;
-      } catch (message) {
-        /** Fehler beim Laden der Konfiguration */
-        console.error("Error in setting configurationSetInStorage___hightlightjs_active");
-        console.error(message);
-        return false;
-      }
-    },
-    async configurationSetInStorage___hightlightjs_style({ commit }, payload: string) {
-      try {
-        this.state.configuration.hightlightjs.style = payload;
-        config_storage_instance.set(this.state.configuration);
-        return true;
-      } catch (message) {
-        /** Fehler beim Laden der Konfiguration */
-        console.error("Error in setting configurationSetInStorage___hightlightjs_style");
-        console.error(message);
-        return false;
-      }
-    },
-    async configurationSetInStorage({ commit }, payload) {
-      try {
-        config_storage_instance.set(payload);
-        commit("configuration", payload);
-        return true;
-      } catch (message) {
-        /** Fehler beim Laden der Konfiguration */
-        console.error("Error in setting usi:config_storage");
-        console.error(message);
-        return false;
-      }
-    },
+    }
 
   },
+
   mutations: {
     activeView(state, activeView: string) {
       state.activeView = activeView;
-    },
-    configuration(state, configuration: usi.Storage.Config) {
-      state.configuration = configuration;
     },
     editUserscriptId(state, editUserscriptId: number | null) {
       state.editUserscriptId = editUserscriptId;

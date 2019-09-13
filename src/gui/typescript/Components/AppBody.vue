@@ -111,7 +111,7 @@ export default Vue.component(componentName, {
     /**
      * Zunächst die Konfiguration laden
      */
-    this.$store.dispatch("configurationLoadFromStorage");
+    this.$store.dispatch("configuration/loadFromStorage");
 
     // Register Global Events
     this.$root.$on("snackbar", (text: string) => {
