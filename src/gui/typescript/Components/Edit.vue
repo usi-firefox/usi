@@ -48,17 +48,12 @@
                 </v-btn>
               </template>
 
-              <v-card>
-                <v-card-title class="headline grey lighten-2" primary-title>Reset Userscript</v-card-title>
-
+              <v-card v-for="entry in last_userscript_text" v-bind:key="entry.time">
+                <v-card-title class="headline grey lighten-2" primary-title>Text {{_undoSecondsText(entry.time)}}</v-card-title>
                 <v-card-text
-                  v-for="entry in last_userscript_text"
-                  @click="undo"
-                  v-bind:key="entry.time"
+                  @click="undo(entry)"
+                  class="pointer"
                 >
-                  <!-- @Todo -->
-                  <span>{{now - entry.time }} seconds agon</span>
-                  <v-divider></v-divider>
                   <code>{{entry.text}}</code>
                 </v-card-text>
               </v-card>
@@ -138,7 +133,6 @@ export default Vue.component(componentName, {
     return {
       script_id: 0,
       undo_dialog: false,
-      now: Number.MAX_SAFE_INTEGER,
       textarea: {
         size: 14,
         default_size: 14,
@@ -159,7 +153,7 @@ export default Vue.component(componentName, {
     window.clearInterval(this.last_userscript_interval_id);
   },
   computed: {
-    ...mapState(["editUserscriptId", "editUserscriptContent"])
+    ...mapState(["editUserscriptId", "editUserscriptContent"]),
   },
   mounted() {
     /**
@@ -206,6 +200,15 @@ export default Vue.component(componentName, {
   },
 
   methods: {
+    /**
+     * Ersetzt den Platzhalter für die Sekunden Ausgabe
+     */
+    _undoSecondsText(seconds: number){
+      const seconds_ago = getSeconds() - seconds;
+      const seconds_text = getTranslation("seconds_ago");
+      return seconds_text.replace(/#1#/, seconds_ago.toString());
+    },
+
     /**
      * Höhe der Textarea an die Fenstergröße anpassen!
      */
@@ -403,17 +406,14 @@ export default Vue.component(componentName, {
       } catch (e) {}
     }
   },
-  watch: {
-    // Aktuelle Zeit liefern
-    undo_dialog: function() {
-      this.now = getSeconds();
-    }
-  }
 });
 </script>
 
-<style>
+<style scoped>
 #usi-edit-script-textarea{
   line-height: 100%;
+}
+.pointer{
+  cursor: pointer;
 }
 </style>

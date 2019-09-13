@@ -11,6 +11,9 @@
     "enableExternalScriptLoadQuestion_description": {
         "message": "Do you want to get a question by USI to import a Userscript? (When calling Userscript sources whose URL end is `user.js`)"
     },
+    "seconds_ago": {
+        "message": "#1# seconds ago"
+    },
     "required_script_one_include": {
         "message": "You must set at least -one- include expression -> \n\n @include *website.com*"
     },

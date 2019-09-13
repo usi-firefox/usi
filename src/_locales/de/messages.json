@@ -251,6 +251,9 @@
     "direct_userscript_upload": {
         "message": "Userscript direkt hochladen"
     },
+    "seconds_ago": {
+        "message": "vor #1# Sekunden"
+    },
     "OldUsiIncludeBehavior_title": {
         "message": "USI Include Verhalten"
     },

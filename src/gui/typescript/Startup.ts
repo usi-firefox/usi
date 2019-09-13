@@ -39,6 +39,11 @@ Vue.directive("lang", {
 
         switch (arg) {
 
+            case "replace":
+                // Übersetzung überschreiben einsetzen
+                el.innerText =  translated;
+                break;
+
             case "label":
                 // Übersetzung in das label Attribut einsetzen
                 el.setAttribute(arg, translated);
