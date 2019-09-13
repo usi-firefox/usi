@@ -116,25 +116,33 @@
       <v-card-text v-if="showUserscriptEntry">
         <v-list>
           <v-list-item>
-            <v-list-item-content>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-item-content>
-            <v-list-item-content class="align-end">
+            <v-list-item-title>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-item-title>
+            <v-list-item-action >
               <!--Userscript aktivieren oder deaktivieren-->
               <v-switch v-model="localScriptDeactivated"></v-switch>
-            </v-list-item-content>
+            </v-list-item-action>
           </v-list-item>
 
           <!-- Restliche Userscript Informationen -->
-          <v-list-item v-for="(info,i) in infos" v-bind:key="i">
-            <v-list-item-content v-if="info.vlang !== true">{{info.text}}</v-list-item-content>
-            <v-list-item-content v-else v-lang="info.text"></v-list-item-content>
-
-            <v-list-item-content v-if="info.value" class="align-end">{{info.value}}</v-list-item-content>
-            <div v-else class="align-end">
-              <ol>
-                <li v-for="(ele,j) in info.values" v-bind:key="j">{{ele}}</li>
-              </ol>
-            </div>
-          </v-list-item>
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th class="text-left">Name</th>
+                <th class="text-left">Wert</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(info,i) in infos" v-bind:key="i">
+                <td>{{ info.text }}</td>
+                <td v-if="info.value">{{ info.value }}</td>
+                <td v-else>
+                  <ol>
+                    <li v-for="(ele,j) in info.values" v-bind:key="j">{{ele}}</li>
+                  </ol>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
         </v-list>
 
         <v-card-actions>
@@ -252,7 +260,7 @@ export default Vue.component(componentName, {
       }
     };
   },
-  computed:{
+  computed: {
     ...mapState(["configuration"])
   },
   created: function() {
@@ -298,9 +306,8 @@ export default Vue.component(componentName, {
       }
       if (this.script.settings.description) {
         this.infos.push({
-          text: "description",
-          value: this.script.settings.description,
-          vlang: true
+          text: getTranslation("description"),
+          value: this.script.settings.description
         });
       }
 
@@ -479,7 +486,7 @@ export default Vue.component(componentName, {
       // Daten für die Edit Komponente setzen
       this.$store.commit("editUserscriptId", this.script.id);
       this.$store.commit("editUserscriptContent", this.script.userscript);
-      
+
       // veranlasse den Tab Wechsel!
       this.$store.commit("activeView", "edit");
     },
