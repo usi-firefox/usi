@@ -386,7 +386,7 @@ export default class page_injection_helper {
         }
 
         // Globale Konfiguration auslesen
-        const config_data = await config_storage().get();
+        const config_data = await new config_storage().get();
 
         // Enthält die nötigen Funktionen für den GM Bereich
         let gm = {};

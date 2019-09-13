@@ -1,37 +1,61 @@
-import sdk_to_webext from "lib/update/sdk_to_webext";
-
 // Holt die Userscripte aus dem Speicher (simple-storage)
-export default function config_storage() {
+export default class config_storage {
 
-    const self = {
-        async get(): Promise<usi.Storage.Config> {
-            /**
-             * the_storage.settings -> settings.config
-             */
-            try {
-                let the_storage = await browser.storage.local.get("settings") as any;
-                if (!the_storage.settings) {
-                    // Update nötig
-                    the_storage = await (new sdk_to_webext()).do_update();
-                }
-                return the_storage.settings.config;
-            } catch (ex) {
-                throw ex;
-            }
+    private config_default: usi.Storage.Config = {
+        load_script_with_js_end: true
+        , hightlightjs: {
+            active: true
+            , style: "default",
         }
+        , greasemonkey: {
+            global_active: true,
+        },
+    };
 
-        , async set(newConfig: usi.Storage.Config): Promise<boolean> {
-            const the_storage = await browser.storage.local.get("settings") as any;
+    /**
+     * ACHTUNG, setzt die gesamte Konfiguration auf ihre Standard Werte zurück
+     */
+    public create_defaults() {
+        // neue Struktur speichern
+        return browser.storage.local.set(this.get_default_settings());
+    }
+    /**
+     * Liefert die Konfiguration zurück,
+     * falls keine Konfiguration gefunden wurde wird der Default verwendet
+     */
+    public get_default_settings() {
+        return {
+            configuration: this.config_default as any,
+        };
+    }
+
+    public async get(): Promise<usi.Storage.Config> {
+        /**
+         * the_storage.settings -> settings.config
+         */
+        try {
+            const configuration = await browser.storage.local.get(this.get_default_settings()) as any;
+            return configuration.config;
+        } catch (ex) {
+            throw ex;
+        }
+    }
+
+    public async set(newConfig: usi.Storage.Config): Promise<boolean> {
+        try {
+            const the_storage = await this.get() as any;
             /**
              * @TODO
              * neue Config setzen
              */
-            the_storage.settings.config = JSON.parse(JSON.stringify(newConfig));
+            the_storage.config = JSON.parse(JSON.stringify(newConfig));
 
             // gib true zurück, wenn fertig
-            return browser.storage.local.set(the_storage).then(() => true);
-        },
-    };
+            await browser.storage.local.set(the_storage);
+            return true;
+        } catch (ex) {
+            throw ex;
+        }
 
-    return self;
+    }
 }

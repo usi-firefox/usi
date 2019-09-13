@@ -3,6 +3,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
 
+const config_storage_instance =  new config_storage();
+
 export const store = new Vuex.Store({
   state: {
     /**
@@ -17,11 +19,11 @@ export const store = new Vuex.Store({
       load_script_with_js_end: true
       , hightlightjs: {
         active: true
-        , style: "default"
+        , style: "default",
       }
       , greasemonkey: {
-        global_active: true
-      }
+        global_active: true,
+      },
     } as usi.Storage.Config,
     /**
      * Daten für die Edit Komponente
@@ -49,7 +51,7 @@ export const store = new Vuex.Store({
      */
     async configurationLoadFromStorage({ commit }) {
       try {
-        const config = await config_storage().get();
+        const config = await new config_storage().get();
         commit("configuration", config);
         return true;
       } catch (message) {
@@ -59,10 +61,10 @@ export const store = new Vuex.Store({
         return false;
       }
     },
-    async configurationSetInStorage___load_script_with_js_end({ commit }, payload : boolean) {
+    async configurationSetInStorage___load_script_with_js_end({ commit }, payload: boolean) {
       try {
         this.state.configuration.load_script_with_js_end = payload;
-        config_storage().set(this.state.configuration);
+        config_storage_instance.set(this.state.configuration);
         return true;
       } catch (message) {
         /** Fehler beim Laden der Konfiguration */
@@ -71,10 +73,10 @@ export const store = new Vuex.Store({
         return false;
       }
     },
-    async configurationSetInStorage___greasemonkey_global_active({ commit }, payload : boolean) {
+    async configurationSetInStorage___greasemonkey_global_active({ commit }, payload: boolean) {
       try {
         this.state.configuration.greasemonkey.global_active = payload;
-        config_storage().set(this.state.configuration);
+        config_storage_instance.set(this.state.configuration);
         return true;
       } catch (message) {
         /** Fehler beim Laden der Konfiguration */
@@ -83,10 +85,10 @@ export const store = new Vuex.Store({
         return false;
       }
     },
-    async configurationSetInStorage___hightlightjs_active({ commit }, payload : boolean) {
+    async configurationSetInStorage___hightlightjs_active({ commit }, payload: boolean) {
       try {
         this.state.configuration.hightlightjs.active = payload;
-        config_storage().set(this.state.configuration);
+        config_storage_instance.set(this.state.configuration);
         return true;
       } catch (message) {
         /** Fehler beim Laden der Konfiguration */
@@ -95,10 +97,10 @@ export const store = new Vuex.Store({
         return false;
       }
     },
-    async configurationSetInStorage___hightlightjs_style({ commit }, payload : string) {
+    async configurationSetInStorage___hightlightjs_style({ commit }, payload: string) {
       try {
         this.state.configuration.hightlightjs.style = payload;
-        config_storage().set(this.state.configuration);
+        config_storage_instance.set(this.state.configuration);
         return true;
       } catch (message) {
         /** Fehler beim Laden der Konfiguration */
@@ -109,7 +111,7 @@ export const store = new Vuex.Store({
     },
     async configurationSetInStorage({ commit }, payload) {
       try {
-        config_storage().set(payload);
+        config_storage_instance.set(payload);
         commit("configuration", payload);
         return true;
       } catch (message) {

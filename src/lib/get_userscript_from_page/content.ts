@@ -1,7 +1,7 @@
 import { getExtId, getTranslation } from "lib/helper/basic_helper";
 import config_storage from "lib/storage/config";
 
-config_storage().get().then((config: any) => {
+new config_storage().get().then((config: any) => {
 
     // is_active -> wird über die Konfigurationsvariable gesetzt
     if (config.load_script_with_js_end !== true) {

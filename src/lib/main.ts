@@ -1,6 +1,5 @@
 import GM_Backend from "lib/GM/GM_Backend";
 import page_injection_helper from "lib/inject/page_injection_helper";
-import sdk_to_webext from "lib/update/sdk_to_webext";
 
 /************************************************************************
  ************************* Options Bereich! *****************************
@@ -64,17 +63,11 @@ export default class usi_main {
     public startGMBackend(): void {
         new GM_Backend().register_listener();
     }
-    public doUpdateFromSDKToWebext(details: any): void {
+    public doUpdate(details: any): void {
         switch (details.reason) {
             case "install":
             case "update":
-                const after_update = (new sdk_to_webext()).do_update();
-                after_update.then(() => {
-                    if (details.reason === "install") {
-                        // Fehler beim ersten Start m(
-                        usi_main.page_injection_helper.re_init_page_injection();
-                    }
-                });
+                usi_main.page_injection_helper.re_init_page_injection();
                 break;
         }
 
@@ -84,8 +77,8 @@ export default class usi_main {
 const usi_main_instance = new usi_main();
 
 // führt ein Daten Update (Addon-SDK => Webextension) durch
-if (!browser.runtime.onInstalled.hasListener(usi_main_instance.doUpdateFromSDKToWebext)) {
-    browser.runtime.onInstalled.addListener(usi_main_instance.doUpdateFromSDKToWebext);
+if (!browser.runtime.onInstalled.hasListener(usi_main_instance.doUpdate)) {
+    browser.runtime.onInstalled.addListener(usi_main_instance.doUpdate);
 }
 
 // Konfigurations Button erstellen
