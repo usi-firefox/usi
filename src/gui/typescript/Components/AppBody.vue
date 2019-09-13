@@ -7,6 +7,7 @@
       </v-snackbar>
       <v-navigation-drawer
         style="background-color: #555;"
+        :permanent="drawer_permanent"
         app
         v-model="drawer"
       >
@@ -79,9 +80,11 @@ export default Vue.component(componentName, {
   data: function() {
     return {
       navTitle: "All Userscripts",
-      drawer: true,
+      drawer: false,
       snackbar: false,
       snackbar_text: "",
+      // Wird auf Desktop Geräten auf true gesetzt
+      drawer_permanent: false,
 
       extraData: {},
       menuEntries: <usi.Frontend.menuEntry[]>[],
@@ -90,6 +93,13 @@ export default Vue.component(componentName, {
   },
 
   created: function() {
+    browser.runtime.getPlatformInfo().then((info: any)=> {
+      if(info.os !== "android"){
+        // Falls es kein Android ist, wird der Drawer Permanent gesetzt
+        this.drawer_permanent = true;
+      }
+    });
+
     this.menuEntries = [
       { name: "list", lang: "all_userscripts" },
       { name: "edit", lang: "create_new_userscript" },
