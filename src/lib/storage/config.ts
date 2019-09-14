@@ -7,6 +7,7 @@ export default class config_storage {
             active: true
             , style: "default",
         }
+        , global_excludes : []
         , greasemonkey: {
             global_active: true,
         },

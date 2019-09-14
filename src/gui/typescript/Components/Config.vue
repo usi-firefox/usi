@@ -48,6 +48,27 @@
       ></v-switch>
     </div>
     <div>
+      <h3 v-lang="'global_exclude_rules'">
+        <!--Globale Exclude Regeln-->
+      </h3>
+      <v-list>
+        <v-list-item v-show="global_excludes.length > 0" v-for="(rule,index) in global_excludes" v-bind:key="index">
+            <v-list-item-content>
+            <v-list-item-title>{{rule}}</v-list-item-title>
+            <v-list-item-action @click="deleteGlobalExlucde(rule)"><v-icon>delete</v-icon></v-list-item-action>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-text-field :placeholder="lang.add_global_exclude_rules" v-model="new_global_exclude_rule"></v-text-field>
+            </v-list-item-title>
+            <v-list-item-action @click="addGlobalExlucde()"><v-icon>add_circle</v-icon></v-list-item-action>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </div>
+    <div>
       <h3 v-lang="'export_all_userscripts'">
         <!--Alle Userscripts exportieren-->
       </h3>
@@ -108,8 +129,10 @@ export default Vue.component(componentName, {
       dialogWindow: false,
       dialogWindowText: "",
       dialogStep: 0,
+      new_global_exclude_rule: "",
       lang: {
         deactivated: getTranslation("deactivated"),
+        add_global_exclude_rules: getTranslation("add_global_exclude_rules"),
         activated: getTranslation("activated"),
         yes: getTranslation("yes"),
         no: getTranslation("no"),
@@ -125,6 +148,11 @@ export default Vue.component(componentName, {
       },
       set(val: boolean) {
         this.$store.dispatch("configuration/load_script_with_js_end", val);
+      }
+    },
+    global_excludes: {
+      get(): [] {
+        return this.$store.getters["configuration/global_excludes"];
       }
     },
     greasemonkey_global_active: {
@@ -254,6 +282,24 @@ export default Vue.component(componentName, {
           return false;
         }
       });
+    },
+
+    deleteGlobalExlucde(rule : string){
+      this.$store.dispatch("configuration/global_excludes_remove", rule);
+    },
+    addGlobalExlucde(){
+      if(!this.new_global_exclude_rule){
+        return;
+      }
+
+  /**
+   * @todo
+   * auf Doppelte Einträge prüfen
+   */
+
+      this.$store.dispatch("configuration/global_excludes_add", this.new_global_exclude_rule);
+
+      this.new_global_exclude_rule = "";
     },
 
     // exportiere die Skripte

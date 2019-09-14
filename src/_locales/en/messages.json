@@ -23,6 +23,12 @@
     "exception_100": {
         "message": "ERROR script_settings.include not OK"
     },
+    "global_exclude_rules": {
+        "message": "Global Exclude Rules"
+    },
+    "add_global_exclude_rules": {
+        "message": "Add Global Exclude Rule"
+    },
     "error_userscript_settings": {
         "message": "Settings couldn't be read properly ... \n"
     },

@@ -18,10 +18,11 @@ export const store = new Vuex.Store({
           active: true,
           style: "default",
         }
+        , global_excludes: []
         , greasemonkey: {
           global_active: true,
         },
-      }
+      } as usi.Storage.Config
       , getters: {
         load_script_with_js_end(state) {
           return state.load_script_with_js_end;
@@ -34,6 +35,9 @@ export const store = new Vuex.Store({
         },
         hightlightjs_style(state) {
           return state.hightlightjs.style;
+        },
+        global_excludes(state) {
+          return state.global_excludes;
         },
       },
       mutations: {
@@ -48,6 +52,15 @@ export const store = new Vuex.Store({
         },
         hightlightjs_style(state, val: string) {
           state.hightlightjs.style = val;
+        },
+        global_excludes_add(state, val: string) {
+          state.global_excludes.push(val);
+        },
+        global_excludes_remove(state, val: string) {
+          const index = state.global_excludes.indexOf(val);
+          if (index > -1) {
+            (state.global_excludes as []).splice(index, 1);
+          }
         },
       },
       actions: {
@@ -91,6 +104,30 @@ export const store = new Vuex.Store({
           } catch (message) {
             /** Fehler beim Laden der Konfiguration */
             console.error("Error in setting greasemonkey_global_active");
+            console.error(message);
+            return false;
+          }
+        },
+        async global_excludes_add(context, payload: string) {
+          try {
+            context.commit("global_excludes_add", payload);
+            await config_storage_instance.set(context.state);
+            return true;
+          } catch (message) {
+            /** Fehler beim Laden der Konfiguration */
+            console.error("Error in setting global_excludes_add");
+            console.error(message);
+            return false;
+          }
+        },
+        async global_excludes_remove(context, payload: string) {
+          try {
+            context.commit("global_excludes_remove", payload);
+            await config_storage_instance.set(context.state);
+            return true;
+          } catch (message) {
+            /** Fehler beim Laden der Konfiguration */
+            console.error("Error in setting global_excludes_add");
             console.error(message);
             return false;
           }

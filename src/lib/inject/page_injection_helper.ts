@@ -55,6 +55,18 @@ export default class page_injection_helper {
             }
 
             /**
+             * @todo!
+             * Globale Exclude Regeln prüfen
+             */
+            /* const global_excludes = configuration.global_excludes;
+            for (const i in global_excludes) {
+                if (typeof global_excludes[i].test === "function" && global_excludes[i].test(tabUrl)) {
+                    // Script NICHT ausführen
+                    return false;
+                }
+            } */
+
+            /**
              * Exclude Regeln prüfen
              */
             const excludes = ele.filter_urls.exclude;
