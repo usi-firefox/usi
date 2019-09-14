@@ -38,7 +38,7 @@
     },
     "applications": {
         "gecko": {
-            "id": "firefox-addon-usi@jetpack",
+            "id": "firefox-addon-usi-DEVELOPMENT@jetpack",
             "strict_min_version": "59.0"
         }
     },

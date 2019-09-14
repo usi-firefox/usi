@@ -28,7 +28,7 @@ declare namespace usi.Storage {
             active: boolean
             , style: string
         }
-        , global_excludes : []
+        , global_excludes : string[]
         , greasemonkey: {
             global_active: boolean
         }
