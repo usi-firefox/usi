@@ -140,6 +140,9 @@
     "want_to_delete_this_userscript_2": {
         "message": "') wirklich l\u00f6schen?"
     },
+    "really_delete": {
+        "message": "wirklich l\u00f6schen?"
+    },
     "delete_x": {
         "message": "l\u00f6schen (X)"
     },

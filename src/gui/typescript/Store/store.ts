@@ -53,6 +53,9 @@ export const store = new Vuex.Store({
         hightlightjs_style(state, val: string) {
           state.hightlightjs.style = val;
         },
+        global_excludes(state, val: string[]) {
+          state.global_excludes = val;
+        },
         global_excludes_add(state, val: string) {
           state.global_excludes.push(val);
         },
@@ -75,6 +78,7 @@ export const store = new Vuex.Store({
             context.commit("greasemonkey_global_active", config.greasemonkey.global_active);
             context.commit("hightlightjs_active", config.hightlightjs.active);
             context.commit("hightlightjs_style", config.hightlightjs.style);
+            context.commit("global_excludes", config.global_excludes);
 
             return true;
           } catch (message) {

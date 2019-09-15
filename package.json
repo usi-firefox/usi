@@ -4,7 +4,7 @@
   "description": "usi, userscript injector for Mozilla Firefox",
   "scripts": {
     "dev": "webpack --watch --mode development",
-    "browser": "web-ext run -s dist",
+    "browser": "web-ext run -s dist -p usi",
     "prod": "webpack --watch --mode production --devtool none",
     "self-update-packages": "ncu -u --removeRange && npm install",
     "lint-fix": "tslint --fix -p .",

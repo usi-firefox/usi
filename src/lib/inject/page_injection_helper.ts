@@ -30,10 +30,8 @@ export default class page_injection_helper {
             return false;
         }
 
-        const pih = new page_injection_helper;
-
         // falls der Status = loading ist, und eine URL verfügbar ist kann checkUserscriptInjection() aufgerufen werden
-        return pih.checkUserscriptInjection(details.tabId, details.url, details.transitionType);
+        return (new page_injection_helper).checkUserscriptInjection(details.tabId, details.url, details.transitionType);
     }
 
     /**

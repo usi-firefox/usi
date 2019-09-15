@@ -53,18 +53,21 @@
       </h3>
       <v-list>
         <v-list-item v-show="global_excludes.length > 0" v-for="(rule,index) in global_excludes" v-bind:key="index">
-            <v-list-item-content>
-            <v-list-item-title>{{rule}}</v-list-item-title>
-            <v-list-item-action @click="deleteGlobalExlucde(rule)"><v-icon>delete</v-icon></v-list-item-action>
+          <v-list-item-icon @click="deleteGlobalExlucde(rule)">
+            <v-icon>delete</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="rule"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>
-              <v-text-field :placeholder="lang.add_global_exclude_rules" v-model="new_global_exclude_rule"></v-text-field>
+              <v-text-field @keyup.enter="addGlobalExlucde()" :placeholder="lang.add_global_exclude_rules" v-model="new_global_exclude_rule"></v-text-field>
             </v-list-item-title>
-            <v-list-item-action @click="addGlobalExlucde()"><v-icon>add_circle</v-icon></v-list-item-action>
           </v-list-item-content>
+          <v-list-item-icon @click="addGlobalExlucde()"><v-icon>add_circle</v-icon>
+          </v-list-item-icon>
         </v-list-item>
       </v-list>
     </div>
@@ -151,7 +154,7 @@ export default Vue.component(componentName, {
       }
     },
     global_excludes: {
-      get(): [] {
+      get(): string[] {
         return this.$store.getters["configuration/global_excludes"];
       }
     },
@@ -285,17 +288,19 @@ export default Vue.component(componentName, {
     },
 
     deleteGlobalExlucde(rule : string){
-      this.$store.dispatch("configuration/global_excludes_remove", rule);
+      if(window.confirm(rule + " -> " + getTranslation("really_delete"))){
+        this.$store.dispatch("configuration/global_excludes_remove", rule);
+      }
     },
     addGlobalExlucde(){
       if(!this.new_global_exclude_rule){
         return;
       }
 
-  /**
-   * @todo
-   * auf Doppelte Einträge prüfen
-   */
+      if(this.global_excludes.indexOf(this.new_global_exclude_rule) > -1){
+        // Eintrag existiert
+        return;
+      }
 
       this.$store.dispatch("configuration/global_excludes_add", this.new_global_exclude_rule);
 
