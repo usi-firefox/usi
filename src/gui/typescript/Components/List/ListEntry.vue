@@ -330,6 +330,47 @@ export default Vue.component(componentName, {
         }
       }
 
+      /**
+       * Liste die verwendeten GM API's auf
+       * @todo API Hinweise entfernen, falls diese auskommentiert sind
+       */
+      const search_for_GM_api_calls_arr = [
+           "GM_addStyle"
+          ,"GM_deleteValue"
+          ,"GM_getResourceText"
+          ,"GM_getResourceURL"
+          ,"GM_getResourceOrigURL"
+          ,"GM_getValue"
+          ,"GM_getValue_async"
+          ,"GM_listValues"
+          ,"GM_log"
+          ,"GM_openInTab"
+          ,"GM_registerMenuCommand"
+          ,"GM_setClipboard"
+          ,"GM_setValue"
+          ,"GM_xmlhttpRequest"
+          ,"GM_info"
+          ,"unsafeWindow"
+      ];
+
+      const gm_api_used = [] as string[];
+      search_for_GM_api_calls_arr.forEach((api_func) => {
+        // Simpler Test ob das Key Word für die Api enthalten ist
+        if(this.script.userscript.indexOf(api_func) > -1){
+          // Nur einmalig hinzufügen
+          if(gm_api_used.indexOf(api_func) === -1){
+            gm_api_used.push(api_func);
+          }
+        }
+      });
+
+      if(gm_api_used.length > 0){
+        this.infos.push({
+          text: getTranslation("gm_apis_used"),
+          values: gm_api_used
+        });
+      }
+
       if (
         this.script.require_scripts instanceof Array &&
         this.script.require_scripts.length > 0

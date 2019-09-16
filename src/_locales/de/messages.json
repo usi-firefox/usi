@@ -167,6 +167,9 @@
     "deactivated": {
         "message": "Deaktiviert:"
     },
+    "gm_apis_used": {
+        "message": "Verwendete GM API's"
+    },
     "actual_used_quota": {
         "message": "Aktueller Belegter Speicherverbauch"
     },

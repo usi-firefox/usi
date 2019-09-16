@@ -42,10 +42,11 @@ export default class GM_Backend {
 
                 switch (message.name) {
                     case "GM_openInTab":
-                        {
-                            const message_data = message.data as usi.GM_Backend.GM_openInTab;
-                            this.GM_openInTab(message_data, userscript_id);
+                        if(!message.data){
+                            throw new Error("GM_openInTab() missing message.data");
                         }
+
+                        this.GM_openInTab(message.data, userscript_id);
                         break;
 
                     case "GM_registerMenuCommand":
