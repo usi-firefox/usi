@@ -127,8 +127,8 @@
           <v-simple-table>
             <thead>
               <tr>
-                <th class="text-left">Name</th>
-                <th class="text-left">Wert</th>
+                <th class="text-left" v-lang="'name'"></th>
+                <th class="text-left" v-lang="'value'"></th>
               </tr>
             </thead>
             <tbody>

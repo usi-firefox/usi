@@ -20,6 +20,12 @@
     "required_script_one_include": {
         "message": "You must set at least -one- include expression -> \n\n @include *website.com*"
     },
+    "name": {
+        "message": "Name"
+    },
+    "value": {
+        "message": "Value"
+    },
     "gm_apis_used": {
         "message": "Used GM API's"
     },

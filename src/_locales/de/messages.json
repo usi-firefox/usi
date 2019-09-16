@@ -290,6 +290,12 @@
     "userscript_was_modified_by_usi___reason_missing_name": {
         "message": "Dein Userscript wurde von USI ver\u00e4ndert, es wurde @name <DateiName> eingef\u00fcgt!"
     },
+    "name": {
+        "message": "Name"
+    },
+    "value": {
+        "message": "Wert"
+    },
     "show_GMValues": {
         "message": "Zeige die gespeicherten GM Variablen"
     },
