@@ -40,6 +40,7 @@ const componentName = "highlightjs-component";
 export default Vue.component(componentName, {
   props: {
     code: {
+      type: String,
       required: true
     }
   },

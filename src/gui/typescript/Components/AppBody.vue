@@ -85,8 +85,6 @@ export default Vue.component(componentName, {
       snackbar_text: "",
       // Wird auf Desktop Geräten auf true gesetzt
       drawer_permanent: false,
-
-      extraData: {},
       menuEntries: <usi.Frontend.menuEntry[]>[],
       version: browser.runtime.getManifest().version
     };

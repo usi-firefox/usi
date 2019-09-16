@@ -125,12 +125,6 @@ const add_userscript_instance = new add_userscript();
  */
 const componentName = "edit-component";
 export default Vue.component(componentName, {
-  props: {
-    addional: {
-      type: Object as () => usi.Frontend.EditAddtional,
-      required: false
-    }
-  },
   data() {
     return {
       script_id: 0,
