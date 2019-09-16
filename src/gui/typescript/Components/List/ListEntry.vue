@@ -9,7 +9,7 @@
           <img :src="icon" />
           Index: {{index}} | {{script.settings.name}} | {{script.settings.version}}
           <span
-            v-if="script.isSpa"
+            v-if="isSpa"
           >| SPA</span>
           <v-btn icon>
             <v-icon
@@ -68,7 +68,7 @@
                   <v-list-item-title>export</v-list-item-title>
                 </v-list-item>
                 <!-- SPA Starten -->
-                <span v-if="script.isSpa">
+                <span v-if="isSpa">
                   <v-divider></v-divider>
                   <v-list-item @click="start_spa">
                     <v-list-item-action>
@@ -144,6 +144,13 @@
             </tbody>
           </v-simple-table>
         </v-list>
+
+        <v-card-actions v-if="isSpa">
+           <v-btn @click="start_spa" color="success">
+              <v-icon>play_arrow</v-icon>
+              Start SPA
+            </v-btn>
+        </v-card-actions>
 
         <v-card-actions>
           <v-flex xs4>
@@ -244,6 +251,7 @@ export default Vue.component(componentName, {
       showUserscriptEntry: true,
       showUserscriptContent: false,
       markedAsDeleted: false,
+      isSpa: false,
       icon: "/gui/icon/usi.png",
       localScriptDeactivated: false,
       hightlightsjsActive: false,
@@ -309,6 +317,17 @@ export default Vue.component(componentName, {
           text: getTranslation("description"),
           value: this.script.settings.description
         });
+      }
+      if (this.script.settings.spa) {
+        if(this.script.settings.spa === "true" || this.script.settings.spa === true){
+          // Userscript ist eine Single Page Application
+          this.isSpa = true;
+
+          this.infos.push({
+          text: "SPA",
+          value: getTranslation("yes")
+        });
+        }
       }
 
       if (
