@@ -49,7 +49,7 @@
               </template>
 
               <v-card v-for="entry in last_userscript_text" v-bind:key="entry.time">
-                <v-card-title class="headline grey lighten-2" primary-title>Text {{_undoSecondsText(entry.time)}}</v-card-title>
+                <v-card-title class="headline grey lighten-2" primary-title>{{_undoSecondsText(entry.time)}}</v-card-title>
                 <v-card-text
                   @click="undo(entry)"
                   class="pointer"
@@ -58,6 +58,8 @@
                 </v-card-text>
               </v-card>
             </v-dialog>
+
+            <v-divider></v-divider>
 
             <!--Standard laden oder leeren-->
             <v-btn id="usi-edit-script-load-example" @click="load_example" v-lang="'load_example'">
@@ -179,20 +181,8 @@ export default Vue.component(componentName, {
       this.load_example_by_prefered_locale = "en";
     }
 
-    this.last_userscript_interval_id = window.setInterval(() => {
-      const text = this.textarea.content;
-      // falls der letzte Wert in der Historie verschieden sein sollte
-      if (text.length > 0) {
-        const last_undo = this.last_userscript_text[0];
-
-        // letzte Wert ist verschieden
-        if (last_undo === undefined || last_undo.text !== text) {
-          this.last_userscript_text.unshift({ time: getSeconds(), text: text });
-        }
-      }
-
       // alle 5 Sekunden durchführen
-    }, 5000);
+    this.last_userscript_interval_id = window.setInterval(this._addToUndoArray, 5000);
 
     // Schalter richtig positionieren lassen ...
     this.defaultSize();
@@ -200,6 +190,18 @@ export default Vue.component(componentName, {
   },
 
   methods: {
+    _addToUndoArray(){
+      const text = this.textarea.content;
+        // falls der letzte Wert in der Historie verschieden sein sollte
+        if (text.length > 0) {
+          const last_undo = this.last_userscript_text[0];
+
+          // letzte Wert ist verschieden
+          if (last_undo === undefined || last_undo.text !== text) {
+            this.last_userscript_text.unshift({ time: getSeconds(), text: text });
+          }
+        }
+    },
     /**
      * Ersetzt den Platzhalter für die Sekunden Ausgabe
      */
@@ -224,6 +226,9 @@ export default Vue.component(componentName, {
     },
 
     textarea_clear: function(): void {
+      // Aktuellen Eintrag sichern
+      this._addToUndoArray();
+
       this.script_id = 0;
       this.textarea.content = "";
 
@@ -258,6 +263,9 @@ export default Vue.component(componentName, {
         "/gui/example/" +
         lang_local +
         "-example.user.js";
+
+        // Aktuellen Eintrag sichern
+        this._addToUndoArray();
 
       fetch(url)
         .then(async example_userscript => {

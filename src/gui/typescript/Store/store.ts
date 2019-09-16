@@ -18,7 +18,7 @@ export const store = new Vuex.Store({
           active: true,
           style: "default",
         }
-        , global_excludes: []
+        , global_excludes: [] as string[]
         , greasemonkey: {
           global_active: true,
         },

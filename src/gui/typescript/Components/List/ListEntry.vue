@@ -153,12 +153,12 @@
             </v-btn>
           </v-flex>
           <v-flex xs4>
-            <v-btn @click="edit" v-lang:append="'change'">
+            <v-btn @click="edit" color="primary" v-lang:append="'change'">
               <v-icon>edit</v-icon>
             </v-btn>
           </v-flex>
           <v-flex xs4>
-            <v-btn @click="deleteUserscript" v-lang:append="'delete_x'">
+            <v-btn @click="deleteUserscript" color="error" v-lang:append="'delete_x'">
               <v-icon>delete</v-icon>
             </v-btn>
           </v-flex>
