@@ -115,7 +115,7 @@
       <v-divider></v-divider>
       <v-card-text v-if="showUserscriptEntry">
         <v-list>
-          <v-list-item>
+          <v-list-item v-if="script.settings.include && script.settings.include.length > 0">
             <v-list-item-title>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-item-title>
             <v-list-item-action >
               <!--Userscript aktivieren oder deaktivieren-->
