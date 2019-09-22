@@ -19,17 +19,17 @@
     "file-loader": "4.2.0",
     "material-design-icons-iconfont": "5.0.1",
     "replace-in-file-webpack-plugin": "1.0.6",
-    "ts-loader": "6.1.0",
+    "ts-loader": "6.1.2",
     "typescript": "3.6.3",
     "vue": "2.6.10",
     "vue-loader": "15.7.1",
     "vue-template-compiler": "2.6.10",
-    "vuetify": "2.0.17",
+    "vuetify": "2.0.18",
     "vuex": "3.1.1",
     "web-ext": "3.1.1",
     "web-ext-types": "3.2.1",
     "webpack": "4.40.2",
-    "webpack-cli": "3.3.8"
+    "webpack-cli": "3.3.9"
   },
   "devDependencies": {
     "@mdi/font": "4.4.95",
