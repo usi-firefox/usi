@@ -32,11 +32,17 @@ browser.runtime.onConnect.addListener(function(port: any) {
 
                     if (userscript_id === 0) {
                         // neu anlegen
-                        const userscript_handle = await add_userscript_instance.save_new_userscript(userscript, message.data.moreinformations) as any;
-                        // füge das Skript gleich hinzu, damit es ausgeführt werden kann
-                        (new page_injection_helper()).add_userscript(userscript_handle);
+                        try{
 
-                        notify(getTranslation("userscript_was_created"));
+                            const userscript_handle = await add_userscript_instance.save_new_userscript(userscript, message.data.moreinformations) as any;
+                            // füge das Skript gleich hinzu, damit es ausgeführt werden kann
+                            (new page_injection_helper()).add_userscript(userscript_handle);
+                            
+                            notify(getTranslation("userscript_was_created"));
+
+                        }catch(excetion){
+                            notify(excetion);
+                        }
 
                     } else {
                         // bzgl. update fragen
@@ -54,11 +60,17 @@ browser.runtime.onConnect.addListener(function(port: any) {
                             more_informations = message.data.moreinformations;
                         }
 
-                        const userscript_handle = await add_userscript_instance.update_userscript(message.data.id as any, message.data.userscript, more_informations as usi.Userscript.AddionalData.Moreinformations) as any;
-                        // füge das Skript gleich hinzu, damit es ausgeführt werden kann
-                        (new page_injection_helper()).add_userscript(userscript_handle);
+                        try{
 
-                        notify(getTranslation("userscript_was_overwritten"));
+                            const userscript_handle = await add_userscript_instance.update_userscript(message.data.id as any, message.data.userscript, more_informations as usi.Userscript.AddionalData.Moreinformations) as any;
+                            // füge das Skript gleich hinzu, damit es ausgeführt werden kann
+                            (new page_injection_helper()).add_userscript(userscript_handle);
+
+                            notify(getTranslation("userscript_was_overwritten"));
+
+                        }catch(excetion){
+                            notify(excetion);
+                        }
                     }
                     break;
             }

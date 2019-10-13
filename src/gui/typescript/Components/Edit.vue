@@ -320,21 +320,29 @@ export default Vue.component(componentName, {
 
       if (userscript_id === 0) {
         // neu anlegen
-        let userscript_handle = await (<any>(
-          add_userscript_instance.save_new_userscript(userscript)
-        ));
-        // füge das Skript gleich hinzu, damit es ausgeführt werden kann
-        new page_injection_helper().add_userscript(userscript_handle.getId());
+        try{
 
-        const message_text =
-          getTranslation("userscript_was_created") +
-          " (ID " +
-          userscript_handle.getId() +
-          ")";
-        // Neues Userscript wurde erstellt
-        notify(message_text);
+          let userscript_handle = await (<any>(
+            add_userscript_instance.save_new_userscript(userscript)
+          ));
+          // füge das Skript gleich hinzu, damit es ausgeführt werden kann
+          new page_injection_helper().add_userscript(userscript_handle.getId());
 
-        this.$root.$emit("snackbar", message_text);
+          const message_text =
+            getTranslation("userscript_was_created") +
+            " (ID " +
+            userscript_handle.getId() +
+            ")";
+          // Neues Userscript wurde erstellt
+          notify(message_text);
+
+          this.$root.$emit("snackbar", message_text);
+        }catch(exception){
+                 // Neues Userscript konnte nicht erstellt werden
+          notify(exception);
+
+          this.$root.$emit("snackbar", exception);
+        }
       } else {
         // bzgl. update fragen
         // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
@@ -363,6 +371,7 @@ export default Vue.component(componentName, {
         throw "Userscript is missing";
       }
 
+    try{
       let userscript_handle = await (<any>(
         add_userscript_instance.update_userscript(
           userscript_id,
@@ -380,6 +389,11 @@ export default Vue.component(componentName, {
       // Userscript wurde überschrieben
       notify(message_text);
       this.$root.$emit("snackbar", message_text);
+          
+    }catch(exception){
+      notify(exception);
+      this.$root.$emit("snackbar", exception);
+    }
     },
 
     /**

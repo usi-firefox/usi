@@ -138,10 +138,10 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                     resetAllResources().
                     resetAllRequiredScripts();
             }
-            , async loadAndAddExternals(type: string, url: any, name: string | undefined) {
-                // Lade die Resource
-                const load_resource_instance = new load_resource();
+            , async loadAndAddExternals(type: string, url: any, name: string | undefined) : Promise<boolean> {
                 try {
+                    // Lade die Resource
+                    const load_resource_instance = new load_resource();
                     switch (type) {
                         case "icon":
                         case "resource":
@@ -157,21 +157,24 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                                 // für zusätzliche Resource Dateien (Bilder oder Texte, oder oder oder ...)
                                 self.addResource(url, response_data, name);
                             }
-                            break;
+                            return true;
+                            
                         case "require":
                             // TEXT
                             const response_text = await load_resource_instance.loadText(url);
                             // gilt für JS Dateien die benötigt und vor dem Userscript geladen werden müssen
                             self.addRequireScript(url, response_text);
-                            break;
+                            return true;
+
+                        default:
+                            throw new Error("Not supported 'type' in userscript_handle.loadAndAddExternals()")
                     }
 
                 } catch (exception) {
-                    console.error("exception in loadAndAddExternals()");
+                    console.error("exception in userscript_handle.loadAndAddExternals()");
                     console.error(`params: type: ${type}, url: ${url}, name: ${name}`);
-                    console.error(exception);
+                    throw exception;
                 }
-                return self;
             },
         };
 

@@ -19,36 +19,30 @@ export default class load_resource {
             mode: "cors",
         } as RequestInit;
 
-        try {
-            const response = await fetch(url, fetchInit);
-            if (response.ok === true) {
-                const headers = response.headers as Headers;
-                const mimetype = headers.get("content-type");
+        const response = await fetch(url, fetchInit);
+        if (response.ok === true) {
+            const headers = response.headers as Headers;
+            const mimetype = headers.get("content-type");
 
-                // Bild in Base64 umwandeln
-                const buffer = await response.arrayBuffer();
-                const arr = new Uint8Array(buffer) as any;
+            // Bild in Base64 umwandeln
+            const buffer = await response.arrayBuffer();
+            const arr = new Uint8Array(buffer) as any;
 
-                // Convert the int array to a binary string
-                // We have to use apply() as we are converting an *array*
-                // and String.fromCharCode() takes one or more single values, not
-                // an array.
-                const raw = String.fromCharCode.apply(null, arr);
-                const base64 = window.btoa(raw);
+            // Convert the int array to a binary string
+            // We have to use apply() as we are converting an *array*
+            // and String.fromCharCode() takes one or more single values, not
+            // an array.
+            const raw = String.fromCharCode.apply(null, arr);
+            const base64 = window.btoa(raw);
 
-                return "data:" + mimetype + ";base64," + base64;
-            }
-
-            // Unbekannter Fehler
-            throw response;
-
-        } catch (exception) {
-            console.error("exception");
-            console.error(exception);
-
-            // Fehler ist aufgetreten
-            throw new Error("Unbekannter Fehler ist aufgetreten in loadImage()");
+            return "data:" + mimetype + ";base64," + base64;
         }
+
+        console.error("response from loadImage()");
+        console.error(response);
+
+        // Fehler ist aufgetreten
+        throw new Error("Unbekannter Fehler ist aufgetreten in load_resource.loadImage()");
     }
 
     /**
@@ -70,22 +64,17 @@ export default class load_resource {
             headers,
         } as RequestInit;
 
-        try {
-            const response = await fetch(url, fetchInit);
-            if (response.ok === true) {
-                // Rückgabe des Textes
-                return await response.text();
-            }
-
-            // Unbekannter Fehler
-            throw response;
-        } catch (exception) {
-            console.error("exception");
-            console.error(exception);
-
-            // Fehler ist aufgetreten
-            throw new Error("Unbekannter Fehler ist aufgetreten in loadText()");
+        const response = await fetch(url, fetchInit);
+        if (response.ok === true) {
+            // Rückgabe des Textes
+            return await response.text();
         }
+            
+        console.error("response from loadImage()");
+        console.error(response);
+
+        // Fehler ist aufgetreten
+        throw new Error("Unbekannter Fehler ist aufgetreten in load_resource.loadText()");
     }
 
     /**
