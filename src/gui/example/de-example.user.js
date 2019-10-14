@@ -14,5 +14,5 @@
 // ==/UserScript==
 
 document.addEventListener("click", function() {
-	alert("Du hast soeben geklickt!");
+    alert("Du hast soeben geklickt!");
 });

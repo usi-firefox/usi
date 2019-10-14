@@ -95,8 +95,8 @@ export default class GM_Backend {
                     case "GM_xmlhttpRequest":
                         // @todo
                         {
-                            const message_data = message.data.details as usi.GM_Backend.GM_xhr;
-                            GM_xhrHandler().init(message_data, message.counter, port);
+                            const xmlhttpRequest_message_data = message.data.details as usi.GM_Backend.GM_xhr;
+                            GM_xhrHandler().init(xmlhttpRequest_message_data, message.counter, port);
                         }
                         break;
                     default:
@@ -125,8 +125,8 @@ export default class GM_Backend {
             const userscript_handle = script_storage.getById(userscript_id) as any;
 
             // Prüf-Variable damit es nicht zu einer "unendlichen" Rekursion kommt
-            let not_wildcard_pagemod = true,
-                includes = userscript_handle.getSettings().include;
+            let not_wildcard_pagemod = true;
+            const includes = userscript_handle.getSettings().include;
             for (const i in includes) {
                 if (includes[i] === "*") {
                     // Wildcard Eintrag gefunden, open in Tab ist nicht möglich!

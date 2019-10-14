@@ -2,15 +2,15 @@
 export default class config_storage {
 
     private config_default: usi.Storage.Config = {
-        load_script_with_js_end: true
-        , global_excludes : []
+        global_excludes : []
         , greasemonkey: {
             global_active: true,
         },
-         hightlightjs: {
+        hightlightjs: {
             active: true
             , style: "default",
         },
+        load_script_with_js_end: true,
     };
 
     /**

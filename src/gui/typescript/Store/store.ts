@@ -5,6 +5,8 @@ Vue.use(Vuex);
 
 const config_storage_instance = new config_storage();
 
+/* tslint:disable:object-literal-sort-keys */
+
 export const store = new Vuex.Store({
   modules: {
     /**

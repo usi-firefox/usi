@@ -71,10 +71,10 @@ Vue.directive("lang", {
  */
 const app = new Vue({
     el: "#vuetify-gui",
-    vuetify: new Vuetify(vuetify_options),
-    store,
     /**
      * Dies ist der Workaround für den Vue Compiler
      */
     render: (createElement) => createElement(AppBody),
+    store,
+    vuetify: new Vuetify(vuetify_options),
 });

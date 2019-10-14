@@ -12,17 +12,17 @@ export default function GM_xhrHandler() {
             const xhr = new XMLHttpRequest();
 
             /**
-             * (2016-02-11)		https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
-             *	mozAnon
-             *		Boolean: Setting this flag to true will cause the browser not to expose the origin and user credentials
-             *		when fetching resources. Most important, this means that cookies will not be sent unless
-             *		explicitly added using setRequestHeader.
+             * (2016-02-11)    https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+             *  mozAnon
+             *    Boolean: Setting this flag to true will cause the browser not to expose the origin and user credentials
+             *    when fetching resources. Most important, this means that cookies will not be sent unless
+             *    explicitly added using setRequestHeader.
              *
-             *	mozSystem
-             *	Boolean: Setting this flag to true allows making cross-site connections
-             *	without requiring the server to opt-in using CORS. Requires setting mozAnon: true,
-             *	i.e. this can't be combined with sending cookies or other user credentials.
-             *	This only works in privileged (reviewed) apps; it does not work on arbitrary webpages loaded in Firefox.
+             *  mozSystem
+             *  Boolean: Setting this flag to true allows making cross-site connections
+             *  without requiring the server to opt-in using CORS. Requires setting mozAnon: true,
+             *  i.e. this can't be combined with sending cookies or other user credentials.
+             *  This only works in privileged (reviewed) apps; it does not work on arbitrary webpages loaded in Firefox.
              */
 
             // Muss true sein, sonst wird mozSystem nicht akzeptiert
@@ -117,6 +117,7 @@ export default function GM_xhrHandler() {
             if (details.binary && (data !== null)) {
                 const dataData = new Uint8Array(data.length);
                 for (let i: number = 0; i < data.length; i++) {
+                    // tslint:disable-next-line:no-bitwise
                     dataData[i] = data.charCodeAt(i) & 0xff;
                 }
                 // sendAsBinary() ist deprecated seit
