@@ -167,7 +167,7 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                             return true;
 
                         default:
-                            throw new Error("Not supported 'type' in userscript_handle.loadAndAddExternals()")
+                            throw new Error("Not supported 'type' in userscript_handle.loadAndAddExternals()");
                     }
 
                 } catch (exception) {

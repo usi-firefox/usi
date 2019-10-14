@@ -59,10 +59,10 @@ export default class page_injection_helper {
              * @todo
              * Globale Exclude Regeln prüfen
              */
-            if(page_injection_helper.configuration !== null){
+            if (page_injection_helper.configuration !== null) {
                 const global_excludes = parse_userscript_instance.prepare_includes_and_excludes(page_injection_helper.configuration.global_excludes);
 
-                for(const exclude of global_excludes){
+                for (const exclude of global_excludes) {
                     if (exclude instanceof RegExp && typeof exclude.test === "function" && exclude.test(tabUrl)) {
                         // Script NICHT ausführen
                         return false;
@@ -207,7 +207,7 @@ export default class page_injection_helper {
         const storage_t = await userscript_storage();
         const storage = await storage_t.refresh();
         const all_userscripts = storage.getAll() as any;
-        
+
         // Konfiguration neu setzen
         page_injection_helper.configuration = await new config_storage().get();
 

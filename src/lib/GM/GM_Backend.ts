@@ -42,7 +42,7 @@ export default class GM_Backend {
 
                 switch (message.name) {
                     case "GM_openInTab":
-                        if(!message.data){
+                        if (!message.data) {
                             throw new Error("GM_openInTab() missing message.data");
                         }
 

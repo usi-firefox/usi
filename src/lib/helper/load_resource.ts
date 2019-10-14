@@ -69,7 +69,7 @@ export default class load_resource {
             // Rückgabe des Textes
             return await response.text();
         }
-            
+
         console.error("response from loadImage()");
         console.error(response);
 

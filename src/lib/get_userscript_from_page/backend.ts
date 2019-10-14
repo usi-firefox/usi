@@ -32,15 +32,15 @@ browser.runtime.onConnect.addListener(function(port: any) {
 
                     if (userscript_id === 0) {
                         // neu anlegen
-                        try{
+                        try {
 
                             const userscript_handle = await add_userscript_instance.save_new_userscript(userscript, message.data.moreinformations) as any;
                             // füge das Skript gleich hinzu, damit es ausgeführt werden kann
                             (new page_injection_helper()).add_userscript(userscript_handle);
-                            
+
                             notify(getTranslation("userscript_was_created"));
 
-                        }catch(excetion){
+                        } catch (excetion) {
                             notify(excetion.message);
                         }
 
@@ -60,7 +60,7 @@ browser.runtime.onConnect.addListener(function(port: any) {
                             more_informations = message.data.moreinformations;
                         }
 
-                        try{
+                        try {
 
                             const userscript_handle = await add_userscript_instance.update_userscript(message.data.id as any, message.data.userscript, more_informations as usi.Userscript.AddionalData.Moreinformations) as any;
                             // füge das Skript gleich hinzu, damit es ausgeführt werden kann
@@ -68,7 +68,7 @@ browser.runtime.onConnect.addListener(function(port: any) {
 
                             notify(getTranslation("userscript_was_overwritten"));
 
-                        }catch(excetion){
+                        } catch (excetion) {
                             notify(excetion.message);
                         }
                     }

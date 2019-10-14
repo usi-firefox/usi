@@ -161,7 +161,7 @@ export const store = new Vuex.Store({
           }
         },
       },
-    }
+    },
   },
   state: {
     /**
@@ -183,7 +183,7 @@ export const store = new Vuex.Store({
     },
     editUserscriptContent(state) {
       return state.editUserscriptContent;
-    }
+    },
 
   },
 
