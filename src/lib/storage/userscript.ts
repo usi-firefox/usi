@@ -138,7 +138,7 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                     resetAllResources().
                     resetAllRequiredScripts();
             }
-            , async loadAndAddExternals(type: string, url: any, name: string | undefined) : Promise<boolean> {
+            , async loadAndAddExternals(type: string, url: any, name: string | undefined): Promise<boolean> {
                 try {
                     // Lade die Resource
                     const load_resource_instance = new load_resource();
@@ -158,7 +158,7 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                                 self.addResource(url, response_data, name);
                             }
                             return true;
-                            
+
                         case "require":
                             // TEXT
                             const response_text = await load_resource_instance.loadText(url);
@@ -171,9 +171,17 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                     }
 
                 } catch (exception) {
-                    console.error("exception in userscript_handle.loadAndAddExternals()");
-                    console.error(`params: type: ${type}, url: ${url}, name: ${name}`);
-                    throw exception;
+                    const message = `couldn't load from url: '${url}'`;
+
+                    // Bekannte Exception - Daten konnten nicht geladen werden
+                    if (exception.message === "NetworkError when attempting to fetch resource.") {
+                        throw new Error(message);
+                    }
+
+                    console.error("unknown exception in userscript_handle.loadAndAddExternals()");
+                    console.error(exception);
+
+                    throw new Error(message);
                 }
             },
         };

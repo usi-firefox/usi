@@ -338,10 +338,12 @@ export default Vue.component(componentName, {
 
           this.$root.$emit("snackbar", message_text);
         }catch(exception){
-                 // Neues Userscript konnte nicht erstellt werden
-          notify(exception);
-
-          this.$root.$emit("snackbar", exception);
+          // Neues Userscript konnte nicht erstellt werden
+          const error_message_text = getTranslation("userscript_couldnt_saved") +
+              "\n" + exception.message;
+            
+          notify(error_message_text);
+          this.$root.$emit("snackbar", error_message_text);
         }
       } else {
         // bzgl. update fragen
@@ -391,8 +393,11 @@ export default Vue.component(componentName, {
       this.$root.$emit("snackbar", message_text);
           
     }catch(exception){
-      notify(exception);
-      this.$root.$emit("snackbar", exception);
+      const error_message_text = getTranslation("userscript_couldnt_saved") +
+        "\n" + exception.message;
+      
+      notify(error_message_text);
+      this.$root.$emit("snackbar", error_message_text);
     }
     },
 

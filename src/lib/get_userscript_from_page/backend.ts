@@ -41,7 +41,7 @@ browser.runtime.onConnect.addListener(function(port: any) {
                             notify(getTranslation("userscript_was_created"));
 
                         }catch(excetion){
-                            notify(excetion);
+                            notify(excetion.message);
                         }
 
                     } else {
@@ -69,7 +69,7 @@ browser.runtime.onConnect.addListener(function(port: any) {
                             notify(getTranslation("userscript_was_overwritten"));
 
                         }catch(excetion){
-                            notify(excetion);
+                            notify(excetion.message);
                         }
                     }
                     break;
