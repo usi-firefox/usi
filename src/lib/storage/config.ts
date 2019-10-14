@@ -3,13 +3,13 @@ export default class config_storage {
 
     private config_default: usi.Storage.Config = {
         load_script_with_js_end: true
-        , hightlightjs: {
-            active: true
-            , style: "default",
-        }
         , global_excludes : []
         , greasemonkey: {
             global_active: true,
+        },
+         hightlightjs: {
+            active: true
+            , style: "default",
         },
     };
 

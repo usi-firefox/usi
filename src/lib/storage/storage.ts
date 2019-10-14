@@ -60,8 +60,8 @@ export default async function userscript_storage() {
             id = Number(id);
 
             // holt alle Userscripte, und mittels find() wird jedes Element übergeben, falls die ele.id mit der ID übereinstimmt gib diese zurück
-            const found_userscript = self.getAll().find(function(ele) {
-                const element_id = parseInt(ele.id);
+            const found_userscript = self.getAll().find((ele) => {
+                const element_id = parseInt(ele.id, 0);
                 if (element_id === id) {
                     return true;
                 } else {
@@ -78,7 +78,8 @@ export default async function userscript_storage() {
         }
 
         , createNew() {
-            let new_id, userscript_found;
+            let new_id;
+            let userscript_found;
             // probiere es 3 Mal eine neue ID zu erzeugen
             for (let i = 0; i < 3; i++) {
                 new_id = new Date().getTime();

@@ -5,21 +5,21 @@ import add_userscript from "lib/storage/add_userscript";
 const add_userscript_instance = new add_userscript();
 
 // init
-browser.runtime.onConnect.addListener(function(port: any) {
+browser.runtime.onConnect.addListener((port: any) => {
 
     if (port.name !== "get-userscript-from-page") {
         return false;
     }
 
     // für Nachrichten vom Content Script
-    port.onMessage.addListener(async function(message: usi.fromPageWithUserscriptFile.message) {
+    port.onMessage.addListener(async (message: usi.fromPageWithUserscriptFile.message) => {
 
         try {
             switch (message.name) {
                 case "USI-BACKEND:new-userscript":
-                    const userscript = message.data.userscript,
-                        // Hier wird das UserScript weiterverarbeitet und gespeichert
-                        valid_userscript = add_userscript_instance.check_for_valid_userscript_settings(userscript, message.data.moreinformations);
+                    const userscript = message.data.userscript;
+                    // Hier wird das UserScript weiterverarbeitet und gespeichert
+                    const valid_userscript = add_userscript_instance.check_for_valid_userscript_settings(userscript, message.data.moreinformations);
 
                     if (valid_userscript.valid === false) {
                         // Userscript Konfiguration nicht in Ordnung

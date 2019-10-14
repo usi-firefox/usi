@@ -58,14 +58,14 @@ export default class SPA {
 }
 
 // öffnet einen Port
-browser.runtime.onConnect.addListener(function(port) {
+browser.runtime.onConnect.addListener((port) => {
 
     if (port.name !== "spa") {
         return false;
     }
 
     // für Nachrichten vom Content Script
-    port.onMessage.addListener(async function(message: any) {
+    port.onMessage.addListener(async (message: any) => {
         try {
 
             switch (message.name) {

@@ -17,8 +17,11 @@ new config_storage().get().then((config: any) => {
     // frage ob das Skript heruntergeladen werden soll
     if (window.confirm(getTranslation("should_usi_import_this_userscript"))) {
         const message: usi.fromPageWithUserscriptFile.message = {
+            data: {
+                moreinformations: { url: window.location.href },
+                userscript: userscript_content,
+             },
             name: "USI-BACKEND:new-userscript",
-            data: { userscript: userscript_content, moreinformations: { url: window.location.href } },
         };
 
         port.postMessage(message);
@@ -34,11 +37,12 @@ new config_storage().get().then((config: any) => {
                 if (window.confirm(getTranslation("same_userscript_was_found_ask_update_it_1") + message.data.id + getTranslation("same_userscript_was_found_ask_update_it_2"))) {
                     // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
                     const message_override: usi.fromPageWithUserscriptFile.message = {
-                        name: "USI-BACKEND:override-same-userscript", data: {
+                        data: {
                             id: message.data.id,
-                            userscript: message.data.userscript,
                             moreinformations: { url: window.location.href },
+                            userscript: message.data.userscript,
                         },
+                        name: "USI-BACKEND:override-same-userscript",
                     };
 
                     port.postMessage(message_override);

@@ -21,7 +21,7 @@ export default class page_injection_helper {
      * @returns {Boolean}
      */
     public userscriptInjection_onUpdate(details: any): boolean {
-        if (parseInt(details.tabId) < 0) {
+        if (parseInt(details.tabId, 0) < 0) {
             return false;
         }
 
@@ -31,7 +31,7 @@ export default class page_injection_helper {
         }
 
         // falls der Status = loading ist, und eine URL verfügbar ist kann checkUserscriptInjection() aufgerufen werden
-        return (new page_injection_helper).checkUserscriptInjection(details.tabId, details.url, details.transitionType);
+        return (new page_injection_helper()).checkUserscriptInjection(details.tabId, details.url, details.transitionType);
     }
 
     /**
@@ -142,20 +142,10 @@ export default class page_injection_helper {
         return true;
     }
 
-    /**
-     *
-     * @param {type} userscript_handle
-     * @returns {undefined}
-     */
     public async add_userscript(userscript_id: number): Promise<boolean> {
         // @todo
         return await this.re_init_page_injection();
     }
-    /**
-     *
-     * @param {type} userscript_handle
-     * @returns {undefined}
-     */
     public async remove_userscript(userscript_id: number): Promise<boolean> {
         // @todo
         return await this.re_init_page_injection();
@@ -239,22 +229,19 @@ export default class page_injection_helper {
 
     /**
      * liefert die Userscript Include und Exclude Regeln und das fertige Exec Object für browser.tabs.executeScript
-     *
-     * @param {object} userscript_handle
-     * @returns {object} page_injection
      */
-    public async get_rules_and_exec_object(userscript_handle: any) {
+    public async get_rules_and_exec_object(userscript_instance: any) {
 
-        if (typeof userscript_handle === "undefined" || typeof userscript_handle.getSettings !== "function" || userscript_handle.getSettings() === null) {
+        if (typeof userscript_instance === "undefined" || typeof userscript_instance.getSettings !== "function" || userscript_instance.getSettings() === null) {
             return false;
         }
 
-        if (userscript_handle.getSettings().spa === true) {
+        if (userscript_instance.getSettings().spa === true) {
             // SPA Userscripte
-            return await this.create_spa_userscript_exec_object(userscript_handle);
+            return await this.create_spa_userscript_exec_object(userscript_instance);
         } else {
             // Normale Userscripte
-            return await this.create_normal_userscript_exec_object(userscript_handle);
+            return await this.create_normal_userscript_exec_object(userscript_instance);
         }
 
     }
@@ -262,11 +249,11 @@ export default class page_injection_helper {
     /**
      * Erzeugt ein Exec Objekt für SPA Skripte
      */
-    public async create_spa_userscript_exec_object(userscript_handle: any) {
+    public async create_spa_userscript_exec_object(userscript_instance: any) {
 
-        const script_settings = userscript_handle.getSettings(),
-            userscript_id = userscript_handle.getId(),
-            original_userscript = this.add_require_scripts(userscript_handle);
+        const script_settings = userscript_instance.getSettings();
+        const userscript_id = userscript_instance.getId();
+        /* const original_userscript = this.add_require_scripts(userscript_instance); */
 
         if (!script_settings.spa) {
             // check
@@ -274,7 +261,7 @@ export default class page_injection_helper {
         }
 
         // Enthält die nötigen Funktionen für den GM Bereich
-        const gm = await this.add_GM_Functions(userscript_handle);
+        const gm = await this.add_GM_Functions(userscript_instance);
 
         let contentScript = "";
         // Wenn jQuery gefordert ist
@@ -283,7 +270,7 @@ export default class page_injection_helper {
         }
 
         // letztendlich die Require Skripte und das Userscript anhängen
-        contentScript += this.add_require_scripts(userscript_handle);
+        contentScript += this.add_require_scripts(userscript_instance);
 
         // exec_details werden direkt an tabs.executeScript übergeben
         const exec_details: browser.extensionTypes.InjectDetails = {
@@ -291,22 +278,22 @@ export default class page_injection_helper {
         };
 
         return {
-            gm
-            , exec_details
+            exec_details
+            , gm
             , userscript_id,
         };
 
     }
 
-    public async create_normal_userscript_exec_object(userscript_handle: any) {
-        const script_settings = userscript_handle.getSettings();
+    public async create_normal_userscript_exec_object(userscript_instance: any) {
+        const script_settings = userscript_instance.getSettings();
         const exec_details: any = {};
-        const userscript_id = userscript_handle.getId();
+        const userscript_id = userscript_instance.getId();
 
         // URL/Includes darf natürlich nicht leer sein
         if ((typeof script_settings.include === "undefined")
             || (script_settings.include.length < 1)
-            || (userscript_handle.isDeactivated() === true)) {
+            || (userscript_instance.isDeactivated() === true)) {
             // Keine weitere Prüfung nötig
             return false;
         }
@@ -362,9 +349,9 @@ export default class page_injection_helper {
             switch (script_settings["run-at"]) {
                 /**
                  * "document_start": corresponds to loading. The DOM is still loading.
-                 * "document_end": corresponds to 'interactive'. The DOM has finished loading, but resources such as scripts and images may still be loading.
+                 * "document_end": corresponds to 'interactive'. The DOM has finished loading, but resources such as scripts and images may * still be loading.
                  * "document_idle": corresponds to complete. The document and all its resources have finished loading.
-                */
+                 */
                 case "document-start":
                 case "start":
                     runAt = "document_start";
@@ -417,12 +404,12 @@ export default class page_injection_helper {
             script_settings["use-greasemonkey"] === true) {
 
             // füge die nötigen Einstellung für die Nutzung von GM hinzu
-            gm = await this.add_GM_Functions(userscript_handle);
+            gm = await this.add_GM_Functions(userscript_instance);
 
         }
 
         // letztendlich die Require Skripte und das Userscript anhängen
-        contentScript += this.add_require_scripts(userscript_handle);
+        contentScript += this.add_require_scripts(userscript_instance);
 
         // fertig zusammengestelltes JS in das Objekt für browser.tabs.executeScript() eintragen
         exec_details.code = contentScript;
@@ -431,35 +418,36 @@ export default class page_injection_helper {
          * exec_details: wird direkt von browser.tabs.executeScript verwendet
          */
         return {
-            filter_urls: {
-                include: result_includes,
+            exec_details
+            , filter_urls: {
                 exclude: result_excludes,
+                include: result_includes,
             }
             , gm
-            , exec_details
             , userscript_id,
         };
     }
 
     /**
      * Erzeugt den Userscript Inhalt, inklusive der require Skripte
-     * @param {object} userscript_handle
-     * @returns {string}
      */
-    public add_require_scripts(userscript_handle: any) {
+    public add_require_scripts(userscript_instance: any) {
         // sammelt alle Skripte die auf der Seite eingebunden werden sollen
         const contentScript = [];
 
         // Füge @require Skripte hinzu
-        if (!empty(userscript_handle.getAllRequireScripts())) {
-            const req_scripts = userscript_handle.getAllRequireScripts();
+        if (!empty(userscript_instance.getAllRequireScripts())) {
+            const req_scripts = userscript_instance.getAllRequireScripts();
             for (const i in req_scripts) {
+                if (!req_scripts[i]) {
+                    continue;
+                }
                 contentScript.push(req_scripts[i].text);
             }
         }
 
         // Das Userscript erst nach den @require Skripten einbinden!
-        contentScript.push(userscript_handle.getUserscriptContent());
+        contentScript.push(userscript_instance.getUserscriptContent());
 
         // aus den einzelnen Skripten nur einen String bauen, damit Referenzierungen möglich bleiben
         const contentScript_str = contentScript.join("\n\n\n");
@@ -485,23 +473,21 @@ export default class page_injection_helper {
 
     /**
      * Erstellt das GM Objekt für das Page Injection Objekt
-     * @param {object} userscript_handle
-     * @returns {object}
      */
-    public async add_GM_Functions(userscript_handle: any): Promise<usi.Tabs.execData> {
+    public async add_GM_Functions(userscript_instance: any): Promise<usi.Tabs.execData> {
 
         // init JSON
         const gm: any = {};
         gm.prefilled_data = {};
 
         // übergibt den val_store in die Storage Variable
-        gm.prefilled_data.storage = userscript_handle.getValStore();
-        gm.prefilled_data.id = userscript_handle.getId();
+        gm.prefilled_data.storage = userscript_instance.getValStore();
+        gm.prefilled_data.id = userscript_instance.getId();
 
         // Werte für die Variable GM_info
-        gm.prefilled_data.scriptSettings = userscript_handle.getSettings(); // enthält die Settings
+        gm.prefilled_data.scriptSettings = userscript_instance.getSettings(); // enthält die Settings
 
-        const getUserscriptContent = parse_userscript_instance.find_lines_with_settings(userscript_handle.getUserscriptContent()) as any;
+        const getUserscriptContent = parse_userscript_instance.find_lines_with_settings(userscript_instance.getUserscriptContent()) as any;
         gm.prefilled_data.scriptMetaStr = getUserscriptContent.join("\n");
 
         const browser_runtime = browser.runtime as any;
@@ -509,7 +495,7 @@ export default class page_injection_helper {
         gm.prefilled_data.systemPlatform = browser_runtime.PlatformOs; // BSP: Android
 
         // scriptSource hinzufügen
-        gm.prefilled_data.scriptSource = userscript_handle.getUserscriptContent();
+        gm.prefilled_data.scriptSource = userscript_instance.getUserscriptContent();
 
         // @todo Übler Workaround, da keine Dateien direkt gelesen werden können ...
         const script_extra_data = "var prefilled_data = " + JSON.stringify(gm.prefilled_data) + "; \n\n";

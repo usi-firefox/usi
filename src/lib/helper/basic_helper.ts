@@ -32,6 +32,9 @@ export function convertToText(obj: any): string {
         // is array
     } else if (typeof (obj) === "object" && !(obj.join === "undefined")) {
         for (const prop in obj) {
+            if (!obj[prop]) {
+                continue;
+            }
             string.push(convertToText(obj[prop]));
         }
         return "[" + string.join(",") + "]";
@@ -60,10 +63,10 @@ export function notify(text: string): Promise<string> {
     return browser.notifications.create(
         null,
         {
-            type: "basic",
-            title: "USI",
             iconUrl: browser.extension.getURL("/gui/icon/usi.png"),
             message: text,
+            title: "USI",
+            type: "basic",
         });
 }
 export function getExtId(): string {
@@ -93,7 +96,7 @@ export function empty(v: any): boolean {
     }
 }
 export function escapeHTMLEntities(str: string): string {
-    return str.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+    return str.replace(/[\u00A0-\u9999<>\&]/gim, (i) => {
         return "&#" + i.charCodeAt(0) + ";";
     });
 }
@@ -114,13 +117,13 @@ export function getFilenameFromURL(url: string): string {
     return "";
 }
 
-/**
-* erzeugt einen Download (Datei Speichern Dialog)
-* @param {string} data
-* @param {string} type
-* @param {string} filename
-* @returns {void}
-*/
+   /**
+    * erzeugt einen Download (Datei Speichern Dialog)
+    * @param {string} data
+    * @param {string} type
+    * @param {string} filename
+    * @returns {void}
+    */
 export function download_file(data: string, type?: string, filename?: string): void {
     const link = document.createElement("a");
     // Dateinamen angeben

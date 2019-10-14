@@ -99,6 +99,9 @@ export default function GM_xhrHandler() {
                 const header_keys = Object.keys(details.headers);
 
                 for (const i in header_keys) {
+                    if (!header_keys[i]) {
+                        continue;
+                    }
                     // Headers bei Bedarf setzen
                     xhr.setRequestHeader(header_keys[i], details.headers[header_keys[i]]);
                 }
@@ -126,7 +129,7 @@ export default function GM_xhrHandler() {
         },
         createSimpleRequestEvent(xhr: XMLHttpRequest, event: string, counter: number, port: browser.runtime.Port) {
 
-            xhr.addEventListener(event, function(evt: any) {
+            xhr.addEventListener(event, (evt: any) => {
                 try {
                     // res -> responseState
                     let res = {};
@@ -157,8 +160,13 @@ export default function GM_xhrHandler() {
                     // Rückgabe
                     port.postMessage({ name: "GM_xmlhttpRequest---" + event + "-" + counter, data: res, counter });
 
-                } catch (ignore) {
-
+                } catch (exception) {
+                    console.error("exception in GM_xhrHandler.createSimpleRequestEvent()");
+                    if (exception.messsage) {
+                        console.error(exception.messsage);
+                    } else {
+                        console.error(exception);
+                    }
                 }
             });
         },

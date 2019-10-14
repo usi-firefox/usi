@@ -10,7 +10,7 @@ export default class load_resource {
         if (!valid_url(url)) {
             throw new Error("ungültige URL");
         }
-        /**
+       /**
         * Konfiguration für fetch()
         */
         const fetchInit = {
@@ -51,7 +51,7 @@ export default class load_resource {
      * @param charset
      */
     public async loadText(url: string, charset: string = "utf-8"): Promise<string> {
-        /**
+       /**
         * Konfiguration für fetch()
         */
         const headers = new Headers();
@@ -60,8 +60,8 @@ export default class load_resource {
         const fetchInit = {
             cache: "no-store",
             // Wichtig damit externe Dateien geladen werden können
-            mode: "cors",
             headers,
+            mode: "cors",
         } as RequestInit;
 
         const response = await fetch(url, fetchInit);

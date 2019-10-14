@@ -6,6 +6,7 @@
     "linterOptions": {
         "exclude": [
             "webpack.config.js",
+            "src/lib/parse/convert2RegExp.ts",
             "node_modules/**",
             "dist/**",
             "src/gui/libs/**"
@@ -13,7 +14,10 @@
     },
     "jsRules": {},
     "rules": {
-        "no-console" : [false]
+        "indent": [true, "spaces", 4],
+        "no-console" : [false],
+        "variable-name" : [false],
+        "max-line-length" : [false]
     },
     "rulesDirectory": []
 }

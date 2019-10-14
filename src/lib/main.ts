@@ -33,6 +33,12 @@ export default class usi_main {
                 browser.browserAction.onClicked.addListener(this._create_or_update_options_tab);
             }
         } catch (exception) {
+            console.error("exception in main.createGuiListener()");
+            if (exception.message) {
+                console.error(exception.message);
+            } else {
+                console.error(exception);
+            }
         }
     }
 

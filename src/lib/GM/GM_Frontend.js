@@ -367,10 +367,10 @@
             var error_message = "Error in " + message.func_name + "() \n with message:" + message.text;
             // Fehlermeldung als Notification darstellen
             browser.notifications.create({
-                type: "basic",
-                title: "USI",
                 iconUrl: browser.extension.getURL("/gui/icon/usi.png"),
                 message: error_message,
+                title: "USI",
+                type: "basic",
             });
         }
     });

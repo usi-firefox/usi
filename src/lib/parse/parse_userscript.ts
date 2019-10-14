@@ -11,10 +11,10 @@ export default class parse_userscript {
      * Metablock Konfiguration
      */
     private metablock = {
-        start: /\/\/\s*==UserScript==\s*$/
-        , end: /\/\/\s*==\/UserScript==\s*$/
-        , start_s: "// ==UserScript=="
-        , end_s: "// ==/UserScript==",
+         end: /\/\/\s*==\/UserScript==\s*$/
+        , end_s: "// ==/UserScript=="
+        , start: /\/\/\s*==UserScript==\s*$/
+        , start_s: "// ==UserScript==",
     };
 
     /**
@@ -61,13 +61,13 @@ export default class parse_userscript {
      */
     public find_lines_with_settings(userscript: string, getRestOfUserscript?: boolean): string[] | null {
         // Teile Anhand von Zeilenumbrüchen ...
-        let userscript_lines = userscript.split("\n"),
-            // Start und Ende der Userscript Konfiguration
-            start_regex = this.metablock.start,
-            end_regex = this.metablock.end,
-            // Nur zwischen diesen beiden Zeilen darf die Konfiguration zu finden sein!
-            start_line: number | boolean = false,
-            end_line: number | boolean = false;
+        const userscript_lines = userscript.split("\n");
+        // Start und Ende der Userscript Konfiguration
+        const start_regex = this.metablock.start;
+        const end_regex = this.metablock.end;
+        // Nur zwischen diesen beiden Zeilen darf die Konfiguration zu finden sein!
+        let start_line: number | boolean = false;
+        let end_line: number | boolean = false;
 
         /**
          * Selbstverständlich darf nur eine Konfiguration enthalten sein, und die Erste "gültige" wird verwendet
@@ -75,15 +75,18 @@ export default class parse_userscript {
 
         // Durchlaufe jede Zeile!
         for (const i in userscript_lines) {
+            if (!userscript_lines[i]) {
+                continue;
+            }
 
             // Suche den Beginn der Konfiguration
             if ((start_line === false) && (start_regex.test(userscript_lines[i]))) {
-                start_line = parseInt(i);
+                start_line = parseInt(i, 0);
             }
 
             // Suche das Ende der Konfiguration
             if ((end_line === false) && (end_regex.test(userscript_lines[i]))) {
-                end_line = parseInt(i);
+                end_line = parseInt(i, 0);
 
                 // Ermöglicht es nur den Inhalt des Userscripts zu erhalten ohne den Metablock
                 if (getRestOfUserscript === true) {
@@ -169,7 +172,7 @@ export default class parse_userscript {
 
     // Suche nach Einstellungen für das UserScript
     // @todo
-    public find_settings(userscript: string): null | Object {
+    public find_settings(userscript: string): null | object {
         // setze die Zeilen die die Konfiguration beinhalten!
         const userscript_settings = this.find_lines_with_settings(userscript);
 
@@ -181,17 +184,20 @@ export default class parse_userscript {
         const possible_entries = this.userscript_keyword_config();
 
         // init
-        let options = {} as any,
-            option_found: RegExpExecArray | null = null;
+        const options = {} as any;
+        let option_found: RegExpExecArray | null = null;
 
         // Prüfe für jeden Eintrag, ob du etwas brauchbares im Userscript vorfindest
         for (const i in possible_entries) {
+            if (!possible_entries[i]) {
+                continue;
+            }
             // lege den aktuellen Key fest
-            let key = possible_entries[i].keyword,
+            let key = possible_entries[i].keyword;
                 // Wenn dies true ist, dürfen die Keys mehrfach vorkommen, ansonsten wird einfach nur der Erste verwendet!
-                m = possible_entries[i].m,
+            const m = possible_entries[i].m;
                 // der Key muss immer am Anfang zu finden sein, in der Klammer wird der Wert dann gesucht!
-                search_for_key = new RegExp("^\\s*\/\/\\s*\\@" + key + "\\s+(.+)");
+            const search_for_key = new RegExp("^\\s*\/\/\\s*\\@" + key + "\\s+(.+)");
 
             /************************************************************************
              *****************************	ACHTUNG *********************************
@@ -269,7 +275,7 @@ export default class parse_userscript {
         const result: any = [];
 
         // Durchlaufe alle Einträge
-        rules.forEach(function(rule: string) {
+        rules.forEach((rule: string) => {
             if (typeof rule !== "string") {
                 return;
             }
