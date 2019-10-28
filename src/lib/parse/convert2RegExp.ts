@@ -31,14 +31,14 @@ export const tldRegExp = /^([^:]+:\/\/[^\/]+)\.tld(\/.*)?$/;
 // (Can't memoize a URI object, yet we want to do URL->URI outside this method,
 // once for efficiency.  Compromise: memoize just the internal string handling.)
 /**
- * 
+ *
  * @param {string} pattern
  * @param {bool} forceGlob
  * @returns {RegExp|null}
  */
 export function GM_convert2RegExp(pattern: string, forceGlob?: boolean): RegExp | null {
 	try {
-		let reStr = <RegExp | string>GM_convert2RegExpInner(pattern, forceGlob);
+		let reStr = GM_convert2RegExpInner(pattern, forceGlob) as RegExp | string;
 
 		// Inner returns a RegExp, not str, for input regex (not glob) patterns.
 		// Use those directly without magic TLD modifications.
@@ -47,7 +47,7 @@ export function GM_convert2RegExp(pattern: string, forceGlob?: boolean): RegExp 
 		}
 
 		if (reStr.match(tldRegExp)) {
-			reStr = reStr.replace(tldRegExp, '$1.' + "\.[a-zA-Z0-9\\-\\.]*" + '$2');
+			reStr = reStr.replace(tldRegExp, "$1." + "\.[a-zA-Z0-9\\-\\.]*" + "$2");
 		}
 
 		return new RegExp(reStr, "i");
@@ -56,20 +56,19 @@ export function GM_convert2RegExp(pattern: string, forceGlob?: boolean): RegExp 
 	}
 }
 
-
 // Memoized internal implementation just does glob -> regex translation.
 /**
- * 
+ *
  * @param {string} pattern
  * @param {bool} forceGlob
  * @returns {RegExp|string}
  */
 function GM_convert2RegExpInner(pattern: string, forceGlob?: boolean): RegExp | string {
-	let s = new String(pattern);
+	const s = new String(pattern);
 
-	if (!forceGlob && '/' == s.substr(0, 1) && '/' == s.substr(-1, 1)) {
+	if (!forceGlob && "/" == s.substr(0, 1) && "/" == s.substr(-1, 1)) {
 		// Leading and trailing slash means raw regex.
-		return new RegExp(s.substring(1, s.length - 1), 'i');
+		return new RegExp(s.substring(1, s.length - 1), "i");
 	}
 
 	let res = "^";

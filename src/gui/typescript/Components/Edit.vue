@@ -15,7 +15,7 @@
         <!--Userscript Eingabe-->
         <v-textarea
           v-model="textarea.content"
-          box
+          filled
           :style="{fontSize : textarea.size + 'px'}"
           id="usi-edit-script-textarea"
           rows="30"
@@ -39,10 +39,27 @@
               <span v-lang="'save'"></span>
             </v-btn>
 
-            <v-btn @click="undo" color="warning">
-              <v-icon>undo</v-icon>
-              &nbsp;{{last_userscript_text.length}}
-            </v-btn>
+            <!-- Undo Auswahl -->
+            <v-dialog v-model="undo_dialog" width="500">
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on" v-show="last_userscript_text.length > 0" color="warning">
+                  <v-icon>undo</v-icon>
+                  &nbsp;{{last_userscript_text.length}}
+                </v-btn>
+              </template>
+
+              <v-card v-for="entry in last_userscript_text" v-bind:key="entry.time">
+                <v-card-title class="headline grey lighten-2" primary-title>{{_undoSecondsText(entry.time)}}</v-card-title>
+                <v-card-text
+                  @click="undo(entry)"
+                  class="pointer"
+                >
+                  <code>{{entry.text}}</code>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+
+            <v-divider></v-divider>
 
             <!--Standard laden oder leeren-->
             <v-btn id="usi-edit-script-load-example" @click="load_example" v-lang="'load_example'">
@@ -93,12 +110,10 @@ declare var window: any;
 
 import add_userscript from "lib/storage/add_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
-import { notify } from "lib/helper/basic_helper";
+import { notify, getSeconds, getTranslation } from "lib/helper/basic_helper";
+import { mapState } from "vuex";
 
 const add_userscript_instance = new add_userscript();
-
-// Die ID der Textarea
-var last_userscript_interval_id: number = 0;
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -110,47 +125,45 @@ var last_userscript_interval_id: number = 0;
  */
 const componentName = "edit-component";
 export default Vue.component(componentName, {
-  props: ["addional"],
   data() {
     return {
       script_id: 0,
+      undo_dialog: false,
       textarea: {
         size: 14,
         default_size: 14,
         height: 14,
         content: ""
       },
+      last_userscript_interval_id: 0,
       lang: {
-        overwrite_without_warning: browser.i18n.getMessage(
-          "overwrite_without_warning"
-        )
+        overwrite_without_warning: getTranslation("overwrite_without_warning")
       },
       overwrite_without_warning: false,
-      last_userscript_text: <any>[],
+      last_userscript_text: <usi.Frontend.EditUndo[]>[],
       load_example_by_prefered_locale: "de"
     };
   },
-  created: function() {
+  beforeDestroy: function() {
+    // Interval für Undo Funktion beenden
+    window.clearInterval(this.last_userscript_interval_id);
+  },
+  computed: {
+    ...mapState(["editUserscriptId", "editUserscriptContent"]),
+  },
+  mounted() {
     /**
      * falls zusältziche Daten übergeben wurden
      * Werden diese gesetzt
      */
-    if (this.addional) {
-      if (this.addional.id) {
-        this.script_id = this.addional.id;
-      }
+    if (this.editUserscriptId) {
+      this.script_id = this.editUserscriptId;
+    }
 
-      if (this.addional.userscript) {
-        // Falls ein Userscript zur Editierung
-        // aus einem anderen Component übergeben wurde
-        this.textarea.content = this.addional.userscript;
-
-        this.$emit("change-tab-additional", <
-          usi.Frontend.changeTabAdditionalEvent
-        >{
-          event_name: "usi:reset-extraData"
-        });
-      }
+    if (this.editUserscriptContent) {
+      // Falls ein Userscript zur Editierung
+      // aus einem anderen Component übergeben wurde
+      this.textarea.content = this.editUserscriptContent;
     }
 
     const prefered_locale = browser.i18n.getUILanguage();
@@ -162,27 +175,8 @@ export default Vue.component(componentName, {
       this.load_example_by_prefered_locale = "en";
     }
 
-    if (last_userscript_interval_id === 0) {
-      last_userscript_interval_id = window.setInterval(() => {
-        const text = this.textarea.content;
-        // falls der letzte Wert in der Historie verschieden sein sollte
-        if (text.length > 0) {
-          const undo_length = this.last_userscript_text.length;
-          const b = this.last_userscript_text[undo_length - 1];
-
-          // Kein Wert enthalten ODER der Letzte Wert ist verschieden
-          if (
-            undo_length === 0 ||
-            this.last_userscript_text[undo_length - 1] !== text
-          ) {
-            // den Wert der Historie hinzufügen
-            this.last_userscript_text.push(text);
-          }
-        }
-
-        // alle 7 Sekunden durchführen
-      }, 7000);
-    }
+      // alle 5 Sekunden durchführen
+    this.last_userscript_interval_id = window.setInterval(this._addToUndoArray, 5000);
 
     // Schalter richtig positionieren lassen ...
     this.defaultSize();
@@ -190,6 +184,27 @@ export default Vue.component(componentName, {
   },
 
   methods: {
+    _addToUndoArray(){
+      const text = this.textarea.content;
+        // falls der letzte Wert in der Historie verschieden sein sollte
+        if (text.length > 0) {
+          const last_undo = this.last_userscript_text[0];
+
+          // letzte Wert ist verschieden
+          if (last_undo === undefined || last_undo.text !== text) {
+            this.last_userscript_text.unshift({ time: getSeconds(), text: text });
+          }
+        }
+    },
+    /**
+     * Ersetzt den Platzhalter für die Sekunden Ausgabe
+     */
+    _undoSecondsText(seconds: number){
+      const seconds_ago = getSeconds() - seconds;
+      const seconds_text = getTranslation("seconds_ago");
+      return seconds_text.replace(/#1#/, seconds_ago.toString());
+    },
+
     /**
      * Höhe der Textarea an die Fenstergröße anpassen!
      */
@@ -205,26 +220,23 @@ export default Vue.component(componentName, {
     },
 
     textarea_clear: function(): void {
+      // Aktuellen Eintrag sichern
+      this._addToUndoArray();
+
       this.script_id = 0;
       this.textarea.content = "";
+
+      // vuex Store aktualisieren
+      this.$store.commit("editUserscriptId", null);
+      this.$store.commit("editUserscriptContent", null);
+
       this.$forceUpdate();
     },
 
     // Setzt den Text Inhalt zurück
-    undo: function(): void {
-      if (this.last_userscript_text.length > 0) {
-        var undo_value = this.last_userscript_text.pop();
-
-        if (undo_value === this.textarea.content) {
-          // Falls es der gleiche Wert sein sollte, kannst du es 1x überspringen
-          undo_value = this.last_userscript_text.pop();
-        }
-
-        // zuletzt gesicherten Wert wieder eintragen
-        if (typeof undo_value === "string" && undo_value.length > 0) {
-          this.textarea.content = undo_value;
-        }
-      }
+    undo: function(entry: usi.Frontend.EditUndo): void {
+      this.undo_dialog = false;
+      this.textarea.content = entry.text;
     },
 
     load_example: function(
@@ -245,6 +257,9 @@ export default Vue.component(componentName, {
         "/gui/example/" +
         lang_local +
         "-example.user.js";
+
+        // Aktuellen Eintrag sichern
+        this._addToUndoArray();
 
       fetch(url)
         .then(async example_userscript => {
@@ -274,7 +289,10 @@ export default Vue.component(componentName, {
         }
 
         // den Wert der Historie hinzufügen
-        this.last_userscript_text.push(this.textarea.content);
+        this.last_userscript_text.unshift({
+          time: getSeconds(),
+          text: this.textarea.content
+        });
       }
     },
 
@@ -290,6 +308,8 @@ export default Vue.component(componentName, {
       if (valid_userscript.valid === false) {
         // Userscript Konfiguration nicht in Ordnung
         notify("userscript-config-is-wrong");
+        // @Todo
+        this.$root.$emit("snackbar", "userscript-config-is-wrong");
         return;
       }
 
@@ -300,31 +320,39 @@ export default Vue.component(componentName, {
 
       if (userscript_id === 0) {
         // neu anlegen
-        let userscript_handle = await (<any>(
-          add_userscript_instance.save_new_userscript(userscript)
-        ));
-        // füge das Skript gleich hinzu, damit es ausgeführt werden kann
-        new page_injection_helper().add_userscript(userscript_handle.getId());
+        try{
 
-        // Neues Userscript wurde erstellt
-        notify(
-          browser.i18n.getMessage("userscript_was_created") +
+          let userscript_handle = await (<any>(
+            add_userscript_instance.save_new_userscript(userscript)
+          ));
+          // füge das Skript gleich hinzu, damit es ausgeführt werden kann
+          new page_injection_helper().add_userscript(userscript_handle.getId());
+
+          const message_text =
+            getTranslation("userscript_was_created") +
             " (ID " +
             userscript_handle.getId() +
-            ")"
-        );
+            ")";
+          // Neues Userscript wurde erstellt
+          notify(message_text);
+
+          this.$root.$emit("snackbar", message_text);
+        }catch(exception){
+          // Neues Userscript konnte nicht erstellt werden
+          const error_message_text = getTranslation("userscript_couldnt_saved") +
+              "\n" + exception.message;
+            
+          notify(error_message_text);
+          this.$root.$emit("snackbar", error_message_text);
+        }
       } else {
         // bzgl. update fragen
         // Es wurde ein Userscript gefunden, soll es aktualisiert werden?
         if (
           window.confirm(
-            browser.i18n.getMessage(
-              "same_userscript_was_found_ask_update_it_1"
-            ) +
+            getTranslation("same_userscript_was_found_ask_update_it_1") +
               userscript_id +
-              browser.i18n.getMessage(
-                "same_userscript_was_found_ask_update_it_2"
-              )
+              getTranslation("same_userscript_was_found_ask_update_it_2")
           )
         ) {
           // Dieses Skript wird nun aktualisiert! userscript_infos = {id : id , userscript: userscript}
@@ -345,6 +373,7 @@ export default Vue.component(componentName, {
         throw "Userscript is missing";
       }
 
+    try{
       let userscript_handle = await (<any>(
         add_userscript_instance.update_userscript(
           userscript_id,
@@ -354,13 +383,22 @@ export default Vue.component(componentName, {
       ));
       new page_injection_helper().add_userscript(userscript_handle.getId());
 
+      const message_text =
+        getTranslation("userscript_was_overwritten") +
+        " (ID " +
+        userscript_id +
+        ")";
       // Userscript wurde überschrieben
-      notify(
-        browser.i18n.getMessage("userscript_was_overwritten") +
-          " (ID " +
-          userscript_id +
-          ")"
-      );
+      notify(message_text);
+      this.$root.$emit("snackbar", message_text);
+          
+    }catch(exception){
+      const error_message_text = getTranslation("userscript_couldnt_saved") +
+        "\n" + exception.message;
+      
+      notify(error_message_text);
+      this.$root.$emit("snackbar", error_message_text);
+    }
     },
 
     /**
@@ -389,9 +427,14 @@ export default Vue.component(componentName, {
       } catch (e) {}
     }
   },
-  computed: {}
 });
 </script>
 
-<style>
+<style scoped>
+#usi-edit-script-textarea{
+  line-height: 100%;
+}
+.pointer{
+  cursor: pointer;
+}
 </style>

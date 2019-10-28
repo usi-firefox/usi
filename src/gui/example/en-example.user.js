@@ -4,7 +4,7 @@
 // @author         {your name}
 // @description    {Userscript description}
 // @include        *
-//	
+//
 // @info                {more informations ...}
 // @updateURL           {USI can update your Userscript, if the version number has changed}
 // @run-at              (document-end || document-start || document-ready)
@@ -13,6 +13,6 @@
 // @version             1.0.0
 // ==/UserScript==
 
-document.addEventListener("click", function(){
-	alert("You have clicked!");
+document.addEventListener("click", function() {
+    alert("You have clicked!");
 });

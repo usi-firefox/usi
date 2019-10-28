@@ -3,5 +3,5 @@ Other Projects & Software used by USI
 * jQuery 3.3.1 (https://github.com/jquery/jquery)
 * highlight.js 9.12.0 (https://github.com/isagalaev/highlight.js)
 * Greasemonkey/modules/third-party/convert2RegExp.js 3.8 (https://github.com/greasemonkey/greasemonkey/blob/3.x/modules/third-party/convert2RegExp.js)
-* Hourglass Preload Image (http://loading.io/assets/img/hourglass.svg)
 * a way to download images and convert them to a datauri (http://stackoverflow.com/questions/20035615/using-raw-image-data-from-ajax-request-for-data-uri | http://stackoverflow.com/a/20048852)
+* and other mentioned in package.json

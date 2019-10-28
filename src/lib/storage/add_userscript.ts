@@ -1,4 +1,4 @@
-import { is_datauri, notify, empty, getFilenameFromURL, valid_url } from "lib/helper/basic_helper";
+import { empty, getFilenameFromURL, getTranslation, is_datauri, notify, valid_url } from "lib/helper/basic_helper";
 import parse_userscript from "lib/parse/parse_userscript";
 import userscript_storage from "lib/storage/storage";
 
@@ -15,7 +15,7 @@ function type_guess(val: string, allowed_types: string[]): string | null {
     }
 
     // Prüfe die nutzbaren Datentypen
-    for (let actual_type of known_types_priotity) {
+    for (const actual_type of known_types_priotity) {
 
         /**
          *  wenn der Aktuelle Wert von "known_types_priotity" in "allowed_types"
@@ -45,7 +45,6 @@ function type_guess(val: string, allowed_types: string[]): string | null {
 
 }
 
-
 export default class add_userscript {
 
     /**
@@ -54,10 +53,10 @@ export default class add_userscript {
      * @param {object} moreinformations
      * @returns {object}
      */
-    check_for_valid_userscript_settings(userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
-        let alternative_name,
+    public check_for_valid_userscript_settings(userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
+        let alternative_name;
             // Konfig suchen und danach die Optionen Parsen...
-            userscript_settings = <any>parse_userscript_instance.find_settings(userscript);
+        const userscript_settings = parse_userscript_instance.find_settings(userscript) as any;
 
         // Falls im Userscript kein Name vorhanden ist, setze den Dateinamen als @name
         if (moreinformations && !empty(moreinformations.url)) {
@@ -67,30 +66,30 @@ export default class add_userscript {
         // Rückgabe eines Promise Objects
         if (typeof userscript_settings.error_code === "number" && userscript_settings.error_code === 101 && !empty(alternative_name)) {
             // setze den @name in den Metablock des Userscripts ein
-            let modified_userscript = parse_userscript_instance.add_option_to_userscript_metablock(userscript, ["// @name     " + alternative_name]);
+            const modified_userscript = parse_userscript_instance.add_option_to_userscript_metablock(userscript, ["// @name     " + alternative_name]);
             // Benachrichtige den Nutzer, dass das Userscript verändert wurde
             return { valid: false, reason: "userscript_configuration_error___no_name", possible_solution: alternative_name };
 
         } else if (typeof userscript_settings.error_message !== "undefined") {
             // es wurde ein Fehler in der Konfiguration gefunden, melde es nun dem Benutzer!
-            return { valid: false, reason: "userscript_configuration_error", message: browser.i18n.getMessage("error_userscript_settings") + userscript_settings.error_message };
+            return { valid: false, reason: "userscript_configuration_error", message: getTranslation("error_userscript_settings") + userscript_settings.error_message };
         } else {
             // Userscript kann gespeichert werden
             return { valid: true };
         }
     }
     /**
-     * 
+     *
      * @param {string} userscript
      * @param {object} moreinformations
      * @returns {userscript_handle}
      */
-    async save_new_userscript(userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
+    public async save_new_userscript(userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
         // Erzeuge ein neues Userscript
-        let userscript_settings = parse_userscript_instance.find_settings(userscript),
-            userscripts = await userscript_storage();
+        const userscript_settings = parse_userscript_instance.find_settings(userscript);
+        const userscripts = await userscript_storage();
 
-        let userscript_handle = userscripts.createNew();
+        const userscript_handle = userscripts.createNew();
 
         // Userscript verarbeiten und speichern
         await this._save_userscript(userscript_handle, userscript, userscript_settings, moreinformations);
@@ -98,12 +97,12 @@ export default class add_userscript {
         return userscript_handle;
     }
 
-    async update_userscript(userscript_id: number, userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
+    public async update_userscript(userscript_id: number, userscript: string, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
         // aktualisiert ein vorhandenes Userscript
-        let userscript_settings = parse_userscript_instance.find_settings(userscript),
-            userscripts = await userscript_storage();
+        const userscript_settings = parse_userscript_instance.find_settings(userscript);
+        const userscripts = await userscript_storage();
 
-        let userscript_handle = userscripts.getById(userscript_id);
+        const userscript_handle = userscripts.getById(userscript_id);
 
         // Userscript verarbeiten und speichern
         await this._save_userscript(userscript_handle, userscript, userscript_settings, moreinformations);
@@ -112,21 +111,21 @@ export default class add_userscript {
     }
 
     /*
-     * 
+     *
      * @param {string} userscript
      * @returns {integer|Boolean}
      */
-    async exist_userscript_already(userscript: any): Promise<number> {
+    public async exist_userscript_already(userscript: any): Promise<number> {
         // Konfig suchen und danach die Optionen Parsen...
-        let userscript_settings = parse_userscript_instance.find_settings(userscript);
+        const userscript_settings = parse_userscript_instance.find_settings(userscript);
 
         // as => alle userscripte
-        let storage = await userscript_storage();
-        let as = storage.getAll();
+        const storage = await userscript_storage();
+        const as = storage.getAll();
 
         // Prüfe ob das Skript bereits existiert, und wenn ja frage ob es aktualisiert werden soll!
-        for (let userscript_1 of as) {
-            let possible_id = <number>this.compare2Userscripts(userscript_1.settings, userscript_settings, userscript_1.id);
+        for (const userscript_1 of as) {
+            const possible_id = this.compare2Userscripts(userscript_1.settings, userscript_settings, userscript_1.id) as number;
 
             if (possible_id) {
                 // liefere gefundene ID
@@ -138,10 +137,10 @@ export default class add_userscript {
         return 0;
     }
 
-    compare2Userscripts(u_1: any, u_2: any, id: any) {
-        let test_userscript_settings = ["name", "namespace", "author", "updateURL", "downloadURL"];
+    public compare2Userscripts(u_1: any, u_2: any, id: any) {
+        const test_userscript_settings = ["name", "namespace", "author", "updateURL", "downloadURL"];
 
-        for (let set of test_userscript_settings) {
+        for (const set of test_userscript_settings) {
             if (typeof u_1[set] === "undefined" && typeof u_2[set] === "undefined") {
                 continue;
             }
@@ -154,14 +153,14 @@ export default class add_userscript {
         return id;
     }
     /**
-     * 
+     *
      * @param {object} userscript_handle
      * @param {string} userscript
      * @param {object} settings
      * @param {object} moreinformations
      * @returns {void}
      */
-    async _save_userscript(userscript_handle: any, userscript: any, settings: any, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
+    public async _save_userscript(userscript_handle: any, userscript: any, settings: any, moreinformations?: usi.Userscript.AddionalData.Moreinformations) {
 
         // setze und speichere die gefundenen Einstellungen
         userscript_handle.
@@ -173,10 +172,17 @@ export default class add_userscript {
 
         // lade die @resource angaben
         if (typeof settings.resource !== "undefined") {
-            let one_resource, resource_name: any, resource_url: any, resource_charset: any,
-                resource_allowed_types = parse_userscript_instance.get_userscript_keyword_config_by_name("resource");
+            let one_resource;
+            let resource_name;
+            let resource_url;
+            let resource_charset;
 
-            for (let j in settings.resource) {
+            const    resource_allowed_types = parse_userscript_instance.get_userscript_keyword_config_by_name("resource");
+
+            for (const j in settings.resource) {
+                if (!settings.resource[j]) {
+                    continue;
+                }
                 // in [0] => name , [1] => url
                 one_resource = settings.resource[j].split(/\s+/);
                 resource_name = one_resource[0].trim();
@@ -201,11 +207,11 @@ export default class add_userscript {
 
         // Verarbeite das @icon
         if (typeof settings.icon !== "undefined") {
-            let icon_allowed_types = parse_userscript_instance.get_userscript_keyword_config_by_name("icon");
+            const icon_allowed_types = parse_userscript_instance.get_userscript_keyword_config_by_name("icon");
 
             // icon URL
             if (icon_allowed_types) {
-                let icon_url = type_guess(settings.icon, icon_allowed_types.types);
+                const icon_url = type_guess(settings.icon, icon_allowed_types.types);
 
                 if (icon_url) {
                     // icon nachladen
@@ -216,11 +222,16 @@ export default class add_userscript {
 
         // Lade externe Skripte nach, falls vorhanden
         if (typeof settings.require !== "undefined") {
-            let one_require, require_url: any,
-                require_allowed_types = parse_userscript_instance.get_userscript_keyword_config_by_name("require");
+            let one_require;
+            let require_url;
+            const require_allowed_types = parse_userscript_instance.get_userscript_keyword_config_by_name("require");
 
             // da mehrere require Anweisungen erhalten sein können
-            for (let require_index in settings.require) {
+            for (const require_index in settings.require) {
+                if (!settings.require[require_index]) {
+                    continue;
+                }
+
                 one_require = settings.require[require_index];
 
                 if (require_allowed_types) {

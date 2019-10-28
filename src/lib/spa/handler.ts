@@ -4,9 +4,9 @@ import userscript_storage from "lib/storage/storage";
 
 export default class SPA {
 
-    async _create(userscriptId: number, existingTabId?: number) {
+    public async _create(userscriptId: number, existingTabId?: number) {
         const storage = await userscript_storage();
-        const userscript_init = <any>storage.getById(userscriptId);
+        const userscript_init = storage.getById(userscriptId) as any;
 
         const spa_userscript_exec_object = await (new page_injection_helper()).create_spa_userscript_exec_object(userscript_init);
 
@@ -23,8 +23,8 @@ export default class SPA {
 
             try {
                 // neuen Tab öffnen
-                let spa_page = browser.tabs.create({
-                    url: "/html/spa.html#" + userscriptId
+                const spa_page = browser.tabs.create({
+                    url: "/html/spa.html#" + userscriptId,
                 });
             } catch (error_tab) {
 
@@ -41,31 +41,31 @@ export default class SPA {
 
     /**
      * erzeugt einen neuen Tab und führt das SPA aus
-     * @param {int} userscriptId 
+     * @param {int} userscriptId
      */
-    async createPage(userscriptId: number) {
+    public async createPage(userscriptId: number) {
         this._create(userscriptId);
     }
 
     /**
      * führt das SPA aus in diesem Tab aus
-     * @param {int} userscriptId 
-     * @param {int} tabId 
+     * @param {int} userscriptId
+     * @param {int} tabId
      */
-    async applyToThisTab(userscriptId: number, tabId: number) {
+    public async applyToThisTab(userscriptId: number, tabId: number) {
         this._create(userscriptId, tabId);
     }
 }
 
 // öffnet einen Port
-browser.runtime.onConnect.addListener(function (port) {
+browser.runtime.onConnect.addListener((port) => {
 
     if (port.name !== "spa") {
         return false;
     }
 
     // für Nachrichten vom Content Script
-    port.onMessage.addListener(async function (message: any) {
+    port.onMessage.addListener(async (message: any) => {
         try {
 
             switch (message.name) {
@@ -76,7 +76,7 @@ browser.runtime.onConnect.addListener(function (port) {
                         return;
                     }
 
-                    let spa_instance = new SPA();
+                    const spa_instance = new SPA();
                     // exec
                     spa_instance.applyToThisTab(message.data.id, message.data.tabId);
 

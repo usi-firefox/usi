@@ -1,6 +1,6 @@
 <template>
   <!--USI Konfiguration bearbeiten-->
-  <v-container grid-list-md>
+  <v-container>
     <div>
       <h3 v-lang="'delete_all_userscripts'">
         <!--Alle Userscripts entfernen-->
@@ -48,6 +48,30 @@
       ></v-switch>
     </div>
     <div>
+      <h3 v-lang="'global_exclude_rules'">
+        <!--Globale Exclude Regeln-->
+      </h3>
+      <v-list>
+        <v-list-item v-show="global_excludes.length > 0" v-for="(rule,index) in global_excludes" v-bind:key="index">
+          <v-list-item-icon @click="deleteGlobalExlucde(rule)">
+            <v-icon>delete</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="rule"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
+              <v-text-field @keyup.enter="addGlobalExlucde()" :placeholder="lang.add_global_exclude_rules" v-model="new_global_exclude_rule"></v-text-field>
+            </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-icon @click="addGlobalExlucde()"><v-icon>add_circle</v-icon>
+          </v-list-item-icon>
+        </v-list-item>
+      </v-list>
+    </div>
+    <div>
       <h3 v-lang="'export_all_userscripts'">
         <!--Alle Userscripts exportieren-->
       </h3>
@@ -84,7 +108,7 @@ import config_storage from "lib/storage/config";
 
 import Vue from "vue";
 import userscript_storage from "lib/storage/storage";
-import { isset, download_file } from "lib/helper/basic_helper";
+import { isset, download_file, getTranslation } from "lib/helper/basic_helper";
 import load_resource from "lib/helper/load_resource";
 import parse_userscript from "lib/parse/parse_userscript";
 import page_injection_helper from "lib/inject/page_injection_helper";
@@ -104,61 +128,54 @@ const componentName = "config-component";
 export default Vue.component(componentName, {
   data: function() {
     return {
-      load_script_with_js_end: false,
-      greasemonkey_global_active: false,
-      hightlightjs_active: false,
-      config: <usi.Storage.Config>{},
-
       completeExport: false,
       dialogWindow: false,
       dialogWindowText: "",
       dialogStep: 0,
+      new_global_exclude_rule: "",
       lang: {
-        deactivated: browser.i18n.getMessage("deactivated"),
-        activated: browser.i18n.getMessage("activated"),
-        yes: browser.i18n.getMessage("yes"),
-        no: browser.i18n.getMessage("no"),
-        show: browser.i18n.getMessage("show"),
-        hide: browser.i18n.getMessage("hide")
+        deactivated: getTranslation("deactivated"),
+        add_global_exclude_rules: getTranslation("add_global_exclude_rules"),
+        activated: getTranslation("activated"),
+        yes: getTranslation("yes"),
+        no: getTranslation("no"),
+        show: getTranslation("show"),
+        hide: getTranslation("hide")
       }
     };
   },
-  created: function() {
-    config_storage()
-      .get()
-      .then(config => {
-        this.config = config;
-
-        this.load_script_with_js_end = this.config.load_script_with_js_end;
-        if (typeof this.config.greasemonkey === "object") {
-          this.greasemonkey_global_active = this.config.greasemonkey.global_active;
-        }
-        if (typeof this.config.hightlightjs === "object") {
-          this.hightlightjs_active = this.config.hightlightjs.active;
-        }
-      });
-  },
-  watch: {
-    /** @todo */
-    // Schreibe die Neue Konfiguration
-    load_script_with_js_end: function(newValue: boolean) {
-      this.config.load_script_with_js_end = newValue;
-      this.setConfig();
+  computed: {
+    load_script_with_js_end: {
+      get(): boolean {
+        return this.$store.getters["configuration/load_script_with_js_end"];
+      },
+      set(val: boolean) {
+        this.$store.dispatch("configuration/load_script_with_js_end", val);
+      }
     },
-    greasemonkey_global_active: function(newValue: boolean) {
-      this.config.greasemonkey.global_active = newValue;
-      this.setConfig();
+    global_excludes: {
+      get(): string[] {
+        return this.$store.getters["configuration/global_excludes"];
+      }
     },
-    hightlightjs_active: function(newValue: boolean) {
-      this.config.hightlightjs.active = newValue;
-      this.setConfig();
+    greasemonkey_global_active: {
+      get(): boolean {
+        return this.$store.getters["configuration/greasemonkey_global_active"];
+      },
+      set(val: boolean) {
+        this.$store.dispatch("configuration/greasemonkey_global_active", val);
+      }
+    },
+    hightlightjs_active: {
+      get(): boolean {
+        return this.$store.getters["configuration/hightlightjs_active"];
+      },
+      set(val: boolean) {
+        this.$store.dispatch("configuration/hightlightjs_active", val);
+      }
     }
   },
   methods: {
-    setConfig() {
-      // Konfiguration sichern
-      config_storage().set(this.config);
-    },
     /**
      * Alle Userscripte entfernen
      * @returns {undefined}
@@ -171,15 +188,13 @@ export default Vue.component(componentName, {
         case 1:
           // Sicherheitsabfrage
           this.dialogWindow = true;
-          this.dialogWindowText = browser.i18n.getMessage(
-            "really_reset_all_settings"
-          );
+          this.dialogWindowText = getTranslation("really_reset_all_settings");
           break;
 
         case 2:
           // erneute Sicherheitsabfrage
           this.dialogWindow = true;
-          this.dialogWindowText = browser.i18n.getMessage(
+          this.dialogWindowText = getTranslation(
             "really_really_reset_all_settings"
           );
           break;
@@ -227,7 +242,9 @@ export default Vue.component(componentName, {
         const userscript_id = userscript.id;
 
         try {
-          const loaded_userscript = await load_resource_instance.load_userscript_by_url(updateURL);
+          const loaded_userscript = await load_resource_instance.load_userscript_by_url(
+            updateURL
+          );
           if (!loaded_userscript) {
             // keine antwort
             return false;
@@ -249,13 +266,9 @@ export default Vue.component(componentName, {
 
           //wurde gefunden, möchtest du es aktualisieren?")){
           let confirmed = window.confirm(
-            browser.i18n.getMessage(
-              "same_userscript_was_found_ask_update_it_1"
-            ) +
+            getTranslation("same_userscript_was_found_ask_update_it_1") +
               userscript_id +
-              browser.i18n.getMessage(
-                "same_userscript_was_found_ask_update_it_2"
-              )
+              getTranslation("same_userscript_was_found_ask_update_it_2")
           );
 
           if (!confirmed) {
@@ -272,6 +285,26 @@ export default Vue.component(componentName, {
           return false;
         }
       });
+    },
+
+    deleteGlobalExlucde(rule : string){
+      if(window.confirm(rule + " -> " + getTranslation("really_delete"))){
+        this.$store.dispatch("configuration/global_excludes_remove", rule);
+      }
+    },
+    addGlobalExlucde(){
+      if(!this.new_global_exclude_rule){
+        return;
+      }
+
+      if(this.global_excludes.indexOf(this.new_global_exclude_rule) > -1){
+        // Eintrag existiert
+        return;
+      }
+
+      this.$store.dispatch("configuration/global_excludes_add", this.new_global_exclude_rule);
+
+      this.new_global_exclude_rule = "";
     },
 
     // exportiere die Skripte

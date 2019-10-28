@@ -17,6 +17,8 @@
         {
             "matches": [
                 "*://*/*.user.js",
+                "*://*/*.user.js?*",
+                "file:///*.user.js?*",
                 "file:///*.user.js"
             ],
             "js": [

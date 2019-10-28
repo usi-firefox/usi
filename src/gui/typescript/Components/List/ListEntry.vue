@@ -1,12 +1,15 @@
 <template>
-  <v-container>
-    <v-card :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  ">
+  <v-container fluid>
+    <v-card
+      text
+      :class="[{'strike-through': markedAsDeleted}, localScriptDeactivated ? 'grey' : '']  "
+    >
       <v-card-title>
-        <v-flex xs11 @click="toggleOverview" class="pointer title">
-          <img :src="icon">
-          Index: {{index}} | {{script.settings.name}} | {{script.settings.author}} | {{script.settings.version}}
+        <v-flex xs11 @click="toggleOverview" class="pointer subheading">
+          <img :src="icon" />
+          Index: {{index}} | {{script.settings.name}} | {{script.settings.version}}
           <span
-            v-if="script.isSpa"
+            v-if="isSpa"
           >| SPA</span>
           <v-btn icon>
             <v-icon
@@ -19,89 +22,90 @@
           <v-layout justify-end>
             <v-menu offset-y allow-overflow class="pointer">
               <!-- Options Menü -->
-              <v-btn icon slot="activator">
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on">
+                  <v-icon>more_vert</v-icon>
+                </v-btn>
+              </template>
               <v-list>
                 <!--Userscript anzeigen/ausblenden-->
-                <v-list-tile @click="showUserscript">
-                  <v-list-tile-action>
+                <v-list-item @click="showUserscript">
+                  <v-list-item-action>
                     <v-icon>pageview</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>
+                  </v-list-item-action>
+                  <v-list-item-title>
                     <span v-html="!showUserscriptContent ? lang.show: lang.hide"></span>
-                  </v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-title>
+                </v-list-item>
 
                 <!--Userscript bearbeiten-->
                 <v-divider></v-divider>
-                <v-list-tile @click="edit">
-                  <v-list-tile-action>
+                <v-list-item @click="edit">
+                  <v-list-item-action>
                     <v-icon>edit</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>
+                  </v-list-item-action>
+                  <v-list-item-title>
                     <span v-lang="'change'"></span>
-                  </v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-title>
+                </v-list-item>
 
                 <!--Userscript entfernen-->
                 <v-divider></v-divider>
-                <v-list-tile @click="deleteUserscript">
-                  <v-list-tile-action>
+                <v-list-item @click="deleteUserscript">
+                  <v-list-item-action>
                     <v-icon>delete</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>
+                  </v-list-item-action>
+                  <v-list-item-title>
                     <span v-lang="'delete_x'"></span>
-                  </v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-title>
+                </v-list-item>
                 <!-- Userscript Exportieren -->
                 <v-divider></v-divider>
-                <v-list-tile @click="export_script">
-                  <v-list-tile-action>
+                <v-list-item @click="export_script">
+                  <v-list-item-action>
                     <v-icon>import_export</v-icon>
-                  </v-list-tile-action>
-                  <v-list-tile-title>export</v-list-tile-title>
-                </v-list-tile>
+                  </v-list-item-action>
+                  <v-list-item-title>export</v-list-item-title>
+                </v-list-item>
                 <!-- SPA Starten -->
-                <span v-if="script.isSpa">
+                <span v-if="isSpa">
                   <v-divider></v-divider>
-                  <v-list-tile @click="start_spa">
-                    <v-list-tile-action>
+                  <v-list-item @click="start_spa">
+                    <v-list-item-action>
                       <v-icon>play_arrow</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>Start SPA</v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-action>
+                    <v-list-item-title>Start SPA</v-list-item-title>
+                  </v-list-item>
                 </span>
                 <!--Neuladen von der Quelle-->
                 <span v-if="script.moreinformations && script.moreinformations.url">
                   <v-divider></v-divider>
-                  <v-list-tile @click="loadAgain">
-                    <v-list-tile-action>
+                  <v-list-item @click="loadAgain">
+                    <v-list-item-action>
                       <v-icon>repeat</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>
+                    </v-list-item-action>
+                    <v-list-item-title>
                       <span v-lang="'reload_from_source'"></span>
-                    </v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-title>
+                  </v-list-item>
                 </span>
                 <!-- Gespeicherte Variablen anzeigen-->
                 <span v-if="script.val_store">
                   <v-divider></v-divider>
-                  <v-list-tile @click="GMValuesGet">
-                    <v-list-tile-action>
+                  <v-list-item @click="GMValuesGet">
+                    <v-list-item-action>
                       <v-icon>get_app</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>GM Values show</v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-action>
+                    <v-list-item-title>GM Values show</v-list-item-title>
+                  </v-list-item>
                   <!-- Gespeicherte Variablen entfernen-->
                   <v-divider></v-divider>
-                  <v-list-tile @click="GMValuesDelete">
-                    <v-list-tile-action>
+                  <v-list-item @click="GMValuesDelete">
+                    <v-list-item-action>
                       <v-icon>delete</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-title>GM Values delete</v-list-tile-title>
-                  </v-list-tile>
+                    </v-list-item-action>
+                    <v-list-item-title>GM Values delete</v-list-item-title>
+                  </v-list-item>
                 </span>
               </v-list>
             </v-menu>
@@ -111,45 +115,60 @@
       <v-divider></v-divider>
       <v-card-text v-if="showUserscriptEntry">
         <v-list>
-          <v-list-tile>
-            <v-list-tile-content>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-tile-content>
-            <v-list-tile-content class="align-end">
+          <v-list-item v-if="script.settings.include && script.settings.include.length > 0">
+            <v-list-item-title>{{localScriptDeactivated ? lang.deactivated : lang.activated}}</v-list-item-title>
+            <v-list-item-action >
               <!--Userscript aktivieren oder deaktivieren-->
               <v-switch v-model="localScriptDeactivated"></v-switch>
-            </v-list-tile-content>
-          </v-list-tile>
+            </v-list-item-action>
+          </v-list-item>
 
           <!-- Restliche Userscript Informationen -->
-          <v-list-tile v-for="(info,i) in infos" v-bind:key="i">
-            <v-list-tile-content v-if="info.vlang !== true">{{info.text}}</v-list-tile-content>
-            <v-list-tile-content v-else v-lang="info.text"></v-list-tile-content>
-
-            <v-list-tile-content v-if="info.value" class="align-end">{{info.value}}</v-list-tile-content>
-            <div v-else class="align-end">
-              <ol>
-                <li v-for="(ele,j) in info.values" v-bind:key="j">{{ele}}</li>
-              </ol>
-            </div>
-          </v-list-tile>
+          <v-simple-table>
+            <thead>
+              <tr>
+                <th class="text-left" v-lang="'name'"></th>
+                <th class="text-left" v-lang="'value'"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(info,i) in infos" v-bind:key="i">
+                <td>{{ info.text }}</td>
+                <td v-if="info.value">{{ info.value }}</td>
+                <td v-else>
+                  <ol>
+                    <li v-for="(ele,j) in info.values" v-bind:key="j">{{ele}}</li>
+                  </ol>
+                </td>
+              </tr>
+            </tbody>
+          </v-simple-table>
         </v-list>
 
+        <v-card-actions v-if="isSpa">
+           <v-btn @click="start_spa" color="success">
+              <v-icon>play_arrow</v-icon>
+              Start SPA
+            </v-btn>
+        </v-card-actions>
+
         <v-card-actions>
-            <v-flex xs4>
-              <v-btn @click="showUserscript">
-                <v-icon>pageview</v-icon>
-                {{!showUserscriptContent ? lang.show: lang.hide}}
-              </v-btn>
-            </v-flex>
-            <v-flex xs4>
-              <v-btn @click="edit" v-lang:append="'change'">
-                <v-icon>edit</v-icon>
-              </v-btn>
-            </v-flex>
-            <v-flex xs4>
-              <v-btn @click="deleteUserscript" v-lang:append="'delete_x'">
-                <v-icon>delete</v-icon>
-              </v-btn>
-            </v-flex>
+          <v-flex xs4>
+            <v-btn @click="showUserscript">
+              <v-icon>pageview</v-icon>
+              {{!showUserscriptContent ? lang.show: lang.hide}}
+            </v-btn>
+          </v-flex>
+          <v-flex xs4>
+            <v-btn @click="edit" color="primary" v-lang:append="'change'">
+              <v-icon>edit</v-icon>
+            </v-btn>
+          </v-flex>
+          <v-flex xs4>
+            <v-btn @click="deleteUserscript" color="error" v-lang:append="'delete_x'">
+              <v-icon>delete</v-icon>
+            </v-btn>
+          </v-flex>
         </v-card-actions>
 
         <!--Greasemonkey Variablen-->
@@ -191,7 +210,8 @@ import {
   empty,
   notify,
   download_file,
-  getExtId
+  getExtId,
+  getTranslation
 } from "lib/helper/basic_helper";
 
 import HighlightjsComponent from "./Highlight.vue";
@@ -200,6 +220,7 @@ import Vue from "vue";
 import SPA from "lib/spa/handler";
 import userscript_storage from "lib/storage/storage";
 import page_injection_helper from "lib/inject/page_injection_helper";
+import { mapState } from "vuex";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -220,10 +241,6 @@ export default Vue.component(componentName, {
       type: Number,
       required: true
     },
-    configuration: {
-      type: Object as () => usi.Storage.Config,
-      required: true
-    },
     expanded: {
       required: false,
       type: Boolean
@@ -234,6 +251,7 @@ export default Vue.component(componentName, {
       showUserscriptEntry: true,
       showUserscriptContent: false,
       markedAsDeleted: false,
+      isSpa: false,
       icon: "/gui/icon/usi.png",
       localScriptDeactivated: false,
       hightlightsjsActive: false,
@@ -241,14 +259,17 @@ export default Vue.component(componentName, {
       hightlightsjsStyle: "",
       GMValues: [],
       lang: {
-        deactivated: browser.i18n.getMessage("deactivated"),
-        activated: browser.i18n.getMessage("activated"),
-        delete_x: browser.i18n.getMessage("delete_x"),
-        change: browser.i18n.getMessage("change"),
-        show: browser.i18n.getMessage("show"),
-        hide: browser.i18n.getMessage("hide")
+        deactivated: getTranslation("deactivated"),
+        activated: getTranslation("activated"),
+        delete_x: getTranslation("delete_x"),
+        change: getTranslation("change"),
+        show: getTranslation("show"),
+        hide: getTranslation("hide")
       }
     };
+  },
+  computed: {
+    ...mapState(["configuration"])
   },
   created: function() {
     // Workaround
@@ -293,9 +314,60 @@ export default Vue.component(componentName, {
       }
       if (this.script.settings.description) {
         this.infos.push({
-          text: "description",
-          value: this.script.settings.description,
-          vlang: true
+          text: getTranslation("description"),
+          value: this.script.settings.description
+        });
+      }
+      if (this.script.settings.spa) {
+        if(this.script.settings.spa === "true" || this.script.settings.spa === true){
+          // Userscript ist eine Single Page Application
+          this.isSpa = true;
+
+          this.infos.push({
+          text: "SPA",
+          value: getTranslation("yes")
+        });
+        }
+      }
+
+      /**
+       * Liste die verwendeten GM API's auf
+       * @todo API Hinweise entfernen, falls diese auskommentiert sind
+       */
+      const search_for_GM_api_calls_arr = [
+           "GM_addStyle"
+          ,"GM_deleteValue"
+          ,"GM_getResourceText"
+          ,"GM_getResourceURL"
+          ,"GM_getResourceOrigURL"
+          ,"GM_getValue"
+          ,"GM_getValue_async"
+          ,"GM_listValues"
+          ,"GM_log"
+          ,"GM_openInTab"
+          ,"GM_registerMenuCommand"
+          ,"GM_setClipboard"
+          ,"GM_setValue"
+          ,"GM_xmlhttpRequest"
+          ,"GM_info"
+          ,"unsafeWindow"
+      ];
+
+      const gm_api_used = [] as string[];
+      search_for_GM_api_calls_arr.forEach((api_func) => {
+        // Simpler Test ob das Key Word für die Api enthalten ist
+        if(this.script.userscript.indexOf(api_func) > -1){
+          // Nur einmalig hinzufügen
+          if(gm_api_used.indexOf(api_func) === -1){
+            gm_api_used.push(api_func);
+          }
+        }
+      });
+
+      if(gm_api_used.length > 0){
+        this.infos.push({
+          text: getTranslation("gm_apis_used"),
+          values: gm_api_used
         });
       }
 
@@ -339,7 +411,7 @@ export default Vue.component(componentName, {
      * Userscript aktivieren, bzw deaktivieren
      * @returns void
      */
-    toggleActivation: async function(isDeactivated:boolean): Promise<void> {
+    toggleActivation: async function(isDeactivated: boolean): Promise<void> {
       // aktiviere oder deaktiviere dieses Userscript!
       const id = this.script.id;
       var script_storage = await userscript_storage();
@@ -349,7 +421,7 @@ export default Vue.component(componentName, {
         return;
       }
 
-      if(isDeactivated === userscript_handle.isDeactivated()){
+      if (isDeactivated === userscript_handle.isDeactivated()) {
         // Keine Veränderung
         return;
       }
@@ -363,7 +435,7 @@ export default Vue.component(componentName, {
           .remove_userscript(this.script.id)
           .then((check: boolean) => {
             if (check) {
-              this.$emit("showSnack", `Userscript ID ${id} deaktiviert`);
+              this.$root.$emit("snackbar", `Userscript ID ${id} deaktiviert`);
             }
           });
       } else {
@@ -372,7 +444,7 @@ export default Vue.component(componentName, {
           .add_userscript(this.script.id)
           .then((check: boolean) => {
             if (check) {
-              this.$emit("showSnack", `Userscript ID ${id} aktiviert`);
+              this.$root.$emit("snackbar", `Userscript ID ${id} aktiviert`);
             }
           });
       }
@@ -411,9 +483,9 @@ export default Vue.component(componentName, {
       if (!empty(this.script.id)) {
         // Frage zusammensetzen
         const question_text =
-          browser.i18n.getMessage("want_to_delete_this_userscript_1") +
+          getTranslation("want_to_delete_this_userscript_1") +
           this.script.id +
-          browser.i18n.getMessage("want_to_delete_this_userscript_2");
+          getTranslation("want_to_delete_this_userscript_2");
 
         //zusätzliche Abfrage
         if (window.confirm(question_text)) {
@@ -425,18 +497,22 @@ export default Vue.component(componentName, {
               // lösche dieses Element
               await userscript_handle.deleteUserscript();
 
-              notify(
-                browser.i18n.getMessage("userscript_was_successful_deleted") +
-                  " (ID " +
-                  this.script.id +
-                  ")"
-              );
+              const message_text =
+                getTranslation("userscript_was_successful_deleted") +
+                ` (ID ${this.script.id})`;
+
+              notify(message_text);
+              this.$root.$emit("snackbar", message_text);
 
               // Userscript entfernen lassen
               new page_injection_helper().remove_userscript(this.script.id);
             } else {
               // konnte nicht gefunden und daher auch nicht gelöscht werden
-              notify(browser.i18n.getMessage("userscript_could_not_deleted"));
+              notify(getTranslation("userscript_could_not_deleted"));
+              this.$root.$emit(
+                "snackbar",
+                getTranslation("userscript_could_not_deleted")
+              );
             }
             // Text nur durchstreichen, nicht direkt neuladen
             this.markedAsDeleted = true;
@@ -449,7 +525,7 @@ export default Vue.component(componentName, {
     GMValuesDelete: async function(): Promise<any> {
       // Frage den Benutzer nochmals ob er wirklich alle gesetzten Werte entfernen möchte
       const confirmed = window.confirm(
-        browser.i18n.getMessage("confirm_delete_all_GMValues")
+        getTranslation("confirm_delete_all_GMValues")
       );
 
       if (confirmed === false) {
@@ -467,14 +543,12 @@ export default Vue.component(componentName, {
 
     // Sende es an den Editierungs Controller
     edit: function(): void {
+      // Daten für die Edit Komponente setzen
+      this.$store.commit("editUserscriptId", this.script.id);
+      this.$store.commit("editUserscriptContent", this.script.userscript);
+
       // veranlasse den Tab Wechsel!
-      this.$parent.$emit("change-tab", <usi.Frontend.changeTabEvent>{
-        comp: "edit",
-        extraData: {
-          userscript: this.script.userscript,
-          id: this.script.id
-        }
-      });
+      this.$store.commit("activeView", "edit");
     },
 
     start_spa: function(): void {
@@ -499,6 +573,11 @@ export default Vue.component(componentName, {
         notify(
           "only source from http:// or https:// are allowed at the moment"
         );
+
+        this.$root.$emit(
+          "snackbar",
+          "only source from http:// or https:// are allowed at the moment"
+        );
       }
     },
 
@@ -507,7 +586,7 @@ export default Vue.component(componentName, {
     }
   },
   watch: {
-    localScriptDeactivated: function(newVal:boolean): void {
+    localScriptDeactivated: function(newVal: boolean): void {
       this.toggleActivation(newVal);
     },
     expanded: function(): void {
@@ -527,9 +606,5 @@ export default Vue.component(componentName, {
 }
 .pointer {
   cursor: pointer;
-}
-.width-100 {
-  width: 100%;
-  padding: 5px;
 }
 </style>

@@ -28,6 +28,7 @@ declare namespace usi.Storage {
             active: boolean
             , style: string
         }
+        , global_excludes : string[]
         , greasemonkey: {
             global_active: boolean
         }
@@ -82,18 +83,19 @@ declare namespace usi.Frontend {
     interface changeTabAdditionalEvent {
         event_name: string,
     }
-    interface changeTabEvent {
-        comp: string,
-        extraData: {
-            userscript: string,
-            id?: number
-        }
-    }
     interface UserscriptInfoElement {
         text: string;
         value?: string;
         values?: Array<string>;
         vlang?: boolean;
+    }
+    interface EditAddtional {
+        id?: number;
+        userscript?: string;
+    }
+    interface EditUndo {
+        time: number;
+        text: string;
     }
 }
 

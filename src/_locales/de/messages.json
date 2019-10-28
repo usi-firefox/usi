@@ -20,6 +20,12 @@
     "required_script_name": {
         "message": "Du solltest schon einen Namen vergeben, er muss auch nicht global eindeutig sein -> \n\n @name mein_userscript"
     },
+    "global_exclude_rules": {
+        "message": "Globale Exclude Regeln"
+    },
+    "add_global_exclude_rules": {
+        "message": "Globale Exclude Regel hinzufügen"
+    },
     "exception_100": {
         "message": "FEHLER script_settings.include nicht g\u00fcltig"
     },
@@ -134,6 +140,9 @@
     "want_to_delete_this_userscript_2": {
         "message": "') wirklich l\u00f6schen?"
     },
+    "really_delete": {
+        "message": "wirklich l\u00f6schen?"
+    },
     "delete_x": {
         "message": "l\u00f6schen (X)"
     },
@@ -157,6 +166,9 @@
     },
     "deactivated": {
         "message": "Deaktiviert:"
+    },
+    "gm_apis_used": {
+        "message": "Verwendete GM API's"
     },
     "actual_used_quota": {
         "message": "Aktueller Belegter Speicherverbauch"
@@ -251,6 +263,9 @@
     "direct_userscript_upload": {
         "message": "Userscript direkt hochladen"
     },
+    "seconds_ago": {
+        "message": "vor #1# Sekunden"
+    },
     "OldUsiIncludeBehavior_title": {
         "message": "USI Include Verhalten"
     },
@@ -274,6 +289,12 @@
     },
     "userscript_was_modified_by_usi___reason_missing_name": {
         "message": "Dein Userscript wurde von USI ver\u00e4ndert, es wurde @name <DateiName> eingef\u00fcgt!"
+    },
+    "name": {
+        "message": "Name"
+    },
+    "value": {
+        "message": "Wert"
     },
     "show_GMValues": {
         "message": "Zeige die gespeicherten GM Variablen"
