@@ -1,6 +1,6 @@
 {
   "name": "usi",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "description": "usi, userscript injector for Mozilla Firefox",
   "scripts": {
     "dev": "webpack --watch --mode development",
