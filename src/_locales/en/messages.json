@@ -131,6 +131,12 @@
     "empty_userscript_url": {
         "message": "You have to specify a URL where your Userscript can be found, otherwise you can not go on."
     },
+    "same_userscript_was_found": {
+        "message": "A Userscript with same settings was found"
+    },
+    "would_you_like_to_update": {
+        "message": "do you want to update?"
+    },
     "same_userscript_was_found_ask_update_it_1": {
         "message": "A Userscript with same settings was found (usi-id: '"
     },
