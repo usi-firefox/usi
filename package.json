@@ -1,10 +1,11 @@
 {
   "name": "usi",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "description": "usi, userscript injector for Mozilla Firefox",
   "scripts": {
     "dev": "webpack --watch --mode development",
     "browser": "web-ext run -s dist -p usi",
+    "browser-fresh": "web-ext run -s dist",
     "prod": "webpack --watch --mode production --devtool none",
     "self-update-packages": "ncu -u --removeRange && npm install",
     "lint-fix": "tslint --fix -p .",

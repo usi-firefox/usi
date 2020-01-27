@@ -70,10 +70,10 @@ module.exports = [
     devtool: "inline-source-map",
   }
   , {
-    entry: "./lib/get_userscript_from_page/content.ts",
+    entry: "./lib/page_install_userscript/page_install_userscript.ts",
     context: path.join(__dirname, "./src"),
     output: {
-      filename: "js/get_userscript_from_page.js",
+      filename: "js/page_install_userscript.js",
       path: path.resolve(__dirname, "./dist"),
     },
     module: {

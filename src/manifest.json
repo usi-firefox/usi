@@ -22,7 +22,7 @@
                 "file:///*.user.js"
             ],
             "js": [
-                "js/get_userscript_from_page.js"
+                "js/page_install_userscript.js"
             ],
             "run_at": "document_end"
         }
