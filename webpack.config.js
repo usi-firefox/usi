@@ -37,12 +37,13 @@ module.exports = [
     },
     devtool: "inline-source-map",
     plugins: [
-      new CopyWebpackPlugin([
+      new CopyWebpackPlugin({
+        patterns: [
         { from: "_locales", to: "_locales" },
         { from: "manifest.json" },
         { from: "lib/GM/GM_Frontend.js", to: "js/GM_Frontend.js" },
         { from: "html", to: "html" },
-      ]),
+      ]}),
     ],
   }
   , {
@@ -176,9 +177,10 @@ module.exports = [
         }],
       }]),
       new VueLoaderPlugin(),
-      new CopyWebpackPlugin([
-        { from: "gui", to: "gui", ignore: ["*.ts", "*.vue"] },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+        { from: "gui", to: "gui", globOptions: { ignore: ["*.ts", "*.vue"] }},
+      ]}),
     ],
   },
 ];
