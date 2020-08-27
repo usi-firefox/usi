@@ -42,7 +42,7 @@
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>{{navTitle}}</v-toolbar-title>
       </v-app-bar>
-      <v-content>
+      <v-main>
         <!-- App Content -->
         <!-- <keep-alive> -->
         <!-- @todo  schaltet die aktive Componente um -->
@@ -53,7 +53,7 @@
         <loadExternal-component v-if="activeView == 'loadExternal'"></loadExternal-component>
         <!-- </keep-alive> -->
         <!-- App Content -->
-      </v-content>
+      </v-main>
     </v-app>
   </div>
   <!-- Main -->
