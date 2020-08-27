@@ -18,7 +18,7 @@ export default class page_injection_helper {
     /**
      * Listener Funktion
      * @param {object} details
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     public userscriptInjection_onUpdate(details: any): boolean {
         if (parseInt(details.tabId, 0) < 0) {
@@ -41,7 +41,7 @@ export default class page_injection_helper {
      * @param {integer} tabId
      * @param {string} tabUrl
      * @param {string} transitionType
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     public checkUserscriptInjection(tabId: number, tabUrl: string, transitionType?: string): boolean {
         if (page_injection_helper.all_page_injections.length === 0) {
@@ -118,7 +118,7 @@ export default class page_injection_helper {
      *
      * @param {integer} tabId
      * @param {object} page_injection
-     * @returns {boolean}
+     * @returns {Promise<boolean>}
      */
     public async _startTabExecution(tabId: number, page_injection: any): Promise<boolean> {
         if (typeof page_injection.gm.preparedScript === "string") {
@@ -183,8 +183,9 @@ export default class page_injection_helper {
 
     /**
      * Führe diese Funktion aus damit der Injection Bereich neu geladen werden kann
+     * @returns {Promise<boolean>}
      */
-    public async re_init_page_injection(): Promise<boolean> {
+    public async re_init_page_injection() : Promise<boolean> {
 
         // zurücksetzen vom Sammler Objekt!
         page_injection_helper.all_page_injections = [];
@@ -229,8 +230,9 @@ export default class page_injection_helper {
 
     /**
      * liefert die Userscript Include und Exclude Regeln und das fertige Exec Object für browser.tabs.executeScript
+     * @returns {Promise<any>}
      */
-    public async get_rules_and_exec_object(userscript_instance: any) {
+    public async get_rules_and_exec_object(userscript_instance: any) : Promise<any> {
 
         if (typeof userscript_instance === "undefined" || typeof userscript_instance.getSettings !== "function" || userscript_instance.getSettings() === null) {
             return false;
@@ -248,8 +250,9 @@ export default class page_injection_helper {
 
     /**
      * Erzeugt ein Exec Objekt für SPA Skripte
+     * @returns {Promise<any>}
      */
-    public async create_spa_userscript_exec_object(userscript_instance: any) {
+    public async create_spa_userscript_exec_object(userscript_instance: any) : Promise<any> {
 
         const script_settings = userscript_instance.getSettings();
         const userscript_id = userscript_instance.getId();
@@ -285,7 +288,12 @@ export default class page_injection_helper {
 
     }
 
-    public async create_normal_userscript_exec_object(userscript_instance: any) {
+    /**
+     * 
+     * @param {any} userscript_instance 
+     * @returns {Promise<any>}
+     */
+    public async create_normal_userscript_exec_object(userscript_instance: any) : Promise<any> {
         const script_settings = userscript_instance.getSettings();
         const exec_details: any = {};
         const userscript_id = userscript_instance.getId();
@@ -430,8 +438,10 @@ export default class page_injection_helper {
 
     /**
      * Erzeugt den Userscript Inhalt, inklusive der require Skripte
+     * @param {any} userscript_instance 
+     * @returns {string}
      */
-    public add_require_scripts(userscript_instance: any) {
+    public add_require_scripts(userscript_instance: any) : string {
         // sammelt alle Skripte die auf der Seite eingebunden werden sollen
         const contentScript = [];
 
@@ -459,7 +469,7 @@ export default class page_injection_helper {
     /**
      * Liefert jQuery als String zurück
      * @param {bool|string} include_jQuery
-     * @returns {String}
+     * @returns {Promise<string>}
      */
     public async add_jQuery_Functions(include_jQuery: boolean | string): Promise<string> {
         // Wenn jQuery gefordert ist muss das page_injection_object angepasst werden
