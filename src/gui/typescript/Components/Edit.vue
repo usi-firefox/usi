@@ -430,8 +430,8 @@ export default Vue.component(componentName, {
 });
 </script>
 
-<style scoped>
-#usi-edit-script-textarea{
+<style>
+#usi-edit-script-textarea {
   line-height: 100%;
 }
 .pointer{
