@@ -24,7 +24,7 @@
         "message": "Globale Exclude Regeln"
     },
     "add_global_exclude_rules": {
-        "message": "Globale Exclude Regel hinzufügen"
+        "message": "z.b. *www.wikipedia.org*"
     },
     "exception_100": {
         "message": "FEHLER script_settings.include nicht g\u00fcltig"
