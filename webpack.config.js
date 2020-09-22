@@ -2,6 +2,7 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const usi_version_number = require("./package.json").version;
 const ReplaceInFileWebpackPlugin = require("replace-in-file-webpack-plugin");
+const RemovePlugin = require('remove-files-webpack-plugin');
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 // Ausgelagert für ts-loader 4.3.1 und höher
@@ -181,6 +182,21 @@ module.exports = [
         patterns: [
         { from: "gui", to: "gui", globOptions: { ignore: ["*.ts", "*.vue"] }},
       ]}),
+      // Remove Fonts which are unnecessary for FF
+      new RemovePlugin({
+        after: {
+          root: './dist/gui/fonts',
+          include : [
+            "MaterialIcons-Regular.eot",
+            "MaterialIcons-Regular.ttf",
+            "MaterialIcons-Regular.woff",
+
+            "materialdesignicons-webfont.eot",
+            "materialdesignicons-webfont.ttf",
+            "materialdesignicons-webfont.woff",
+          ]
+        }
+      }),
     ],
   },
 ];
