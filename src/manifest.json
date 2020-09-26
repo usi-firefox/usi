@@ -1,0 +1,58 @@
+{
+    "manifest_version": 2,
+    "name": "USI",
+    "description": "__MSG_extShortDesc__",
+    "default_locale": "de",
+    "author": "usi-dev",
+    "developer": {
+        "name": "usi-dev"
+    },
+    "version": "###USI-VERSION###",
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*/*.user.js",
+                "*://*/*.user.js?*",
+                "file:///*.user.js?*",
+                "file:///*.user.js"
+            ],
+            "js": [
+                "js/page_install_userscript.js"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "browser_action": {
+        "browser_style": true,
+        "default_icon": {
+            "38": "gui/icon/usi.png"
+        },
+        "default_title": "USI"
+    },
+    "options_ui": {
+        "open_in_tab": true,
+        "page": "gui/options.html"
+    },
+    "applications": {
+        "gecko": {
+            "id": "firefox-addon-usi@jetpack",
+            "strict_min_version": "59.0"
+        }
+    },
+    "permissions": [
+        "<all_urls>",
+        "clipboardRead",
+        "clipboardWrite",
+        "notifications",
+        "storage",
+        "unlimitedStorage",
+        "tabs",
+        "webNavigation"
+    ],
+    "content_security_policy": "script-src 'self'; object-src 'self';"
+}
