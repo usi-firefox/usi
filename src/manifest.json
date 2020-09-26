@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "USI-DEVELOPMENT",
+    "name": "USI",
     "description": "__MSG_extShortDesc__",
     "default_locale": "de",
     "author": "usi-dev",
@@ -40,7 +40,7 @@
     },
     "applications": {
         "gecko": {
-            "id": "firefox-addon-usi-DEVELOPMENT@jetpack",
+            "id": "firefox-addon-usi@jetpack",
             "strict_min_version": "59.0"
         }
     },
