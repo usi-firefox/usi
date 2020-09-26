@@ -24,7 +24,7 @@
         "message": "Globale Exclude Regeln"
     },
     "add_global_exclude_rules": {
-        "message": "Globale Exclude Regel hinzufügen"
+        "message": "z.b. *www.wikipedia.org*"
     },
     "exception_100": {
         "message": "FEHLER script_settings.include nicht g\u00fcltig"
@@ -118,6 +118,12 @@
     },
     "empty_userscript_url": {
         "message": "Du musst eine Url angeben wo dein User Script zu finden ist, ansonsten kannst du nicht weitermachen."
+    },
+    "same_userscript_was_found": {
+        "message": "Ein Userscript mit den gleichen Einstellungen wurde gefunden"
+    },
+    "would_you_like_to_update": {
+        "message": "m\u00f6chtest du es aktualisieren?"
     },
     "same_userscript_was_found_ask_update_it_1": {
         "message": "Ein Userscript mit den gleichen Einstellungen (usi-id: '"

@@ -70,7 +70,7 @@ export default class load_resource {
             return await response.text();
         }
 
-        console.error("response from loadImage()");
+        console.error("response from loadText()");
         console.error(response);
 
         // Fehler ist aufgetreten
@@ -90,11 +90,6 @@ export default class load_resource {
      * Holt externe Skripte, und gibt bei Erfolg ein Promise zurück
      */
     public async load_userscript_by_url(url: string, charset: string = "utf-8"): Promise<string> {
-
-        if (!url_ends_with_user_js(url)) {
-            // Nur URL erlaubt die mit .user.js endet
-            throw new Error("keine .user.js Endung");
-        }
 
         if (!valid_url(url)) {
             throw new Error("keine gültige URL übergeben");

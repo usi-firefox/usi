@@ -2,6 +2,7 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const usi_version_number = require("./package.json").version;
 const ReplaceInFileWebpackPlugin = require("replace-in-file-webpack-plugin");
+const RemovePlugin = require('remove-files-webpack-plugin');
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 // Ausgelagert für ts-loader 4.3.1 und höher
@@ -37,12 +38,13 @@ module.exports = [
     },
     devtool: "inline-source-map",
     plugins: [
-      new CopyWebpackPlugin([
+      new CopyWebpackPlugin({
+        patterns: [
         { from: "_locales", to: "_locales" },
         { from: "manifest.json" },
         { from: "lib/GM/GM_Frontend.js", to: "js/GM_Frontend.js" },
         { from: "html", to: "html" },
-      ]),
+      ]}),
     ],
   }
   , {
@@ -70,10 +72,10 @@ module.exports = [
     devtool: "inline-source-map",
   }
   , {
-    entry: "./lib/get_userscript_from_page/content.ts",
+    entry: "./lib/page_install_userscript/page_install_userscript.ts",
     context: path.join(__dirname, "./src"),
     output: {
-      filename: "js/get_userscript_from_page.js",
+      filename: "js/page_install_userscript.js",
       path: path.resolve(__dirname, "./dist"),
     },
     module: {
@@ -110,8 +112,8 @@ module.exports = [
               // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
               // the "scss" and "sass" values for the lang attribute to the right configs here.
               // other preprocessors should work out of the box, no loader config like this necessary.
-              "scss": "vue-style-loader!css-loader!sass-loader",
-              "sass": "vue-style-loader!css-loader!sass-loader?indentedSyntax",
+              "scss": "style-loader!css-loader!sass-loader",
+              "sass": "style-loader!css-loader!sass-loader?indentedSyntax",
               "ts": tsLoaderConfig,
             },
             // other vue-loader options go here
@@ -125,7 +127,7 @@ module.exports = [
         {
           test: /\.css$/,
           use: [
-            "vue-style-loader",
+            "style-loader",
             "css-loader",
           ],
         },
@@ -176,9 +178,25 @@ module.exports = [
         }],
       }]),
       new VueLoaderPlugin(),
-      new CopyWebpackPlugin([
-        { from: "gui", to: "gui", ignore: ["*.ts", "*.vue"] },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+        { from: "gui", to: "gui", globOptions: { ignore: ["*.ts", "*.vue"] }},
+      ]}),
+      // Remove Fonts which are unnecessary for FF
+      new RemovePlugin({
+        after: {
+          root: './dist/gui/fonts',
+          include : [
+            "MaterialIcons-Regular.eot",
+            "MaterialIcons-Regular.ttf",
+            "MaterialIcons-Regular.woff",
+
+            "materialdesignicons-webfont.eot",
+            "materialdesignicons-webfont.ttf",
+            "materialdesignicons-webfont.woff",
+          ]
+        }
+      }),
     ],
   },
 ];
