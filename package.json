@@ -1,6 +1,6 @@
 {
   "name": "usi",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "usi, userscript injector for Mozilla Firefox",
   "scripts": {
     "dev": "webpack --watch --mode development",
@@ -11,8 +11,14 @@
     "lint-fix": "tslint --fix -p .",
     "build": "webpack --mode production --devtool none && web-ext build -s dist"
   },
-  "author": "usi <>",
-  "license": "LGPL",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/usi-firefox/usi.git"
+  },
+  "author": {
+    "name" : "usi"
+  },
+  "license": "LGPL-2.1-only",
   "dependencies": {
     "material-design-icons-iconfont": "6.1.0",
     "vue": "2.6.12",

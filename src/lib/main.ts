@@ -95,6 +95,3 @@ usi_main_instance.startGMBackend();
 
 // PageInjection starten
 usi_main_instance.startPageInjection();
-
-// DEBUG!!!
-usi_main_instance._create_or_update_options_tab();
