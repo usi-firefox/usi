@@ -36,7 +36,7 @@ module.exports = [
         path.resolve("./src"),
       ],
     },
-    devtool: "inline-source-map",
+    
     plugins: [
       new CopyWebpackPlugin({
         patterns: [
@@ -69,7 +69,7 @@ module.exports = [
         path.resolve("./src"),
       ],
     },
-    devtool: "inline-source-map",
+    
   }
   , {
     entry: "./lib/page_install_userscript/page_install_userscript.ts",
@@ -93,9 +93,12 @@ module.exports = [
         path.resolve("./src"),
       ],
     },
-    devtool: "inline-source-map",
+    
   }
   , {
+    optimization: {
+      minimize: false
+    },
     entry: "./gui/typescript/Startup.ts",
     context: path.join(__dirname, "./src"),
     output: {
@@ -106,18 +109,22 @@ module.exports = [
       rules: [
         {
           test: /\.vue$/,
-          loader: "vue-loader",
-          options: {
-            loaders: {
-              // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-              // the "scss" and "sass" values for the lang attribute to the right configs here.
-              // other preprocessors should work out of the box, no loader config like this necessary.
-              "scss": "style-loader!css-loader!sass-loader",
-              "sass": "style-loader!css-loader!sass-loader?indentedSyntax",
-              "ts": tsLoaderConfig,
-            },
-            // other vue-loader options go here
-          },
+          use: [
+            {
+              loader: "vue-loader",
+              options: {
+                loaders: {
+                  // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
+                  // the "scss" and "sass" values for the lang attribute to the right configs here.
+                  // other preprocessors should work out of the box, no loader config like this necessary.
+                  "scss": "style-loader!css-loader!sass-loader",
+                  "sass": "style-loader!css-loader!sass-loader?indentedSyntax",
+                  "ts": tsLoaderConfig,
+                },
+                // other vue-loader options go here
+              },
+						}
+					]
         },
         {
           test: /\.tsx?$/,
@@ -167,7 +174,7 @@ module.exports = [
         root: "hljs", // indicates global variable
       },
     },
-    devtool: "inline-source-map",
+    
     plugins: [
       new ReplaceInFileWebpackPlugin([{
         dir: "dist",
