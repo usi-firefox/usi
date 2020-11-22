@@ -166,4 +166,7 @@ export default Vue.component(componentName, {
 </script>
 
 <style>
+.v-application code {
+  background-color: unset !important;
+}
 </style>
