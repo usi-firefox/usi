@@ -13,20 +13,29 @@
     </v-layout>
 
     <v-layout>
-        <pre><code>{{this.code}}</code></pre>
+        <highlightjs language='javascript' :code="this.code"></highlightjs>
     </v-layout>
   </v-container>
 </template>
 
 <script lang="ts">
-declare var hljs: any;
 
 import config_storage from "lib/storage/config";
 
 import Vue from "vue";
 import { mapState } from "vuex";
 
-const highlight_styles_path = "libs/highlight/styles/";
+/** 
+ * Enthält alle aktuell zur Verfügung stehenden Highlight.js Styles
+ * @see webpack.config.js
+ */
+declare var highlightjsStyles : string[];
+
+/** 
+ * Dieser Pfad wird über die webpack.config.js generiert
+ * und die entsprechenden Styles werden dorthin kopiert 
+ */
+const highlight_styles_path = "highlight-styles/";
 
 /**
  * legt den Component Namen fest, damit dieser als HTML Tag
@@ -44,110 +53,20 @@ export default Vue.component(componentName, {
       required: true
     }
   },
-  data: function() {
+  data(){
     return {
-      
-      // enthält alle verfügbaren highlight js styles
-      hightlightjsstyles: [
-        "agate",
-        "androidstudio",
-        "arduino-light",
-        "arta",
-        "ascetic",
-        "atelier-cave-dark",
-        "atelier-cave-light",
-        "atelier-dune-dark",
-        "atelier-dune-light",
-        "atelier-estuary-dark",
-        "atelier-estuary-light",
-        "atelier-forest-dark",
-        "atelier-forest-light",
-        "atelier-heath-dark",
-        "atelier-heath-light",
-        "atelier-lakeside-dark",
-        "atelier-lakeside-light",
-        "atelier-plateau-dark",
-        "atelier-plateau-light",
-        "atelier-savanna-dark",
-        "atelier-savanna-light",
-        "atelier-seaside-dark",
-        "atelier-seaside-light",
-        "atelier-sulphurpool-dark",
-        "atelier-sulphurpool-light",
-        "atom-one-dark",
-        "atom-one-light",
-        "brown-paper",
-        "codepen-embed",
-        "color-brewer",
-        "darcula",
-        "dark",
-        "darkula",
-        "default",
-        "docco",
-        "dracula",
-        "far",
-        "foundation",
-        "github-gist",
-        "github",
-        "googlecode",
-        "grayscale",
-        "gruvbox-dark",
-        "gruvbox-light",
-        "hopscotch",
-        "hybrid",
-        "idea",
-        "ir-black",
-        "kimbie.dark",
-        "kimbie.light",
-        "magula",
-        "mono-blue",
-        "monokai-sublime",
-        "monokai",
-        "obsidian",
-        "ocean",
-        "paraiso-dark",
-        "paraiso-light",
-        "pojoaque",
-        "purebasic",
-        "qtcreator_dark",
-        "qtcreator_light",
-        "railscasts",
-        "rainbow",
-        "routeros",
-        "school-book",
-        "solarized-dark",
-        "solarized-light",
-        "sunburst",
-        "tomorrow-night-blue",
-        "tomorrow-night-bright",
-        "tomorrow-night-eighties",
-        "tomorrow-night",
-        "tomorrow",
-        "vs",
-        "vs2015",
-        "xcode",
-        "xt256",
-        "zenburn"
-      ]
+      active_style : "default"
     };
   },
   computed: {
-    active_style: {
-      get() : string {
-        return this.$store.getters["configuration/hightlightjs_style"];
-      },
-      set(style: string){
-        this.$store.dispatch("configuration/hightlightjs_style",style);
-      }
+    hightlightjsstyles(){
+      return highlightjsStyles.map((filename) => {
+        // .css Datei Endung entfernen
+        return filename.replace(/\.css$/, "");
+      });
     }
   },
   mounted() {
-    const codeblock = this.$el.querySelector("pre code");
-    // HighlightJS ausführen
-    if (codeblock) {
-      hljs.highlightBlock(codeblock);
-    }
-
     this.changeHighlightStyle();
   },
   methods: {
