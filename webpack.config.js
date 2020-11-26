@@ -36,15 +36,16 @@ module.exports = [
         path.resolve("./src"),
       ],
     },
-    
+
     plugins: [
       new CopyWebpackPlugin({
         patterns: [
-        { from: "_locales", to: "_locales" },
-        { from: "manifest.json" },
-        { from: "lib/GM/GM_Frontend.js", to: "js/GM_Frontend.js" },
-        { from: "html", to: "html" },
-      ]}),
+          { from: "_locales", to: "_locales" },
+          { from: "manifest.json" },
+          { from: "lib/GM/GM_Frontend.js", to: "js/GM_Frontend.js" },
+          { from: "html", to: "html" },
+        ]
+      }),
     ],
   }
   , {
@@ -69,7 +70,7 @@ module.exports = [
         path.resolve("./src"),
       ],
     },
-    
+
   }
   , {
     entry: "./lib/page_install_userscript/page_install_userscript.ts",
@@ -93,7 +94,7 @@ module.exports = [
         path.resolve("./src"),
       ],
     },
-    
+
   }
   , {
     optimization: {
@@ -123,8 +124,8 @@ module.exports = [
                 },
                 // other vue-loader options go here
               },
-						}
-					]
+            }
+          ]
         },
         {
           test: /\.tsx?$/,
@@ -174,7 +175,7 @@ module.exports = [
         root: "hljs", // indicates global variable
       },
     },
-    
+
     plugins: [
       new ReplaceInFileWebpackPlugin([{
         dir: "dist",
@@ -193,7 +194,7 @@ module.exports = [
       new RemovePlugin({
         after: {
           root: './dist/gui/fonts',
-          include : [
+          include: [
             "MaterialIcons-Regular.eot",
             "MaterialIcons-Regular.ttf",
             "MaterialIcons-Regular.woff",
