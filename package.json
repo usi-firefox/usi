@@ -9,6 +9,7 @@
     "prod": "webpack --watch --mode production",
     "self-update-packages": "ncu -u --removeRange && npm install",
     "lint-fix": "tslint --fix -p .",
+    "remove-dist-folder": "node scripts/remove-dist-folder.js",
     "build": "webpack --mode production && web-ext build -s dist"
   },
   "repository": {
