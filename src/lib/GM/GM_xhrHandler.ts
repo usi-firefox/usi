@@ -163,8 +163,8 @@ export default function GM_xhrHandler() {
 
                 } catch (exception) {
                     console.error("exception in GM_xhrHandler.createSimpleRequestEvent()");
-                    if (exception.messsage) {
-                        console.error(exception.messsage);
+                    if ((exception as Error).message) {
+                        console.error((exception as Error).message);
                     } else {
                         console.error(exception);
                     }

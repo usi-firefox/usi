@@ -34,8 +34,8 @@ export default class usi_main {
             }
         } catch (exception) {
             console.error("exception in main.createGuiListener()");
-            if (exception.message) {
-                console.error(exception.message);
+            if ((exception as Error).message) {
+                console.error((exception as Error).message);
             } else {
                 console.error(exception);
             }

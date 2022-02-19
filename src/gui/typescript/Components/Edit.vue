@@ -340,7 +340,7 @@ export default Vue.component(componentName, {
         }catch(exception){
           // Neues Userscript konnte nicht erstellt werden
           const error_message_text = getTranslation("userscript_couldnt_saved") +
-              "\n" + exception.message;
+              "\n" + (exception as Error).message;
             
           notify(error_message_text);
           this.$root.$emit("snackbar", error_message_text);
@@ -394,7 +394,7 @@ export default Vue.component(componentName, {
           
     }catch(exception){
       const error_message_text = getTranslation("userscript_couldnt_saved") +
-        "\n" + exception.message;
+        "\n" + (exception as Error).message;
       
       notify(error_message_text);
       this.$root.$emit("snackbar", error_message_text);

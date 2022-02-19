@@ -29,8 +29,8 @@ async function create_new_userscript(message: usi.fromPageWithUserscriptFile.mes
 
             notify(getTranslation("userscript_was_created"));
 
-        } catch (excetion) {
-            notify(excetion.message);
+        } catch (exception) {
+            notify((exception as Error).message);
         }
 
     } else {
@@ -58,8 +58,8 @@ async function override_same_userscript(message: usi.fromPageWithUserscriptFile.
 
             notify(getTranslation("userscript_was_overwritten"));
 
-        } catch (excetion) {
-            notify(excetion.message);
+        } catch (exception) {
+            notify((exception as Error).message);
         }
     }
 }

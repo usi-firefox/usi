@@ -174,7 +174,7 @@ export default function userscript_handle(initial_data: usi.Storage.Userscript) 
                     const message = `couldn't load from url: '${url}'`;
 
                     // Bekannte Exception - Daten konnten nicht geladen werden
-                    if (exception.message === "NetworkError when attempting to fetch resource.") {
+                    if ((exception as Error).message === "NetworkError when attempting to fetch resource.") {
                         throw new Error(message);
                     }
 
