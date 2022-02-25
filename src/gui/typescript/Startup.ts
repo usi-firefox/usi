@@ -1,7 +1,7 @@
 import AppBody from "Components/AppBody.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import {store} from "./Store/store";
+import { store } from "./Store/store";
 
 /** Fontawesome Konfiguration */
 import FontAwesomeIconComponent from "./Config/fontawesome";
@@ -56,7 +56,7 @@ Vue.directive("lang", {
 
             case "replace":
                 // Übersetzung überschreiben einsetzen
-                el.innerText =  translated;
+                el.innerText = translated;
                 break;
 
             case "label":

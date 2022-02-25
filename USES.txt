@@ -1,7 +1,6 @@
 Other Projects & Software used by USI
 
-* jQuery 3.5.1 (https://github.com/jquery/jquery)
-* highlight.js 10.4.0 (https://github.com/isagalaev/highlight.js)
+* jQuery 3.6.0 (https://github.com/jquery/jquery)
 * Greasemonkey/modules/third-party/convert2RegExp.js 3.8 (https://github.com/greasemonkey/greasemonkey/blob/3.x/modules/third-party/convert2RegExp.js)
 * a way to download images and convert them to a datauri (http://stackoverflow.com/questions/20035615/using-raw-image-data-from-ajax-request-for-data-uri | http://stackoverflow.com/a/20048852)
 * and other mentioned in package.json

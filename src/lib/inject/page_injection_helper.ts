@@ -475,7 +475,7 @@ export default class page_injection_helper {
         // Wenn jQuery gefordert ist muss das page_injection_object angepasst werden
         if (include_jQuery === "true" || include_jQuery === true) {
             const load_resource_instance = new load_resource();
-            return await load_resource_instance.load_internal_file("/gui/libs/jquery/jQuery-3.5.1.min.js");
+            return await load_resource_instance.load_internal_file("/gui/libs/jquery/jQuery-3.6.0.min.js");
         }
 
         return "";
