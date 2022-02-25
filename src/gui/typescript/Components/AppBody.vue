@@ -39,7 +39,9 @@
         </v-list-item>
       </v-navigation-drawer>
       <v-app-bar class="blue--text" app @click.stop="drawer = !drawer">
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon>
+          <font-awesome-icon icon="sliders" />
+        </v-app-bar-nav-icon>
         <v-toolbar-title>{{navTitle}}</v-toolbar-title>
       </v-app-bar>
       <v-main>

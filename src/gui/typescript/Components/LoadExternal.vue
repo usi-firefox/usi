@@ -6,7 +6,7 @@
         <h3 v-lang="'direct_userscript_upload'"></h3>
         <!--Userscript direkt hochladen-->
         &nbsp;
-        <v-icon>cloud_upload</v-icon>
+        <font-awesome-icon icon="cloud-arrow-up" />
       </v-card-title>
       <v-card-text>
         <v-card-actions>
@@ -34,7 +34,7 @@
           <v-flex xs1 offset-xs1>
             <!-- Eigenes Charset hinzufügen -->
             <v-btn @click="addCustomCharset" color="info">
-              <v-icon>add_circle</v-icon>
+              <font-awesome-icon icon="plus" />
             </v-btn>
           </v-flex>
         </v-card-actions>

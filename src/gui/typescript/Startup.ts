@@ -3,6 +3,12 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import {store} from "./Store/store";
 
+/** Fontawesome Konfiguration */
+import FontAwesomeIconComponent from "./Config/fontawesome";
+
+/* add font awesome icon component */
+Vue.component('font-awesome-icon', FontAwesomeIconComponent);
+
 Vue.use(Vuetify);
 
 import "@mdi/font/css/materialdesignicons.css"; // Ensure you are using css-loader
@@ -17,7 +23,7 @@ import "material-design-icons-iconfont/dist/material-design-icons.css"; // Ensur
  * Die Anpassungen für (Zeile: 3652 - 3663)
  * ".v-application code" wurden deaktiviert!
  */
-import "../css/vuetify.css"; 
+import "../css/vuetify.css";
 
 import { vuetify_options } from "./vuetify_options";
 

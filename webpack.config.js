@@ -1,11 +1,8 @@
 const path = require("path");
-const fs = require("fs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const usi_version_number = require("./package.json").version;
 const ReplaceInFileWebpackPlugin = require("replace-in-file-webpack-plugin");
-const RemovePlugin = require('remove-files-webpack-plugin');
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const webpack = require("webpack");
 
 // Ausgelagert für ts-loader 4.3.1 und höher
 const tsLoaderConfig = {
@@ -14,15 +11,6 @@ const tsLoaderConfig = {
     appendTsSuffixTo: [/\.vue$/],
   },
 };
-
-/**
- * Highlight.js Styles zusammenpacken, 
- * damit diese später dynamisch zugewiesen werden können
- */
-const highlightJsStylesFilenames = fs.readdirSync(path.resolve("node_modules/highlight.js/styles")).filter((filename) => {
-  // nur CSS Dateien übernehmen
-  return /\.css$/.test(filename);
-});
 
 module.exports = [
   {
@@ -181,17 +169,11 @@ module.exports = [
         commonjs: "jQuery",
         root: "$", // indicates global variable
       },
-      highlightjs: {
-        commonjs: "highlightjs",
-        root: "hljs", // indicates global variable
-      },
     },
 
     plugins: [
-      new webpack.DefinePlugin({
-        // Enthält alle CSS Dateinamen
-        highlightjsStyles: JSON.stringify(highlightJsStylesFilenames)
-      }),
+      // new webpack.DefinePlugin({
+      // }),
       new ReplaceInFileWebpackPlugin([{
         dir: "dist",
         files: ["manifest.json"],
@@ -204,24 +186,7 @@ module.exports = [
       new CopyWebpackPlugin({
         patterns: [
           { from: "gui", to: "gui", globOptions: { ignore: ["*.ts", "*.vue"] } },
-          // Kopiert alle CSS Themes von highlight.js in einen separaten Ordner
-          { from: "../node_modules/highlight.js/styles", to: "gui/highlight-styles" },
         ]
-      }),
-      // Remove Fonts which are unnecessary for FF
-      new RemovePlugin({
-        after: {
-          root: './dist/gui/fonts',
-          include: [
-            "MaterialIcons-Regular.eot",
-            "MaterialIcons-Regular.ttf",
-            "MaterialIcons-Regular.woff",
-
-            "materialdesignicons-webfont.eot",
-            "materialdesignicons-webfont.ttf",
-            "materialdesignicons-webfont.woff",
-          ]
-        }
       }),
     ],
   },

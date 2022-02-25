@@ -12,10 +12,8 @@
             v-if="isSpa"
           >| SPA</span>
           <v-btn icon>
-            <v-icon
-              v-html="showUserscriptEntry ? 'expand_less' : 'expand_more'"
-              title="expand or compress overview"
-            ></v-icon>
+            <font-awesome-icon v-if="showUserscriptEntry" icon="caret-up" />
+            <font-awesome-icon else icon="caret-down" />
           </v-btn>
         </v-flex>
         <v-flex xs1>
@@ -24,14 +22,14 @@
               <!-- Options Menü -->
               <template v-slot:activator="{ on }">
                 <v-btn icon v-on="on">
-                  <v-icon>more_vert</v-icon>
+                  <font-awesome-icon icon="ellipsis-vertical" />
                 </v-btn>
               </template>
               <v-list>
                 <!--Userscript anzeigen/ausblenden-->
                 <v-list-item @click="showUserscript">
                   <v-list-item-action>
-                    <v-icon>pageview</v-icon>
+                    <font-awesome-icon icon="magnifying-glass" />
                   </v-list-item-action>
                   <v-list-item-title>
                     <span v-html="!showUserscriptContent ? lang.show: lang.hide"></span>
@@ -42,7 +40,7 @@
                 <v-divider></v-divider>
                 <v-list-item @click="edit">
                   <v-list-item-action>
-                    <v-icon>edit</v-icon>
+                    <font-awesome-icon icon="pen" />
                   </v-list-item-action>
                   <v-list-item-title>
                     <span v-lang="'change'"></span>
@@ -53,7 +51,7 @@
                 <v-divider></v-divider>
                 <v-list-item @click="deleteUserscript">
                   <v-list-item-action>
-                    <v-icon>delete</v-icon>
+                    <font-awesome-icon icon="trash" />
                   </v-list-item-action>
                   <v-list-item-title>
                     <span v-lang="'delete_x'"></span>
@@ -63,7 +61,7 @@
                 <v-divider></v-divider>
                 <v-list-item @click="export_script">
                   <v-list-item-action>
-                    <v-icon>import_export</v-icon>
+                    <font-awesome-icon icon="flie-export" />
                   </v-list-item-action>
                   <v-list-item-title>export</v-list-item-title>
                 </v-list-item>
@@ -72,7 +70,7 @@
                   <v-divider></v-divider>
                   <v-list-item @click="start_spa">
                     <v-list-item-action>
-                      <v-icon>play_arrow</v-icon>
+                      <font-awesome-icon icon="play" />
                     </v-list-item-action>
                     <v-list-item-title>Start SPA</v-list-item-title>
                   </v-list-item>
@@ -82,7 +80,7 @@
                   <v-divider></v-divider>
                   <v-list-item @click="loadAgain">
                     <v-list-item-action>
-                      <v-icon>repeat</v-icon>
+                      <font-awesome-icon icon="repeat" />
                     </v-list-item-action>
                     <v-list-item-title>
                       <span v-lang="'reload_from_source'"></span>
@@ -94,7 +92,7 @@
                   <v-divider></v-divider>
                   <v-list-item @click="GMValuesGet">
                     <v-list-item-action>
-                      <v-icon>get_app</v-icon>
+                      <font-awesome-icon icon="grip-lines" />
                     </v-list-item-action>
                     <v-list-item-title>GM Values show</v-list-item-title>
                   </v-list-item>
@@ -102,7 +100,7 @@
                   <v-divider></v-divider>
                   <v-list-item @click="GMValuesDelete">
                     <v-list-item-action>
-                      <v-icon>delete</v-icon>
+                      <font-awesome-icon icon="trash" />
                     </v-list-item-action>
                     <v-list-item-title>GM Values delete</v-list-item-title>
                   </v-list-item>
@@ -147,7 +145,7 @@
 
         <v-card-actions v-if="isSpa">
            <v-btn @click="start_spa" color="success">
-              <v-icon>play_arrow</v-icon>
+              <font-awesome-icon icon="play" />
               Start SPA
             </v-btn>
         </v-card-actions>
@@ -155,18 +153,18 @@
         <v-card-actions>
           <v-flex xs4>
             <v-btn @click="showUserscript">
-              <v-icon>pageview</v-icon>
+              <font-awesome-icon icon="magnifying-glass" />
               {{!showUserscriptContent ? lang.show: lang.hide}}
             </v-btn>
           </v-flex>
           <v-flex xs4>
             <v-btn @click="edit" color="primary" v-lang:append="'change'">
-              <v-icon>edit</v-icon>
+              <font-awesome-icon icon="pen" />
             </v-btn>
           </v-flex>
           <v-flex xs4>
             <v-btn @click="deleteUserscript" color="error" v-lang:append="'delete_x'">
-              <v-icon>delete</v-icon>
+              <font-awesome-icon icon="trash" />
             </v-btn>
           </v-flex>
         </v-card-actions>

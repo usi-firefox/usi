@@ -35,7 +35,7 @@
           <v-flex>
             <!--Userscript Beispiel-->
             <v-btn @click="save" color="info">
-              <v-icon>save</v-icon>&nbsp;
+              <font-awesome-icon icon="floppy-disk" />&nbsp;
               <span v-lang="'save'"></span>
             </v-btn>
 
@@ -43,7 +43,7 @@
             <v-dialog v-model="undo_dialog" width="500">
               <template v-slot:activator="{ on }">
                 <v-btn v-on="on" v-show="last_userscript_text.length > 0" color="warning">
-                  <v-icon>undo</v-icon>
+                  <font-awesome-icon icon="undo" />
                   &nbsp;{{last_userscript_text.length}}
                 </v-btn>
               </template>
@@ -82,7 +82,7 @@
           </v-flex>
           <v-flex xs2>
             <v-btn @click="defaultSize">
-              <i class="material-icons">undo</i>
+              <font-awesome-icon icon="undo" />
             </v-btn>
           </v-flex>
         </v-layout>

@@ -48,7 +48,7 @@
       <v-list>
         <v-list-item v-show="global_excludes.length > 0" v-for="(rule,index) in global_excludes" v-bind:key="index">
           <v-list-item-icon @click="deleteGlobalExlucde(rule)">
-            <v-icon>delete</v-icon>
+            <font-awesome-icon icon="trash" />
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="rule"></v-list-item-title>
@@ -60,7 +60,7 @@
               <v-text-field @keyup.enter="addGlobalExlucde()" :placeholder="lang.add_global_exclude_rules" v-model="new_global_exclude_rule"></v-text-field>
             </v-list-item-title>
           </v-list-item-content>
-          <v-list-item-icon @click="addGlobalExlucde()"><v-icon>add_circle</v-icon>
+          <v-list-item-icon @click="addGlobalExlucde()"><font-awesome-icon icon="plus" />
           </v-list-item-icon>
         </v-list-item>
       </v-list>
