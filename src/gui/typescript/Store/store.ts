@@ -16,10 +16,6 @@ export const store = new Vuex.Store({
       namespaced: true,
       state: {
         load_script_with_js_end: true
-        , hightlightjs: {
-          active: true,
-          style: "default",
-        }
         , global_excludes: [] as string[]
         , greasemonkey: {
           global_active: true,
@@ -32,12 +28,6 @@ export const store = new Vuex.Store({
         greasemonkey_global_active(state) {
           return state.greasemonkey.global_active;
         },
-        hightlightjs_active(state) {
-          return state.hightlightjs.active;
-        },
-        hightlightjs_style(state) {
-          return state.hightlightjs.style;
-        },
         global_excludes(state) {
           return state.global_excludes;
         },
@@ -48,12 +38,6 @@ export const store = new Vuex.Store({
         },
         greasemonkey_global_active(state, val: boolean) {
           state.greasemonkey.global_active = val;
-        },
-        hightlightjs_active(state, val: boolean) {
-          state.hightlightjs.active = val;
-        },
-        hightlightjs_style(state, val: string) {
-          state.hightlightjs.style = val;
         },
         global_excludes(state, val: string[]) {
           state.global_excludes = val;
@@ -78,8 +62,6 @@ export const store = new Vuex.Store({
 
             context.commit("load_script_with_js_end", config.load_script_with_js_end);
             context.commit("greasemonkey_global_active", config.greasemonkey.global_active);
-            context.commit("hightlightjs_active", config.hightlightjs.active);
-            context.commit("hightlightjs_style", config.hightlightjs.style);
             context.commit("global_excludes", config.global_excludes);
 
             return true;
@@ -134,30 +116,6 @@ export const store = new Vuex.Store({
           } catch (message) {
             /** Fehler beim Laden der Konfiguration */
             console.error("Error in setting global_excludes_add");
-            console.error(message);
-            return false;
-          }
-        },
-        async hightlightjs_active(context, payload: boolean) {
-          try {
-            context.commit("hightlightjs_active", payload);
-            await config_storage_instance.set(context.state);
-            return true;
-          } catch (message) {
-            /** Fehler beim Laden der Konfiguration */
-            console.error("Error in setting hightlightjs_active");
-            console.error(message);
-            return false;
-          }
-        },
-        async hightlightjs_style(context, payload: string) {
-          try {
-            context.commit("hightlightjs_style", payload);
-            await config_storage_instance.set(context.state);
-            return true;
-          } catch (message) {
-            /** Fehler beim Laden der Konfiguration */
-            console.error("Error in setting hightlightjs_style");
             console.error(message);
             return false;
           }

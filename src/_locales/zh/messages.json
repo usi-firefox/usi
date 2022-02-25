@@ -209,12 +209,6 @@
     "complete_export": {
         "message": "\u5b8c\u6574\u7684\u5bfc\u51fa\uff1f"
     },
-    "hightlightjsstyle": {
-        "message": "hightlight.js\u9ed8\u8ba4\u6837\u5f0f"
-    },
-    "options_activate_highlightjs_title": {
-        "message": "HighlightJS\u542f\u7528"
-    },
     "options_always_activate_greasemonkey_title": {
         "message": "Greasemonkey\u51fd\u6570\u6c38\u8fdc\u542f\u7528"
     },

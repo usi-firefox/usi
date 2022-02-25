@@ -209,12 +209,6 @@
     "complete_export": {
         "message": "achever l'export?"
     },
-    "hightlightjsstyle": {
-        "message": "style par d\u00e9faut pour hightlight.js"
-    },
-    "options_activate_highlightjs_title": {
-        "message": "HighlightJS active"
-    },
     "options_always_activate_greasemonkey_title": {
         "message": "Les Fonctions Greasemonkey toujours activ\u00e9es"
     },

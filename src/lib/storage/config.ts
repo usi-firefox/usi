@@ -6,10 +6,6 @@ export default class config_storage {
         , greasemonkey: {
             global_active: true,
         },
-        hightlightjs: {
-            active: true
-            , style: "default",
-        },
         load_script_with_js_end: true,
     };
 

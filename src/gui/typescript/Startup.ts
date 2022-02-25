@@ -2,12 +2,8 @@ import AppBody from "Components/AppBody.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import {store} from "./Store/store";
-import hljs from 'highlight.js';
 
 Vue.use(Vuetify);
-
-// Damit die Komponente <highlightjs /> bereit gestellt wird, siehe Highlight.vue
-Vue.use(hljs.vuePlugin);
 
 import "@mdi/font/css/materialdesignicons.css"; // Ensure you are using css-loader
 import { getTranslation } from "lib/helper/basic_helper";

@@ -24,10 +24,6 @@ declare namespace usi.Tabs {
 declare namespace usi.Storage {
     interface Config {
         load_script_with_js_end: boolean
-        , hightlightjs: {
-            active: boolean
-            , style: string
-        }
         , global_excludes : string[]
         , greasemonkey: {
             global_active: boolean

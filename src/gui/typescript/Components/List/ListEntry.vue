@@ -192,14 +192,8 @@
           </div>
         </div>
         <v-card v-show="showUserscriptContent">
-          <!--Userscript Inhalt-->
-          <highlightjs-component
-            v-if="hightlightsjsActive"
-            :code="this.script.userscript"
-            :astyle="hightlightsjsStyle"
-          />
           <!-- Es dürfen keine Leerzeichen dazwischen sein -->
-          <pre v-else><code class="width-100">{{this.script.userscript}}</code></pre>
+          <pre><code class="width-100">{{this.script.userscript}}</code></pre>
         </v-card>
       </v-card-text>
     </v-card>
@@ -213,8 +207,6 @@ import {
   getExtId,
   getTranslation
 } from "lib/helper/basic_helper";
-
-import HighlightjsComponent from "./Highlight.vue";
 
 import Vue from "vue";
 import SPA from "lib/spa/handler";
@@ -254,9 +246,7 @@ export default Vue.component(componentName, {
       isSpa: false,
       icon: "/gui/icon/usi.png",
       localScriptDeactivated: false,
-      hightlightsjsActive: false,
       infos: <usi.Frontend.UserscriptInfoElement[]>[],
-      hightlightsjsStyle: "",
       GMValues: [],
       lang: {
         deactivated: getTranslation("deactivated"),
@@ -274,15 +264,6 @@ export default Vue.component(componentName, {
   created: function() {
     // Workaround
     this.localScriptDeactivated = this.script.deactivated;
-    if (this.configuration && this.configuration.hightlightjs) {
-      if (this.configuration.hightlightjs.active) {
-        this.hightlightsjsActive = this.configuration.hightlightjs.active;
-      }
-      if (this.configuration.hightlightjs.style) {
-        this.hightlightsjsStyle = this.configuration.hightlightjs.style;
-      }
-    }
-
     // Usersceript Informationen vorbereiten
     this.build_infos_array();
   },
@@ -595,7 +576,6 @@ export default Vue.component(componentName, {
     }
   },
   components: {
-    HighlightjsComponent
   }
 });
 </script>

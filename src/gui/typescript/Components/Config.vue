@@ -33,12 +33,6 @@
     </div>
 
     <div>
-      <h3 v-lang="'options_activate_highlightjs_title'">
-        <!--HighlightJS aktiv-->
-      </h3>
-      <v-switch v-model="hightlightjs_active" :label="hightlightjs_active ? lang.yes : lang.no"></v-switch>
-    </div>
-    <div>
       <h3 v-lang="'options_always_activate_greasemonkey_title'">
         <!--Greasemonkey immer aktivieren-->
       </h3>
@@ -168,14 +162,6 @@ export default Vue.component(componentName, {
         this.$store.dispatch("configuration/greasemonkey_global_active", val);
       }
     },
-    hightlightjs_active: {
-      get(): boolean {
-        return this.$store.getters["configuration/hightlightjs_active"];
-      },
-      set(val: boolean) {
-        this.$store.dispatch("configuration/hightlightjs_active", val);
-      }
-    }
   },
   methods: {
     /**

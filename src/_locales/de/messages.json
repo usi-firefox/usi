@@ -239,12 +239,6 @@
     "complete_export": {
         "message": "Kompletter Export?"
     },
-    "hightlightjsstyle": {
-        "message": "Standard Style f\u00fcr hightlight.js"
-    },
-    "options_activate_highlightjs_title": {
-        "message": "HighlightJS aktiv"
-    },
     "options_always_activate_greasemonkey_title": {
         "message": "Greasemonkey Funktionen immer aktivieren"
     },
