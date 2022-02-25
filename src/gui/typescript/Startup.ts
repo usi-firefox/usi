@@ -11,9 +11,7 @@ Vue.component('font-awesome-icon', FontAwesomeIconComponent);
 
 Vue.use(Vuetify);
 
-import "@mdi/font/css/materialdesignicons.css"; // Ensure you are using css-loader
 import { getTranslation } from "lib/helper/basic_helper";
-import "material-design-icons-iconfont/dist/material-design-icons.css"; // Ensure you are using css-loader
 
 /**
  * Achtung diese CSS Datei ist von 
